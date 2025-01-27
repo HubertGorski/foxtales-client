@@ -3,18 +3,21 @@ import { ROUTE_PATH } from '@/router/routeEnums';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import HubBtn from '@/components/hubComponents/HubBtn.vue';
+import { useUserStore } from '@/stores/userStore';
 
+const userStore = useUserStore();
 const router = useRouter();
 const { t } = useI18n();
 
 const navigateToJoinGame = () => {
-    router.push(ROUTE_PATH.JOIN_GAME);
+  router.push(ROUTE_PATH.JOIN_GAME);
 };
 
 const navigateToCreateGame = () => {
-    router.push(ROUTE_PATH.CREATE_GAME);
+  router.push(ROUTE_PATH.CREATE_GAME);
 };
 
+const currentUser = userStore.user;
 const btns = [
   {
     id: 1,
@@ -37,7 +40,7 @@ const btns = [
     <div class="menu">
       <div class="welcomeMessage">
         <span class="welcomeMessage_greeting">Cześć </span>
-        <span class="welcomeMessage_name">Natalia!</span>
+        <span class="welcomeMessage_name">{{ currentUser.username }}!</span>
         <p class="welcomeMessage_text">Baw się dobrze i miłej gry.</p>
       </div>
       <div @click="navigateToCreateGame" class="menu_card">
