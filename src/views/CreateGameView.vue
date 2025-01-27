@@ -75,7 +75,7 @@ const btns = [
   align-items: center;
     
   &_card {
-    padding: 24px;
+    padding: 24px 24px 0 24px;
     width: 100%;
     
     .title {
@@ -138,7 +138,7 @@ const btns = [
   }
   
   .fox {
-    width: 95%;
+    width: 90%;
   }
 }  
 </style>

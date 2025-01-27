@@ -60,6 +60,7 @@ const navigateBack = () => {
         </button>
       </div>
     </form>
+    <img src="@/assets/imgs/fox10.png" alt="Lisek" class="registerView_fox" />
   </div>
 </template>
 
@@ -69,10 +70,17 @@ const navigateBack = () => {
 .registerView {
   display: flex;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
   height: 100vh;
   background: $mainBackground;
-  padding: 16px;
+  padding: 120px 16px;
+
+  &_fox {
+    position: relative;
+    bottom: -52px;
+    left: -32px;
+    transform: scale(1.2);
+  }
 
   &_title {
     font-size: 24px;

@@ -22,6 +22,7 @@ const navigateBack = () => {
 
 <template>
   <div class="loginView">
+    <img src="@/assets/imgs/fox8.png" alt="Lisek" class="loginView_fox" />
     <form @submit.prevent="submitForm" class="whiteCard">
       <h1 class="loginView_title">Logowanie</h1>
       <v-text-field
@@ -59,10 +60,15 @@ const navigateBack = () => {
 .loginView {
   display: flex;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
   height: 100vh;
   background: $mainBackground;
-  padding: 16px;
+  padding: 0 16px;
+
+  &_fox {
+    position: relative;
+    top: 8px;
+  }
 
   &_title {
     font-size: 24px;
