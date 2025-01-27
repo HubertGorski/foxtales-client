@@ -1,0 +1,27 @@
+{
+  "login": "Zaloguj się",
+  "register": "Załóż konto",
+  "registerTitle": "Rejestracja",
+  "settings": "Ustawienia",
+  "logout": "Wyloguj",
+  "back": "Powrót",
+  "back2": "Wstecz",
+  "next": "Dalej",
+  "start": "Start",
+  "create": "Utwórz",
+  "leaveGame": "Opuść grę",
+  "closeGame": "Zamknij grę",
+  "join": "Dołącz",
+  "createRoom": "Utwórz swój pokój",
+  "pageNotExist": "Strona w budowie",
+  "router": {
+    "home": "x",
+    "login": "x",
+    "register": "x",
+    "menu": "x",
+    "settings": "x",
+    "joinGame": "x",
+    "createGame": "x",
+    "lobby": "x"
+  }
+}
