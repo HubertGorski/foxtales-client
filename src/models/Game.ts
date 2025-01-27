@@ -1,15 +1,15 @@
-import { User, UserInLobby } from "./User";
+import { User } from "./User";
 
 export class Game {
   code: string;
   owner: User;
   isPublic: boolean;
-  users: UserInLobby[];
+  users: User[];
   password: string | null;
   usePublicQuestions: boolean;
   usePrivateQuestions: boolean;
 
-  constructor(code: string, isPublic: boolean = false, owner: User = new User(), users: UserInLobby[] = [], password: string | null = null, usePublicQuestions = true, usePrivateQuestions = true) {
+  constructor(code: string, isPublic: boolean = false, owner: User = new User(), users: User[] = [], password: string | null = null, usePublicQuestions = true, usePrivateQuestions = true) {
     this.code = code;
     this.isPublic = isPublic;
     this.owner = owner;

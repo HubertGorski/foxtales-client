@@ -96,9 +96,13 @@ const btns = [
       }
     
       &_name {
+        display: block;
+        width: 100%;
         font-size: 64px;
         line-height: 64px;
         color: $mainOrangeColor;
+        overflow-x: scroll;
+        overflow-y: hidden;
       }
     
       &_text {

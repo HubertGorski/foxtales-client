@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { DEFAULT_AVATAR } from '@/enums/userEnum';
-import { UserInLobby } from '@/models/User';
+import { User } from '@/models/User';
 
 const props = defineProps({
   user: {
-    type: UserInLobby,
+    type: User,
     required: true,
   },
 });
