@@ -41,16 +41,17 @@ const btns = [
   background: $mainBackground;
   
   &_title {
-    text-align: center;
-    padding-top: 32px;
     font-size: 42px;
     font-weight: 800;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     background: linear-gradient(45deg, #ff8c00, #ffca28);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    padding-top: 32px;
+    text-align: center;
 
   }
   &_btns {
