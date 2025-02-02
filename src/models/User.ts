@@ -9,13 +9,15 @@ export class User {
   avatar: string = DEFAULT_AVATAR;
   gender: GENDER = GENDER.MAN;
   role: ROLE = ROLE.USER;
-  accountPoints: number = 0;
   questionsCount: number = 0;
   answersCount: number = 0;
   totalGamesPlayed: number = 0;
   averageResponseTime: number = 0;
   lastSign: Date = new Date();
   registerDate: Date = new Date();
+  accountPoints: number = 0;
+  requiredAccountPointsToNextLevel: number = 0;
+  level: number = 0;
 
   //In Game or lobby
   isReady: boolean = false;

@@ -20,8 +20,12 @@ export const useUserStore = defineStore({
   },
 
   actions: {
-    setUserPermissions(role: ROLE) {
-      this.user.role = role;
+    setUsername(newUsername: string) {
+      this.user.username = newUsername;
+    },
+    
+    setAvatar(source: string) {
+      this.user.avatar = source;
     },
   },
 });

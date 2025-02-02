@@ -12,6 +12,7 @@
   "leaveGame": "Opuść grę",
   "closeGame": "Zamknij grę",
   "join": "Dołącz",
+  "accept": "Zatwierdź",
   "createRoom": "Utwórz swój pokój",
   "pageNotExist": "Strona w budowie",
   "router": {
