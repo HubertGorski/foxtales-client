@@ -24,9 +24,12 @@ const btns = [
 
 <template>
   <div class="homeView">
-    <img src="@/assets/imgs/fox1.webp" alt="Lisek" class="homeView_img" />
-    <HubBtn :action="btns[0].action" :text="btns[0].text" :isOrange="btns[0].isOrange"/>
-    <HubBtn :action="btns[1].action" :text="btns[1].text" :isOrange="btns[1].isOrange"/>
+    <p class="homeView_title">FOX TALES</p>
+    <img src="@/assets/imgs/foxes.png" alt="Lisek" class="homeView_img" />
+    <div class="homeView_btns">
+      <HubBtn :action="btns[0].action" :text="btns[0].text" :isOrange="btns[0].isOrange"/>
+      <HubBtn :action="btns[1].action" :text="btns[1].text" :isOrange="btns[1].isOrange"/>
+    </div>
   </div>
 </template>
 
@@ -34,19 +37,37 @@ const btns = [
 @import '@/assets/styles/variables';
 
 .homeView {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
-  padding: 20px;
-  gap: 20px;
   background: $mainBackground;
   
-    &_img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 20px;
+  &_title {
+    text-align: center;
+    padding-top: 32px;
+    font-size: 42px;
+    font-weight: 800;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ff8c00, #ffca28);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+  }
+  &_btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding-top: 64px;
+  }
+
+  &_img {
+    position: absolute;
+    max-width: 100%;
+    height: auto;
+    bottom: 0;
+    left: 0;
     }
 }
 
