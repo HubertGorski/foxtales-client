@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import HubBtn from '@/components/hubComponents/HubBtn.vue';
 import { useUserStore } from '@/stores/userStore';
+import type { Avatar } from '@/models/Avatar';
+import { avatars } from '@/assets/data/avatars';
 
 const userStore = useUserStore();
 
@@ -16,7 +18,7 @@ const newUsername = ref<string>('');
 
 const changeAvatar = (avatar: Avatar) => {
   userStore.setAvatar(avatar.source);
-  avatars.value.map(avatar => avatar.isSelected = false);
+  actualAvatars.value.map(avatar => avatar.isSelected = false);
   avatar.isSelected = true;
 }
 
@@ -29,16 +31,9 @@ const openTab = (tab: number) => {
   selectedTab.value = selectedTab.value === tab ? 0 : tab;
 }
 
-const avatars = ref<Avatar[]>([
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: true},
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: false},
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: false},
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: false},
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: false},
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: false},
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: false},
-  {source: "/src/assets/imgs/defaultAvatars/defaultAvatar1.png", isSelected: false}
-]);
+const unlockedAchievementsCount = computed(() => userStore.user.achievements.filter(achievement => achievement.unlockDate).length);
+
+const actualAvatars = ref<Avatar[]>(avatars);
 
 const btns = [
   {
@@ -64,11 +59,6 @@ const acceptUsernameBtn = computed(() => {
     action: () => changeUsername()
   };
 });
-
-interface Avatar {
-  source: string;
-  isSelected: boolean;
-}
 </script>
 
 <template>
@@ -77,13 +67,38 @@ interface Avatar {
       <div class="whiteCard">
         <span @click="openTab(1)" class="title">Statystyki konta</span>
         <div v-if="selectedTab === 1" class="stats">
-          {{ userStore.user.accountPoints }}
+          <div>
+            <div class="points">
+              <span>Doświadczenie {{ userStore.user.accountPoints }} / {{ userStore.user.requiredAccountPointsToNextLevel }}</span>
+            </div>
+            <div class="level">
+              <span>Poziom {{ userStore.user.level }}</span>
+            </div>
+            <div class="questionsCount">
+              <span>Utworzonych publicznych pytań: {{ userStore.user.publicQuestionsCount }}</span>
+            </div>
+            <div class="totalGamesPlayed">
+              <span>Udzielonych odpowiedzi: {{ userStore.user.answersCount }}</span>
+            </div>
+            <div class="totalGamesPlayed">
+              <span>Rozegranych gier: {{ userStore.user.totalGamesPlayed }}</span>
+            </div>
+            <div class="achievements">
+              <span>Osiągnięcia ({{ unlockedAchievementsCount }}/{{ userStore.user.achievements.length }})</span>
+              <div class="achievement_list">
+                <img v-for="achievement in userStore.user.achievements" :key="achievement.id" :class="{unlocked: achievement.unlockDate}" class="achievement" :src="achievement.icon" alt="Lisek" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="whiteCard">
         <span @click="openTab(2)" class="title">Wybierz swój avatar</span>
         <div v-if="selectedTab === 2" class="avatars">
-          <img @click="changeAvatar(avatar)" v-for="avatar in avatars" :src="avatar.source" alt="Lisek" :class="{isUserReady: avatar.isSelected}" class="avatar" />
+          <div v-for="avatar in actualAvatars" :key="avatar.id" class="avatar">
+            <img @click="changeAvatar(avatar)" :src="avatar.source" alt="Lisek" :class="{isUserReady: avatar.isSelected, isDisabled: avatar.isDisabled}" class="avatar_img" />
+            <v-icon v-if="avatar.isDisabled" class="avatar_lock">mdi-lock</v-icon>
+          </div>
         </div>
       </div>
       <div class="whiteCard">
@@ -149,15 +164,57 @@ interface Avatar {
     gap: 8px;
     padding-top: 12px;
   }
+
   .avatar {
+    position: relative;
+
+    &_lock {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      opacity: 0.4;
+      font-size: 32px;
+    }
+
+    &_img {
+      background-color: white;
+      height: 56px;
+      width: 56px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      border-radius: 50%;
+      padding: 2px;
+      
+      &.isUserReady {
+        border: 2px solid $mainBrownColor;
+        transform: scale(1.1);
+      }
+
+      &.isDisabled {
+        filter: brightness(50%) grayscale(80%) contrast(90%);
+        pointer-events: none;
+      }
+    }
+  }
+
+  .achievement_list {
+    display: flex;
+    gap: 8px;
+    padding-top: 12px;
+  }
+  
+  .achievement {
     background-color: white;
-    height: 56px;
-    width: 56px;
+    height: 42px;
+    width: 42px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 50%;
     padding: 2px;
-
-    &.isUserReady {
+    filter: brightness(50%) grayscale(80%) contrast(90%);
+    
+    &.unlocked {
+      filter: none;
       border: 2px solid $mainBrownColor;
       transform: scale(1.1);
     }

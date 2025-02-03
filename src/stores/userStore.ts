@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { User } from "@/models/User";
 import { users } from "@/assets/data/users";
-import type { ROLE } from "@/enums/rolesEnum";
 
 interface UserState {
   user: User;
