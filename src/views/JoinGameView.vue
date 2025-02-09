@@ -6,6 +6,8 @@ import { ROUTE_PATH } from '@/router/routeEnums';
 import HubBtn from '@/components/hubComponents/HubBtn.vue';
 import { Game } from '@/models/Game';
 import { games } from '@/assets/data/games';
+import HubDivider from '@/components/hubComponents/HubDivider.vue';
+import HubInputBox from '@/components/hubComponents/HubInputBox.vue';
 
 const router = useRouter();
 const { t } = useI18n();
@@ -24,6 +26,7 @@ const acceptCodeBtn = computed(() => {
     action: () => router.push(ROUTE_PATH.LOBBY)
   };
 });
+
 const acceptPasswordBtn = computed(() => {
   return {
     text: t("join"),
@@ -48,24 +51,9 @@ const goToLobby = () => {
 <template>
   <div class="joinGameView">
     <div v-if="selectedGameCode" @click="selectedGameCode = ''" class="mask"></div>
-    <div :class="{isVisible: selectedGameCode}" class="joinGameView_gameDetailsPopup whiteCard">
-      <p class="subtitle">Wymagane hasło dostępu</p>
-      <v-text-field v-model="password" hide-details placeholder="Hasło" type="password"/>
-      <HubBtn class="joinGamePerCode_btn" :action="acceptPasswordBtn.action" :text="acceptPasswordBtn.text" :isOrange="acceptPasswordBtn.isOrange" :disabled="acceptPasswordBtn.disabled"/>
-    </div>
-    <img src="@/assets/imgs/fox7.png" alt="Lisek" class="joinGameView_fox" />
-    <div class="whiteCard">
-        <p class="subtitle">Dołącz za pomocą kodu</p>
-        <div class="joinGamePerCode">
-          <v-text-field v-model="customCode" hide-details/>
-          <HubBtn class="joinGamePerCode_btn" :action="acceptCodeBtn.action" :text="acceptCodeBtn.text" :isOrange="acceptCodeBtn.isOrange" :disabled="acceptCodeBtn.disabled"/>
-        </div>
-    </div>
-    <div class="joinGameView_or">
-      <v-divider/>
-      <span>Lub</span>
-      <v-divider/>
-    </div>
+    <HubInputBox :class="{isVisible: selectedGameCode}" class="joinGameView_gameDetailsPopup" title="accessPasswordRequired" :btnAction="acceptPasswordBtn.action" :btnText="acceptPasswordBtn.text" :btnIsOrange="acceptPasswordBtn.isOrange" />
+    <HubInputBox title="joinWithCode" withFoxImg :btnAction="acceptCodeBtn.action" :btnText="acceptCodeBtn.text" :btnIsOrange="acceptCodeBtn.isOrange" />
+    <HubDivider />
     <div class="joinGameView_chooseRoom whiteCard">
         <p class="subtitle">Wybierz pokój z listy</p>
         <div v-if="actualGames.length === 0" class="emptyGamesList">
@@ -123,24 +111,15 @@ const goToLobby = () => {
 
   &_gameDetailsPopup {
     position: absolute;
-    z-index: 2;
     width: 310px;
-    display: flex;
-    gap: 12px;
-    transform: scale(0.00001);
     background-color: white;
+    transform: scale(0.00001);
+    z-index: 2;
     
     &.isVisible {
       transition: all 0.2s;
       transform: scale(1);
     }
-  }
-
-  &_fox {
-    width: 120px;
-    position: absolute;
-    top: 0;
-    right: 0;
   }
 
   &_controls {
@@ -213,21 +192,6 @@ const goToLobby = () => {
           }
         }
       }
-    }
-  }
-
-  &_or {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    .v-divider {
-      width: 100%;
-    }
-    span {
-      padding: 0 12px;
-      color: $mainBrownColor;
-      font-weight: 600;
-      font-size: 16px;
     }
   }
 

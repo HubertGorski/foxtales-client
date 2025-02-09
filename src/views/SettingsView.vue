@@ -35,6 +35,10 @@ const unlockedAchievementsCount = computed(() => userStore.user.achievements.fil
 
 const actualAvatars = ref<Avatar[]>(avatars);
 
+const goToQuestionsPanel = () => {
+  router.push(ROUTE_PATH.QUESTIONS_PANEL);
+}
+
 const btns = [
   {
     id: 1,
@@ -64,54 +68,57 @@ const acceptUsernameBtn = computed(() => {
 <template>
   <div class="settingsView">
     <div class="accordion">
-      <div class="whiteCard">
+      <div class="statsTab whiteCard" :class="{isHidden: selectedTab !== 1}">
         <span @click="openTab(1)" class="title">Statystyki konta</span>
-        <div v-if="selectedTab === 1" class="stats">
-          <div>
-            <div class="points">
-              <span>Doświadczenie {{ userStore.user.accountPoints }} / {{ userStore.user.requiredAccountPointsToNextLevel }}</span>
+        <div class="stats">
+            <div class="stats_element">
+              <v-icon>mdi-star</v-icon>
+              <span>Doświadczenie: {{ userStore.user.accountPoints }} / {{ userStore.user.requiredAccountPointsToNextLevel }}</span>
             </div>
-            <div class="level">
-              <span>Poziom {{ userStore.user.level }}</span>
+            <div class="stats_element">
+              <v-icon>mdi-bolt</v-icon>
+              <span>Poziom: {{ userStore.user.level }}</span>
             </div>
-            <div class="questionsCount">
-              <span>Utworzonych publicznych pytań: {{ userStore.user.publicQuestionsCount }}</span>
+            <div class="stats_element">
+              <v-icon>mdi-help-circle</v-icon>
+              <span>Publiczne pytania: {{ userStore.user.publicQuestionsCount }}</span>
             </div>
-            <div class="totalGamesPlayed">
-              <span>Udzielonych odpowiedzi: {{ userStore.user.answersCount }}</span>
+            <div class="stats_element">
+              <v-icon>mdi-comment</v-icon>
+              <span>Udzielone odpowiedzi: {{ userStore.user.answersCount }}</span>
             </div>
-            <div class="totalGamesPlayed">
-              <span>Rozegranych gier: {{ userStore.user.totalGamesPlayed }}</span>
+            <div class="stats_element">
+              <v-icon>mdi-gamepad-variant</v-icon>
+              <span>Rozegrane gry: {{ userStore.user.totalGamesPlayed }}</span>
             </div>
-            <div class="achievements">
-              <span>Osiągnięcia ({{ unlockedAchievementsCount }}/{{ userStore.user.achievements.length }})</span>
-              <div class="achievement_list">
-                <img v-for="achievement in userStore.user.achievements" :key="achievement.id" :class="{unlocked: achievement.unlockDate}" class="achievement" :src="achievement.icon" alt="Lisek" />
-              </div>
+            <div class="stats_element">
+              <v-icon>mdi-trophy</v-icon>
+              <span>Osiągnięcia: {{ unlockedAchievementsCount }} / {{ userStore.user.achievements.length }}</span>
             </div>
-          </div>
+            <div class="achievement_list">
+              <img v-for="achievement in userStore.user.achievements" :key="achievement.id" :class="{unlocked: achievement.unlockDate}" class="achievement" :src="achievement.icon" alt="Lisek" />
+            </div>
         </div>
       </div>
-      <div class="whiteCard">
-        <span @click="openTab(2)" class="title">Wybierz swój avatar</span>
-        <div v-if="selectedTab === 2" class="avatars">
+      <div class="avatarsTab whiteCard" :class="{isHidden: selectedTab !== 2}">
+        <span @click="openTab(2)" class="title">Wybierz postać</span>
+        <div class="avatarsTab_avatars">
           <div v-for="avatar in actualAvatars" :key="avatar.id" class="avatar">
             <img @click="changeAvatar(avatar)" :src="avatar.source" alt="Lisek" :class="{isUserReady: avatar.isSelected, isDisabled: avatar.isDisabled}" class="avatar_img" />
             <v-icon v-if="avatar.isDisabled" class="avatar_lock">mdi-lock</v-icon>
           </div>
         </div>
       </div>
-      <div class="whiteCard">
+      <div class="usernameTab whiteCard" :class="{isHidden: selectedTab !== 3}">
         <span @click="openTab(3)" class="title">Zmień imię</span>
-          <div v-if="selectedTab === 3" class="changeUsername">
+          <div class="changeUsername">
             <v-text-field v-model="newUsername" :placeholder="userStore.user.username" hide-details/>
             <HubBtn class="changeUsername_btn" :action="acceptUsernameBtn.action" :text="acceptUsernameBtn.text" :isOrange="acceptUsernameBtn.isOrange" :disabled="acceptUsernameBtn.disabled"/>
           </div>
         </div>
-    <div class="whiteCard">
+    <div @click="goToQuestionsPanel" class="whiteCard">
       <span class="title">Zarządzaj pytaniami</span>
     </div>
-    
   </div>
   <div class="controls">
     <HubBtn class="controls_btn" :action="btns[0].action" :text="btns[0].text" :isOrange="btns[0].isOrange"/>
@@ -129,44 +136,49 @@ const acceptUsernameBtn = computed(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
-  .changeUsername {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding-top: 12px;
 
-    &_btn {
-      padding: 6px;
-      font-size: 18px;
-      width: auto;
+  .questionsPanel {
+    display: flex;
+
+    &.isHidden {
+      display: none;
     }
   }
 
-  .accordion {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    gap: 24px;
-  }
+  .statsTab {
+    transition: all 0.4s;
+    height: 298px;
+    overflow: hidden;
 
-  .title {
-      color: $grayColor;
-      font-size: 24px;
-      font-weight: 600;
+    .stats {
+      padding-top: 18px;
+
+      &_element {
+        display: flex;
+        gap: 12px;
+        color: $grayColor;
+
+        .v-icon {
+          color: $mainBrownColor;
+        }
+      }
     }
-  .avatars {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    padding-top: 12px;
   }
 
-  .avatar {
-    position: relative;
+  .avatarsTab {
+    transition: all 0.4s;
+    height: 230px;
+    overflow: hidden;
+
+    &_avatars {
+      padding-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+
+      .avatar {
+        position: relative;
 
     &_lock {
       position: absolute;
@@ -196,6 +208,42 @@ const acceptUsernameBtn = computed(() => {
         pointer-events: none;
       }
     }
+    }
+    }
+  }
+
+  .usernameTab {
+    overflow: hidden;
+    height: 218px;
+    transition: all 0.4s;
+    
+    .changeUsername {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 12px;
+      
+      &_btn {
+        padding: 6px;
+        font-size: 18px;
+        width: auto;
+      }
+    }
+  }
+
+  .accordion {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 24px;
+  }
+
+  .title {
+    color: $grayColor;
+    font-size: 24px;
+    font-weight: 600;
   }
 
   .achievement_list {
@@ -228,5 +276,18 @@ const acceptUsernameBtn = computed(() => {
         padding: 12px 24px;
       }
     }
+
+    .isHidden {
+      height: 82px;
+      transition: all 0.4s;
+      padding-bottom: 24px;
+
+      .avatarsTab_avatars {
+        padding-top: 26px;
+      }
+      .changeUsername {
+        padding-top: 26px;
+      }
+  }
 }
 </style>

@@ -15,6 +15,8 @@
   "accept": "Zatwierdź",
   "createRoom": "Utwórz swój pokój",
   "pageNotExist": "Strona w budowie",
+  "joinWithCode": "Dołącz za pomocą kodu",
+  "accessPasswordRequired": "Wymagane hasło dostępu",
   "router": {
     "home": "x",
     "login": "x",
