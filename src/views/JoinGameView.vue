@@ -51,8 +51,23 @@ const goToLobby = () => {
 <template>
   <div class="joinGameView">
     <div v-if="selectedGameCode" @click="selectedGameCode = ''" class="mask"></div>
-    <HubInputBox :class="{isVisible: selectedGameCode}" class="joinGameView_gameDetailsPopup" title="accessPasswordRequired" :btnAction="acceptPasswordBtn.action" :btnText="acceptPasswordBtn.text" :btnIsOrange="acceptPasswordBtn.isOrange" />
-    <HubInputBox title="joinWithCode" withFoxImg :btnAction="acceptCodeBtn.action" :btnText="acceptCodeBtn.text" :btnIsOrange="acceptCodeBtn.isOrange" />
+    <HubInputBox
+    v-model="password"
+    :class="{isVisible: selectedGameCode}" 
+    class="joinGameView_gameDetailsPopup" 
+    title="accessPasswordRequired" 
+    :btnAction="acceptPasswordBtn.action" 
+    :btnText="acceptPasswordBtn.text" 
+    :btnIsOrange="acceptPasswordBtn.isOrange"
+    textPlaceholder="password"
+    textType="password" />
+    <HubInputBox
+    v-model="customCode"
+    title="joinWithCode"
+    withFoxImg
+    :btnAction="acceptCodeBtn.action"
+    :btnText="acceptCodeBtn.text"
+    :btnIsOrange="acceptCodeBtn.isOrange" />
     <HubDivider />
     <div class="joinGameView_chooseRoom whiteCard">
         <p class="subtitle">Wybierz pokój z listy</p>

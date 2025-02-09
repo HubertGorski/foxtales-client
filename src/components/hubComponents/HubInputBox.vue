@@ -27,10 +27,14 @@ const props = defineProps({
   withFoxImg: {
     type: Boolean,
     default: false
+  },
+  isTextarea: {
+    type: Boolean,
+    default: false
   }
 });
 
-const text = ref<string>('');
+const text = defineModel({ type: String, required: true });
 
 const btnIsDisabled = computed(() => {
     return text.value.length === 0
@@ -42,7 +46,16 @@ const btnIsDisabled = computed(() => {
     <img v-if="withFoxImg" class="hubInputBox_fox" src="@/assets/imgs/fox7.png" alt="Lisek" />
     <p class="hubInputBox_subtitle">{{ $t(title) }}</p>
       <div class="hubBox">
-        <v-text-field class="hubBox_text" v-model="text" hide-details :placeholder="textPlaceholder" :type="textType"/>
+        <v-textarea v-if="isTextarea"
+        v-model="text"
+        @keydown.enter="btnAction" 
+        :auto-grow="false"/>
+        <v-text-field v-else
+        v-model="text"
+        hide-details
+        @keydown.enter="btnAction"
+        :placeholder="textPlaceholder ? $t(textPlaceholder) : ''" 
+        :type="textType"/>
         <HubBtn class="hubBox_btn" :action="btnAction" :text="btnText" :isOrange="btnIsOrange" :disabled="btnIsDisabled"/>
       </div>
   </div>
