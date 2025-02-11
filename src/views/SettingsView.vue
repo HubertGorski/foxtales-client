@@ -7,6 +7,8 @@ import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
 import type { Avatar } from "@/models/Avatar";
 import { avatars } from "@/assets/data/avatars";
+import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
+import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 
 const userStore = useUserStore();
 
@@ -71,9 +73,8 @@ const acceptUsernameBtn = computed(() => {
 
 <template>
   <div class="settingsView">
-    <div class="accordion">
-      <div class="statsTab whiteCard" :class="{ isHidden: selectedTab !== 1 }">
-        <span @click="openTab(1)" class="title">Statystyki konta</span>
+    <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName']">
+      <template #accountStats>
         <div class="stats">
           <div class="stats_element">
             <v-icon>mdi-star</v-icon>
@@ -119,13 +120,9 @@ const acceptUsernameBtn = computed(() => {
             />
           </div>
         </div>
-      </div>
-      <div
-        class="avatarsTab whiteCard"
-        :class="{ isHidden: selectedTab !== 2 }"
-      >
-        <span @click="openTab(2)" class="title">Wybierz postać</span>
-        <div class="avatarsTab_avatars">
+      </template>
+      <template #chooseFox>
+        <div class="avatars">
           <div v-for="avatar in actualAvatars" :key="avatar.id" class="avatar">
             <img
               @click="changeAvatar(avatar)"
@@ -142,12 +139,8 @@ const acceptUsernameBtn = computed(() => {
             >
           </div>
         </div>
-      </div>
-      <div
-        class="usernameTab whiteCard"
-        :class="{ isHidden: selectedTab !== 3 }"
-      >
-        <span @click="openTab(3)" class="title">Zmień imię</span>
+      </template>
+      <template #changeName>
         <div class="changeUsername">
           <v-text-field
             v-model="newUsername"
@@ -162,11 +155,9 @@ const acceptUsernameBtn = computed(() => {
             :disabled="acceptUsernameBtn.disabled"
           />
         </div>
-      </div>
-      <div @click="goToQuestionsPanel" class="whiteCard">
-        <span class="title">Zarządzaj biblioteką</span>
-      </div>
-    </div>
+      </template>
+    </HubAccordion>
+    <HubAccordionElement @click="goToQuestionsPanel" title="manageLibrary" />
     <div class="controls">
       <HubBtn
         class="controls_btn"
@@ -195,113 +186,72 @@ const acceptUsernameBtn = computed(() => {
   flex-direction: column;
   justify-content: space-between;
 
-  .questionsPanel {
+  .stats {
+    padding-top: 12px;
+
+    &_element {
+      display: flex;
+      gap: 12px;
+      color: $grayColor;
+
+      .v-icon {
+        color: $mainBrownColor;
+      }
+    }
+  }
+
+  .avatars {
+    padding-top: 16px;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
 
-    &.isHidden {
-      display: none;
-    }
-  }
+    .avatar {
+      position: relative;
 
-  .statsTab {
-    transition: all 0.4s;
-    height: 298px;
-    overflow: hidden;
+      &_lock {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        opacity: 0.4;
+        font-size: 32px;
+      }
 
-    .stats {
-      padding-top: 18px;
+      &_img {
+        background-color: white;
+        height: 56px;
+        width: 56px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        border-radius: 50%;
+        padding: 2px;
 
-      &_element {
-        display: flex;
-        gap: 12px;
-        color: $grayColor;
+        &.isUserReady {
+          border: 2px solid $mainBrownColor;
+          transform: scale(1.1);
+        }
 
-        .v-icon {
-          color: $mainBrownColor;
+        &.isDisabled {
+          filter: brightness(50%) grayscale(80%) contrast(90%);
+          pointer-events: none;
         }
       }
     }
   }
 
-  .avatarsTab {
-    transition: all 0.4s;
-    height: 230px;
-    overflow: hidden;
-
-    &_avatars {
-      padding-top: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-
-      .avatar {
-        position: relative;
-
-        &_lock {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          color: white;
-          opacity: 0.4;
-          font-size: 32px;
-        }
-
-        &_img {
-          background-color: white;
-          height: 56px;
-          width: 56px;
-          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-          border-radius: 50%;
-          padding: 2px;
-
-          &.isUserReady {
-            border: 2px solid $mainBrownColor;
-            transform: scale(1.1);
-          }
-
-          &.isDisabled {
-            filter: brightness(50%) grayscale(80%) contrast(90%);
-            pointer-events: none;
-          }
-        }
-      }
-    }
-  }
-
-  .usernameTab {
-    overflow: hidden;
-    height: 218px;
-    transition: all 0.4s;
-
-    .changeUsername {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding-top: 12px;
-
-      &_btn {
-        padding: 6px;
-        font-size: 18px;
-        width: auto;
-      }
-    }
-  }
-
-  .accordion {
+  .changeUsername {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    gap: 24px;
-  }
+    gap: 16px;
+    padding-top: 12px;
 
-  .title {
-    color: $grayColor;
-    font-size: 24px;
-    font-weight: 600;
+    &_btn {
+      padding: 6px;
+      font-size: 18px;
+      width: auto;
+    }
   }
 
   .achievement_list {
@@ -332,19 +282,6 @@ const acceptUsernameBtn = computed(() => {
 
     &_btn {
       padding: 12px 24px;
-    }
-  }
-
-  .isHidden {
-    height: 82px;
-    transition: all 0.4s;
-    padding-bottom: 24px;
-
-    .avatarsTab_avatars {
-      padding-top: 26px;
-    }
-    .changeUsername {
-      padding-top: 26px;
     }
   }
 }

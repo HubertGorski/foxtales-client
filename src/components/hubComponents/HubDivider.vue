@@ -1,7 +1,7 @@
 <template>
   <div class="hubDivider">
     <v-divider />
-    <span class="hubDivider_text">Lub</span>
+    <span class="hubDivider_text">{{ $t('or') }}</span>
     <v-divider />
   </div>
 </template>

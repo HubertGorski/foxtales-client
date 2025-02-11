@@ -12,6 +12,7 @@
   "leaveGame": "Opuść grę",
   "closeGame": "Zamknij grę",
   "join": "Dołącz",
+  "or": "lub",
   "add": "Dodaj",
   "password": "Hasło",
   "accept": "Zatwierdź",
@@ -21,6 +22,9 @@
   "accessPasswordRequired": "Wymagane hasło dostępu",
   "addQuestionToLibrary": "Dodaj pytanie do biblioteki",
   "manageLibrary": "Zarządzaj biblioteką",
+  "changeName": "Zmień imię",
+  "chooseFox": "Wybierz liska",
+  "accountStats": "Statystyki konta",
   "router": {
     "home": "x",
     "login": "x",
