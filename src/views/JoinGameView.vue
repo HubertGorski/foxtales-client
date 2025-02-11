@@ -99,7 +99,7 @@ const goToLobby = () => {
               <v-icon>mdi-lock</v-icon>
               <span>Wymagane hasło</span>
             </div>
-            <div class="details_usersCount">
+            <div>
               <v-icon>mdi-account-multiple</v-icon>
               <span>{{ game.usersCount }} graczy w pokoju</span>
             </div>
@@ -166,10 +166,6 @@ const goToLobby = () => {
     }
   }
 
-  &_chooseAvatar {
-    margin-bottom: 16px;
-  }
-
   &_chooseRoom {
     flex-grow: 1;
 
@@ -230,43 +226,11 @@ const goToLobby = () => {
     }
   }
 
-  .title {
-    color: $grayColor;
-    font-size: 24px;
-    font-weight: 600;
-    padding-bottom: 12px;
-  }
-
   .subtitle {
     color: $grayColor;
     font-size: 18px;
     font-weight: 600;
     padding-bottom: 12px;
-  }
-
-  .joinGamePerCode {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    &_btn {
-      padding: 6px;
-      font-size: 18px;
-      width: auto;
-    }
-  }
-
-  .avatars {
-    display: flex;
-    justify-content: space-between;
-
-    &_avatar {
-      background-color: white;
-      height: 56px;
-      width: 56px;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-      border-radius: 50%;
-    }
   }
 }
 </style>

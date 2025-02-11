@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import HubBtn from "./HubBtn.vue";
+import HubInputWithBtn from "./HubInputWithBtn.vue";
 
 const props = defineProps({
   title: {
@@ -50,29 +51,14 @@ const btnIsDisabled = computed(() => {
       alt="Lisek"
     />
     <p class="hubInputBox_subtitle">{{ $t(title) }}</p>
-    <div class="hubBox">
-      <v-textarea
-        v-if="isTextarea"
-        v-model="text"
-        @keydown.enter="btnAction"
-        :auto-grow="false"
-      />
-      <v-text-field
-        v-else
-        v-model="text"
-        hide-details
-        @keydown.enter="btnAction"
-        :placeholder="textPlaceholder ? $t(textPlaceholder) : ''"
-        :type="textType"
-      />
-      <HubBtn
-        class="hubBox_btn"
-        :action="btnAction"
-        :text="btnText"
-        :isOrange="btnIsOrange"
-        :disabled="btnIsDisabled"
-      />
-    </div>
+    <HubInputWithBtn
+      v-model="text"
+      :btnAction="btnAction"
+      :btnText="btnText"
+      :btnIsOrange="btnIsOrange"
+      :textType="textType"
+      :textPlaceholder="textPlaceholder ? $t(textPlaceholder) : ''"
+    />
   </div>
 </template>
 
@@ -94,18 +80,6 @@ const btnIsDisabled = computed(() => {
     font-size: 18px;
     font-weight: 600;
     padding-bottom: 12px;
-  }
-
-  .hubBox {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    &_btn {
-      padding: 6px;
-      font-size: 18px;
-      width: auto;
-    }
   }
 }
 </style>

@@ -9,6 +9,8 @@ import type { Avatar } from "@/models/Avatar";
 import { avatars } from "@/assets/data/avatars";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
+import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
+import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 
 const userStore = useUserStore();
 
@@ -148,20 +150,13 @@ const acceptUsernameBtn = computed(() => {
           </div>
         </template>
         <template #changeName>
-          <div class="changeUsername">
-            <v-text-field
-              v-model="newUsername"
-              :placeholder="userStore.user.username"
-              hide-details
-            />
-            <HubBtn
-              class="changeUsername_btn"
-              :action="acceptUsernameBtn.action"
-              :text="acceptUsernameBtn.text"
-              :isOrange="acceptUsernameBtn.isOrange"
-              :disabled="acceptUsernameBtn.disabled"
-            />
-          </div>
+          <HubInputWithBtn
+            v-model="newUsername"
+            :btnAction="acceptUsernameBtn.action"
+            :btnText="acceptUsernameBtn.text"
+            :btnIsOrange="acceptUsernameBtn.isOrange"
+            :textPlaceholder="userStore.user.username"
+          />
         </template>
       </HubAccordion>
       <HubAccordionElement @click="goToQuestionsPanel" title="manageLibrary" />
@@ -254,19 +249,6 @@ const acceptUsernameBtn = computed(() => {
           pointer-events: none;
         }
       }
-    }
-  }
-
-  .changeUsername {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding-top: 12px;
-
-    &_btn {
-      padding: 6px;
-      font-size: 18px;
-      width: auto;
     }
   }
 
