@@ -23,7 +23,7 @@ const toggleAccordion = (index: number) => {
       :key="index"
       :title="slotName"
       :isOpen="openState === index"
-      @click="toggleAccordion(index)"
+      @toggleAccordion="toggleAccordion(index)"
     >
       <template #default>
         <slot :name="slotName"></slot>
