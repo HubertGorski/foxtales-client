@@ -3,10 +3,9 @@ import { ROLE } from "@/enums/rolesEnum";
 import type { Achievement } from "./Achievement";
 
 export class User {
-
   // Basic info
   userId: number = 0;
-  username: string = 'Fox Gamer';
+  username: string = "Fox Gamer";
   avatar: string = DEFAULT_AVATAR;
   gender: GENDER = GENDER.MAN;
   role: ROLE = ROLE.USER;
@@ -28,13 +27,19 @@ export class User {
   pointsInGame: number = 0;
   chosenPlayerAnswer: User | null = null;
   votersForHisAnswer: User[] = [];
-  votersAndVoteCounts: {voterId: number, voteCount: number}[] = [];
+  votersAndVoteCounts: { voterId: number; voteCount: number }[] = [];
   responseTime: number = 0;
   averageResponseTimeInCurrentGame: number = 0;
   round: number = 1;
 
   //Statistics
-  gameHistory: {id: number, votersCountForHisAnswer: number, answersCount: number, playersCount: number, averageResponseTime: number}[] = [];
+  gameHistory: {
+    id: number;
+    votersCountForHisAnswer: number;
+    answersCount: number;
+    playersCount: number;
+    averageResponseTime: number;
+  }[] = [];
 
   constructor(args: Partial<User> = {}) {
     Object.assign(this, { ...args });

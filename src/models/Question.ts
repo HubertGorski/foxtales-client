@@ -11,7 +11,15 @@ export class Question {
   isPublic: boolean;
   usedCount: number;
 
-  constructor(id: number = 0, text: string = '', owner: User = new User(), language: LANG = LANG.PL, targetGender: GENDER = GENDER.ALL, isPublic: boolean = false, usedCount: number = 0) {
+  constructor(
+    id: number = 0,
+    text: string = "",
+    owner: User = new User(),
+    language: LANG = LANG.PL,
+    targetGender: GENDER = GENDER.ALL,
+    isPublic: boolean = false,
+    usedCount: number = 0
+  ) {
     this.id = id;
     this.text = text;
     this.isPublic = isPublic;

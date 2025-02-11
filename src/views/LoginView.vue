@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { ROUTE_PATH } from '@/router/routeEnums';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { ROUTE_PATH } from "@/router/routeEnums";
 
 const router = useRouter();
 
 const form = ref({
-  username: '',
-  password: ''
+  username: "",
+  password: "",
 });
 
 const submitForm = () => {
-  console.log('Form submitted:', form.value);
+  console.log("Form submitted:", form.value);
   router.push(ROUTE_PATH.MENU);
 };
 
@@ -43,7 +43,11 @@ const navigateBack = () => {
         required
       />
       <div class="loginView_actions">
-        <button type="button" @click="navigateBack" class="loginView_btn loginView_btn--back">
+        <button
+          type="button"
+          @click="navigateBack"
+          class="loginView_btn loginView_btn--back"
+        >
           Wstecz
         </button>
         <button type="submit" class="loginView_btn loginView_btn--submit">
@@ -55,7 +59,7 @@ const navigateBack = () => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables';
+@import "@/assets/styles/variables";
 
 .loginView {
   display: flex;

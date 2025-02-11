@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { ROUTE_PATH } from '@/router/routeEnums';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { ROUTE_PATH } from "@/router/routeEnums";
 
 const router = useRouter();
 
 const form = ref({
-  username: '',
-  password: '',
-  confirmPassword: '',
+  username: "",
+  password: "",
+  confirmPassword: "",
 });
 
 const submitForm = () => {
-  console.log('Form submitted:', form.value);
+  console.log("Form submitted:", form.value);
   router.push(ROUTE_PATH.LOGIN);
 };
 
@@ -52,7 +52,11 @@ const navigateBack = () => {
         required
       />
       <div class="registerView_actions">
-        <button type="button" @click="navigateBack" class="registerView_btn registerView_btn--back">
+        <button
+          type="button"
+          @click="navigateBack"
+          class="registerView_btn registerView_btn--back"
+        >
           {{ $t("back2") }}
         </button>
         <button type="submit" class="registerView_btn registerView_btn--submit">
@@ -65,7 +69,7 @@ const navigateBack = () => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables';
+@import "@/assets/styles/variables";
 
 .registerView {
   display: flex;

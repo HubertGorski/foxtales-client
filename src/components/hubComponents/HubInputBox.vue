@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import HubBtn from './HubBtn.vue';
+import { computed, ref } from "vue";
+import HubBtn from "./HubBtn.vue";
 
 const props = defineProps({
   title: {
@@ -26,43 +26,58 @@ const props = defineProps({
   },
   withFoxImg: {
     type: Boolean,
-    default: false
+    default: false,
   },
   isTextarea: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 const text = defineModel({ type: String, required: true });
 
 const btnIsDisabled = computed(() => {
-    return text.value.length === 0
+  return text.value.length === 0;
 });
 </script>
 
 <template>
   <div class="hubInputBox whiteCard">
-    <img v-if="withFoxImg" class="hubInputBox_fox" src="@/assets/imgs/fox7.png" alt="Lisek" />
+    <img
+      v-if="withFoxImg"
+      class="hubInputBox_fox"
+      src="@/assets/imgs/fox7.png"
+      alt="Lisek"
+    />
     <p class="hubInputBox_subtitle">{{ $t(title) }}</p>
-      <div class="hubBox">
-        <v-textarea v-if="isTextarea"
+    <div class="hubBox">
+      <v-textarea
+        v-if="isTextarea"
         v-model="text"
-        @keydown.enter="btnAction" 
-        :auto-grow="false"/>
-        <v-text-field v-else
+        @keydown.enter="btnAction"
+        :auto-grow="false"
+      />
+      <v-text-field
+        v-else
         v-model="text"
         hide-details
         @keydown.enter="btnAction"
-        :placeholder="textPlaceholder ? $t(textPlaceholder) : ''" 
-        :type="textType"/>
-        <HubBtn class="hubBox_btn" :action="btnAction" :text="btnText" :isOrange="btnIsOrange" :disabled="btnIsDisabled"/>
-      </div>
+        :placeholder="textPlaceholder ? $t(textPlaceholder) : ''"
+        :type="textType"
+      />
+      <HubBtn
+        class="hubBox_btn"
+        :action="btnAction"
+        :text="btnText"
+        :isOrange="btnIsOrange"
+        :disabled="btnIsDisabled"
+      />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables';
+@import "@/assets/styles/variables";
 
 .hubInputBox {
   position: relative;
@@ -92,6 +107,5 @@ const btnIsDisabled = computed(() => {
       width: auto;
     }
   }
-
 }
 </style>

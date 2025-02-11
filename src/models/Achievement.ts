@@ -5,7 +5,13 @@ export class Achievement {
   icon: string;
   unlockDate: Date | null;
 
-  constructor(id = 0, title: string = '', description: string = '', icon: string = '', unlockDate: Date | null = null) {
+  constructor(
+    id = 0,
+    title: string = "",
+    description: string = "",
+    icon: string = "",
+    unlockDate: Date | null = null
+  ) {
     this.id = id;
     this.title = title;
     this.description = description;

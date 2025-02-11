@@ -1,7 +1,8 @@
 export enum GENDER {
   WOMAN = "woman",
   MAN = "man",
-  ALL = "all"
-};
+  ALL = "all",
+}
 
-export const DEFAULT_AVATAR: string =  "/src/assets/imgs/defaultAvatars/defaultAvatar1.png";
+export const DEFAULT_AVATAR: string =
+  "/src/assets/imgs/defaultAvatars/defaultAvatar1.png";

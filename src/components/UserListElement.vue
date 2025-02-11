@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { DEFAULT_AVATAR } from '@/enums/userEnum';
-import { User } from '@/models/User';
+import { DEFAULT_AVATAR } from "@/enums/userEnum";
+import { User } from "@/models/User";
 
 const props = defineProps({
   user: {
@@ -14,15 +14,20 @@ const avatar: string = props.user.avatar || DEFAULT_AVATAR;
 
 <template>
   <div class="userListElement" @click="user.isReady = !user.isReady">
-      <img :src="avatar" alt="Lisek" :class="{isUserReady: user.isReady}" class="userListElement_avatar" />
-      <div class="userListElement_username">
-        {{ user.username }}
-      </div>
+    <img
+      :src="avatar"
+      alt="Lisek"
+      :class="{ isUserReady: user.isReady }"
+      class="userListElement_avatar"
+    />
+    <div class="userListElement_username">
+      {{ user.username }}
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables';
+@import "@/assets/styles/variables";
 .userListElement {
   display: flex;
   align-items: center;
@@ -30,7 +35,7 @@ const avatar: string = props.user.avatar || DEFAULT_AVATAR;
   position: relative;
   padding: 12px;
 
-  &_username{
+  &_username {
     font-size: 18px;
     color: $mainBrownColor;
     background-color: $background;
@@ -38,11 +43,11 @@ const avatar: string = props.user.avatar || DEFAULT_AVATAR;
     border-radius: 12px;
     width: 254px;
     z-index: 1;
-    text-align: center; 
+    text-align: center;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
-  
+
   &_avatar {
     background-color: white;
     height: 64px;
@@ -61,5 +66,4 @@ const avatar: string = props.user.avatar || DEFAULT_AVATAR;
     }
   }
 }
-
 </style>

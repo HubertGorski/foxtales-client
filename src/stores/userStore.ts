@@ -22,7 +22,7 @@ export const useUserStore = defineStore({
     setUsername(newUsername: string) {
       this.user.username = newUsername;
     },
-    
+
     setAvatar(source: string) {
       this.user.avatar = source;
     },

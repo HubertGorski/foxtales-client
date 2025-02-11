@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { computed, ref } from 'vue';
-import { ROUTE_PATH } from '@/router/routeEnums';
-import HubBtn from '@/components/hubComponents/HubBtn.vue';
-import { Game } from '@/models/Game';
-import { games } from '@/assets/data/games';
-import HubDivider from '@/components/hubComponents/HubDivider.vue';
-import HubInputBox from '@/components/hubComponents/HubInputBox.vue';
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { computed, ref } from "vue";
+import { ROUTE_PATH } from "@/router/routeEnums";
+import HubBtn from "@/components/hubComponents/HubBtn.vue";
+import { Game } from "@/models/Game";
+import { games } from "@/assets/data/games";
+import HubDivider from "@/components/hubComponents/HubDivider.vue";
+import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
 
 const router = useRouter();
 const { t } = useI18n();
 
-const actualGames: Game[] = games.filter(game => game.isPublic);
+const actualGames: Game[] = games.filter((game) => game.isPublic);
 
-const customCode = ref<string>('');
-const password = ref<string>('');
-const selectedGameCode = ref<string>('');
+const customCode = ref<string>("");
+const password = ref<string>("");
+const selectedGameCode = ref<string>("");
 
 const acceptCodeBtn = computed(() => {
   return {
     text: t("join"),
     isOrange: true,
     disabled: customCode.value.length === 0,
-    action: () => router.push(ROUTE_PATH.LOBBY)
+    action: () => router.push(ROUTE_PATH.LOBBY),
   };
 });
 
@@ -32,76 +32,94 @@ const acceptPasswordBtn = computed(() => {
     text: t("join"),
     isOrange: true,
     disabled: password.value.length === 0,
-    action: () => router.push(ROUTE_PATH.LOBBY)
+    action: () => router.push(ROUTE_PATH.LOBBY),
   };
 });
 
 const backBtn = {
-    id: 1,
-    text: t("back2"),
-    isOrange: false,
-    action: () => router.push(ROUTE_PATH.MENU)
-  };
+  id: 1,
+  text: t("back2"),
+  isOrange: false,
+  action: () => router.push(ROUTE_PATH.MENU),
+};
 
 const goToLobby = () => {
   router.push(ROUTE_PATH.LOBBY);
-}
+};
 </script>
 
 <template>
   <div class="joinGameView">
-    <div v-if="selectedGameCode" @click="selectedGameCode = ''" class="mask"></div>
+    <div
+      v-if="selectedGameCode"
+      @click="selectedGameCode = ''"
+      class="mask"
+    ></div>
     <HubInputBox
-    v-model="password"
-    :class="{isVisible: selectedGameCode}" 
-    class="joinGameView_gameDetailsPopup" 
-    title="accessPasswordRequired" 
-    :btnAction="acceptPasswordBtn.action" 
-    :btnText="acceptPasswordBtn.text" 
-    :btnIsOrange="acceptPasswordBtn.isOrange"
-    textPlaceholder="password"
-    textType="password" />
+      v-model="password"
+      :class="{ isVisible: selectedGameCode }"
+      class="joinGameView_gameDetailsPopup"
+      title="accessPasswordRequired"
+      :btnAction="acceptPasswordBtn.action"
+      :btnText="acceptPasswordBtn.text"
+      :btnIsOrange="acceptPasswordBtn.isOrange"
+      textPlaceholder="password"
+      textType="password"
+    />
     <HubInputBox
-    v-model="customCode"
-    title="joinWithCode"
-    withFoxImg
-    :btnAction="acceptCodeBtn.action"
-    :btnText="acceptCodeBtn.text"
-    :btnIsOrange="acceptCodeBtn.isOrange" />
+      v-model="customCode"
+      title="joinWithCode"
+      withFoxImg
+      :btnAction="acceptCodeBtn.action"
+      :btnText="acceptCodeBtn.text"
+      :btnIsOrange="acceptCodeBtn.isOrange"
+    />
     <HubDivider />
     <div class="joinGameView_chooseRoom whiteCard">
-        <p class="subtitle">Wybierz pokój z listy</p>
-        <div v-if="actualGames.length === 0" class="emptyGamesList">
-          <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
-          <p>Brak publicznych pokoi</p>
-        </div>
-        <div v-else class="gamesList">
-          <div @click="game.isPasswordSet ? selectedGameCode = game.code : goToLobby()" class="gamesList_game" v-for="game in actualGames" :key="game.code">
-            <div class="name">
-              {{ game.name }}
+      <p class="subtitle">Wybierz pokój z listy</p>
+      <div v-if="actualGames.length === 0" class="emptyGamesList">
+        <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
+        <p>Brak publicznych pokoi</p>
+      </div>
+      <div v-else class="gamesList">
+        <div
+          @click="
+            game.isPasswordSet ? (selectedGameCode = game.code) : goToLobby()
+          "
+          class="gamesList_game"
+          v-for="game in actualGames"
+          :key="game.code"
+        >
+          <div class="name">
+            {{ game.name }}
+          </div>
+          <v-divider />
+          <div class="details">
+            <div v-if="game.password">
+              <v-icon>mdi-lock</v-icon>
+              <span>Wymagane hasło</span>
             </div>
-            <v-divider/>
-            <div class="details">
-              <div v-if="game.password">
-                <v-icon>mdi-lock</v-icon>
-                <span>Wymagane hasło</span>
-              </div>
-              <div class="details_usersCount">
-                <v-icon>mdi-account-multiple</v-icon>
-                <span>{{ game.usersCount }} graczy w pokoju</span>
-              </div>
+            <div class="details_usersCount">
+              <v-icon>mdi-account-multiple</v-icon>
+              <span>{{ game.usersCount }} graczy w pokoju</span>
             </div>
           </div>
         </div>
+      </div>
     </div>
     <div class="joinGameView_controls">
-      <HubBtn class="btn" :action="backBtn.action" :text="backBtn.text" :isOrange="backBtn.isOrange"/>
+      <HubBtn
+        class="btn"
+        :action="backBtn.action"
+        :text="backBtn.text"
+        :isOrange="backBtn.isOrange"
+      />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables';
+@import "@/assets/styles/variables";
 .joinGameView {
   background: $mainBackground;
   padding: 46px 24px 24px 24px;
@@ -130,7 +148,7 @@ const goToLobby = () => {
     background-color: white;
     transform: scale(0.00001);
     z-index: 2;
-    
+
     &.isVisible {
       transition: all 0.2s;
       transform: scale(1);
@@ -177,10 +195,12 @@ const goToLobby = () => {
       &_game {
         background-color: white;
         border-radius: 12px;
-        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        box-shadow:
+          rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+          rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
         margin: 8px 0;
         padding: 8px;
-        
+
         .name {
           color: $grayColor;
           font-size: 16px;
@@ -195,9 +215,9 @@ const goToLobby = () => {
 
         .details {
           font-size: 14px;
-          font-style: italic; 
+          font-style: italic;
           color: $lightGrayColor;
-          letter-spacing: 0.5px; 
+          letter-spacing: 0.5px;
           display: flex;
           flex-direction: column;
           gap: 4px;
@@ -211,18 +231,18 @@ const goToLobby = () => {
   }
 
   .title {
-      color: $grayColor;
-      font-size: 24px;
-      font-weight: 600;
-      padding-bottom: 12px;
-    }
+    color: $grayColor;
+    font-size: 24px;
+    font-weight: 600;
+    padding-bottom: 12px;
+  }
 
   .subtitle {
-      color: $grayColor;
-      font-size: 18px;
-      font-weight: 600;
-      padding-bottom: 12px;
-    }
+    color: $grayColor;
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 12px;
+  }
 
   .joinGamePerCode {
     display: flex;

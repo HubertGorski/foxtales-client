@@ -9,7 +9,15 @@ export class Game {
   usePublicQuestions: boolean;
   usePrivateQuestions: boolean;
 
-  constructor(code: string, isPublic: boolean = false, owner: User = new User(), users: User[] = [], password: string | null = null, usePublicQuestions = true, usePrivateQuestions = true) {
+  constructor(
+    code: string,
+    isPublic: boolean = false,
+    owner: User = new User(),
+    users: User[] = [],
+    password: string | null = null,
+    usePublicQuestions = true,
+    usePrivateQuestions = true
+  ) {
     this.code = code;
     this.isPublic = isPublic;
     this.owner = owner;
@@ -24,11 +32,11 @@ export class Game {
   }
 
   get readyUsersCount(): number {
-    return this.users.filter(user => user.isReady).length
+    return this.users.filter((user) => user.isReady).length;
   }
 
   get areUsersUnready(): boolean {
-    return this.users.length === 0 || this.users.some(user => !user.isReady)
+    return this.users.length === 0 || this.users.some((user) => !user.isReady);
   }
 
   get isPasswordSet(): boolean {
@@ -38,5 +46,4 @@ export class Game {
   get name(): string {
     return `Gra użytkownika ${this.owner.username}`;
   }
-  
 }
