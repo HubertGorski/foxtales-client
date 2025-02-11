@@ -24,6 +24,8 @@
   "manageLibrary": "Zarządzaj biblioteką",
   "changeName": "Zmień imię",
   "chooseFox": "Wybierz liska",
+  "createNewGame": "Utwórz nową grę",
+  "joinTheGame": "Dołącz do gry",
   "accountStats": "Statystyki konta",
   "router": {
     "home": "x",

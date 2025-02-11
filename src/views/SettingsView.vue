@@ -73,91 +73,99 @@ const acceptUsernameBtn = computed(() => {
 
 <template>
   <div class="settingsView">
-    <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName']">
-      <template #accountStats>
-        <div class="stats">
-          <div class="stats_element">
-            <v-icon>mdi-star</v-icon>
-            <span
-              >Doświadczenie: {{ userStore.user.accountPoints }} /
-              {{ userStore.user.requiredAccountPointsToNextLevel }}</span
+    <div class="settings">
+      <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName']">
+        <template #accountStats>
+          <div class="stats">
+            <div class="stats_element">
+              <v-icon>mdi-star</v-icon>
+              <span
+                >Doświadczenie: {{ userStore.user.accountPoints }} /
+                {{ userStore.user.requiredAccountPointsToNextLevel }}</span
+              >
+            </div>
+            <div class="stats_element">
+              <v-icon>mdi-bolt</v-icon>
+              <span>Poziom: {{ userStore.user.level }}</span>
+            </div>
+            <div class="stats_element">
+              <v-icon>mdi-help-circle</v-icon>
+              <span
+                >Publiczne pytania:
+                {{ userStore.user.publicQuestionsCount }}</span
+              >
+            </div>
+            <div class="stats_element">
+              <v-icon>mdi-comment</v-icon>
+              <span
+                >Udzielone odpowiedzi: {{ userStore.user.answersCount }}</span
+              >
+            </div>
+            <div class="stats_element">
+              <v-icon>mdi-gamepad-variant</v-icon>
+              <span>Rozegrane gry: {{ userStore.user.totalGamesPlayed }}</span>
+            </div>
+            <div class="stats_element">
+              <v-icon>mdi-trophy</v-icon>
+              <span
+                >Osiągnięcia: {{ unlockedAchievementsCount }} /
+                {{ userStore.user.achievements.length }}</span
+              >
+            </div>
+            <div class="achievement_list">
+              <img
+                v-for="achievement in userStore.user.achievements"
+                :key="achievement.id"
+                :class="{ unlocked: achievement.unlockDate }"
+                class="achievement"
+                :src="achievement.icon"
+                alt="Lisek"
+              />
+            </div>
+          </div>
+        </template>
+        <template #chooseFox>
+          <div class="avatars">
+            <div
+              v-for="avatar in actualAvatars"
+              :key="avatar.id"
+              class="avatar"
             >
+              <img
+                @click="changeAvatar(avatar)"
+                :src="avatar.source"
+                alt="Lisek"
+                :class="{
+                  isUserReady: avatar.isSelected,
+                  isDisabled: avatar.isDisabled,
+                }"
+                class="avatar_img"
+              />
+              <v-icon v-if="avatar.isDisabled" class="avatar_lock"
+                >mdi-lock</v-icon
+              >
+            </div>
           </div>
-          <div class="stats_element">
-            <v-icon>mdi-bolt</v-icon>
-            <span>Poziom: {{ userStore.user.level }}</span>
-          </div>
-          <div class="stats_element">
-            <v-icon>mdi-help-circle</v-icon>
-            <span
-              >Publiczne pytania:
-              {{ userStore.user.publicQuestionsCount }}</span
-            >
-          </div>
-          <div class="stats_element">
-            <v-icon>mdi-comment</v-icon>
-            <span>Udzielone odpowiedzi: {{ userStore.user.answersCount }}</span>
-          </div>
-          <div class="stats_element">
-            <v-icon>mdi-gamepad-variant</v-icon>
-            <span>Rozegrane gry: {{ userStore.user.totalGamesPlayed }}</span>
-          </div>
-          <div class="stats_element">
-            <v-icon>mdi-trophy</v-icon>
-            <span
-              >Osiągnięcia: {{ unlockedAchievementsCount }} /
-              {{ userStore.user.achievements.length }}</span
-            >
-          </div>
-          <div class="achievement_list">
-            <img
-              v-for="achievement in userStore.user.achievements"
-              :key="achievement.id"
-              :class="{ unlocked: achievement.unlockDate }"
-              class="achievement"
-              :src="achievement.icon"
-              alt="Lisek"
+        </template>
+        <template #changeName>
+          <div class="changeUsername">
+            <v-text-field
+              v-model="newUsername"
+              :placeholder="userStore.user.username"
+              hide-details
+            />
+            <HubBtn
+              class="changeUsername_btn"
+              :action="acceptUsernameBtn.action"
+              :text="acceptUsernameBtn.text"
+              :isOrange="acceptUsernameBtn.isOrange"
+              :disabled="acceptUsernameBtn.disabled"
             />
           </div>
-        </div>
-      </template>
-      <template #chooseFox>
-        <div class="avatars">
-          <div v-for="avatar in actualAvatars" :key="avatar.id" class="avatar">
-            <img
-              @click="changeAvatar(avatar)"
-              :src="avatar.source"
-              alt="Lisek"
-              :class="{
-                isUserReady: avatar.isSelected,
-                isDisabled: avatar.isDisabled,
-              }"
-              class="avatar_img"
-            />
-            <v-icon v-if="avatar.isDisabled" class="avatar_lock"
-              >mdi-lock</v-icon
-            >
-          </div>
-        </div>
-      </template>
-      <template #changeName>
-        <div class="changeUsername">
-          <v-text-field
-            v-model="newUsername"
-            :placeholder="userStore.user.username"
-            hide-details
-          />
-          <HubBtn
-            class="changeUsername_btn"
-            :action="acceptUsernameBtn.action"
-            :text="acceptUsernameBtn.text"
-            :isOrange="acceptUsernameBtn.isOrange"
-            :disabled="acceptUsernameBtn.disabled"
-          />
-        </div>
-      </template>
-    </HubAccordion>
-    <HubAccordionElement @click="goToQuestionsPanel" title="manageLibrary" />
+        </template>
+      </HubAccordion>
+      <HubAccordionElement @click="goToQuestionsPanel" title="manageLibrary" />
+    </div>
     <div class="controls">
       <HubBtn
         class="controls_btn"
@@ -185,6 +193,14 @@ const acceptUsernameBtn = computed(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    flex-grow: 1;
+  }
 
   .stats {
     padding-top: 12px;

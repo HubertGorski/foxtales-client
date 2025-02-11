@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
+import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -43,12 +44,8 @@ const btns = [
         <span class="welcomeMessage_name">{{ currentUser.username }}!</span>
         <p class="welcomeMessage_text">Baw się dobrze i miłej gry.</p>
       </div>
-      <div @click="navigateToCreateGame" class="menu_card">
-        <h2>Utwórz nową grę</h2>
-      </div>
-      <div @click="navigateToJoinGame" class="menu_card">
-        <h2>Dołącz do gry</h2>
-      </div>
+      <HubAccordionElement @click="navigateToCreateGame" title="createNewGame" />
+      <HubAccordionElement @click="navigateToJoinGame" title="joinTheGame" />
     </div>
     <div class="controls">
       <HubBtn
@@ -89,16 +86,6 @@ const btns = [
     display: flex;
     flex-direction: column;
     gap: 12px;
-
-    &_card {
-      padding: 24px;
-      background: $background;
-      border-radius: 12px;
-      box-shadow:
-        0 4px 6px rgba(0, 0, 0, 0.1),
-        0 1px 3px rgba(0, 0, 0, 0.06);
-      color: $grayColor;
-    }
 
     .welcomeMessage {
       font-weight: 600;
