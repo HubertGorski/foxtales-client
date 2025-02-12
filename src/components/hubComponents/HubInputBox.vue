@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import HubBtn from "./HubBtn.vue";
+import { computed } from "vue";
 import HubInputWithBtn from "./HubInputWithBtn.vue";
 
 const props = defineProps({
@@ -57,6 +56,7 @@ const btnIsDisabled = computed(() => {
       :btnText="btnText"
       :btnIsOrange="btnIsOrange"
       :textType="textType"
+      :isTextarea="isTextarea"
       :textPlaceholder="textPlaceholder ? $t(textPlaceholder) : ''"
     />
   </div>

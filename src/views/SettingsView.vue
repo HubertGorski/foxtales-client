@@ -152,6 +152,7 @@ const acceptUsernameBtn = computed(() => {
         <template #changeName>
           <HubInputWithBtn
             v-model="newUsername"
+            class="changeName"
             :btnAction="acceptUsernameBtn.action"
             :btnText="acceptUsernameBtn.text"
             :btnIsOrange="acceptUsernameBtn.isOrange"
@@ -250,6 +251,10 @@ const acceptUsernameBtn = computed(() => {
         }
       }
     }
+  }
+
+  .changeName {
+    padding-top: 12px;
   }
 
   .achievement_list {

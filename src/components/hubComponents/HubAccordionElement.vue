@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watchEffect } from "vue";
 
 const props = defineProps({
   title: {
@@ -7,6 +7,10 @@ const props = defineProps({
     required: true,
   },
   isOpen: {
+    type: Boolean,
+    default: false,
+  },
+  isSmallerTitle: {
     type: Boolean,
     default: false,
   },
@@ -21,17 +25,13 @@ const setHeight = () => {
   }
 };
 
-watch(
-  () => props.isOpen,
-  (newValue) => {
-    if (newValue) {
-      setHeight();
-    } else {
-      currentHeight.value = 0;
-    }
-  },
-  { immediate: true }
-);
+watchEffect(() => {
+  if (props.isOpen) {
+    setHeight();
+  } else {
+    currentHeight.value = 0;
+  }
+});
 
 const emit = defineEmits<{
   (e: "toggleAccordion"): void;
@@ -44,7 +44,11 @@ const toggleAccordion = () => {
 
 <template>
   <div class="hubAccordionElement whiteCard">
-    <p @click="toggleAccordion()" class="hubAccordionElement_title">
+    <p
+      @click="toggleAccordion()"
+      class="hubAccordionElement_title"
+      :class="{ isSmallerTitle: isSmallerTitle }"
+    >
       {{ $t(title) }}
     </p>
     <div
@@ -67,6 +71,10 @@ const toggleAccordion = () => {
     color: $grayColor;
     font-size: 24px;
     font-weight: 600;
+
+    &.isSmallerTitle {
+      font-size: 18px;
+    }
   }
   &_container {
     overflow: hidden;

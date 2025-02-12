@@ -40,6 +40,7 @@ const btnIsDisabled = computed(() => {
       v-model="text"
       @keydown.enter="btnAction"
       :auto-grow="false"
+      hide-details
     />
     <v-text-field
       v-else

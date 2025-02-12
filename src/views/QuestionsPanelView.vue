@@ -3,9 +3,9 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
-import HubDivider from "@/components/hubComponents/HubDivider.vue";
-import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
 import { ref } from "vue";
+import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
+import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 
 const router = useRouter();
 const { t } = useI18n();
@@ -49,26 +49,24 @@ const newQuestion = ref<string>("");
 
 <template>
   <div class="questionsPanelView">
-    <div class="questionsPanel">
-      <HubInputBox
-        @click="isAddQuestionPanelVisible = true"
-        v-model="newQuestion"
-        class="questionsPanel_addQuestionPanel"
-        :class="{ isHidden: !isAddQuestionPanelVisible }"
-        title="addQuestionToLibrary"
-        :btnAction="addQuestionBtn.action"
-        :btnText="addQuestionBtn.text"
-        :btnIsOrange="addQuestionBtn.isOrange"
-        isTextarea
-      />
-      <HubDivider />
-      <div
-        class="manageLibrary whiteCard"
-        @click="isAddQuestionPanelVisible = false"
-      >
-        <div class="manageLibrary_subtitle">
-          {{ t("manageLibrary") }}
-        </div>
+    <HubAccordion
+      :slotNames="['addQuestionToLibrary', 'manageLibrary']"
+      setOpenTab="manageLibrary"
+      isSmallerTitle
+      isDividerVisible
+    >
+      <template #addQuestionToLibrary
+        ><HubInputWithBtn
+          @click="isAddQuestionPanelVisible = true"
+          v-model="newQuestion"
+          class="addQuestionToLibrary"
+          title="addQuestionToLibrary"
+          :btnAction="addQuestionBtn.action"
+          :btnText="addQuestionBtn.text"
+          :btnIsOrange="addQuestionBtn.isOrange"
+          isTextarea
+      /></template>
+      <template #manageLibrary>
         <div class="manageLibrary_table">
           <div class="library">
             <div class="library_headers"></div>
@@ -84,8 +82,8 @@ const newQuestion = ref<string>("");
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </template></HubAccordion
+    >
     <div class="controls">
       <HubBtn
         class="controls_btn"
@@ -115,58 +113,29 @@ const newQuestion = ref<string>("");
   flex-direction: column;
   justify-content: space-between;
 
-  .questionsPanel {
+  .addQuestionToLibrary {
+    padding-top: 12px;
+  }
+
+  .library_pagination {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fffefd;
+    border: 1px $mainBrownColor solid;
+    border-radius: 12px;
 
-    &_addQuestionPanel {
-      height: 310px;
-      overflow: hidden;
-      transition: all 0.4s;
-
-      &.isHidden {
-        height: 74px;
-        transition: all 0.4s;
-      }
+    .btn {
+      background-color: $mainBrownColor;
+      color: white;
+      font-size: 18px;
+      padding: 4px;
+      border-radius: 10px;
     }
 
-    .manageLibrary {
-      flex-grow: 1;
-      padding: 4px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-
-      &_subtitle {
-        color: $grayColor;
-        padding: 20px;
-        font-size: 18px;
-        font-weight: 600;
-      }
-
-      .library_pagination {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #fffefd;
-        border: 1px $mainBrownColor solid;
-        border-radius: 12px;
-
-        .btn {
-          background-color: $mainBrownColor;
-          color: white;
-          font-size: 18px;
-          padding: 4px;
-          border-radius: 10px;
-        }
-
-        .paginationData {
-          color: $mainBrownColor;
-          font-weight: 600;
-        }
-      }
+    .paginationData {
+      color: $mainBrownColor;
+      font-weight: 600;
     }
   }
 
