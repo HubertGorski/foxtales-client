@@ -8,6 +8,7 @@ import { Game } from "@/models/Game";
 import { games } from "@/assets/data/games";
 import HubDivider from "@/components/hubComponents/HubDivider.vue";
 import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
+import HubPopup from "@/components/hubComponents/HubPopup.vue";
 
 const router = useRouter();
 const { t } = useI18n();
@@ -16,7 +17,7 @@ const actualGames: Game[] = games.filter((game) => game.isPublic);
 
 const customCode = ref<string>("");
 const password = ref<string>("");
-const selectedGameCode = ref<string>("");
+const isPasswordPopupOpen = ref<boolean>(false);
 
 const acceptCodeBtn = computed(() => {
   return {
@@ -46,26 +47,27 @@ const backBtn = {
 const goToLobby = () => {
   router.push(ROUTE_PATH.LOBBY);
 };
+
+const openPasswordPopup = () => {
+  password.value = "";
+  isPasswordPopupOpen.value = true;
+};
 </script>
 
 <template>
   <div class="joinGameView">
-    <div
-      v-if="selectedGameCode"
-      @click="selectedGameCode = ''"
-      class="mask"
-    ></div>
-    <HubInputBox
-      v-model="password"
-      :class="{ isVisible: selectedGameCode }"
-      class="joinGameView_gameDetailsPopup"
-      title="accessPasswordRequired"
-      :btnAction="acceptPasswordBtn.action"
-      :btnText="acceptPasswordBtn.text"
-      :btnIsOrange="acceptPasswordBtn.isOrange"
-      textPlaceholder="password"
-      textType="password"
-    />
+    <HubPopup v-model="isPasswordPopupOpen">
+      <HubInputBox
+        v-model="password"
+        class="joinGameView_gameDetailsPopup"
+        title="accessPasswordRequired"
+        :btnAction="acceptPasswordBtn.action"
+        :btnText="acceptPasswordBtn.text"
+        :btnIsOrange="acceptPasswordBtn.isOrange"
+        textPlaceholder="password"
+        textType="password"
+      />
+    </HubPopup>
     <HubInputBox
       v-model="customCode"
       title="joinWithCode"
@@ -83,9 +85,7 @@ const goToLobby = () => {
       </div>
       <div v-else class="gamesList">
         <div
-          @click="
-            game.isPasswordSet ? (selectedGameCode = game.code) : goToLobby()
-          "
+          @click="game.isPasswordSet ? openPasswordPopup() : goToLobby()"
           class="gamesList_game"
           v-for="game in actualGames"
           :key="game.code"
@@ -131,28 +131,8 @@ const goToLobby = () => {
   gap: 12px;
   position: relative;
 
-  .mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    z-index: 1;
-    opacity: 0.2;
-  }
-
   &_gameDetailsPopup {
-    position: absolute;
     width: 310px;
-    background-color: white;
-    transform: scale(0.00001);
-    z-index: 2;
-
-    &.isVisible {
-      transition: all 0.2s;
-      transform: scale(1);
-    }
   }
 
   &_controls {

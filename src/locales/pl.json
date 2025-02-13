@@ -27,6 +27,7 @@
   "createNewGame": "Utwórz nową grę",
   "joinTheGame": "Dołącz do gry",
   "accountStats": "Statystyki konta",
+  "shop": "Sklep",
   "router": {
     "home": "x",
     "login": "x",

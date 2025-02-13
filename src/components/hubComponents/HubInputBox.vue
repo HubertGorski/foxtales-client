@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import HubInputWithBtn from "./HubInputWithBtn.vue";
 
 const props = defineProps({
@@ -18,6 +17,18 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  extraBtnIsOrange: {
+    type: Boolean,
+    required: false,
+  },
+  extraBtnAction: {
+    type: Function,
+    required: false,
+  },
+  extraBtnIcon: {
+    type: String,
+    required: false,
+  },
   textPlaceholder: {
     type: String,
   },
@@ -35,10 +46,6 @@ const props = defineProps({
 });
 
 const text = defineModel({ type: String, required: true });
-
-const btnIsDisabled = computed(() => {
-  return text.value.length === 0;
-});
 </script>
 
 <template>
@@ -55,6 +62,9 @@ const btnIsDisabled = computed(() => {
       :btnAction="btnAction"
       :btnText="btnText"
       :btnIsOrange="btnIsOrange"
+      :extraBtnAction="extraBtnAction"
+      :extraBtnIcon="extraBtnIcon"
+      :extraBtnIsOrange="extraBtnIsOrange"
       :textType="textType"
       :isTextarea="isTextarea"
       :textPlaceholder="textPlaceholder ? $t(textPlaceholder) : ''"

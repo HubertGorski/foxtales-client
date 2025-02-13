@@ -22,9 +22,13 @@ const addQuestion = () => {
   newQuestion.value = "";
 };
 
+const showCatalogsList = () => {
+  console.log('showCatalogsList');
+};
+
 const addQuestionBtn = {
   text: t("add"),
-  isOrange: false,
+  isOrange: true,
   action: addQuestion,
 };
 
@@ -37,7 +41,7 @@ const btns = [
   },
   {
     id: 2,
-    text: "Kup premium",
+    text: t("shop"),
     isOrange: true,
     action: () => router.push(ROUTE_PATH.MENU),
     disabled: true,
@@ -63,6 +67,8 @@ const newQuestion = ref<string>("");
           title="addQuestionToLibrary"
           :btnAction="addQuestionBtn.action"
           :btnText="addQuestionBtn.text"
+          extraBtnIcon="mdi-shape-rectangle-plus"
+          :extraBtnAction="showCatalogsList"
           :btnIsOrange="addQuestionBtn.isOrange"
           isTextarea
       /></template>

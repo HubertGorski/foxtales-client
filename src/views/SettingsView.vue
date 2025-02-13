@@ -56,7 +56,7 @@ const btns = [
   },
   {
     id: 2,
-    text: "Kup premium",
+    text: t("shop"),
     isOrange: true,
     action: () => router.push(ROUTE_PATH.MENU),
     disabled: true,

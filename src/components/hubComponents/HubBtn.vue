@@ -2,7 +2,11 @@
 const props = defineProps({
   text: {
     type: String,
-    required: true,
+    required: false,
+  },
+  icon: {
+    type: String,
+    required: false,
   },
   isOrange: {
     type: Boolean,
@@ -23,7 +27,8 @@ const props = defineProps({
     class="hubBtn"
     :class="[{ disabled }, isOrange ? 'hubBtn--orange' : 'hubBtn--brown']"
   >
-    <p>{{ text }}</p>
+    <p v-if="text">{{ text }}</p>
+    <v-icon v-if="icon">{{ icon }}</v-icon>
   </div>
 </template>
 
