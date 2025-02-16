@@ -1,6 +1,7 @@
 import { DEFAULT_AVATAR, GENDER } from "@/enums/userEnum";
 import { ROLE } from "@/enums/rolesEnum";
 import type { Achievement } from "./Achievement";
+import { PERMISSION, Permission } from "@/enums/permissions";
 
 export class User {
   // Basic info
@@ -21,8 +22,14 @@ export class User {
   requiredAccountPointsToNextLevel: number = 0;
   level: number = 0;
   achievements: Achievement[] = [];
+  permissions: Permission[] = [
+    new Permission(PERMISSION.ADD_NEW_PRIVATE_QUESTION_PER_DAY, 2),
+    new Permission(PERMISSION.CONVERT_PRIVATE_QUESTION_TO_PUBLIC_PER_DAY, 1),
+    new Permission(PERMISSION.CREATE_GAME_WITH_PRIVATE_QUESTIONS_PER_DAY, 1),
+    new Permission(PERMISSION.AVAILABLE_CATALOGS, 2),
+  ];
 
-  //In Game or lobby
+  // In Game or lobby
   isReady: boolean = false;
   pointsInGame: number = 0;
   chosenPlayerAnswer: User | null = null;
@@ -43,5 +50,11 @@ export class User {
 
   constructor(args: Partial<User> = {}) {
     Object.assign(this, { ...args });
+  }
+
+  isPermissionLimitExceeded(permissionName: PERMISSION): boolean {
+    return this.permissions
+      .find((p) => p.name === permissionName)!
+      .isLimitExceeded();
   }
 }

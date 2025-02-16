@@ -9,6 +9,7 @@ import { games } from "@/assets/data/games";
 import HubDivider from "@/components/hubComponents/HubDivider.vue";
 import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
+import WhiteCard from "@/components/WhiteCard.vue";
 
 const router = useRouter();
 const { t } = useI18n();
@@ -77,23 +78,19 @@ const openPasswordPopup = () => {
       :btnIsOrange="acceptCodeBtn.isOrange"
     />
     <HubDivider />
-    <div class="joinGameView_chooseRoom whiteCard">
+    <div class="joinGameView_chooseRoom creamCard">
       <p class="subtitle">Wybierz pokój z listy</p>
       <div v-if="actualGames.length === 0" class="emptyGamesList">
         <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
         <p>Brak publicznych pokoi</p>
       </div>
       <div v-else class="gamesList">
-        <div
+        <WhiteCard
+          :header="game.name"
           @click="game.isPasswordSet ? openPasswordPopup() : goToLobby()"
-          class="gamesList_game"
           v-for="game in actualGames"
           :key="game.code"
         >
-          <div class="name">
-            {{ game.name }}
-          </div>
-          <v-divider />
           <div class="details">
             <div v-if="game.password">
               <v-icon>mdi-lock</v-icon>
@@ -104,7 +101,7 @@ const openPasswordPopup = () => {
               <span>{{ game.usersCount }} graczy w pokoju</span>
             </div>
           </div>
-        </div>
+        </WhiteCard>
       </div>
     </div>
     <div class="joinGameView_controls">
@@ -168,39 +165,17 @@ const openPasswordPopup = () => {
       overflow-y: scroll;
       height: 284px;
 
-      &_game {
-        background-color: white;
-        border-radius: 12px;
-        box-shadow:
-          rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-          rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-        margin: 8px 0;
-        padding: 8px;
+      .details {
+        font-size: 14px;
+        font-style: italic;
+        color: $lightGrayColor;
+        letter-spacing: 0.5px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
 
-        .name {
-          color: $grayColor;
-          font-size: 16px;
-          font-weight: 600;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .v-divider {
-          margin: 4px;
-        }
-
-        .details {
-          font-size: 14px;
-          font-style: italic;
-          color: $lightGrayColor;
-          letter-spacing: 0.5px;
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-
-          .v-icon {
-            margin: 0 4px;
-          }
+        .v-icon {
+          margin: 0 4px;
         }
       }
     }

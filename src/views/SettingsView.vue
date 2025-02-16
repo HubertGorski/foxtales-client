@@ -9,7 +9,6 @@ import type { Avatar } from "@/models/Avatar";
 import { avatars } from "@/assets/data/avatars";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
-import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 
 const userStore = useUserStore();
@@ -17,7 +16,6 @@ const userStore = useUserStore();
 const { t } = useI18n();
 const router = useRouter();
 
-const selectedTab = ref<number>(0);
 const newUsername = ref<string>("");
 
 const changeAvatar = (avatar: Avatar) => {
@@ -29,10 +27,6 @@ const changeAvatar = (avatar: Avatar) => {
 const changeUsername = () => {
   userStore.setUsername(newUsername.value);
   newUsername.value = "";
-};
-
-const openTab = (tab: number) => {
-  selectedTab.value = selectedTab.value === tab ? 0 : tab;
 };
 
 const unlockedAchievementsCount = computed(

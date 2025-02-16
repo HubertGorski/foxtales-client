@@ -49,7 +49,7 @@ const text = defineModel({ type: String, required: true });
 </script>
 
 <template>
-  <div class="hubInputBox whiteCard">
+  <div class="hubInputBox creamCard">
     <img
       v-if="withFoxImg"
       class="hubInputBox_fox"

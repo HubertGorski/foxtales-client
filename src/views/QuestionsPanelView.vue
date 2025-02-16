@@ -6,11 +6,14 @@ import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { ref } from "vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
+import HubPopup from "@/components/hubComponents/HubPopup.vue";
+import QuestionCreator from "@/components/QuestionCreator.vue";
 
 const router = useRouter();
 const { t } = useI18n();
 
 const isAddQuestionPanelVisible = ref<boolean>(false);
+const isQuestionDetailsOpen = ref<boolean>(false);
 
 const addQuestion = () => {
   event.preventDefault();
@@ -23,6 +26,7 @@ const addQuestion = () => {
 };
 
 const showCatalogsList = () => {
+  isQuestionDetailsOpen.value = true;
   console.log('showCatalogsList');
 };
 
@@ -53,6 +57,9 @@ const newQuestion = ref<string>("");
 
 <template>
   <div class="questionsPanelView">
+    <HubPopup v-model="isQuestionDetailsOpen">
+      <QuestionCreator :newQuestion="newQuestion"/>
+    </HubPopup>
     <HubAccordion
       :slotNames="['addQuestionToLibrary', 'manageLibrary']"
       setOpenTab="manageLibrary"

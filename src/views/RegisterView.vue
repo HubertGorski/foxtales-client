@@ -23,7 +23,7 @@ const navigateBack = () => {
 
 <template>
   <div class="registerView">
-    <form @submit.prevent="submitForm" class="whiteCard">
+    <form @submit.prevent="submitForm" class="creamCard">
       <h1 class="registerView_title">{{ $t("registerTitle") }}</h1>
       <v-text-field
         v-model="form.username"

@@ -30,7 +30,7 @@ const btns = [
 <template>
   <div class="createGameView">
     <div class="createGameView_card">
-      <div class="whiteCard">
+      <div class="creamCard">
         <p class="title">Utwórz grę</p>
         <div class="settings">
           <v-switch

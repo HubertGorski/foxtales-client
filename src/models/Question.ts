@@ -10,6 +10,8 @@ export class Question {
   targetGender: GENDER;
   isPublic: boolean;
   usedCount: number;
+  publicDate: Date | null;
+  createdDate: Date;
 
   constructor(
     id: number = 0,
@@ -18,7 +20,9 @@ export class Question {
     language: LANG = LANG.PL,
     targetGender: GENDER = GENDER.ALL,
     isPublic: boolean = false,
-    usedCount: number = 0
+    usedCount: number = 0,
+    publicDate: Date | null = null,
+    createdDate: Date = new Date()
   ) {
     this.id = id;
     this.text = text;
@@ -28,5 +32,7 @@ export class Question {
     this.targetGender = targetGender;
     this.isPublic = isPublic;
     this.usedCount = usedCount;
+    this.publicDate = publicDate;
+    this.createdDate = createdDate;
   }
 }

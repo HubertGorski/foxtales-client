@@ -23,7 +23,7 @@ const navigateBack = () => {
 <template>
   <div class="loginView">
     <img src="@/assets/imgs/fox8.png" alt="Lisek" class="loginView_fox" />
-    <form @submit.prevent="submitForm" class="whiteCard">
+    <form @submit.prevent="submitForm" class="creamCard">
       <h1 class="loginView_title">Logowanie</h1>
       <v-text-field
         v-model="form.username"

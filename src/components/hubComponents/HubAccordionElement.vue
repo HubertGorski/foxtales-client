@@ -43,7 +43,7 @@ const toggleAccordion = () => {
 </script>
 
 <template>
-  <div class="hubAccordionElement whiteCard">
+  <div class="hubAccordionElement creamCard">
     <p
       @click="toggleAccordion()"
       class="hubAccordionElement_title"
