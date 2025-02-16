@@ -2,7 +2,9 @@
 import type { Catalog } from "@/models/Catalog";
 import WhiteCard from "./WhiteCard.vue";
 import { ref } from "vue";
-import { catalogs } from "@/assets/data/catalogs";
+import { useUserStore } from "@/stores/userStore";
+
+const userStore = useUserStore();
 
 const props = defineProps({
   newQuestion: {
@@ -10,8 +12,8 @@ const props = defineProps({
     required: true,
   },
 });
-
-const actualCatalogs = ref<Catalog[]>(catalogs);
+const currentUser = userStore.user;
+const actualCatalogs = ref<Catalog[]>(currentUser.catalogs);
 </script>
 
 <template>

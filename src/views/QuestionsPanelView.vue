@@ -27,7 +27,6 @@ const addQuestion = () => {
 
 const showCatalogsList = () => {
   isQuestionDetailsOpen.value = true;
-  console.log('showCatalogsList');
 };
 
 const addQuestionBtn = {

@@ -1,18 +1,26 @@
 export class Avatar {
   id: number;
   source: string;
-  isSelected: boolean;
-  isDisabled: boolean;
+  isAvailableAtStart: boolean;
+  isPremium: boolean;
 
   constructor(
     id = 0,
     source: string = "",
-    isSelected: boolean = false,
-    isDisabled: boolean = true
+    isAvailableAtStart: boolean = false,
+    isPremium: boolean = false
   ) {
     this.id = id;
     this.source = source;
-    this.isSelected = isSelected;
-    this.isDisabled = isDisabled;
+    this.isAvailableAtStart = isAvailableAtStart;
+    this.isPremium = isPremium;
+  }
+
+  isDisabled(userAvatarsIds: number[]): boolean {
+    return !this.isAvailableAtStart && !userAvatarsIds.includes(this.id);
+  }
+
+  isSelected(avatar: Avatar): boolean {
+    return avatar.id === this.id;
   }
 }

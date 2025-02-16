@@ -10,6 +10,7 @@ import { avatars } from "@/assets/data/avatars";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
+import { achievements } from "@/assets/data/achievements";
 
 const userStore = useUserStore();
 
@@ -17,11 +18,10 @@ const { t } = useI18n();
 const router = useRouter();
 
 const newUsername = ref<string>("");
+const currentUser = userStore.user;
 
 const changeAvatar = (avatar: Avatar) => {
-  userStore.setAvatar(avatar.source);
-  actualAvatars.value.map((avatar) => (avatar.isSelected = false));
-  avatar.isSelected = true;
+  userStore.setAvatar(avatar);
 };
 
 const changeUsername = () => {
@@ -29,11 +29,7 @@ const changeUsername = () => {
   newUsername.value = "";
 };
 
-const unlockedAchievementsCount = computed(
-  () =>
-    userStore.user.achievements.filter((achievement) => achievement.unlockDate)
-      .length
-);
+const unlockedAchievementsCount = currentUser.achievementsIds.length;
 
 const actualAvatars = ref<Avatar[]>(avatars);
 
@@ -76,43 +72,43 @@ const acceptUsernameBtn = computed(() => {
             <div class="stats_element">
               <v-icon>mdi-star</v-icon>
               <span
-                >Doświadczenie: {{ userStore.user.accountPoints }} /
-                {{ userStore.user.requiredAccountPointsToNextLevel }}</span
+                >Doświadczenie: {{ currentUser.accountPoints }} /
+                {{ currentUser.requiredAccountPointsToNextLevel }}</span
               >
             </div>
             <div class="stats_element">
               <v-icon>mdi-bolt</v-icon>
-              <span>Poziom: {{ userStore.user.level }}</span>
+              <span>Poziom: {{ currentUser.level }}</span>
             </div>
             <div class="stats_element">
               <v-icon>mdi-help-circle</v-icon>
               <span
                 >Publiczne pytania:
-                {{ userStore.user.publicQuestionsCount }}</span
+                {{ currentUser.publicQuestionsCount }}</span
               >
             </div>
             <div class="stats_element">
               <v-icon>mdi-comment</v-icon>
               <span
-                >Udzielone odpowiedzi: {{ userStore.user.answersCount }}</span
+                >Udzielone odpowiedzi: {{ currentUser.answersCount }}</span
               >
             </div>
             <div class="stats_element">
               <v-icon>mdi-gamepad-variant</v-icon>
-              <span>Rozegrane gry: {{ userStore.user.totalGamesPlayed }}</span>
+              <span>Rozegrane gry: {{ currentUser.totalGamesPlayed }}</span>
             </div>
             <div class="stats_element">
               <v-icon>mdi-trophy</v-icon>
               <span
                 >Osiągnięcia: {{ unlockedAchievementsCount }} /
-                {{ userStore.user.achievements.length }}</span
+                {{ achievements.length }}</span
               >
             </div>
             <div class="achievement_list">
               <img
-                v-for="achievement in userStore.user.achievements"
+                v-for="achievement in achievements"
                 :key="achievement.id"
-                :class="{ unlocked: achievement.unlockDate }"
+                :class="{ unlocked: achievement.isUnlocked(currentUser.achievementsIds) }"
                 class="achievement"
                 :src="achievement.icon"
                 alt="Lisek"
@@ -132,12 +128,14 @@ const acceptUsernameBtn = computed(() => {
                 :src="avatar.source"
                 alt="Lisek"
                 :class="{
-                  isUserReady: avatar.isSelected,
-                  isDisabled: avatar.isDisabled,
+                  isUserReady: avatar.isSelected(currentUser.avatar),
+                  isDisabled: avatar.isDisabled(currentUser.avatarsIds),
                 }"
                 class="avatar_img"
               />
-              <v-icon v-if="avatar.isDisabled" class="avatar_lock"
+              <v-icon
+                v-if="avatar.isDisabled(currentUser.avatarsIds)"
+                class="avatar_lock"
                 >mdi-lock</v-icon
               >
             </div>
@@ -150,7 +148,7 @@ const acceptUsernameBtn = computed(() => {
             :btnAction="acceptUsernameBtn.action"
             :btnText="acceptUsernameBtn.text"
             :btnIsOrange="acceptUsernameBtn.isOrange"
-            :textPlaceholder="userStore.user.username"
+            :textPlaceholder="currentUser.username"
           />
         </template>
       </HubAccordion>

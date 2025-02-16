@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { User } from "@/models/User";
 import { users } from "@/assets/data/users";
+import type { Avatar } from "@/models/Avatar";
 
 interface UserState {
   user: User;
@@ -23,8 +24,8 @@ export const useUserStore = defineStore({
       this.user.username = newUsername;
     },
 
-    setAvatar(source: string) {
-      this.user.avatar = source;
+    setAvatar(newAvatar: Avatar) {
+      this.user.avatar = newAvatar;
     },
   },
 });
