@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { DEFAULT_AVATAR } from "@/enums/userEnum";
+import { DEFAULT_AVATAR_SOURCE } from "@/enums/userEnum";
+import type { Avatar } from "@/models/Avatar";
 import { User } from "@/models/User";
 
 const props = defineProps({
@@ -9,13 +10,13 @@ const props = defineProps({
   },
 });
 
-const avatar: string = props.user.avatar || DEFAULT_AVATAR;
+const avatar: Avatar = props.user.avatar;
 </script>
 
 <template>
   <div class="userListElement" @click="user.isReady = !user.isReady">
     <img
-      :src="avatar"
+      :src="avatar.source"
       alt="Lisek"
       :class="{ isUserReady: user.isReady }"
       class="userListElement_avatar"
