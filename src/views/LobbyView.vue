@@ -8,6 +8,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { Game } from "@/models/Game";
 
+
 const router = useRouter();
 const { t } = useI18n();
 
@@ -23,6 +24,7 @@ const customCodeLabel = computed(() => {
 const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
 });
+
 
 const backButton = computed(() => {
   return {
@@ -55,7 +57,7 @@ const startGame = () => {
     </div>
     <img
       v-if="game.users.length === 0"
-      src="@/assets/imgs/fox4.png"
+      src="@/assets/imgs/fox3.png"
       alt="Lisek"
       class="lobbyView_emptyUserList"
     />

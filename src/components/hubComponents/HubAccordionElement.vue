@@ -71,7 +71,8 @@ const toggleAccordion = () => {
     color: $grayColor;
     font-size: 24px;
     font-weight: 600;
-
+    padding: 24px;
+    
     &.isSmallerTitle {
       font-size: 18px;
     }

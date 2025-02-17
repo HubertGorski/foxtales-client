@@ -126,7 +126,7 @@ const newQuestion = ref<string>("");
   justify-content: space-between;
 
   .addQuestionToLibrary {
-    padding-top: 12px;
+    padding: 0 24px 24px 24px;
   }
 
   .library_pagination {

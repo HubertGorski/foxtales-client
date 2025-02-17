@@ -145,6 +145,7 @@ const openPasswordPopup = () => {
 
   &_chooseRoom {
     flex-grow: 1;
+    padding: 24px;
 
     .emptyGamesList {
       padding-top: 18px;

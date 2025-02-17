@@ -79,6 +79,10 @@ const navigateBack = () => {
   background: $mainBackground;
   padding: 120px 16px;
 
+  .creamCard {
+    padding: 24px;
+  }
+
   &_fox {
     position: relative;
     bottom: -52px;

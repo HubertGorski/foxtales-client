@@ -77,6 +77,7 @@ const text = defineModel({ type: String, required: true });
 
 .hubInputBox {
   position: relative;
+  padding: 24px;
 
   &_fox {
     width: 120px;

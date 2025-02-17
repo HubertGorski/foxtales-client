@@ -16,6 +16,8 @@
   "add": "Dodaj",
   "password": "Hasło",
   "accept": "Zatwierdź",
+  "level": "Poziom",
+  "exp": "pkt",
   "createRoom": "Utwórz swój pokój",
   "pageNotExist": "Strona w budowie",
   "joinWithCode": "Dołącz za pomocą kodu",
@@ -28,6 +30,8 @@
   "joinTheGame": "Dołącz do gry",
   "accountStats": "Statystyki konta",
   "shop": "Sklep",
+  "hi": "Cześć",
+  "haveFunAndEnjoyGame": "Baw się dobrze i miłej gry.",
   "router": {
     "home": "x",
     "login": "x",

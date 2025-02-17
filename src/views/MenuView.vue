@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
+import { computed } from "vue";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -33,19 +34,26 @@ const btns = [
     action: () => router.push(ROUTE_PATH.HOME),
   },
 ];
+
+const selectedFox = computed(() => {
+  return new URL(`../assets/imgs/${currentUser.avatar.id}.png`, import.meta.url).href;
+});
 </script>
 
 <template>
   <div class="menuView">
-    <img src="@/assets/imgs/fox2.png" alt="Lisek" class="fox" />
     <div class="menu">
       <div class="welcomeMessage">
-        <span class="welcomeMessage_greeting">Cześć </span>
+        <span class="welcomeMessage_greeting">{{ $t("hi") }}</span>
         <span class="welcomeMessage_name">{{ currentUser.username }}!</span>
-        <p class="welcomeMessage_text">Baw się dobrze i miłej gry.</p>
+        <p class="welcomeMessage_text">{{ $t("haveFunAndEnjoyGame") }}</p>
       </div>
-      <HubAccordionElement @click="navigateToCreateGame" title="createNewGame" />
+      <HubAccordionElement
+        @click="navigateToCreateGame"
+        title="createNewGame"
+      />
       <HubAccordionElement @click="navigateToJoinGame" title="joinTheGame" />
+      <img :src="selectedFox" alt="Lisek" class="fox" />
     </div>
     <div class="controls">
       <HubBtn
@@ -66,12 +74,6 @@ const btns = [
 
 <style lang="scss" scoped>
 @import "@/assets/styles/variables";
-.fox {
-  position: absolute;
-  bottom: -101px;
-  left: -48px;
-}
-
 .menuView {
   display: flex;
   flex-direction: column;
@@ -100,11 +102,12 @@ const btns = [
       &_name {
         display: block;
         width: 100%;
-        font-size: 64px;
+        font-size: 3em;
+        max-height: 2.8em; 
         line-height: 64px;
         color: $mainOrangeColor;
         overflow-x: scroll;
-        overflow-y: hidden;
+        overflow-y: scroll;
       }
 
       &_text {
@@ -115,13 +118,24 @@ const btns = [
         letter-spacing: 0.5px;
       }
     }
+
+    .fox {
+      position: absolute;
+      max-width: 210px;
+      bottom: 0;
+      margin-left: -16px;
+      z-index: 2;
+    }
   }
 
   .controls {
-    margin-left: 152px;
+    position: absolute;
+    bottom: 0;
+    right: 12px;
     &_btn {
       padding: 12px 20px;
       margin-bottom: 8px;
+      width: 164px;
     }
   }
 }

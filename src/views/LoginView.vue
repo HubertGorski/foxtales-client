@@ -22,7 +22,7 @@ const navigateBack = () => {
 
 <template>
   <div class="loginView">
-    <img src="@/assets/imgs/fox8.png" alt="Lisek" class="loginView_fox" />
+    <img src="@/assets/imgs/4.png" alt="Lisek" class="loginView_fox" />
     <form @submit.prevent="submitForm" class="creamCard">
       <h1 class="loginView_title">Logowanie</h1>
       <v-text-field
@@ -68,6 +68,10 @@ const navigateBack = () => {
   height: 100vh;
   background: $mainBackground;
   padding: 0 16px;
+
+  .creamCard {
+    padding: 24px;
+  }
 
   &_fox {
     position: relative;

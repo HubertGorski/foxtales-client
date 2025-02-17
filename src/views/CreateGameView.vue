@@ -109,7 +109,11 @@ const btns = [
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
+  
+  .creamCard {
+    padding: 24px;
+  }
+  
   &_card {
     padding: 24px 24px 0 24px;
     width: 100%;

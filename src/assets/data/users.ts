@@ -14,6 +14,9 @@ export const users = [
   new User({
     userId: 8,
     username: "Natalia",
+    level: 2,
+    accountPoints: 196,
+    requiredAccountPointsToNextLevel: 244,
     catalogs: [
       new Catalog(1, "Impreza u Przema"),
       new Catalog(2, "Zabawne pytania"),
@@ -25,7 +28,7 @@ export const users = [
     ],
     achievementsIds: [1, 2],
     avatarsIds: [5],
-    avatar: avatars[1],
+    avatar: avatars[0],
     permissions: [
       new Permission(PERMISSION.ADD_NEW_PRIVATE_QUESTION_PER_DAY, 2),
       new Permission(PERMISSION.CONVERT_PRIVATE_QUESTION_TO_PUBLIC_PER_DAY, 1),

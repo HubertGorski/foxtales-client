@@ -5,4 +5,4 @@ export enum GENDER {
 }
 
 export const DEFAULT_AVATAR_SOURCE: string =
-  "/src/assets/imgs/defaultAvatars/defaultAvatar1.png";
+  "/src/assets/imgs/defaultAvatars/1.png";

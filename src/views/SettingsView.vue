@@ -11,6 +11,7 @@ import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import { achievements } from "@/assets/data/achievements";
+import LevelBar from "@/components/LevelBar.vue";
 
 const userStore = useUserStore();
 
@@ -35,6 +36,10 @@ const actualAvatars = ref<Avatar[]>(avatars);
 
 const goToQuestionsPanel = () => {
   router.push(ROUTE_PATH.QUESTIONS_PANEL);
+};
+
+const showAllAchievement = () => {
+  console.log("showAllAchievement");
 };
 
 const btns = [
@@ -68,51 +73,66 @@ const acceptUsernameBtn = computed(() => {
     <div class="settings">
       <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName']">
         <template #accountStats>
-          <div class="stats">
-            <div class="stats_element">
-              <v-icon>mdi-star</v-icon>
-              <span
-                >Doświadczenie: {{ currentUser.accountPoints }} /
-                {{ currentUser.requiredAccountPointsToNextLevel }}</span
-              >
-            </div>
-            <div class="stats_element">
-              <v-icon>mdi-bolt</v-icon>
-              <span>Poziom: {{ currentUser.level }}</span>
-            </div>
-            <div class="stats_element">
-              <v-icon>mdi-help-circle</v-icon>
-              <span
-                >Publiczne pytania:
-                {{ currentUser.publicQuestionsCount }}</span
-              >
-            </div>
-            <div class="stats_element">
-              <v-icon>mdi-comment</v-icon>
-              <span
-                >Udzielone odpowiedzi: {{ currentUser.answersCount }}</span
-              >
-            </div>
-            <div class="stats_element">
-              <v-icon>mdi-gamepad-variant</v-icon>
-              <span>Rozegrane gry: {{ currentUser.totalGamesPlayed }}</span>
-            </div>
-            <div class="stats_element">
-              <v-icon>mdi-trophy</v-icon>
-              <span
-                >Osiągnięcia: {{ unlockedAchievementsCount }} /
-                {{ achievements.length }}</span
-              >
-            </div>
-            <div class="achievement_list">
-              <img
-                v-for="achievement in achievements"
-                :key="achievement.id"
-                :class="{ unlocked: achievement.isUnlocked(currentUser.achievementsIds) }"
-                class="achievement"
-                :src="achievement.icon"
-                alt="Lisek"
+          <div class="accordionContent">
+            <LevelBar
+              :level="currentUser.level"
+              :points="currentUser.accountPoints"
+              :requiredPointsToNextLevel="
+                currentUser.requiredAccountPointsToNextLevel
+              "
+            />
+            <div class="stats">
+              <StatBox
+                icon="mdi-comment"
+                text="Odpowiedzi"
+                :points="currentUser.answersCount"
               />
+              <div class="stats_element">
+                <v-icon>mdi-comment</v-icon>
+                <span
+                  >Udzielone odpowiedzi: {{ currentUser.answersCount }}</span
+                >
+              </div>
+              <div class="stats_element">
+                <v-icon>mdi-gamepad-variant</v-icon>
+                <span>Rozegrane gry: {{ currentUser.totalGamesPlayed }}</span>
+              </div>
+              <div class="stats_element">
+                <v-icon>mdi-help-circle</v-icon>
+                <span
+                  >Publiczne pytania:
+                  {{ currentUser.publicQuestionsCount }}</span
+                >
+              </div>
+              <div class="stats_element">
+                <v-icon>mdi-trophy</v-icon>
+                <span
+                  >Osiągnięcia: {{ unlockedAchievementsCount }} /
+                  {{ achievements.length }}</span
+                >
+              </div>
+              <div class="achievements">
+                <div class="achievements_list">
+                  <img
+                    v-for="achievement in achievements"
+                    :key="achievement.id"
+                    :class="{
+                      unlocked: achievement.isUnlocked(
+                        currentUser.achievementsIds
+                      ),
+                    }"
+                    class="achievement"
+                    :src="achievement.icon"
+                    alt="Lisek"
+                  />
+                </div>
+                <HubBtn
+                  class="achievements_btn"
+                  text="zobacz więcej"
+                  icon="mdi-menu-right"
+                  :action="showAllAchievement"
+                />
+              </div>
             </div>
           </div>
         </template>
@@ -144,7 +164,7 @@ const acceptUsernameBtn = computed(() => {
         <template #changeName>
           <HubInputWithBtn
             v-model="newUsername"
-            class="changeName"
+            class="accordionContent"
             :btnAction="acceptUsernameBtn.action"
             :btnText="acceptUsernameBtn.text"
             :btnIsOrange="acceptUsernameBtn.isOrange"
@@ -197,6 +217,7 @@ const acceptUsernameBtn = computed(() => {
       display: flex;
       gap: 12px;
       color: $grayColor;
+      padding: 2px 0;
 
       .v-icon {
         color: $mainBrownColor;
@@ -205,10 +226,10 @@ const acceptUsernameBtn = computed(() => {
   }
 
   .avatars {
-    padding-top: 16px;
+    padding: 4px 24px 24px 24px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     gap: 8px;
 
     .avatar {
@@ -245,16 +266,27 @@ const acceptUsernameBtn = computed(() => {
     }
   }
 
-  .changeName {
-    padding-top: 12px;
+  .accordionContent {
+    padding: 0 24px 24px 24px;
   }
 
-  .achievement_list {
+  .achievements {
     display: flex;
+    flex-direction: column;
+    align-items: end;
     gap: 8px;
-    padding-top: 12px;
+    padding: 8px;
+    &_list {
+      display: flex;
+      gap: 8px;
+    }
+    &_btn {
+      font-size: 12px;
+      width: min-content;
+      height: min-content;
+      padding: 8px 8px 8px 16px;
+    }
   }
-
   .achievement {
     background-color: white;
     height: 42px;
