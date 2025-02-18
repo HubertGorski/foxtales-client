@@ -10,8 +10,8 @@ import { avatars } from "@/assets/data/avatars";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
-import { achievements } from "@/assets/data/achievements";
 import LevelBar from "@/components/LevelBar.vue";
+import { achievements } from "@/assets/data/achievements";
 
 const userStore = useUserStore();
 
@@ -29,8 +29,10 @@ const changeUsername = () => {
   userStore.setUsername(newUsername.value);
   newUsername.value = "";
 };
-
-const unlockedAchievementsCount = currentUser.achievementsIds.length;
+const allUserAchievements = currentUser.achievements.sort(
+  (a, b) => Number(b.isUnlocked) - Number(a.isUnlocked)
+);
+const unlockedAchievementsCount = allUserAchievements.filter(achievement => achievement.isUnlocked).length;
 
 const actualAvatars = ref<Avatar[]>(avatars);
 
@@ -108,22 +110,20 @@ const acceptUsernameBtn = computed(() => {
                 <v-icon>mdi-trophy</v-icon>
                 <span
                   >Osiągnięcia: {{ unlockedAchievementsCount }} /
-                  {{ achievements.length }}</span
+                  {{ allUserAchievements.length }}</span
                 >
               </div>
               <div class="achievements">
                 <div class="achievements_list">
                   <img
-                    v-for="achievement in achievements"
+                    v-for="achievement in allUserAchievements"
                     :key="achievement.id"
                     :class="{
-                      unlocked: achievement.isUnlocked(
-                        currentUser.achievementsIds
-                      ),
+                      unlocked: achievement.isUnlocked
                     }"
                     class="achievement"
                     :src="achievement.icon"
-                    alt="Lisek"
+                    :alt="`${achievement.getUnlockedLevel}`"
                   />
                 </div>
                 <HubBtn

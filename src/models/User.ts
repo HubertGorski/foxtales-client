@@ -1,8 +1,10 @@
 import { DEFAULT_AVATAR_SOURCE, GENDER } from "@/enums/userEnum";
 import { ROLE } from "@/enums/rolesEnum";
-import { PERMISSION, Permission } from "@/enums/permissions";
+import { PERMISSION } from "@/enums/permissions";
 import { Catalog } from "./Catalog";
 import { Avatar } from "./Avatar";
+import type { Achievement } from "./Achievement";
+import type { Permission } from "./Permission";
 
 export class User {
   // Basic info
@@ -22,10 +24,11 @@ export class User {
   accountPoints: number = 0;
   requiredAccountPointsToNextLevel: number = 0;
   level: number = 0;
-  achievementsIds: number[] = [];
+  achievements: Achievement[] = [];
   avatarsIds: number[] = [];
   permissions: Permission[] = [];
   catalogs: Catalog[] = [];
+  invitedUsersToAppCount: number = 0;
 
   // In Game or lobby
   isReady: boolean = false;
