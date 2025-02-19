@@ -5,8 +5,10 @@ import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { computed } from "vue";
 import HubBtn from "./hubComponents/HubBtn.vue";
+import { useI18n } from "vue-i18n";
 
 const userStore = useUserStore();
+const { t } = useI18n();
 
 const props = defineProps({
   newQuestion: {
@@ -14,26 +16,40 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits<{
+  (e: "addQuestion", catalogs: Catalog[]): void;
+}>();
+
 const currentUser = userStore.user;
 const actualCatalogs = ref<Catalog[]>(currentUser.catalogs);
-const currentPage = ref<Number>(2);
+const currentPage = ref<number>(1);
 const itemsPerPage: number = 4;
 
-const totalPages = computed(() => Math.ceil(actualCatalogs.value.length / itemsPerPage));
+const selectedActualCatalogs = computed(() =>
+  actualCatalogs.value.filter((catalog) => catalog.isSelected)
+);
+
+const totalPages = computed(() =>
+  Math.ceil(actualCatalogs.value.length / itemsPerPage)
+);
 
 const setPreviousPage = () => {
   currentPage.value = currentPage.value - 1;
-}
+};
 
 const setNextPage = () => {
   currentPage.value = currentPage.value + 1;
+};
 
-}
+const addQuestion = () => {
+  emit("addQuestion", selectedActualCatalogs.value);
+};
 
 const visibleCatalogs = computed(() => {
-  const startIndex = (currentPage.value * itemsPerPage) - itemsPerPage;
+  const startIndex = currentPage.value * itemsPerPage - itemsPerPage;
   return actualCatalogs.value.slice(startIndex, startIndex + itemsPerPage);
-})
+});
 
 const libraryPreviousBtn = computed(() => {
   return {
@@ -49,6 +65,11 @@ const libraryNextBtn = computed(() => {
     action: () => setNextPage(),
   };
 });
+const addQuestionBtn = {
+  text: t("add"),
+  isOrange: true,
+  action: addQuestion,
+};
 </script>
 
 <template>
@@ -59,7 +80,10 @@ const libraryNextBtn = computed(() => {
         {{ newQuestion }}
       </div>
     </WhiteCard>
-    <div class="libraryTitle">Wybrane katalogi (3 / {{ actualCatalogs.length }})</div>
+    <div class="libraryTitle">
+      Wybrane katalogi ({{ selectedActualCatalogs.length }} /
+      {{ actualCatalogs.length }})
+    </div>
     <div class="library">
       <div class="library_data">
         <div
@@ -78,12 +102,28 @@ const libraryNextBtn = computed(() => {
           </div>
         </div>
       </div>
-      <div class="library_pagination">
-        <HubBtn class="btn" :icon="libraryPreviousBtn.icon" :action="libraryPreviousBtn.action" :disabled="libraryPreviousBtn.disabled" />
-        <div class="paginationData">{{ currentPage }} / {{ totalPages }} </div>
-        <HubBtn class="btn" :icon="libraryNextBtn.icon" :action="libraryNextBtn.action" :disabled="libraryNextBtn.disabled" />
+      <div v-if="totalPages > 1" class="library_pagination">
+        <HubBtn
+          class="btn"
+          :icon="libraryPreviousBtn.icon"
+          :action="libraryPreviousBtn.action"
+          :disabled="libraryPreviousBtn.disabled"
+        />
+        <div class="paginationData">{{ currentPage }} / {{ totalPages }}</div>
+        <HubBtn
+          class="btn"
+          :icon="libraryNextBtn.icon"
+          :action="libraryNextBtn.action"
+          :disabled="libraryNextBtn.disabled"
+        />
       </div>
     </div>
+    <HubBtn
+      class="controls_btn"
+      :action="addQuestionBtn.action"
+      :text="addQuestionBtn.text"
+      :isOrange="addQuestionBtn.isOrange"
+    />
   </div>
 </template>
 
@@ -146,7 +186,7 @@ const libraryNextBtn = computed(() => {
           background-color: #ccc2c1;
         }
       }
-      
+
       &_icon {
         border-radius: 4px;
         color: $lightGrayColor;

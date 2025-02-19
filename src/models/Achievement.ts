@@ -1,6 +1,7 @@
 export class Achievement {
   id: number;
   title: string;
+  subtitle: string;
   description: string;
   icon: string;
   boundaryLevels: number[];
@@ -9,6 +10,7 @@ export class Achievement {
   constructor(
     id = 0,
     title: string = "",
+    subtitle: string = "",
     description: string = "",
     icon: string = "",
     currentLevel: number = 0,
@@ -16,6 +18,7 @@ export class Achievement {
   ) {
     this.id = id;
     this.title = title;
+    this.subtitle = subtitle;
     this.description = description;
     this.icon = icon;
     this.boundaryLevels = boundaryLevels;

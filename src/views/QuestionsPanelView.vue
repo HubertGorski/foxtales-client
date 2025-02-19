@@ -9,6 +9,7 @@ import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
+import type { Catalog } from "@/models/Catalog";
 
 const router = useRouter();
 const { t } = useI18n();
@@ -17,13 +18,17 @@ const isAddQuestionPanelVisible = ref<boolean>(false);
 const isQuestionCreatorOpen = ref<boolean>(false);
 const isCatalogCreatorOpen = ref<boolean>(false);
 
-const addQuestion = () => {
+const addQuestion = (catalogs: Catalog[]) => {
   event.preventDefault();
   if (!newQuestion.value) {
     return;
   }
 
   console.log(`Dodano pytanie: "${newQuestion.value}"`);
+  if (catalogs && catalogs.length > 0) {
+    console.log(`Dodano do katalogów: "${catalogs.map(catalog => catalog.title)}"`);
+  }
+  isQuestionCreatorOpen.value = false;
   newQuestion.value = "";
 };
 
@@ -58,17 +63,16 @@ const newQuestion = ref<string>("");
 <template>
   <div class="questionsPanelView">
     <HubPopup v-model="isQuestionCreatorOpen">
-      <QuestionCreator :newQuestion="newQuestion" />
+      <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
     </HubPopup>
-    <HubPopup v-model="isCatalogCreatorOpen">
-      Dodawanie katalogów tu
-    </HubPopup>
-    <HubAccordionElement @click="isCatalogCreatorOpen = true" title="addCatalogToLibrary" isSmallerTitle />
+    <HubPopup v-model="isCatalogCreatorOpen"> Dodawanie katalogów tu </HubPopup>
+    <HubAccordionElement
+      @click="isCatalogCreatorOpen = true"
+      title="addCatalogToLibrary"
+      isSmallerTitle
+    />
     <HubAccordion
-      :slotNames="[
-        'addQuestionToLibrary',
-        'manageLibrary',
-      ]"
+      :slotNames="['addQuestionToLibrary', 'manageLibrary']"
       setOpenTab="addQuestionToLibrary"
       isSmallerTitle
       isDividerVisible
@@ -88,8 +92,8 @@ const newQuestion = ref<string>("");
       /></template>
       <template #manageLibrary>
         <div class="manageLibrary_table">Pytania i catalogi tu beda</div>
-      </template></HubAccordion
-    >
+      </template>
+    </HubAccordion>
     <div class="controls">
       <HubBtn
         class="controls_btn"
@@ -102,7 +106,6 @@ const newQuestion = ref<string>("");
         :action="btns[1].action"
         :text="btns[1].text"
         :isOrange="btns[1].isOrange"
-        :disabled="btns[1].disabled"
       />
     </div>
   </div>
@@ -121,28 +124,6 @@ const newQuestion = ref<string>("");
 
   .addQuestionToLibrary {
     padding: 24px;
-  }
-
-  .library_pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fffefd;
-    border: 1px $mainBrownColor solid;
-    border-radius: 12px;
-
-    .btn {
-      background-color: $mainBrownColor;
-      color: white;
-      font-size: 18px;
-      padding: 4px;
-      border-radius: 10px;
-    }
-
-    .paginationData {
-      color: $mainBrownColor;
-      font-weight: 600;
-    }
   }
 
   .controls {
