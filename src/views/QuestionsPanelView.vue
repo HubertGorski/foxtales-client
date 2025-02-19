@@ -8,12 +8,14 @@ import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
+import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 
 const router = useRouter();
 const { t } = useI18n();
 
 const isAddQuestionPanelVisible = ref<boolean>(false);
-const isQuestionDetailsOpen = ref<boolean>(false);
+const isQuestionCreatorOpen = ref<boolean>(false);
+const isCatalogCreatorOpen = ref<boolean>(false);
 
 const addQuestion = () => {
   event.preventDefault();
@@ -26,7 +28,7 @@ const addQuestion = () => {
 };
 
 const showCatalogsList = () => {
-  isQuestionDetailsOpen.value = true;
+  isQuestionCreatorOpen.value = true;
 };
 
 const addQuestionBtn = {
@@ -44,10 +46,9 @@ const btns = [
   },
   {
     id: 2,
-    text: t("shop"),
+    text: t("menu"),
     isOrange: true,
     action: () => router.push(ROUTE_PATH.MENU),
-    disabled: true,
   },
 ];
 
@@ -56,12 +57,19 @@ const newQuestion = ref<string>("");
 
 <template>
   <div class="questionsPanelView">
-    <HubPopup v-model="isQuestionDetailsOpen">
-      <QuestionCreator :newQuestion="newQuestion"/>
+    <HubPopup v-model="isQuestionCreatorOpen">
+      <QuestionCreator :newQuestion="newQuestion" />
     </HubPopup>
+    <HubPopup v-model="isCatalogCreatorOpen">
+      Dodawanie katalogów tu
+    </HubPopup>
+    <HubAccordionElement @click="isCatalogCreatorOpen = true" title="addCatalogToLibrary" isSmallerTitle />
     <HubAccordion
-      :slotNames="['addQuestionToLibrary', 'manageLibrary']"
-      setOpenTab="manageLibrary"
+      :slotNames="[
+        'addQuestionToLibrary',
+        'manageLibrary',
+      ]"
+      setOpenTab="addQuestionToLibrary"
       isSmallerTitle
       isDividerVisible
     >
@@ -79,21 +87,7 @@ const newQuestion = ref<string>("");
           isTextarea
       /></template>
       <template #manageLibrary>
-        <div class="manageLibrary_table">
-          <div class="library">
-            <div class="library_headers"></div>
-            <div class="library_data"></div>
-            <div class="library_pagination">
-              <div class="btn">
-                <v-icon>mdi-arrow-left-bold-circle-outline</v-icon>
-              </div>
-              <div class="paginationData">1-10 / 97</div>
-              <div class="btn">
-                <v-icon>mdi-arrow-right-bold-circle-outline</v-icon>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="manageLibrary_table">Pytania i catalogi tu beda</div>
       </template></HubAccordion
     >
     <div class="controls">
@@ -126,7 +120,7 @@ const newQuestion = ref<string>("");
   justify-content: space-between;
 
   .addQuestionToLibrary {
-    padding: 0 24px 24px 24px;
+    padding: 24px;
   }
 
   .library_pagination {

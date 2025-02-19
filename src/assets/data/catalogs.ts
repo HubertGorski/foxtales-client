@@ -6,6 +6,6 @@ export const catalogs = [
   new Catalog(3, "Na nudną imprezę"),
   new Catalog(4, "Uczelnia"),
   new Catalog(5, "Spotkanie rodzinne"),
-  new Catalog(6, "Gdy jesteś w górach i w schronisku nie ma co robić"),
+  new Catalog(6, "Gdy jesteś w górach"),
   new Catalog(7, "Takie tam"),
 ];

@@ -14,7 +14,7 @@ export class Catalog {
     ownerId: number = 0,
     createdDate: Date = new Date(),
     usedCount: number = 0,
-    isSelected: boolean = true,
+    isSelected: boolean = false,
   ) {
     this.id = id;
     this.title = title;

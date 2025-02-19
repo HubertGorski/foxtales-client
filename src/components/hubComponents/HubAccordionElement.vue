@@ -14,6 +14,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  withStatusIcon: {
+    type: Boolean,
+    default: false,
+  },
+  isTitleCenter: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const containerRef = ref<HTMLElement | null>(null);
@@ -44,13 +52,16 @@ const toggleAccordion = () => {
 
 <template>
   <div class="hubAccordionElement creamCard">
-    <p
+    <div
       @click="toggleAccordion()"
       class="hubAccordionElement_title"
-      :class="{ isSmallerTitle: isSmallerTitle }"
+      :class="{ isSmallerTitle: isSmallerTitle, isOpen: isOpen }"
     >
-      {{ $t(title) }}
-    </p>
+      <p :class="{isTitleCenter: isTitleCenter}">
+        {{ $t(title) }}
+      </p>
+      <v-icon v-if="withStatusIcon">mdi-chevron-up</v-icon>
+    </div>
     <div
       ref="containerRef"
       class="hubAccordionElement_container"
@@ -67,14 +78,46 @@ const toggleAccordion = () => {
 @import "@/assets/styles/variables";
 
 .hubAccordionElement {
+  overflow: hidden;
+
   &_title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     color: $grayColor;
     font-size: 24px;
     font-weight: 600;
     padding: 24px;
+    transition:
+      background-color,
+      padding 0.4s;
+
+    .isTitleCenter {
+      text-align: center;
+      width: 100%;
+    }
+    
+    .v-icon {
+      transition: transform 0.4s;
+    }
     
     &.isSmallerTitle {
       font-size: 18px;
+    }
+
+    &.isOpen {
+      padding: 12px;
+      transition:
+        background-color,
+        padding 0.4s;
+      background-color: $mainBrownColor;
+      color: white;
+      border-radius: 4px;
+
+      .v-icon {
+        transform: rotate(180deg);
+        transition: transform 0.4s;
+      }
     }
   }
   &_container {

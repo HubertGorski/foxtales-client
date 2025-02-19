@@ -42,6 +42,7 @@ const showDivider = (index: number) => {
       :title="slotName"
       :isOpen="openState === index"
       :isSmallerTitle="isSmallerTitle"
+      withStatusIcon
       @toggleAccordion="toggleAccordion(index)"
     >
       <template #default>

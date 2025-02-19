@@ -11,7 +11,6 @@ import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import LevelBar from "@/components/LevelBar.vue";
-import { achievements } from "@/assets/data/achievements";
 
 const userStore = useUserStore();
 
@@ -73,7 +72,7 @@ const acceptUsernameBtn = computed(() => {
 <template>
   <div class="settingsView">
     <div class="settings">
-      <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName']">
+      <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName']" setOpenTab="accountStats">
         <template #accountStats>
           <div class="accordionContent">
             <LevelBar
@@ -126,14 +125,14 @@ const acceptUsernameBtn = computed(() => {
                     :alt="`${achievement.getUnlockedLevel}`"
                   />
                 </div>
-                <HubBtn
-                  class="achievements_btn"
-                  text="zobacz więcej"
-                  icon="mdi-menu-right"
-                  :action="showAllAchievement"
-                />
               </div>
             </div>
+            <HubBtn
+              class="achievements_btn"
+              text="zobacz więcej"
+              icon="mdi-menu-right"
+              :action="showAllAchievement"
+            />
           </div>
         </template>
         <template #chooseFox>
@@ -172,7 +171,14 @@ const acceptUsernameBtn = computed(() => {
           />
         </template>
       </HubAccordion>
-      <HubAccordionElement @click="goToQuestionsPanel" title="manageLibrary" />
+      <div @click="goToQuestionsPanel" class="settings_elementWithFox">
+        <img
+        class="fox"
+        src="@/assets/imgs/7.png"
+        alt="Lisek"
+        />
+        <HubAccordionElement title="manageLibrary" isTitleCenter />
+      </div>
     </div>
     <div class="controls">
       <HubBtn
@@ -208,6 +214,18 @@ const acceptUsernameBtn = computed(() => {
     justify-content: center;
     gap: 12px;
     flex-grow: 1;
+
+    &_elementWithFox {
+      position: relative;
+
+      .fox {
+        position: absolute;
+        width: 78px;
+        bottom: 0;
+        left: 0;
+        border-radius: 12px;
+      }
+    }
   }
 
   .stats {
@@ -217,7 +235,7 @@ const acceptUsernameBtn = computed(() => {
       display: flex;
       gap: 12px;
       color: $grayColor;
-      padding: 2px 0;
+      padding: 2px 4px;
 
       .v-icon {
         color: $mainBrownColor;
@@ -226,7 +244,7 @@ const acceptUsernameBtn = computed(() => {
   }
 
   .avatars {
-    padding: 4px 24px 24px 24px;
+    padding: 12px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -267,13 +285,13 @@ const acceptUsernameBtn = computed(() => {
   }
 
   .accordionContent {
-    padding: 0 24px 24px 24px;
+    padding: 16px;
   }
 
   .achievements {
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: center;
     gap: 8px;
     padding: 8px;
     &_list {
@@ -285,6 +303,7 @@ const acceptUsernameBtn = computed(() => {
       width: min-content;
       height: min-content;
       padding: 8px 8px 8px 16px;
+      margin-left: auto;
     }
   }
   .achievement {

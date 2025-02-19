@@ -10,9 +10,11 @@ const props = defineProps({
   },
   isOrange: {
     type: Boolean,
+    default: false,
   },
   disabled: {
     type: Boolean,
+    default: false,
   },
   action: {
     type: Function,
