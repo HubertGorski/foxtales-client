@@ -28,20 +28,25 @@
   "manageLibrary": "Zarządzaj biblioteką",
   "changeName": "Zmień imię",
   "chooseFox": "Wybierz liska",
+  "createGame": "Utwórz grę",
   "createNewGame": "Utwórz nową grę",
   "joinTheGame": "Dołącz do gry",
   "accountStats": "Statystyki konta",
   "shop": "Sklep",
   "hi": "Cześć",
   "haveFunAndEnjoyGame": "Baw się dobrze i miłej gry.",
-  "router": {
-    "home": "x",
-    "login": "x",
-    "register": "x",
-    "menu": "x",
-    "settings": "x",
-    "joinGame": "x",
-    "createGame": "x",
-    "lobby": "x"
+  "tooltip": {
+    "startNewGame": "By rozpocząć grę wszyscy gracze muszą potwierdzić udział",
+    "privateQuestionsDescription": "Opis prywatnych pytań",
+    "publicQuestionsDescription": "Opis publicznych pytań",
+    "roomOnListDescription": "Opis widoczności pokoju na liście"
+  },
+  "info": {
+    "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju."
+  },
+  "lobby": {
+    "usePrivateQuestions": "Używaj prywatnych pytań",
+    "usePublicQuestions": "Używaj publicznych pytań",
+    "gameVisibleOnList": "Gra widoczna na liście"
   }
 }

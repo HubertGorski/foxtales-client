@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ICON } from "@/enums/iconsEnum";
 import { ref, watchEffect } from "vue";
 
 const props = defineProps({
@@ -60,7 +61,7 @@ const toggleAccordion = () => {
       <p :class="{isTitleCenter: isTitleCenter}">
         {{ $t(title) }}
       </p>
-      <v-icon v-if="withStatusIcon">mdi-chevron-up</v-icon>
+      <v-icon v-if="withStatusIcon">{{ ICON.CHEVRON_UP }}</v-icon>
     </div>
     <div
       ref="containerRef"

@@ -2,20 +2,19 @@
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
-import { useI18n } from "vue-i18n";
+
 const router = useRouter();
-const { t } = useI18n();
 
 const btns = [
   {
     id: 1,
-    text: t("login"),
+    text: "login",
     isOrange: false,
     action: () => router.push(ROUTE_PATH.LOGIN),
   },
   {
     id: 2,
-    text: t("register"),
+    text: "register",
     isOrange: true,
     action: () => router.push(ROUTE_PATH.REGISTER),
   },

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { computed, ref } from "vue";
-import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
@@ -11,10 +10,10 @@ import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import LevelBar from "@/components/LevelBar.vue";
+import { ICON } from "@/enums/iconsEnum";
 
 const userStore = useUserStore();
 
-const { t } = useI18n();
 const router = useRouter();
 
 const newUsername = ref<string>("");
@@ -46,13 +45,13 @@ const showAllAchievement = () => {
 const btns = [
   {
     id: 1,
-    text: t("back"),
+    text: "back",
     isOrange: false,
     action: () => router.push(ROUTE_PATH.MENU),
   },
   {
     id: 2,
-    text: t("shop"),
+    text: "shop",
     isOrange: true,
     action: () => router.push(ROUTE_PATH.MENU),
     disabled: true,
@@ -61,7 +60,7 @@ const btns = [
 
 const acceptUsernameBtn = computed(() => {
   return {
-    text: t("accept"),
+    text: "accept",
     isOrange: true,
     disabled: newUsername.value.length === 0,
     action: () => changeUsername(),
@@ -83,30 +82,25 @@ const acceptUsernameBtn = computed(() => {
               "
             />
             <div class="stats">
-              <StatBox
-                icon="mdi-comment"
-                text="Odpowiedzi"
-                :points="currentUser.answersCount"
-              />
               <div class="stats_element">
-                <v-icon>mdi-comment</v-icon>
+                <v-icon>{{ ICON.ANSWER }}</v-icon>
                 <span
                   >Udzielone odpowiedzi: {{ currentUser.answersCount }}</span
                 >
               </div>
               <div class="stats_element">
-                <v-icon>mdi-gamepad-variant</v-icon>
+                <v-icon>{{ ICON.GAME }}</v-icon>
                 <span>Rozegrane gry: {{ currentUser.totalGamesPlayed }}</span>
               </div>
               <div class="stats_element">
-                <v-icon>mdi-help-circle</v-icon>
+                <v-icon>{{ ICON.QUESTION }}</v-icon>
                 <span
                   >Publiczne pytania:
                   {{ currentUser.publicQuestionsCount }}</span
                 >
               </div>
               <div class="stats_element">
-                <v-icon>mdi-trophy</v-icon>
+                <v-icon>{{ ICON.ACHIEVEMENT }}</v-icon>
                 <span
                   >Osiągnięcia: {{ unlockedAchievementsCount }} /
                   {{ allUserAchievements.length }}</span
@@ -130,7 +124,7 @@ const acceptUsernameBtn = computed(() => {
             <HubBtn
               class="achievements_btn"
               text="zobacz więcej"
-              icon="mdi-menu-right"
+              :icon="ICON.MINI_ARROW_RIGHT"
               :action="showAllAchievement"
             />
           </div>
@@ -155,7 +149,7 @@ const acceptUsernameBtn = computed(() => {
               <v-icon
                 v-if="avatar.isDisabled(currentUser.avatarsIds)"
                 class="avatar_lock"
-                >mdi-lock</v-icon
+                >{{ ICON.LOCK }}</v-icon
               >
             </div>
           </div>

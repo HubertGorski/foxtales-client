@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ROUTE_PATH } from "@/router/routeEnums";
-import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { ref } from "vue";
@@ -10,9 +9,9 @@ import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import type { Catalog } from "@/models/Catalog";
+import { ICON } from "@/enums/iconsEnum";
 
 const router = useRouter();
-const { t } = useI18n();
 
 const isAddQuestionPanelVisible = ref<boolean>(false);
 const isQuestionCreatorOpen = ref<boolean>(false);
@@ -37,7 +36,7 @@ const showCatalogsList = () => {
 };
 
 const addQuestionBtn = {
-  text: t("add"),
+  text: "add",
   isOrange: true,
   action: addQuestion,
 };
@@ -45,13 +44,13 @@ const addQuestionBtn = {
 const btns = [
   {
     id: 1,
-    text: t("back"),
+    text: "back",
     isOrange: false,
     action: () => router.push(ROUTE_PATH.SETTINGS),
   },
   {
     id: 2,
-    text: t("menu"),
+    text: "menu",
     isOrange: true,
     action: () => router.push(ROUTE_PATH.MENU),
   },
@@ -85,7 +84,7 @@ const newQuestion = ref<string>("");
           title="addQuestionToLibrary"
           :btnAction="addQuestionBtn.action"
           :btnText="addQuestionBtn.text"
-          extraBtnIcon="mdi-shape-rectangle-plus"
+          :extraBtnIcon="ICON.ADD_TO_COLLECTION"
           :extraBtnAction="showCatalogsList"
           :btnIsOrange="addQuestionBtn.isOrange"
           isTextarea

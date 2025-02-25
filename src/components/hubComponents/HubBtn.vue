@@ -29,7 +29,7 @@ const props = defineProps({
     class="hubBtn"
     :class="[{ disabled }, isOrange ? 'hubBtn--orange' : 'hubBtn--brown']"
   >
-    <p v-if="text">{{ text }}</p>
+    <p v-if="text">{{ $t(text) }}</p>
     <v-icon v-if="icon">{{ icon }}</v-icon>
   </div>
 </template>

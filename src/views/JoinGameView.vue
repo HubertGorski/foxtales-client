@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
@@ -10,9 +9,9 @@ import HubDivider from "@/components/hubComponents/HubDivider.vue";
 import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import WhiteCard from "@/components/WhiteCard.vue";
+import { ICON } from "@/enums/iconsEnum";
 
 const router = useRouter();
-const { t } = useI18n();
 
 const actualGames: Game[] = games.filter((game) => game.isPublic);
 
@@ -22,7 +21,7 @@ const isPasswordPopupOpen = ref<boolean>(false);
 
 const acceptCodeBtn = computed(() => {
   return {
-    text: t("join"),
+    text: "join",
     isOrange: true,
     disabled: customCode.value.length === 0,
     action: () => router.push(ROUTE_PATH.LOBBY),
@@ -31,7 +30,7 @@ const acceptCodeBtn = computed(() => {
 
 const acceptPasswordBtn = computed(() => {
   return {
-    text: t("join"),
+    text: "join",
     isOrange: true,
     disabled: password.value.length === 0,
     action: () => router.push(ROUTE_PATH.LOBBY),
@@ -40,7 +39,7 @@ const acceptPasswordBtn = computed(() => {
 
 const backBtn = {
   id: 1,
-  text: t("back2"),
+  text: "back2",
   isOrange: false,
   action: () => router.push(ROUTE_PATH.MENU),
 };
@@ -93,11 +92,11 @@ const openPasswordPopup = () => {
         >
           <div class="details">
             <div v-if="game.password">
-              <v-icon>mdi-lock</v-icon>
+              <v-icon>{{ ICON.LOCK }}</v-icon>
               <span>Wymagane hasło</span>
             </div>
             <div>
-              <v-icon>mdi-account-multiple</v-icon>
+              <v-icon>{{ ICON.USERS }}</v-icon>
               <span>{{ game.usersCount }} graczy w pokoju</span>
             </div>
           </div>

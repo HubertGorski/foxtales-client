@@ -5,10 +5,9 @@ import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { computed } from "vue";
 import HubBtn from "./hubComponents/HubBtn.vue";
-import { useI18n } from "vue-i18n";
+import { ICON } from "@/enums/iconsEnum";
 
 const userStore = useUserStore();
-const { t } = useI18n();
 
 const props = defineProps({
   newQuestion: {
@@ -53,20 +52,20 @@ const visibleCatalogs = computed(() => {
 
 const libraryPreviousBtn = computed(() => {
   return {
-    icon: "mdi-arrow-left-bold-circle-outline",
+    icon: ICON.ARROW_LEFT,
     disabled: currentPage.value === 1,
     action: () => setPreviousPage(),
   };
 });
 const libraryNextBtn = computed(() => {
   return {
-    icon: "mdi-arrow-right-bold-circle-outline",
+    icon: ICON.ARROW_RIGHT,
     disabled: currentPage.value >= totalPages.value,
     action: () => setNextPage(),
   };
 });
 const addQuestionBtn = {
-  text: t("add"),
+  text: "add",
   isOrange: true,
   action: addQuestion,
 };
@@ -97,8 +96,8 @@ const addQuestionBtn = {
             @click="catalog.isSelected = !catalog.isSelected"
             class="catalog_icon"
           >
-            <v-icon v-if="catalog.isSelected">mdi-select-inverse</v-icon>
-            <v-icon v-else>mdi-select</v-icon>
+            <v-icon v-if="catalog.isSelected">{{ ICON.SELECT_ON }}</v-icon>
+            <v-icon v-else>{{ ICON.SELECT_OFF }}</v-icon>
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ROUTE_PATH } from "@/router/routeEnums";
-import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
@@ -9,7 +8,6 @@ import { computed } from "vue";
 
 const userStore = useUserStore();
 const router = useRouter();
-const { t } = useI18n();
 
 const navigateToJoinGame = () => {
   router.push(ROUTE_PATH.JOIN_GAME);
@@ -23,13 +21,13 @@ const currentUser = userStore.user;
 const btns = [
   {
     id: 1,
-    text: t("settings"),
+    text: "settings",
     isOrange: true,
     action: () => router.push(ROUTE_PATH.SETTINGS),
   },
   {
     id: 2,
-    text: t("logout"),
+    text: "logout",
     isOrange: false,
     action: () => router.push(ROUTE_PATH.HOME),
   },

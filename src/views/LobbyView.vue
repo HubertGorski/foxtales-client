@@ -5,12 +5,10 @@ import UserListElement from "@/components/UserListElement.vue";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { users } from "@/assets/data/users";
 import { computed, ref } from "vue";
-import { useI18n } from "vue-i18n";
 import { Game } from "@/models/Game";
-
+import HubTooltip from "@/components/hubComponents/HubTooltip.vue";
 
 const router = useRouter();
-const { t } = useI18n();
 
 const isZoom = ref<boolean>(false);
 
@@ -25,17 +23,16 @@ const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
 });
 
-
 const backButton = computed(() => {
   return {
-    text: t("closeGame"),
+    text: "closeGame",
     isOrange: false,
     action: () => router.push(ROUTE_PATH.MENU),
   };
 });
 const startButton = computed(() => {
   return {
-    text: t("start"),
+    text: "start",
     isOrange: true,
     action: () => startGame(),
     disabled: game.value.areUsersUnready,
@@ -91,13 +88,18 @@ const startGame = () => {
         :text="backButton.text"
         :isOrange="backButton.isOrange"
       />
-      <HubBtn
-        class="btn"
-        :action="startButton.action"
-        :text="startButton.text"
-        :isOrange="startButton.isOrange"
-        :disabled="startButton.disabled"
-      />
+      <HubTooltip
+        :tooltipText="$t('tooltip.startNewGame')"
+        :disabled="!startButton.disabled"
+      >
+        <HubBtn
+          class="btn"
+          :action="startButton.action"
+          :text="startButton.text"
+          :isOrange="startButton.isOrange"
+          :disabled="startButton.disabled"
+        />
+      </HubTooltip>
     </div>
   </div>
 </template>
