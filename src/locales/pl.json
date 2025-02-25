@@ -38,6 +38,8 @@
   "haveFunAndEnjoyGame": "Baw się dobrze i miłej gry.",
   "changeLanguage": "Zmień język",
   "isComing": "Dostępne wkrótce",
+  "selectedItems": "Wybrane elementy",
+  "selectedCatalogs": "Wybrane katalogi",
   "tooltip": {
     "startNewGame": "By rozpocząć grę wszyscy gracze muszą potwierdzić udział",
     "privateQuestionsDescription": "Opis prywatnych pytań",
@@ -51,5 +53,10 @@
     "usePrivateQuestions": "Używaj prywatnych pytań",
     "usePublicQuestions": "Używaj publicznych pytań",
     "gameVisibleOnList": "Gra widoczna na liście"
+  },
+  "languages": {
+    "polish": "Polski",
+    "english": "Angielski",
+    "german": "Niemiecki"
   }
 }

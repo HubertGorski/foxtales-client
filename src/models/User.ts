@@ -5,6 +5,7 @@ import { Catalog } from "./Catalog";
 import { Avatar } from "./Avatar";
 import type { Achievement } from "./Achievement";
 import type { Permission } from "./Permission";
+import { LANG } from "@/enums/languagesEnum";
 
 export class User {
   // Basic info
@@ -29,6 +30,7 @@ export class User {
   permissions: Permission[] = [];
   catalogs: Catalog[] = [];
   invitedUsersToAppCount: number = 0;
+  language: LANG = LANG.PL;
 
   // In Game or lobby
   isReady: boolean = false;

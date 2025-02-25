@@ -4,22 +4,50 @@ import { computed, ref, type PropType } from "vue";
 import HubBtn from "./hubComponents/HubBtn.vue";
 import HubTooltip from "./hubComponents/HubTooltip.vue";
 
-interface listElement {
+export interface listElement {
   id: number;
   title: string;
   description: string;
   isSelected: boolean;
 }
 
-const items = defineModel({ type: Array as PropType<Array<listElement>>, required: true });
+const props = defineProps({
+  showSelectedCount: {
+    type: Boolean,
+    default: false,
+  },
+  customSelectedCountTitle: {
+    type: String,
+    default: "selectedItems",
+  },
+  multiple: {
+    type: Boolean,
+    default: false,
+  },
+  showPagination: {
+    type: Boolean,
+    default: false,
+  },
+  height: {
+    type: Number,
+    required: false,
+  },
+  itemsPerPage: {
+    type: Number,
+    default: 4,
+  },
+});
 
-const actualItems = ref(items);
+const items = defineModel({
+  type: Array as PropType<Array<listElement>>,
+  required: true,
+});
 const currentPage = ref<number>(1);
-const itemsPerPage: number = 4;
 
 const visibleItems = computed(() => {
-  const startIndex = currentPage.value * itemsPerPage - itemsPerPage;
-  return actualItems.value.slice(startIndex, startIndex + itemsPerPage);
+  const startIndex =
+    currentPage.value * props.itemsPerPage - props.itemsPerPage;
+  return items.value.slice(startIndex, startIndex + props.itemsPerPage);
 });
 
 const previousPageBtn = computed(() => {
@@ -38,11 +66,11 @@ const nextPageBtn = computed(() => {
 });
 
 const totalPages = computed(() =>
-  Math.ceil(actualItems.value.length / itemsPerPage)
+  Math.ceil(items.value.length / props.itemsPerPage)
 );
 
 const selectedItems = computed(() =>
-  actualItems.value.filter((item) => item.isSelected)
+  items.value.filter((item) => item.isSelected)
 );
 
 const setPreviousPage = () => {
@@ -52,14 +80,24 @@ const setPreviousPage = () => {
 const setNextPage = () => {
   currentPage.value = currentPage.value + 1;
 };
+
+const selectItem = (item: listElement) => {
+  if (props.multiple) {
+    item.isSelected = !item.isSelected;
+  } else {
+    items.value.map((item) => (item.isSelected = false));
+    item.isSelected = true;
+  }
+};
 </script>
 
 <template>
   <div class="whiteSelectList">
-    <div class="whiteSelectList_selectedCount">
-      Wybrane katalogi ({{ selectedItems.length }} / {{ actualItems.length }})
+    <div v-if="showSelectedCount" class="whiteSelectList_selectedCount">
+      {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} /
+      {{ items.length }})
     </div>
-    <div class="whiteSelectList_data">
+    <div class="whiteSelectList_data" :style="{ height: height + 'px' }">
       <div
         v-for="item in visibleItems"
         :key="item.id"
@@ -74,13 +112,13 @@ const setNextPage = () => {
         >
           <div class="item_name">{{ item.title }}</div>
         </HubTooltip>
-        <div @click="item.isSelected = !item.isSelected" class="item_icon">
+        <div @click="selectItem(item)" class="item_icon">
           <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>
           <v-icon v-else>{{ ICON.SELECT_OFF }}</v-icon>
         </div>
       </div>
     </div>
-    <div v-if="totalPages > 1" class="pagination">
+    <div v-if="totalPages > 1 && showPagination" class="pagination">
       <HubBtn
         class="pagination_btn"
         :icon="previousPageBtn.icon"
@@ -115,7 +153,6 @@ const setNextPage = () => {
     border: 1px $mainBrownColor solid;
     border-radius: 12px;
     padding: 4px;
-    height: 198px;
 
     .isSelected {
       & .item_icon {
@@ -125,9 +162,10 @@ const setNextPage = () => {
       & .item_name {
         color: $mainBrownColor;
         font-weight: 600;
-        &::before {
-          background-color: #988482;
-        }
+      }
+
+      &.item::before {
+        background-color: #988482;
       }
     }
 

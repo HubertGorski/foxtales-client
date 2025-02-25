@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { User } from "@/models/User";
 import { users } from "@/assets/data/users";
 import type { Avatar } from "@/models/Avatar";
+import type { LANG } from "@/enums/languagesEnum";
 
 interface UserState {
   user: User;
@@ -26,6 +27,10 @@ export const useUserStore = defineStore({
 
     setAvatar(newAvatar: Avatar) {
       this.user.avatar = newAvatar;
+    },
+
+    setLanguage(newLanguage: LANG) {
+      this.user.language = newLanguage;
     },
   },
 });

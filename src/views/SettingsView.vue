@@ -6,18 +6,58 @@ import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
 import type { Avatar } from "@/models/Avatar";
 import { avatars } from "@/assets/data/avatars";
-import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import LevelBar from "@/components/LevelBar.vue";
 import { ICON } from "@/enums/iconsEnum";
+import WhiteSelectList, {
+  type listElement,
+} from "@/components/WhiteSelectList.vue";
+import { useI18n } from "vue-i18n";
+import { LANG, languagesMap } from "@/enums/languagesEnum";
 
 const userStore = useUserStore();
-
+const { t } = useI18n();
 const router = useRouter();
 
 const newUsername = ref<string>("");
+const actualAvatars = ref<Avatar[]>(avatars);
 const currentUser = userStore.user;
+const languages = ref<listElement[]>([
+  {
+    id: 0,
+    title: t("languages.polish"),
+    description: "",
+    isSelected: currentUser.language === LANG.PL,
+  },
+  {
+    id: 1,
+    title: t("languages.english"),
+    description: "",
+    isSelected: currentUser.language === LANG.EN,
+  },
+  {
+    id: 2,
+    title: t("languages.german"),
+    description: "",
+    isSelected: currentUser.language === LANG.DE,
+  },
+]);
+
+const allUserAchievements = currentUser.achievements.sort(
+  (a, b) => Number(b.isUnlocked) - Number(a.isUnlocked)
+);
+const unlockedAchievementsCount = allUserAchievements.filter(
+  (achievement) => achievement.isUnlocked
+).length;
+
+const showAllAchievement = () => {
+  console.log("showAllAchievement");
+};
+
+const changeLanguage = () => {
+  userStore.setLanguage(selectedLanguage.value);
+};
 
 const changeAvatar = (avatar: Avatar) => {
   userStore.setAvatar(avatar);
@@ -26,16 +66,6 @@ const changeAvatar = (avatar: Avatar) => {
 const changeUsername = () => {
   userStore.setUsername(newUsername.value);
   newUsername.value = "";
-};
-const allUserAchievements = currentUser.achievements.sort(
-  (a, b) => Number(b.isUnlocked) - Number(a.isUnlocked)
-);
-const unlockedAchievementsCount = allUserAchievements.filter(achievement => achievement.isUnlocked).length;
-
-const actualAvatars = ref<Avatar[]>(avatars);
-
-const showAllAchievement = () => {
-  console.log("showAllAchievement");
 };
 
 const btns = [
@@ -54,6 +84,10 @@ const btns = [
   },
 ];
 
+const selectedLanguage = computed(
+  () => languagesMap[languages.value.find((lang) => lang.isSelected)!.id]
+);
+
 const acceptUsernameBtn = computed(() => {
   return {
     text: "accept",
@@ -62,12 +96,29 @@ const acceptUsernameBtn = computed(() => {
     action: () => changeUsername(),
   };
 });
+
+const acceptLanguageBtn = computed(() => {
+  return {
+    text: "accept",
+    isOrange: true,
+    disabled: currentUser.language === selectedLanguage.value,
+    action: () => changeLanguage(),
+  };
+});
 </script>
 
 <template>
   <div class="settingsView">
     <div class="settings">
-      <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName', 'changeLanguage']" setOpenTab="accountStats">
+      <HubAccordion
+        :slotNames="[
+          'accountStats',
+          'chooseFox',
+          'changeName',
+          'changeLanguage',
+        ]"
+        setOpenTab="accountStats"
+      >
         <template #accountStats>
           <div class="accordionContent">
             <LevelBar
@@ -108,7 +159,7 @@ const acceptUsernameBtn = computed(() => {
                     v-for="achievement in allUserAchievements"
                     :key="achievement.id"
                     :class="{
-                      unlocked: achievement.isUnlocked
+                      unlocked: achievement.isUnlocked,
                     }"
                     class="achievement"
                     :src="achievement.icon"
@@ -163,7 +214,14 @@ const acceptUsernameBtn = computed(() => {
         </template>
         <template #changeLanguage>
           <div class="accordionContent">
-            jezyk ustaw
+            <WhiteSelectList v-model="languages" />
+            <HubBtn
+              class="setLangBtn"
+              :action="acceptLanguageBtn.action"
+              :text="acceptLanguageBtn.text"
+              :isOrange="acceptLanguageBtn.isOrange"
+              :disabled="acceptLanguageBtn.disabled"
+            />
           </div>
         </template>
       </HubAccordion>
@@ -262,6 +320,11 @@ const acceptUsernameBtn = computed(() => {
 
   .accordionContent {
     padding: 16px;
+
+    .setLangBtn {
+      margin-top: 12px;
+      padding: 6px;
+    }
   }
 
   .achievements {

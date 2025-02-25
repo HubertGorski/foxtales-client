@@ -22,7 +22,9 @@ const emit = defineEmits<{
 const actualCatalogs = ref<Catalog[]>(userStore.user.catalogs);
 
 const addQuestion = () => {
-  const selectedActualCatalogs = actualCatalogs.value.filter((catalog) => catalog.isSelected)
+  const selectedActualCatalogs = actualCatalogs.value.filter(
+    (catalog) => catalog.isSelected
+  );
   emit("addQuestion", selectedActualCatalogs);
 };
 
@@ -41,7 +43,14 @@ const addQuestionBtn = {
         {{ newQuestion }}
       </div>
     </WhiteCard>
-    <WhiteSelectList v-model="actualCatalogs" />
+    <WhiteSelectList
+      v-model="actualCatalogs"
+      customSelectedCountTitle="selectedCatalogs"
+      :height="198"
+      showSelectedCount
+      multiple
+      showPagination
+    />
     <HubBtn
       class="questionCreator_btn"
       :action="addQuestionBtn.action"
