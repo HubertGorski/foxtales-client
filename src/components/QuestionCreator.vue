@@ -6,6 +6,7 @@ import { useUserStore } from "@/stores/userStore";
 import { computed } from "vue";
 import HubBtn from "./hubComponents/HubBtn.vue";
 import { ICON } from "@/enums/iconsEnum";
+import HubTooltip from "./hubComponents/HubTooltip.vue";
 
 const userStore = useUserStore();
 
@@ -91,7 +92,14 @@ const addQuestionBtn = {
           class="catalog"
           :class="{ isSelected: catalog.isSelected }"
         >
-          <div class="catalog_name">{{ catalog.title }}</div>
+          <HubTooltip
+            :tooltipText="catalog.description"
+            :tooltipDisabled="!catalog.description"
+            maxWidth
+            dictsDisabled
+          >
+            <div class="catalog_name">{{ catalog.title }}</div>
+          </HubTooltip>
           <div
             @click="catalog.isSelected = !catalog.isSelected"
             class="catalog_icon"
@@ -164,26 +172,26 @@ const addQuestionBtn = {
 
     .catalog {
       display: flex;
-      gap: 4px;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
 
       &_name {
         padding: 0 8px;
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
-        position: relative;
         color: $grayColor;
         font-style: italic;
         font-size: 16px;
         letter-spacing: 0.1px;
-        &::before {
-          position: absolute;
-          bottom: 14px;
-          content: "";
-          height: 1px;
-          width: 100%;
-          background-color: #ccc2c1;
-        }
+      }
+
+      &::before {
+        position: absolute;
+        bottom: 14px;
+        left: 8px;
+        content: "";
+        height: 1px;
+        width: 80%;
+        background-color: #ccc2c1;
       }
 
       &_icon {

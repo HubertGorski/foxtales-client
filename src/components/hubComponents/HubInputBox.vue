@@ -67,7 +67,7 @@ const text = defineModel({ type: String, required: true });
       :extraBtnIsOrange="extraBtnIsOrange"
       :textType="textType"
       :isTextarea="isTextarea"
-      :textPlaceholder="textPlaceholder ? $t(textPlaceholder) : ''"
+      :textPlaceholder="textPlaceholder"
     />
   </div>
 </template>

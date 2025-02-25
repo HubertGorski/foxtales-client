@@ -123,7 +123,7 @@ const acceptUsernameBtn = computed(() => {
             </div>
             <HubBtn
               class="achievements_btn"
-              text="zobacz więcej"
+              text="seeMore"
               :icon="ICON.MINI_ARROW_RIGHT"
               :action="showAllAchievement"
             />
@@ -162,6 +162,7 @@ const acceptUsernameBtn = computed(() => {
             :btnText="acceptUsernameBtn.text"
             :btnIsOrange="acceptUsernameBtn.isOrange"
             :textPlaceholder="currentUser.username"
+            dictsDisabled
           />
         </template>
       </HubAccordion>

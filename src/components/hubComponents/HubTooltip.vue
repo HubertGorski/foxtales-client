@@ -6,7 +6,15 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  disabled: {
+  tooltipDisabled: {
+    type: Boolean,
+    default: false,
+  },
+  maxWidth: {
+    type: Boolean,
+    default: false,
+  },
+  dictsDisabled: {
     type: Boolean,
     default: false,
   },
@@ -14,7 +22,7 @@ const props = defineProps({
 
 const isTooltipActive = ref<boolean>(false);
 const toggleTooltip = () => {
-  if (props.disabled) {
+  if (props.tooltipDisabled) {
     return;
   }
 
@@ -25,10 +33,21 @@ const toggleTooltip = () => {
 <template>
   <v-tooltip v-model="isTooltipActive" location="top">
     <template v-slot:activator="{ props }">
-      <div class="hubTooltip" @click="toggleTooltip" v-bind="props">
+      <div class="hubTooltip" :class="{maxWidth: maxWidth}" @click="toggleTooltip" v-bind="props">
         <slot></slot>
       </div>
     </template>
-    <span>{{ $t(tooltipText) }}</span>
+    <span v-if="dictsDisabled">{{ tooltipText }}</span>
+    <span v-else>{{ $t(tooltipText) }}</span>
   </v-tooltip>
 </template>
+
+<style lang="scss">
+
+
+.hubTooltip {
+  &.maxWidth {
+    width: 100%;
+  }
+}
+</style>

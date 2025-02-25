@@ -1,11 +1,10 @@
 import { createI18n } from "vue-i18n";
 import pl from "../locales/pl.json";
-import en from "../locales/en.json";
 
 const i18n = createI18n({
   locale: navigator.language,
-  fallbackLocale: "en",
-  messages: { pl, en },
+  fallbackLocale: "pl",
+  messages: { pl },
   legacy: false,
   globalInjection: true,
 });

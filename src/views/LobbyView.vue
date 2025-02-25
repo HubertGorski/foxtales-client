@@ -89,8 +89,8 @@ const startGame = () => {
         :isOrange="backButton.isOrange"
       />
       <HubTooltip
-        :tooltipText="$t('tooltip.startNewGame')"
-        :disabled="!startButton.disabled"
+        tooltipText="tooltip.startNewGame"
+        :tooltipDisabled="!startButton.disabled"
       >
         <HubBtn
           class="btn"

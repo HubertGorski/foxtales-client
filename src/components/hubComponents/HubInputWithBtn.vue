@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import HubBtn from "./HubBtn.vue";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps({
   btnText: {
@@ -36,12 +37,25 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  dictsDisabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
+const { t } = useI18n();
 const text = defineModel({ type: String, required: true });
 
 const btnIsDisabled = computed(() => {
   return text.value.length === 0;
+});
+
+const actualTextPlaceholder = computed(() => {
+  if(!props.textPlaceholder) {
+    return '';
+  }
+
+  return props.dictsDisabled ? props.textPlaceholder : t(props.textPlaceholder);
 });
 </script>
 
@@ -59,7 +73,7 @@ const btnIsDisabled = computed(() => {
       v-model="text"
       hide-details
       @keydown.enter="btnAction"
-      :placeholder="textPlaceholder ? $t(textPlaceholder) : ''"
+      :placeholder="actualTextPlaceholder"
       :type="textType"
     />
     <div class="hubInputWithBtn_controls">
