@@ -66,6 +66,7 @@ const actualTextPlaceholder = computed(() => {
       v-model="text"
       @keydown.enter="btnAction"
       :auto-grow="false"
+      rows="2"
       hide-details
     />
     <v-text-field

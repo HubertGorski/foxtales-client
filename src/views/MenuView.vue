@@ -17,6 +17,10 @@ const navigateToCreateGame = () => {
   router.push(ROUTE_PATH.CREATE_GAME);
 };
 
+const goToQuestionsPanel = () => {
+  router.push(ROUTE_PATH.QUESTIONS_PANEL);
+};
+
 const currentUser = userStore.user;
 const btns = [
   {
@@ -34,7 +38,8 @@ const btns = [
 ];
 
 const selectedFox = computed(() => {
-  return new URL(`../assets/imgs/${currentUser.avatar.id}.png`, import.meta.url).href;
+  return new URL(`../assets/imgs/${currentUser.avatar.id}.png`, import.meta.url)
+    .href;
 });
 </script>
 
@@ -51,8 +56,12 @@ const selectedFox = computed(() => {
         title="createNewGame"
       />
       <HubAccordionElement @click="navigateToJoinGame" title="joinTheGame" />
-      <img :src="selectedFox" alt="Lisek" class="fox" />
+      <div @click="goToQuestionsPanel" class="menu_elementWithFox">
+        <img class="fox" src="@/assets/imgs/7.png" alt="Lisek" />
+        <HubAccordionElement title="manageLibrary" isTitleCenter />
+      </div>
     </div>
+    <img :src="selectedFox" alt="Lisek" class="mainFox" />
     <div class="controls">
       <HubBtn
         class="controls_btn"
@@ -101,7 +110,7 @@ const selectedFox = computed(() => {
         display: block;
         width: 100%;
         font-size: 3em;
-        max-height: 2.8em; 
+        max-height: 2.8em;
         line-height: 64px;
         color: $mainOrangeColor;
         overflow-x: scroll;
@@ -117,13 +126,25 @@ const selectedFox = computed(() => {
       }
     }
 
-    .fox {
-      position: absolute;
-      max-width: 210px;
-      bottom: 0;
-      margin-left: -16px;
-      z-index: 2;
+    &_elementWithFox {
+      position: relative;
+
+      .fox {
+        position: absolute;
+        width: 78px;
+        bottom: 0;
+        left: 0;
+        border-radius: 12px;
+      }
     }
+  }
+
+  .mainFox {
+    position: absolute;
+    max-width: 210px;
+    bottom: 0;
+    margin-left: -16px;
+    z-index: 2;
   }
 
   .controls {

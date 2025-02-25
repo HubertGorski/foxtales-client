@@ -3,10 +3,8 @@ import type { Catalog } from "@/models/Catalog";
 import WhiteCard from "./WhiteCard.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
-import { computed } from "vue";
 import HubBtn from "./hubComponents/HubBtn.vue";
-import { ICON } from "@/enums/iconsEnum";
-import HubTooltip from "./hubComponents/HubTooltip.vue";
+import WhiteSelectList from "./WhiteSelectList.vue";
 
 const userStore = useUserStore();
 
@@ -21,50 +19,13 @@ const emit = defineEmits<{
   (e: "addQuestion", catalogs: Catalog[]): void;
 }>();
 
-const currentUser = userStore.user;
-const actualCatalogs = ref<Catalog[]>(currentUser.catalogs);
-const currentPage = ref<number>(1);
-const itemsPerPage: number = 4;
-
-const selectedActualCatalogs = computed(() =>
-  actualCatalogs.value.filter((catalog) => catalog.isSelected)
-);
-
-const totalPages = computed(() =>
-  Math.ceil(actualCatalogs.value.length / itemsPerPage)
-);
-
-const setPreviousPage = () => {
-  currentPage.value = currentPage.value - 1;
-};
-
-const setNextPage = () => {
-  currentPage.value = currentPage.value + 1;
-};
+const actualCatalogs = ref<Catalog[]>(userStore.user.catalogs);
 
 const addQuestion = () => {
-  emit("addQuestion", selectedActualCatalogs.value);
+  const selectedActualCatalogs = actualCatalogs.value.filter((catalog) => catalog.isSelected)
+  emit("addQuestion", selectedActualCatalogs);
 };
 
-const visibleCatalogs = computed(() => {
-  const startIndex = currentPage.value * itemsPerPage - itemsPerPage;
-  return actualCatalogs.value.slice(startIndex, startIndex + itemsPerPage);
-});
-
-const libraryPreviousBtn = computed(() => {
-  return {
-    icon: ICON.ARROW_LEFT,
-    disabled: currentPage.value === 1,
-    action: () => setPreviousPage(),
-  };
-});
-const libraryNextBtn = computed(() => {
-  return {
-    icon: ICON.ARROW_RIGHT,
-    disabled: currentPage.value >= totalPages.value,
-    action: () => setNextPage(),
-  };
-});
 const addQuestionBtn = {
   text: "add",
   isOrange: true,
@@ -80,53 +41,9 @@ const addQuestionBtn = {
         {{ newQuestion }}
       </div>
     </WhiteCard>
-    <div class="libraryTitle">
-      Wybrane katalogi ({{ selectedActualCatalogs.length }} /
-      {{ actualCatalogs.length }})
-    </div>
-    <div class="library">
-      <div class="library_data">
-        <div
-          v-for="catalog in visibleCatalogs"
-          :key="catalog.id"
-          class="catalog"
-          :class="{ isSelected: catalog.isSelected }"
-        >
-          <HubTooltip
-            :tooltipText="catalog.description"
-            :tooltipDisabled="!catalog.description"
-            maxWidth
-            dictsDisabled
-          >
-            <div class="catalog_name">{{ catalog.title }}</div>
-          </HubTooltip>
-          <div
-            @click="catalog.isSelected = !catalog.isSelected"
-            class="catalog_icon"
-          >
-            <v-icon v-if="catalog.isSelected">{{ ICON.SELECT_ON }}</v-icon>
-            <v-icon v-else>{{ ICON.SELECT_OFF }}</v-icon>
-          </div>
-        </div>
-      </div>
-      <div v-if="totalPages > 1" class="library_pagination">
-        <HubBtn
-          class="btn"
-          :icon="libraryPreviousBtn.icon"
-          :action="libraryPreviousBtn.action"
-          :disabled="libraryPreviousBtn.disabled"
-        />
-        <div class="paginationData">{{ currentPage }} / {{ totalPages }}</div>
-        <HubBtn
-          class="btn"
-          :icon="libraryNextBtn.icon"
-          :action="libraryNextBtn.action"
-          :disabled="libraryNextBtn.disabled"
-        />
-      </div>
-    </div>
+    <WhiteSelectList v-model="actualCatalogs" />
     <HubBtn
-      class="controls_btn"
+      class="questionCreator_btn"
       :action="addQuestionBtn.action"
       :text="addQuestionBtn.text"
       :isOrange="addQuestionBtn.isOrange"
@@ -136,92 +53,6 @@ const addQuestionBtn = {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/variables";
-
-.libraryTitle {
-  font-style: italic;
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  text-align: end;
-  padding-right: 4px;
-}
-.library {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  &_data {
-    background-color: #fffefd;
-    border: 1px $mainBrownColor solid;
-    border-radius: 12px;
-    padding: 4px;
-    height: 198px;
-
-    .isSelected {
-      & .catalog_icon {
-        color: #654744;
-      }
-
-      & .catalog_name {
-        color: $mainBrownColor;
-        font-weight: 600;
-        &::before {
-          background-color: #988482;
-        }
-      }
-    }
-
-    .catalog {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-
-      &_name {
-        padding: 0 8px;
-        color: $grayColor;
-        font-style: italic;
-        font-size: 16px;
-        letter-spacing: 0.1px;
-      }
-
-      &::before {
-        position: absolute;
-        bottom: 14px;
-        left: 8px;
-        content: "";
-        height: 1px;
-        width: 80%;
-        background-color: #ccc2c1;
-      }
-
-      &_icon {
-        border-radius: 4px;
-        color: $lightGrayColor;
-        margin: 8px;
-        font-size: 20px;
-      }
-    }
-  }
-  &_pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fffefd;
-    border: 1px $mainBrownColor solid;
-    border-radius: 12px;
-
-    .btn {
-      font-size: 20px;
-      padding: 4px;
-      width: min-content;
-    }
-  }
-
-  .paginationData {
-    color: $mainBrownColor;
-    font-weight: 600;
-  }
-}
 
 .questionCreator {
   width: 324px;
@@ -238,6 +69,11 @@ const addQuestionBtn = {
     font-style: italic;
     color: $lightGrayColor;
     letter-spacing: 0.5px;
+  }
+
+  &_btn {
+    padding: 8px;
+    margin-top: 16px;
   }
 }
 </style>

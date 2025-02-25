@@ -13,9 +13,9 @@ import { ICON } from "@/enums/iconsEnum";
 
 const router = useRouter();
 
-const isAddQuestionPanelVisible = ref<boolean>(false);
-const isQuestionCreatorOpen = ref<boolean>(false);
 const isCatalogCreatorOpen = ref<boolean>(false);
+const isAddQuestionPanelVisible = ref<boolean>(true);
+const isQuestionCreatorOpen = ref<boolean>(false);
 
 const addQuestion = (catalogs: Catalog[]) => {
   event.preventDefault();
@@ -25,7 +25,9 @@ const addQuestion = (catalogs: Catalog[]) => {
 
   console.log(`Dodano pytanie: "${newQuestion.value}"`);
   if (catalogs && catalogs.length > 0) {
-    console.log(`Dodano do katalogów: "${catalogs.map(catalog => catalog.title)}"`);
+    console.log(
+      `Dodano do katalogów: "${catalogs.map((catalog) => catalog.title)}"`
+    );
   }
   isQuestionCreatorOpen.value = false;
   newQuestion.value = "";
@@ -70,29 +72,36 @@ const newQuestion = ref<string>("");
       title="addCatalogToLibrary"
       isSmallerTitle
     />
-    <HubAccordion
-      :slotNames="['addQuestionToLibrary', 'manageLibrary']"
-      setOpenTab="addQuestionToLibrary"
+
+    <HubAccordionElement
+      title="addQuestionToLibrary"
+      :isOpen="isAddQuestionPanelVisible"
       isSmallerTitle
-      isDividerVisible
+      withStatusIcon
+      @toggleAccordion="isAddQuestionPanelVisible = !isAddQuestionPanelVisible"
     >
-      <template #addQuestionToLibrary
-        ><HubInputWithBtn
-          @click="isAddQuestionPanelVisible = true"
-          v-model="newQuestion"
-          class="addQuestionToLibrary"
-          title="addQuestionToLibrary"
-          :btnAction="addQuestionBtn.action"
-          :btnText="addQuestionBtn.text"
-          :extraBtnIcon="ICON.ADD_TO_COLLECTION"
-          :extraBtnAction="showCatalogsList"
-          :btnIsOrange="addQuestionBtn.isOrange"
-          isTextarea
-      /></template>
-      <template #manageLibrary>
-        <div class="manageLibrary_table">Pytania i catalogi tu beda</div>
-      </template>
-    </HubAccordion>
+      <HubInputWithBtn
+        v-model="newQuestion"
+        class="addQuestionToLibrary"
+        title="addQuestionToLibrary"
+        :btnAction="addQuestionBtn.action"
+        :btnText="addQuestionBtn.text"
+        :extraBtnIcon="ICON.ADD_TO_COLLECTION"
+        :extraBtnAction="showCatalogsList"
+        :btnIsOrange="addQuestionBtn.isOrange"
+        isTextarea
+      />
+    </HubAccordionElement>
+
+    <HubAccordionElement
+      class="manageLibrary"
+      title="manageLibrary"
+      isOpen
+      isSmallerTitle
+    >
+      <div>Pytania i catalogi tu beda</div>
+    </HubAccordionElement>
+
     <div class="controls">
       <HubBtn
         class="controls_btn"
@@ -119,16 +128,19 @@ const newQuestion = ref<string>("");
   padding: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 12px;
 
   .addQuestionToLibrary {
-    padding: 24px;
+    padding: 12px;
+  }
+
+  .manageLibrary {
+    flex-grow: 1;
   }
 
   .controls {
     display: flex;
     gap: 12px;
-    padding-top: 24px;
 
     &_btn {
       padding: 12px 24px;

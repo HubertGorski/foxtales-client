@@ -90,9 +90,9 @@ const toggleAccordion = () => {
     font-weight: 600;
     padding: 24px;
     transition:
-      background-color,
-      padding 0.4s;
-
+    background-color,
+    padding 0.4s;
+    
     .isTitleCenter {
       text-align: center;
       width: 100%;
@@ -104,6 +104,7 @@ const toggleAccordion = () => {
     
     &.isSmallerTitle {
       font-size: 18px;
+      padding: 16px;
     }
 
     &.isOpen {

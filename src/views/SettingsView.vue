@@ -34,10 +34,6 @@ const unlockedAchievementsCount = allUserAchievements.filter(achievement => achi
 
 const actualAvatars = ref<Avatar[]>(avatars);
 
-const goToQuestionsPanel = () => {
-  router.push(ROUTE_PATH.QUESTIONS_PANEL);
-};
-
 const showAllAchievement = () => {
   console.log("showAllAchievement");
 };
@@ -71,7 +67,7 @@ const acceptUsernameBtn = computed(() => {
 <template>
   <div class="settingsView">
     <div class="settings">
-      <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName']" setOpenTab="accountStats">
+      <HubAccordion :slotNames="['accountStats', 'chooseFox', 'changeName', 'changeLanguage']" setOpenTab="accountStats">
         <template #accountStats>
           <div class="accordionContent">
             <LevelBar
@@ -165,15 +161,12 @@ const acceptUsernameBtn = computed(() => {
             dictsDisabled
           />
         </template>
+        <template #changeLanguage>
+          <div class="accordionContent">
+            jezyk ustaw
+          </div>
+        </template>
       </HubAccordion>
-      <div @click="goToQuestionsPanel" class="settings_elementWithFox">
-        <img
-        class="fox"
-        src="@/assets/imgs/7.png"
-        alt="Lisek"
-        />
-        <HubAccordionElement title="manageLibrary" isTitleCenter />
-      </div>
     </div>
     <div class="controls">
       <HubBtn
@@ -209,18 +202,6 @@ const acceptUsernameBtn = computed(() => {
     justify-content: center;
     gap: 12px;
     flex-grow: 1;
-
-    &_elementWithFox {
-      position: relative;
-
-      .fox {
-        position: absolute;
-        width: 78px;
-        bottom: 0;
-        left: 0;
-        border-radius: 12px;
-      }
-    }
   }
 
   .stats {
