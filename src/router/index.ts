@@ -8,7 +8,7 @@ import SettingsViewVue from "@/views/SettingsView.vue";
 import JoinGameViewVue from "@/views/JoinGameView.vue";
 import LobbyViewVue from "@/views/LobbyView.vue";
 import CreateGameViewVue from "@/views/CreateGameView.vue";
-import QuestionsPanelViewVue from "@/views/QuestionsPanelView.vue";
+import LibraryViewVue from "@/views/LibraryView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,9 +54,9 @@ const router = createRouter({
       component: CreateGameViewVue,
     },
     {
-      path: ROUTE_PATH.QUESTIONS_PANEL,
-      name: ROUTE_NAME.QUESTIONS_PANEL,
-      component: QuestionsPanelViewVue,
+      path: ROUTE_PATH.LIBRARY,
+      name: ROUTE_NAME.LIBRARY,
+      component: LibraryViewVue,
     },
   ],
 });

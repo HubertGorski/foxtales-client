@@ -3,7 +3,6 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { ref } from "vue";
-import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
@@ -48,12 +47,13 @@ const btns = [
     id: 1,
     text: "back",
     isOrange: false,
-    action: () => router.push(ROUTE_PATH.SETTINGS),
+    action: () => router.push(ROUTE_PATH.MENU),
   },
   {
     id: 2,
-    text: "menu",
+    text: "shop",
     isOrange: true,
+    disabled: true,
     action: () => router.push(ROUTE_PATH.MENU),
   },
 ];
@@ -62,7 +62,7 @@ const newQuestion = ref<string>("");
 </script>
 
 <template>
-  <div class="questionsPanelView">
+  <div class="libraryView">
     <HubPopup v-model="isQuestionCreatorOpen">
       <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
     </HubPopup>
@@ -114,6 +114,7 @@ const newQuestion = ref<string>("");
         :action="btns[1].action"
         :text="btns[1].text"
         :isOrange="btns[1].isOrange"
+        :disabled="btns[1].disabled"
       />
     </div>
   </div>
@@ -122,7 +123,7 @@ const newQuestion = ref<string>("");
 <style lang="scss" scoped>
 @import "@/assets/styles/variables";
 
-.questionsPanelView {
+.libraryView {
   background: $mainBackground;
   height: 100%;
   padding: 24px;

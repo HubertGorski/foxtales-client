@@ -7,7 +7,7 @@ export enum ROUTE_NAME {
   JOIN_GAME = "joinGame",
   CREATE_GAME = "createGame",
   LOBBY = "lobby",
-  QUESTIONS_PANEL = "questionsPanel",
+  LIBRARY = "library",
 }
 
 export enum ROUTE_OPTION {
@@ -19,7 +19,7 @@ export enum ROUTE_OPTION {
   JOIN_GAME = "router.joinGame",
   CREATE_GAME = "router.createGame",
   LOBBY = "router.lobby",
-  QUESTIONS_PANEL = "router.questionsPanel",
+  LIBRARY = "router.library",
 }
 
 export enum ROUTE_PATH {
@@ -31,5 +31,5 @@ export enum ROUTE_PATH {
   JOIN_GAME = "/join-game",
   CREATE_GAME = "/create-game",
   LOBBY = "/lobby",
-  QUESTIONS_PANEL = "/questions-panel",
+  LIBRARY = "/library",
 }

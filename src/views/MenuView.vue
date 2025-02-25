@@ -17,8 +17,8 @@ const navigateToCreateGame = () => {
   router.push(ROUTE_PATH.CREATE_GAME);
 };
 
-const goToQuestionsPanel = () => {
-  router.push(ROUTE_PATH.QUESTIONS_PANEL);
+const goToLibrary = () => {
+  router.push(ROUTE_PATH.LIBRARY);
 };
 
 const currentUser = userStore.user;
@@ -56,7 +56,7 @@ const selectedFox = computed(() => {
         title="createNewGame"
       />
       <HubAccordionElement @click="navigateToJoinGame" title="joinTheGame" />
-      <div @click="goToQuestionsPanel" class="menu_elementWithFox">
+      <div @click="goToLibrary" class="menu_elementWithFox">
         <img class="fox" src="@/assets/imgs/7.png" alt="Lisek" />
         <HubAccordionElement title="manageLibrary" isTitleCenter />
       </div>
