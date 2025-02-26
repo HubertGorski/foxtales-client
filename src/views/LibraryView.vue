@@ -37,6 +37,13 @@ const showCatalogsList = () => {
   isQuestionCreatorOpen.value = true;
 };
 
+const addCatalog = () => {
+  console.log('Dodano katalog: ', newCatalog.value.title);
+  isCatalogCreatorOpen.value = false;
+  newCatalog.value = new Catalog();
+  
+};
+
 const addQuestionBtn = {
   text: "add",
   isOrange: true,
@@ -47,7 +54,7 @@ const addCatalogBtn = computed(() => {
   return {
     text: "add",
     isOrange: true,
-    action: addQuestion,
+    action: addCatalog,
     disabled:
       newCatalog.value.title.length < 4,
   };
