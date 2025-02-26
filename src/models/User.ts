@@ -6,6 +6,7 @@ import { Avatar } from "./Avatar";
 import type { Achievement } from "./Achievement";
 import type { Permission } from "./Permission";
 import { LANG } from "@/enums/languagesEnum";
+import type { Question } from "./Question";
 
 export class User {
   // Basic info
@@ -29,6 +30,7 @@ export class User {
   avatarsIds: number[] = [];
   permissions: Permission[] = [];
   catalogs: Catalog[] = [];
+  questions: Question[] = [];
   invitedUsersToAppCount: number = 0;
   language: LANG = LANG.PL;
 

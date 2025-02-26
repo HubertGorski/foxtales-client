@@ -6,6 +6,7 @@ export class Catalog {
   createdDate: Date;
   usedCount: number;
   isSelected: boolean;
+  size: number;
 
   constructor(
     id: number = 0,
@@ -15,6 +16,7 @@ export class Catalog {
     createdDate: Date = new Date(),
     usedCount: number = 0,
     isSelected: boolean = false,
+    size: number = 10
   ) {
     this.id = id;
     this.title = title;
@@ -23,5 +25,12 @@ export class Catalog {
     this.createdDate = createdDate;
     this.usedCount = usedCount;
     this.isSelected = isSelected;
+    this.size = size;
   }
+
+  availableTypes = [
+    {id: 1, name: 'catalogs.small', size: 10},
+    {id: 2, name: 'catalogs.medium', size: 20},
+    {id: 3, name: 'catalogs.large', size: 35},
+  ];
 }

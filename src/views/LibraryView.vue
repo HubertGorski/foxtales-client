@@ -2,13 +2,14 @@
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
-import type { Catalog } from "@/models/Catalog";
+import { Catalog } from "@/models/Catalog";
 import { ICON } from "@/enums/iconsEnum";
+import CatalogCreator from "@/components/CatalogCreator.vue";
 
 const router = useRouter();
 
@@ -42,6 +43,16 @@ const addQuestionBtn = {
   action: addQuestion,
 };
 
+const addCatalogBtn = computed(() => {
+  return {
+    text: "add",
+    isOrange: true,
+    action: addQuestion,
+    disabled:
+      newCatalog.value.title.length < 4,
+  };
+});
+
 const btns = [
   {
     id: 1,
@@ -59,6 +70,7 @@ const btns = [
 ];
 
 const newQuestion = ref<string>("");
+const newCatalog = ref<Catalog>(new Catalog());
 </script>
 
 <template>
@@ -66,13 +78,14 @@ const newQuestion = ref<string>("");
     <HubPopup v-model="isQuestionCreatorOpen">
       <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
     </HubPopup>
-    <HubPopup v-model="isCatalogCreatorOpen"> Dodawanie katalogów tu </HubPopup>
+    <HubPopup v-model="isCatalogCreatorOpen">
+      <CatalogCreator v-model="newCatalog" :btn="addCatalogBtn" />
+    </HubPopup>
     <HubAccordionElement
       @click="isCatalogCreatorOpen = true"
       title="addCatalogToLibrary"
       isSmallerTitle
     />
-
     <HubAccordionElement
       title="addQuestionToLibrary"
       :isOpen="isAddQuestionPanelVisible"
@@ -92,7 +105,6 @@ const newQuestion = ref<string>("");
         isTextarea
       />
     </HubAccordionElement>
-
     <HubAccordionElement
       class="manageLibrary"
       title="manageLibrary"
@@ -101,7 +113,6 @@ const newQuestion = ref<string>("");
     >
       <div>Pytania i catalogi tu beda</div>
     </HubAccordionElement>
-
     <div class="controls">
       <HubBtn
         class="controls_btn"

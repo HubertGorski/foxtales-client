@@ -181,6 +181,10 @@ const selectItem = (item: listElement) => {
         font-style: italic;
         font-size: 16px;
         letter-spacing: 0.1px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 242px;
       }
 
       &::before {

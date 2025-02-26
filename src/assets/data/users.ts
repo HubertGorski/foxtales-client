@@ -3,6 +3,7 @@ import { avatars } from "./avatars";
 import { achievements } from "./achievements";
 import { catalogs } from "./catalogs";
 import { permissions } from "./permissions";
+import { questions } from "./questions";
 
 export const users = [
   new User({ userId: 1, avatar: avatars[3], username: "Natalia Bardzodlug ienazwisko" }),
@@ -23,5 +24,6 @@ export const users = [
     avatarsIds: [5],
     avatar: avatars[0],
     permissions: permissions,
+    questions: questions
   }),
 ];
