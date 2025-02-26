@@ -5,6 +5,7 @@ import { Question } from "@/models/Question";
 import WhiteSelectList, { type listElement } from "./WhiteSelectList.vue";
 import { useUserStore } from "@/stores/userStore";
 import { ref } from "vue";
+import { ICON } from "@/enums/iconsEnum";
 
 const props = defineProps({
   btn: {
@@ -12,6 +13,11 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits<{
+  (e: "closePopup"): void;
+}>();
+
 const catalog = defineModel({ type: Catalog, required: true });
 
 const userStore = useUserStore();
@@ -25,6 +31,10 @@ const convertQuestionToListElement = (question: Question) => {
   };
 };
 
+const closePopup = () => {
+  emit("closePopup");
+};
+
 const actualQuestions = ref<listElement[]>(
   userStore.user.questions.map(convertQuestionToListElement)
 );
@@ -32,7 +42,10 @@ const actualQuestions = ref<listElement[]>(
 
 <template>
   <div class="catalogCreator creamCard">
-    <div class="catalogCreator_title">Utwórz katalog</div>
+    <div class="catalogCreator_title">
+      <div>Utwórz katalog</div>
+      <v-icon @click="closePopup">{{ ICON.X }}</v-icon>
+    </div>
     <v-text-field v-model="catalog.title" label="Tytuł" hide-details />
     <v-textarea
       v-model="catalog.description"
@@ -85,6 +98,8 @@ const actualQuestions = ref<listElement[]>(
     color: $grayColor;
     font-size: 24px;
     font-weight: 600;
+    display: flex;
+    justify-content: space-between;
   }
 
   &_subtitle {

@@ -3,6 +3,8 @@ import { User } from "@/models/User";
 import { users } from "@/assets/data/users";
 import type { Avatar } from "@/models/Avatar";
 import type { LANG } from "@/enums/languagesEnum";
+import type { Catalog } from "@/models/Catalog";
+import type { Question } from "@/models/Question";
 
 interface UserState {
   user: User;
@@ -31,6 +33,14 @@ export const useUserStore = defineStore({
 
     setLanguage(newLanguage: LANG) {
       this.user.language = newLanguage;
+    },
+
+    addCatalog(newCatalog: Catalog) {
+      this.user.catalogs.push(newCatalog);
+    },
+
+    addQuestion(newQuestion: Question) {
+      this.user.questions.push(newQuestion);
     },
   },
 });

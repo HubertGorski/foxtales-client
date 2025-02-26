@@ -2,7 +2,7 @@
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
@@ -10,8 +10,10 @@ import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.
 import { Catalog } from "@/models/Catalog";
 import { ICON } from "@/enums/iconsEnum";
 import CatalogCreator from "@/components/CatalogCreator.vue";
+import { useUserStore } from "@/stores/userStore";
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const isCatalogCreatorOpen = ref<boolean>(false);
 const isAddQuestionPanelVisible = ref<boolean>(true);
@@ -38,10 +40,9 @@ const showCatalogsList = () => {
 };
 
 const addCatalog = () => {
-  console.log('Dodano katalog: ', newCatalog.value.title);
+  userStore.addCatalog(newCatalog.value);
+  console.log("Dodano katalog: ", newCatalog.value.title);
   isCatalogCreatorOpen.value = false;
-  newCatalog.value = new Catalog();
-  
 };
 
 const addQuestionBtn = {
@@ -55,8 +56,7 @@ const addCatalogBtn = computed(() => {
     text: "add",
     isOrange: true,
     action: addCatalog,
-    disabled:
-      newCatalog.value.title.length < 4,
+    disabled: newCatalog.value.title.length < 3,
   };
 });
 
@@ -78,6 +78,10 @@ const btns = [
 
 const newQuestion = ref<string>("");
 const newCatalog = ref<Catalog>(new Catalog());
+
+watch(isCatalogCreatorOpen, () => {
+  newCatalog.value = new Catalog();
+});
 </script>
 
 <template>
@@ -86,7 +90,11 @@ const newCatalog = ref<Catalog>(new Catalog());
       <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">
-      <CatalogCreator v-model="newCatalog" :btn="addCatalogBtn" />
+      <CatalogCreator
+        v-model="newCatalog"
+        :btn="addCatalogBtn"
+        @closePopup="isCatalogCreatorOpen = false"
+      />
     </HubPopup>
     <HubAccordionElement
       @click="isCatalogCreatorOpen = true"

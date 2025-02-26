@@ -15,4 +15,5 @@ export enum ICON {
   ANSWER = "mdi-comment",
   GAME = "mdi-gamepad-variant",
   ACHIEVEMENT = "mdi-trophy",
+  X = 'mdi-window-close'
 }
