@@ -2,7 +2,6 @@
 import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { ROUTE_PATH } from "@/router/routeEnums";
-import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { Game } from "@/models/Game";
 import { games } from "@/assets/data/games";
 import HubDivider from "@/components/hubComponents/HubDivider.vue";
@@ -10,6 +9,7 @@ import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import WhiteCard from "@/components/WhiteCard.vue";
 import { ICON } from "@/enums/iconsEnum";
+import NavigationBtns from "@/components/NavigationBtns.vue";
 
 const router = useRouter();
 
@@ -36,13 +36,6 @@ const acceptPasswordBtn = computed(() => {
     action: () => router.push(ROUTE_PATH.LOBBY),
   };
 });
-
-const backBtn = {
-  id: 1,
-  text: "back2",
-  isOrange: false,
-  action: () => router.push(ROUTE_PATH.MENU),
-};
 
 const goToLobby = () => {
   router.push(ROUTE_PATH.LOBBY);
@@ -103,14 +96,7 @@ const openPasswordPopup = () => {
         </WhiteCard>
       </div>
     </div>
-    <div class="joinGameView_controls">
-      <HubBtn
-        class="btn"
-        :action="backBtn.action"
-        :text="backBtn.text"
-        :isOrange="backBtn.isOrange"
-      />
-    </div>
+    <NavigationBtns btn="back2" />
   </div>
 </template>
 
@@ -129,17 +115,6 @@ const openPasswordPopup = () => {
 
   &_gameDetailsPopup {
     width: 310px;
-  }
-
-  &_controls {
-    display: flex;
-    width: 100%;
-    gap: 12px;
-
-    .btn {
-      padding: 8px 12px;
-      font-size: 16px;
-    }
   }
 
   &_chooseRoom {

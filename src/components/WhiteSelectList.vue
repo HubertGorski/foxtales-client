@@ -184,7 +184,7 @@ const selectItem = (item: listElement) => {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        width: 242px;
+        max-width: 242px;
       }
 
       &::before {

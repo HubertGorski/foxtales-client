@@ -1,29 +1,10 @@
 <script setup lang="ts">
-import { ROUTE_PATH } from "@/router/routeEnums";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
-import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { Game } from "@/models/Game";
 import HubSwitch from "@/components/hubComponents/HubSwitch.vue";
-
-const router = useRouter();
+import NavigationBtns from "@/components/NavigationBtns.vue";
 
 const newGame = ref(new Game("PIESEK1"));
-
-const btns = [
-  {
-    id: 1,
-    text: "back",
-    isOrange: false,
-    action: () => router.push(ROUTE_PATH.MENU),
-  },
-  {
-    id: 2,
-    text: "next",
-    isOrange: true,
-    action: () => router.push(ROUTE_PATH.LOBBY),
-  },
-];
 </script>
 
 <template>
@@ -54,20 +35,7 @@ const btns = [
           />
           <span class="publicSection_info">{{ $t("info.passwordRoom") }}</span>
         </div>
-        <div class="controls">
-          <HubBtn
-            class="controls_btn"
-            :action="btns[0].action"
-            :text="btns[0].text"
-            :isOrange="btns[0].isOrange"
-          />
-          <HubBtn
-            class="controls_btn"
-            :action="btns[1].action"
-            :text="btns[1].text"
-            :isOrange="btns[1].isOrange"
-          />
-        </div>
+        <NavigationBtns btn="back" btn2="next" />
       </div>
     </div>
     <img src="@/assets/imgs/fox5.png" alt="Lisek" class="fox" />
@@ -134,15 +102,6 @@ const btns = [
         font-style: italic;
         color: $lightGrayColor;
         margin: 12px 0;
-      }
-    }
-
-    .controls {
-      display: flex;
-      gap: 12px;
-
-      &_btn {
-        padding: 12px 24px;
       }
     }
   }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
-import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
-import { computed } from "vue";
+import NavigationBtns from "@/components/NavigationBtns.vue";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -22,20 +22,6 @@ const goToLibrary = () => {
 };
 
 const currentUser = userStore.user;
-const btns = [
-  {
-    id: 1,
-    text: "settings",
-    isOrange: true,
-    action: () => router.push(ROUTE_PATH.SETTINGS),
-  },
-  {
-    id: 2,
-    text: "logout",
-    isOrange: false,
-    action: () => router.push(ROUTE_PATH.HOME),
-  },
-];
 
 const selectedFox = computed(() => {
   return new URL(`../assets/imgs/${currentUser.avatar.id}.png`, import.meta.url)
@@ -62,20 +48,7 @@ const selectedFox = computed(() => {
       </div>
     </div>
     <img :src="selectedFox" alt="Lisek" class="mainFox" />
-    <div class="controls">
-      <HubBtn
-        class="controls_btn"
-        :action="btns[0].action"
-        :text="btns[0].text"
-        :isOrange="btns[0].isOrange"
-      />
-      <HubBtn
-        class="controls_btn"
-        :action="btns[1].action"
-        :text="btns[1].text"
-        :isOrange="btns[1].isOrange"
-      />
-    </div>
+    <NavigationBtns class="navigationBtns" btn="settings" btn2="logout" isColumnDirection />
   </div>
 </template>
 
@@ -147,15 +120,11 @@ const selectedFox = computed(() => {
     z-index: 2;
   }
 
-  .controls {
+  .navigationBtns {
+    width: 50%;
     position: absolute;
-    bottom: 0;
+    bottom: 8px;
     right: 12px;
-    &_btn {
-      padding: 12px 20px;
-      margin-bottom: 8px;
-      width: 164px;
-    }
   }
 }
 </style>

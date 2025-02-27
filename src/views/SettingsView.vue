@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ROUTE_PATH } from "@/router/routeEnums";
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
 import type { Avatar } from "@/models/Avatar";
@@ -15,10 +13,10 @@ import WhiteSelectList, {
 } from "@/components/WhiteSelectList.vue";
 import { useI18n } from "vue-i18n";
 import { LANG, languagesMap } from "@/enums/languagesEnum";
+import NavigationBtns from "@/components/NavigationBtns.vue";
 
 const userStore = useUserStore();
 const { t } = useI18n();
-const router = useRouter();
 
 const newUsername = ref<string>("");
 const actualAvatars = ref<Avatar[]>(avatars);
@@ -67,22 +65,6 @@ const changeUsername = () => {
   userStore.setUsername(newUsername.value);
   newUsername.value = "";
 };
-
-const btns = [
-  {
-    id: 1,
-    text: "back",
-    isOrange: false,
-    action: () => router.push(ROUTE_PATH.MENU),
-  },
-  {
-    id: 2,
-    text: "shop",
-    isOrange: true,
-    action: () => router.push(ROUTE_PATH.MENU),
-    disabled: true,
-  },
-];
 
 const selectedLanguage = computed(
   () => languagesMap[languages.value.find((lang) => lang.isSelected)!.id]
@@ -226,21 +208,7 @@ const acceptLanguageBtn = computed(() => {
         </template>
       </HubAccordion>
     </div>
-    <div class="controls">
-      <HubBtn
-        class="controls_btn"
-        :action="btns[0].action"
-        :text="btns[0].text"
-        :isOrange="btns[0].isOrange"
-      />
-      <HubBtn
-        class="controls_btn"
-        :action="btns[1].action"
-        :text="btns[1].text"
-        :isOrange="btns[1].isOrange"
-        :disabled="btns[1].disabled"
-      />
-    </div>
+    <NavigationBtns btn="back" btn2="shop" />
   </div>
 </template>
 
@@ -249,7 +217,7 @@ const acceptLanguageBtn = computed(() => {
 .settingsView {
   background: $mainBackground;
   height: 100%;
-  padding: 24px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -281,7 +249,6 @@ const acceptLanguageBtn = computed(() => {
     padding: 12px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     gap: 8px;
 
     .avatar {
@@ -358,15 +325,6 @@ const acceptLanguageBtn = computed(() => {
       filter: none;
       border: 2px solid $mainBrownColor;
       transform: scale(1.1);
-    }
-  }
-
-  .controls {
-    display: flex;
-    gap: 12px;
-
-    &_btn {
-      padding: 12px 24px;
     }
   }
 }

@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { ROUTE_PATH } from "@/router/routeEnums";
-import { useRouter } from "vue-router";
 import UserListElement from "@/components/UserListElement.vue";
-import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { users } from "@/assets/data/users";
 import { computed, ref } from "vue";
 import { Game } from "@/models/Game";
-import HubTooltip from "@/components/hubComponents/HubTooltip.vue";
-
-const router = useRouter();
+import NavigationBtns from "@/components/NavigationBtns.vue";
 
 const isZoom = ref<boolean>(false);
 
@@ -22,26 +17,6 @@ const customCodeLabel = computed(() => {
 const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
 });
-
-const backButton = computed(() => {
-  return {
-    text: "closeGame",
-    isOrange: false,
-    action: () => router.push(ROUTE_PATH.MENU),
-  };
-});
-const startButton = computed(() => {
-  return {
-    text: "start",
-    isOrange: true,
-    action: () => startGame(),
-    disabled: game.value.areUsersUnready,
-  };
-});
-
-const startGame = () => {
-  console.log("startGame");
-};
 </script>
 
 <template>
@@ -81,26 +56,12 @@ const startGame = () => {
       }}</span>
     </div>
     <span v-if="isZoom && !game.isPublic" class="isZoom"></span>
-    <div class="btns">
-      <HubBtn
-        class="btn"
-        :action="backButton.action"
-        :text="backButton.text"
-        :isOrange="backButton.isOrange"
-      />
-      <HubTooltip
-        tooltipText="tooltip.startNewGame"
-        :tooltipDisabled="!startButton.disabled"
-      >
-        <HubBtn
-          class="btn"
-          :action="startButton.action"
-          :text="startButton.text"
-          :isOrange="startButton.isOrange"
-          :disabled="startButton.disabled"
-        />
-      </HubTooltip>
-    </div>
+    <NavigationBtns
+      btn="closeGame"
+      btn2="start"
+      :btn2Disabled="game.areUsersUnready"
+      btn2TooltipText="tooltip.startNewGame"
+    />
   </div>
 </template>
 
@@ -188,15 +149,6 @@ const startGame = () => {
       justify-content: space-between;
       overflow-y: scroll;
     }
-  }
-
-  .btns {
-    display: flex;
-    gap: 12px;
-  }
-
-  .btn {
-    padding: 12px 20px;
   }
 }
 </style>

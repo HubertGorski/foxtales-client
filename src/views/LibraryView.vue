@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ROUTE_PATH } from "@/router/routeEnums";
-import { useRouter } from "vue-router";
-import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { computed, ref, watch } from "vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
@@ -11,8 +8,8 @@ import { Catalog } from "@/models/Catalog";
 import { ICON } from "@/enums/iconsEnum";
 import CatalogCreator from "@/components/CatalogCreator.vue";
 import { useUserStore } from "@/stores/userStore";
+import NavigationBtns from "@/components/NavigationBtns.vue";
 
-const router = useRouter();
 const userStore = useUserStore();
 
 const isCatalogCreatorOpen = ref<boolean>(false);
@@ -59,22 +56,6 @@ const addCatalogBtn = computed(() => {
     disabled: newCatalog.value.title.length < 3,
   };
 });
-
-const btns = [
-  {
-    id: 1,
-    text: "back",
-    isOrange: false,
-    action: () => router.push(ROUTE_PATH.MENU),
-  },
-  {
-    id: 2,
-    text: "shop",
-    isOrange: true,
-    disabled: true,
-    action: () => router.push(ROUTE_PATH.MENU),
-  },
-];
 
 const newQuestion = ref<string>("");
 const newCatalog = ref<Catalog>(new Catalog());
@@ -128,21 +109,7 @@ watch(isCatalogCreatorOpen, () => {
     >
       <div>Pytania i catalogi tu beda</div>
     </HubAccordionElement>
-    <div class="controls">
-      <HubBtn
-        class="controls_btn"
-        :action="btns[0].action"
-        :text="btns[0].text"
-        :isOrange="btns[0].isOrange"
-      />
-      <HubBtn
-        class="controls_btn"
-        :action="btns[1].action"
-        :text="btns[1].text"
-        :isOrange="btns[1].isOrange"
-        :disabled="btns[1].disabled"
-      />
-    </div>
+    <NavigationBtns btn="back" btn2="shop" />
   </div>
 </template>
 
@@ -152,7 +119,7 @@ watch(isCatalogCreatorOpen, () => {
 .libraryView {
   background: $mainBackground;
   height: 100%;
-  padding: 24px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -163,15 +130,6 @@ watch(isCatalogCreatorOpen, () => {
 
   .manageLibrary {
     flex-grow: 1;
-  }
-
-  .controls {
-    display: flex;
-    gap: 12px;
-
-    &_btn {
-      padding: 12px 24px;
-    }
   }
 }
 </style>
