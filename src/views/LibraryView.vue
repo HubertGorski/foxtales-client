@@ -109,7 +109,7 @@ watch(isCatalogCreatorOpen, () => {
     >
       <div>Pytania i catalogi tu beda</div>
     </HubAccordionElement>
-    <NavigationBtns btn="back" btn2="shop" />
+    <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>
 </template>
 

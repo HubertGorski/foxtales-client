@@ -208,7 +208,7 @@ const acceptLanguageBtn = computed(() => {
         </template>
       </HubAccordion>
     </div>
-    <NavigationBtns btn="back" btn2="shop" />
+    <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>
 </template>
 
