@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type PropType } from "vue";
+import { type PropType } from "vue";
 import HubAccordionElement from "./HubAccordionElement.vue";
 import HubDivider from "./HubDivider.vue";
 
@@ -16,18 +16,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  setOpenTab: {
-    type: String,
-    default: "",
-  },
 });
+const setOpenTab = defineModel({ type: String, default: '' });
 
-const openStateFirst = props.setOpenTab
-  ? props.slotNames.indexOf(props.setOpenTab)
-  : -1;
-const openState = ref<number>(openStateFirst);
-const toggleAccordion = (index: number) => {
-  openState.value = openState.value === index ? -1 : index;
+const toggleAccordion = (slotName: string) => {
+  setOpenTab.value = setOpenTab.value === slotName ? '' : slotName;
 };
 
 const showDivider = (index: number) => {
@@ -35,15 +28,15 @@ const showDivider = (index: number) => {
 };
 </script>
 
-<template>
+<template>  
   <div v-for="(slotName, index) in slotNames" :key="index" class="hubAccordion">
     <HubAccordionElement
       :key="index"
       :title="slotName"
-      :isOpen="openState === index"
+      :isOpen="setOpenTab === slotName"
       :isSmallerTitle="isSmallerTitle"
       withStatusIcon
-      @toggleAccordion="toggleAccordion(index)"
+      @toggleAccordion="toggleAccordion(slotName)"
     >
       <template #default>
         <slot :name="slotName"></slot>

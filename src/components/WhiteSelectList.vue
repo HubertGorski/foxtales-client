@@ -97,7 +97,10 @@ const selectItem = (item: listElement) => {
       {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} /
       {{ items.length }})
     </div>
-    <div class="whiteSelectList_data" :style="{ height: height + 'px' }">
+    <div
+      class="whiteSelectList_data"
+      :style="totalPages > 1 ? { height: height + 'px' } : {}"
+    >
       <div
         v-for="item in visibleItems"
         :key="item.id"

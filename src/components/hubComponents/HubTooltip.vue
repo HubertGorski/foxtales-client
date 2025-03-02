@@ -37,8 +37,10 @@ const toggleTooltip = () => {
         <slot></slot>
       </div>
     </template>
-    <span v-if="dictsDisabled">{{ tooltipText }}</span>
-    <span v-else>{{ $t(tooltipText) }}</span>
+    <div v-if="tooltipText">
+      <span v-if="dictsDisabled">{{ tooltipText }}</span>
+      <span v-else>{{ $t(tooltipText) }}</span>
+    </div>
   </v-tooltip>
 </template>
 
