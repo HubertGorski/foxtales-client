@@ -10,10 +10,11 @@ import { ICON } from "@/enums/iconsEnum";
 import CatalogCreator from "@/components/CatalogCreator.vue";
 import { useUserStore } from "@/stores/userStore";
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import WhiteSelectList from "@/components/WhiteSelectList.vue";
+import WhiteSelectList, {
+  type listElement,
+} from "@/components/WhiteSelectList.vue";
 
 const userStore = useUserStore();
-const currentUser = userStore.user;
 
 const isCatalogCreatorOpen = ref<boolean>(false);
 const isQuestionCreatorOpen = ref<boolean>(false);
@@ -67,6 +68,21 @@ const newCatalog = ref<Catalog>(new Catalog());
 watch(isCatalogCreatorOpen, () => {
   newCatalog.value = new Catalog();
 });
+
+const convertCatalogsToListElement = (catalog: Catalog) => {
+  return {
+    id: catalog.id,
+    title: catalog.title,
+    description: catalog.description,
+    isSelected: false,
+    elementsCount: catalog.questionsCount,
+    size: catalog.size,
+  };
+};
+
+const actualCatalogs = ref<listElement[]>(
+  userStore.user.catalogs.map(convertCatalogsToListElement)
+);
 </script>
 
 <template>
@@ -94,12 +110,13 @@ watch(isCatalogCreatorOpen, () => {
       <template #yourCatalogs>
         <WhiteSelectList
           class="yourCatalogs"
-          v-model="currentUser.catalogs"
+          v-model="actualCatalogs"
           :height="146"
           :itemsPerPage="3"
           :fontSize="14"
           multiple
           showPagination
+          showElementsCountInItem
         />
       </template>
       <template #addQuestion>

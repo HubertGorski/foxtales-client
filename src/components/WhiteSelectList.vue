@@ -9,6 +9,8 @@ export interface listElement {
   title: string;
   description: string;
   isSelected: boolean;
+  elementsCount?: number;
+  size?: number;
 }
 
 const props = defineProps({
@@ -25,6 +27,10 @@ const props = defineProps({
     default: false,
   },
   showPagination: {
+    type: Boolean,
+    default: false,
+  },
+  showElementsCountInItem: {
     type: Boolean,
     default: false,
   },
@@ -97,7 +103,12 @@ const selectItem = (item: listElement) => {
       {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} /
       {{ items.length }})
     </div>
+    <div v-if="visibleItems.length === 0" class="noData">
+      <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
+      <p>Jeszcze nie utworzono żadnego katalogu.</p>
+    </div>
     <div
+      v-else
       class="whiteSelectList_data"
       :style="totalPages > 1 ? { height: height + 'px' } : {}"
     >
@@ -113,7 +124,12 @@ const selectItem = (item: listElement) => {
           maxWidth
           dictsDisabled
         >
-          <div class="item_name">{{ item.title }}</div>
+          <div class="item_name">
+            <div v-if="showElementsCountInItem" class="elementsCount">
+              ({{ item.elementsCount }}/{{ item.size }})
+            </div>
+            {{ item.title }}
+          </div>
         </HubTooltip>
         <div @click="selectItem(item)" class="item_icon">
           <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>
@@ -149,6 +165,23 @@ const selectItem = (item: listElement) => {
     letter-spacing: 0.1px;
     text-align: end;
     padding-right: 4px;
+  }
+
+  .noData {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 4px 8px;
+    opacity: 0.9;
+    img {
+      width: 64px;
+    }
+    p {
+      color: $mainBrownColor;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 14px;
+    }
   }
 
   &_data {
@@ -188,6 +221,12 @@ const selectItem = (item: listElement) => {
         overflow: hidden;
         white-space: nowrap;
         max-width: 242px;
+        .elementsCount {
+          font-size: 12px;
+          display: inline-block;
+          bottom: 1px;
+          position: relative;
+        }
       }
 
       &::before {
