@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
@@ -10,9 +10,8 @@ import { ICON } from "@/enums/iconsEnum";
 import CatalogCreator from "@/components/CatalogCreator.vue";
 import { useUserStore } from "@/stores/userStore";
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import WhiteSelectList, {
-  type listElement,
-} from "@/components/WhiteSelectList.vue";
+import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
+import { convertCatalogsToListElement, ListElement } from "@/components/whiteSelectList/ListElement";
 
 const userStore = useUserStore();
 
@@ -39,27 +38,11 @@ const showCatalogsList = () => {
   isQuestionCreatorOpen.value = true;
 };
 
-const addCatalog = () => {
-  userStore.addCatalog(newCatalog.value);
-  console.log("Dodano katalog: ", newCatalog.value.title);
-  isCatalogCreatorOpen.value = false;
-  setOpenTab.value = "yourCatalogs";
-};
-
 const addQuestionBtn = {
   text: "add",
   isOrange: true,
   action: addQuestion,
 };
-
-const addCatalogBtn = computed(() => {
-  return {
-    text: "add",
-    isOrange: true,
-    action: addCatalog,
-    disabled: newCatalog.value.title.length < 3 || !newCatalog.value.size,
-  };
-});
 
 const setOpenTab = ref<string>("addQuestion");
 const newQuestion = ref<string>("");
@@ -69,20 +52,17 @@ watch(isCatalogCreatorOpen, () => {
   newCatalog.value = new Catalog();
 });
 
-const convertCatalogsToListElement = (catalog: Catalog) => {
-  return {
-    id: catalog.id,
-    title: catalog.title,
-    description: catalog.description,
-    isSelected: false,
-    elementsCount: catalog.questionsCount,
-    size: catalog.size,
-  };
-};
-
-const actualCatalogs = ref<listElement[]>(
+const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
 );
+
+const closePopup = () => {
+  isCatalogCreatorOpen.value = false;
+  setOpenTab.value = "yourCatalogs";
+  actualCatalogs.value = userStore.user.catalogs.map(
+    convertCatalogsToListElement
+  );
+};
 </script>
 
 <template>
@@ -91,11 +71,7 @@ const actualCatalogs = ref<listElement[]>(
       <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">
-      <CatalogCreator
-        v-model="newCatalog"
-        :btn="addCatalogBtn"
-        @closePopup="isCatalogCreatorOpen = false"
-      />
+      <CatalogCreator v-model="newCatalog" @closePopup="closePopup" />
     </HubPopup>
     <HubAccordionElement
       @click="isCatalogCreatorOpen = true"

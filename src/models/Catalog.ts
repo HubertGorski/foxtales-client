@@ -42,8 +42,13 @@ export class Catalog {
   }
 
   availableTypes = [
-    {id: 1, name: 'catalogs.small', size: 10},
-    {id: 2, name: 'catalogs.medium', size: 20},
-    {id: 3, name: 'catalogs.large', size: 35},
+    { id: 1, name: "catalogs.small", size: 10 },
+    { id: 2, name: "catalogs.medium", size: 20 },
+    { id: 3, name: "catalogs.large", size: 35 },
   ];
+
+  setQuestions(questions: Question[]): Catalog {
+    this.questions = questions;
+    return this;
+  }
 }

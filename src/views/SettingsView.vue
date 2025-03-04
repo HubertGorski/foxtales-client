@@ -8,12 +8,11 @@ import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import LevelBar from "@/components/LevelBar.vue";
 import { ICON } from "@/enums/iconsEnum";
-import WhiteSelectList, {
-  type listElement,
-} from "@/components/WhiteSelectList.vue";
+import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
 import { useI18n } from "vue-i18n";
 import { LANG, languagesMap } from "@/enums/languagesEnum";
 import NavigationBtns from "@/components/NavigationBtns.vue";
+import type { ListElement } from "@/components/whiteSelectList/ListElement";
 
 const userStore = useUserStore();
 const { t } = useI18n();
@@ -21,7 +20,7 @@ const { t } = useI18n();
 const newUsername = ref<string>("");
 const actualAvatars = ref<Avatar[]>(avatars);
 const currentUser = userStore.user;
-const languages = ref<listElement[]>([
+const languages = ref<ListElement[]>([
   {
     id: 0,
     title: t("languages.polish"),

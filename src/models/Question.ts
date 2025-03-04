@@ -1,11 +1,10 @@
 import { GENDER } from "@/enums/userEnum";
 import { LANG } from "@/enums/languagesEnum";
-import { User } from "./User";
 
 export class Question {
   id: number;
   text: string;
-  owner: User;
+  ownerId: number;
   language: LANG;
   targetGender: GENDER;
   isPublic: boolean;
@@ -16,7 +15,7 @@ export class Question {
   constructor(
     id: number = 0,
     text: string = "",
-    owner: User = new User(),
+    ownerId: number = 0,
     language: LANG = LANG.PL,
     targetGender: GENDER = GENDER.ALL,
     isPublic: boolean = false,
@@ -27,7 +26,7 @@ export class Question {
     this.id = id;
     this.text = text;
     this.isPublic = isPublic;
-    this.owner = owner;
+    this.ownerId = ownerId;
     this.language = language;
     this.targetGender = targetGender;
     this.isPublic = isPublic;

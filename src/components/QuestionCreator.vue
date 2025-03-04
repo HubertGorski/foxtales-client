@@ -4,7 +4,8 @@ import WhiteCard from "./WhiteCard.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import HubBtn from "./hubComponents/HubBtn.vue";
-import WhiteSelectList from "./WhiteSelectList.vue";
+import WhiteSelectList from "./whiteSelectList/WhiteSelectList.vue";
+import { convertCatalogsToListElement, ListElement } from "./whiteSelectList/ListElement";
 
 const userStore = useUserStore();
 
@@ -19,13 +20,26 @@ const emit = defineEmits<{
   (e: "addQuestion", catalogs: Catalog[]): void;
 }>();
 
-const actualCatalogs = ref<Catalog[]>(userStore.user.catalogs);
+const actualCatalogs = ref<ListElement[]>(
+  userStore.user.catalogs.map(convertCatalogsToListElement)
+);
 
 const addQuestion = () => {
-  const selectedActualCatalogs = actualCatalogs.value.filter(
-    (catalog) => catalog.isSelected
+  const selectedActualCatalogIds = new Set(
+    actualCatalogs.value
+      .filter((catalog) => catalog.isSelected)
+      .map((c) => c.id)
   );
-  emit("addQuestion", selectedActualCatalogs);
+
+  const selectedUserCatalogs = userStore.user.catalogs.filter((catalog) =>
+    selectedActualCatalogIds.has(catalog.id)
+  );
+
+  actualCatalogs.value = userStore.user.catalogs.map(
+    convertCatalogsToListElement
+  );
+
+  emit("addQuestion", selectedUserCatalogs);
 };
 
 const addQuestionBtn = {

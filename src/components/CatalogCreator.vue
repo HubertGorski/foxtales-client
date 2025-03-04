@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import HubBtn from "./hubComponents/HubBtn.vue";
 import { Catalog } from "@/models/Catalog";
-import { Question } from "@/models/Question";
-import WhiteSelectList, { type listElement } from "./WhiteSelectList.vue";
+import WhiteSelectList from "./whiteSelectList/WhiteSelectList.vue";
 import { useUserStore } from "@/stores/userStore";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { ICON } from "@/enums/iconsEnum";
-
-const props = defineProps({
-  btn: {
-    type: Object,
-    required: true,
-  },
-});
+import { convertQuestionToListElement, ListElement } from "./whiteSelectList/ListElement";
 
 const emit = defineEmits<{
   (e: "closePopup"): void;
@@ -22,20 +15,40 @@ const catalog = defineModel({ type: Catalog, required: true });
 
 const userStore = useUserStore();
 
-const convertQuestionToListElement = (question: Question) => {
+const addCatalogBtn = computed(() => {
   return {
-    id: question.id,
-    title: question.text,
-    description: question.text,
-    isSelected: false,
+    text: "add",
+    isOrange: true,
+    action: addCatalog,
+    disabled: catalog.value.title.length < 3 || !catalog.value.size,
   };
+});
+
+const addCatalog = () => {
+  addSelectedQuestionsToCatalog();
+  userStore.addCatalog(catalog.value);
+  console.log("Dodano katalog: ", catalog.value.title);
+  actualQuestions.value = userStore.user.questions.map(convertQuestionToListElement);
+  closePopup();
 };
 
 const closePopup = () => {
   emit("closePopup");
 };
 
-const actualQuestions = ref<listElement[]>(
+const addSelectedQuestionsToCatalog = () => {
+  const selectedQuestions = actualQuestions.value
+    .filter((question) => question.isSelected)
+    .map((question) => question.id);
+
+  const questions = userStore.user.questions.filter((question) =>
+    selectedQuestions.includes(question.id)
+  );
+  
+  catalog.value.setQuestions(questions);
+};
+
+const actualQuestions = ref<ListElement[]>(
   userStore.user.questions.map(convertQuestionToListElement)
 );
 </script>
@@ -76,10 +89,10 @@ const actualQuestions = ref<listElement[]>(
     />
     <HubBtn
       class="catalogCreator_btn"
-      :action="btn.action"
-      :text="btn.text"
-      :disabled="btn.disabled"
-      :isOrange="btn.isOrange"
+      :action="addCatalogBtn.action"
+      :text="addCatalogBtn.text"
+      :disabled="addCatalogBtn.disabled"
+      :isOrange="addCatalogBtn.isOrange"
     />
   </div>
 </template>

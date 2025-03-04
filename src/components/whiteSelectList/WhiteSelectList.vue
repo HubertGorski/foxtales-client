@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { ICON } from "@/enums/iconsEnum";
 import { computed, ref, type PropType } from "vue";
-import HubBtn from "./hubComponents/HubBtn.vue";
-import HubTooltip from "./hubComponents/HubTooltip.vue";
-
-export interface listElement {
-  id: number;
-  title: string;
-  description: string;
-  isSelected: boolean;
-  elementsCount?: number;
-  size?: number;
-}
+import HubTooltip from "../hubComponents/HubTooltip.vue";
+import HubBtn from "../hubComponents/HubBtn.vue";
+import type { ListElement } from "./ListElement";
 
 const props = defineProps({
   showSelectedCount: {
@@ -45,7 +37,7 @@ const props = defineProps({
 });
 
 const items = defineModel({
-  type: Array as PropType<Array<listElement>>,
+  type: Array as PropType<Array<ListElement>>,
   required: true,
 });
 const currentPage = ref<number>(1);
@@ -87,7 +79,7 @@ const setNextPage = () => {
   currentPage.value = currentPage.value + 1;
 };
 
-const selectItem = (item: listElement) => {
+const selectItem = (item: ListElement) => {
   if (props.multiple) {
     item.isSelected = !item.isSelected;
   } else {
