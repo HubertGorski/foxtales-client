@@ -26,9 +26,11 @@ const addCatalogBtn = computed(() => {
 
 const addCatalog = () => {
   addSelectedQuestionsToCatalog();
+  catalog.value.id = Math.floor(Math.random() * 999);
   userStore.addCatalog(catalog.value);
   console.log("Dodano katalog: ", catalog.value.title);
   actualQuestions.value = userStore.user.questions.map(convertQuestionToListElement);
+  catalog.value = new Catalog();
   closePopup();
 };
 

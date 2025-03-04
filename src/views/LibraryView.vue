@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
@@ -47,10 +47,6 @@ const addQuestionBtn = {
 const setOpenTab = ref<string>("addQuestion");
 const newQuestion = ref<string>("");
 const newCatalog = ref<Catalog>(new Catalog());
-
-watch(isCatalogCreatorOpen, () => {
-  newCatalog.value = new Catalog();
-});
 
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
