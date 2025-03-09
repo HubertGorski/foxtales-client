@@ -12,6 +12,11 @@ export class ListElement {
   constructor(args: Partial<ListElement> = {}) {
     Object.assign(this, { ...args });
   }
+
+  setSelected(isSelected: boolean = true) {
+    this.isSelected = isSelected;
+    return this;
+  }
 }
 
 export function convertQuestionToListElement(question: Question): ListElement {

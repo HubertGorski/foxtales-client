@@ -1,11 +1,22 @@
-<script setup lang="ts">
 import HubBtn from "./hubComponents/HubBtn.vue";
+<script setup lang="ts">
 import { Catalog } from "@/models/Catalog";
 import WhiteSelectList from "./whiteSelectList/WhiteSelectList.vue";
 import { useUserStore } from "@/stores/userStore";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { ICON } from "@/enums/iconsEnum";
-import { convertQuestionToListElement, ListElement } from "./whiteSelectList/ListElement";
+import {
+  convertQuestionToListElement,
+  ListElement,
+} from "./whiteSelectList/ListElement";
+import HubBtn from "./hubComponents/HubBtn.vue";
+
+const props = defineProps({
+  editMode: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const emit = defineEmits<{
   (e: "closePopup"): void;
@@ -19,7 +30,7 @@ const addCatalogBtn = computed(() => {
   return {
     text: "add",
     isOrange: true,
-    action: addCatalog,
+    action: props.editMode ? editCatalog : addCatalog,
     disabled: catalog.value.title.length < 3 || !catalog.value.size,
   };
 });
@@ -29,13 +40,35 @@ const addCatalog = () => {
   catalog.value.id = Math.floor(Math.random() * 999);
   userStore.addCatalog(catalog.value);
   console.log("Dodano katalog: ", catalog.value.title);
-  actualQuestions.value = userStore.user.questions.map(convertQuestionToListElement);
+  actualQuestions.value = getActualQuestions();
+  catalog.value = new Catalog();
+  closePopup();
+};
+
+const editCatalog = () => {
+  addSelectedQuestionsToCatalog();
+  userStore.editCatalog(catalog.value);
+  console.log("Edytowano katalog: ", catalog.value.title);
+  actualQuestions.value = getActualQuestions();
   catalog.value = new Catalog();
   closePopup();
 };
 
 const closePopup = () => {
   emit("closePopup");
+};
+
+const getActualQuestions = () => {
+  const items = userStore.user.questions.map(convertQuestionToListElement);
+  items.forEach((item) => {
+    if (
+      catalog.value.questions.map((question) => question.id).includes(item.id)
+    ) {
+      item.setSelected();
+    }
+  });
+
+  return items;
 };
 
 const addSelectedQuestionsToCatalog = () => {
@@ -46,19 +79,23 @@ const addSelectedQuestionsToCatalog = () => {
   const questions = userStore.user.questions.filter((question) =>
     selectedQuestions.includes(question.id)
   );
-  
+
   catalog.value.setQuestions(questions);
 };
 
-const actualQuestions = ref<ListElement[]>(
-  userStore.user.questions.map(convertQuestionToListElement)
-);
+const actualQuestions = ref<ListElement[]>(getActualQuestions());
+
+watch(catalog, () => { 
+  actualQuestions.value = getActualQuestions();
+});
+
 </script>
 
 <template>
   <div class="catalogCreator creamCard">
     <div class="catalogCreator_title">
-      <div>Utwórz katalog</div>
+      <div v-if="editMode">Edytuj katalog</div>
+      <div v-else>Utwórz katalog</div>
       <v-icon @click="closePopup">{{ ICON.X }}</v-icon>
     </div>
     <v-text-field v-model="catalog.title" label="Tytuł" hide-details />
@@ -78,7 +115,7 @@ const actualQuestions = ref<ListElement[]>(
         :key="type.id"
       >
         <p class="catalogName">{{ $t(type.name) }}</p>
-        <p class="catalogSize">{{ $t("size") }}: {{ type.size }}</p>
+        <p class="catalogSize">{{ `${$t("size")}: ${type.size}` }}</p>
       </div>
     </div>
     <WhiteSelectList

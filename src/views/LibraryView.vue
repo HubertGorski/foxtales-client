@@ -11,7 +11,10 @@ import CatalogCreator from "@/components/CatalogCreator.vue";
 import { useUserStore } from "@/stores/userStore";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
-import { convertCatalogsToListElement, ListElement } from "@/components/whiteSelectList/ListElement";
+import {
+  convertCatalogsToListElement,
+  ListElement,
+} from "@/components/whiteSelectList/ListElement";
 
 const userStore = useUserStore();
 
@@ -34,8 +37,22 @@ const addQuestion = (catalogs: Catalog[]) => {
   newQuestion.value = "";
 };
 
+const addNewCatalog = () => {
+  editCatalogMode.value = false;
+  isCatalogCreatorOpen.value = true; 
+  currentCatalog.value = new Catalog();
+};
+
 const showCatalogsList = () => {
   isQuestionCreatorOpen.value = true;
+};
+
+const showCatalogDetails = (catalog: ListElement) => {
+  currentCatalog.value = userStore.user.catalogs.find(
+    (actualCatalog) => actualCatalog.id === catalog.id
+  )!;
+  editCatalogMode.value = true;
+  isCatalogCreatorOpen.value = true;
 };
 
 const addQuestionBtn = {
@@ -46,7 +63,8 @@ const addQuestionBtn = {
 
 const setOpenTab = ref<string>("addQuestion");
 const newQuestion = ref<string>("");
-const newCatalog = ref<Catalog>(new Catalog());
+const currentCatalog = ref<Catalog>(new Catalog());
+const editCatalogMode = ref<boolean>(true);
 
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
@@ -67,10 +85,10 @@ const closePopup = () => {
       <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">
-      <CatalogCreator v-model="newCatalog" @closePopup="closePopup" />
+      <CatalogCreator v-model="currentCatalog" :editMode="editCatalogMode" @closePopup="closePopup" />
     </HubPopup>
     <HubAccordionElement
-      @click="isCatalogCreatorOpen = true"
+      @click="addNewCatalog"
       title="addCatalog"
       isSmallerTitle
     />
@@ -86,9 +104,12 @@ const closePopup = () => {
           :height="146"
           :itemsPerPage="3"
           :fontSize="14"
+          emptyDataText="noDirectoryHasBeenCreatedYet"
           multiple
           showPagination
           showElementsCountInItem
+          showItemDetailsBtn
+          @showDetails="showCatalogDetails"
         />
       </template>
       <template #addQuestion>

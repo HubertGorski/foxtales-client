@@ -34,7 +34,19 @@ const props = defineProps({
     type: Number,
     default: 4,
   },
+  showItemDetailsBtn: {
+    type: Boolean,
+    default: false,
+  },
+  emptyDataText: {
+    type: String,
+    default: 'emptyData',
+  },
 });
+
+const emit = defineEmits<{
+  (e: "showDetails", item: ListElement): void;
+}>();
 
 const items = defineModel({
   type: Array as PropType<Array<ListElement>>,
@@ -79,6 +91,10 @@ const setNextPage = () => {
   currentPage.value = currentPage.value + 1;
 };
 
+const showDetails = (item: ListElement) => {
+  emit("showDetails", item);
+};
+
 const selectItem = (item: ListElement) => {
   if (props.multiple) {
     item.isSelected = !item.isSelected;
@@ -97,7 +113,7 @@ const selectItem = (item: ListElement) => {
     </div>
     <div v-if="visibleItems.length === 0" class="noData">
       <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
-      <p>Jeszcze nie utworzono żadnego katalogu.</p>
+      <p>{{ $t(emptyDataText) }}</p>
     </div>
     <div
       v-else
@@ -123,7 +139,14 @@ const selectItem = (item: ListElement) => {
             {{ item.title }}
           </div>
         </HubTooltip>
-        <div @click="selectItem(item)" class="item_icon">
+        <div
+          v-if="showItemDetailsBtn"
+          @click="showDetails(item)"
+          class="item_actionIcon"
+        >
+          <v-icon>{{ ICON.EDIT_COLLECTION }}</v-icon>
+        </div>
+        <div v-else @click="selectItem(item)" class="item_icon">
           <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>
           <v-icon v-else>{{ ICON.SELECT_OFF }}</v-icon>
         </div>
@@ -184,7 +207,7 @@ const selectItem = (item: ListElement) => {
 
     .isSelected {
       & .item_icon {
-        color: #654744;
+        color: $lightBrownColor;
       }
 
       & .item_name {
@@ -236,6 +259,12 @@ const selectItem = (item: ListElement) => {
         color: $lightGrayColor;
         margin: 8px;
         font-size: 20px;
+      }
+      
+      &_actionIcon {
+        font-size: 20px;
+        margin: 8px;
+        color: $lightBrownColor;
       }
     }
   }

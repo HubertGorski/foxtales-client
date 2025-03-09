@@ -11,9 +11,10 @@ export enum ICON {
   LOCK = "mdi-lock",
   USERS = "mdi-account-multiple",
   ADD_TO_COLLECTION = "mdi-shape-rectangle-plus",
+  EDIT_COLLECTION = 'mdi-square-edit-outline',
   QUESTION = "mdi-help-circle",
   ANSWER = "mdi-comment",
   GAME = "mdi-gamepad-variant",
   ACHIEVEMENT = "mdi-trophy",
-  X = 'mdi-window-close'
+  X = 'mdi-window-close',
 }

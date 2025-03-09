@@ -39,6 +39,13 @@ export const useUserStore = defineStore({
       this.user.catalogs.push(newCatalog);
     },
 
+    editCatalog(catalog: Catalog) {
+      const index = this.user.catalogs.findIndex(userCatalog => userCatalog.id === catalog.id);
+      if (index !== -1) {
+        this.user.catalogs[index] = catalog;
+      }
+    },    
+
     addQuestion(newQuestion: Question) {
       this.user.questions.push(newQuestion);
     },

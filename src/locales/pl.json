@@ -45,6 +45,8 @@
   "selectedCatalogs": "Wybrane katalogi",
   "selectedQuestionsToCatalog": "Wybrane pytania do katalogu",
   "size": "Rozmiar",
+  "emptyData": "Brak danych",
+  "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
   "tooltip": {
     "startNewGame": "By rozpocząć grę wszyscy gracze muszą potwierdzić udział",
     "privateQuestionsDescription": "Opis prywatnych pytań",

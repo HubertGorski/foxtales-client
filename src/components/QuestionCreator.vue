@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Catalog } from "@/models/Catalog";
 import WhiteCard from "./WhiteCard.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import HubBtn from "./hubComponents/HubBtn.vue";
 import WhiteSelectList from "./whiteSelectList/WhiteSelectList.vue";
@@ -23,6 +23,10 @@ const emit = defineEmits<{
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
 );
+
+watch(userStore.user.catalogs, (newCatalogs) => {
+  actualCatalogs.value = newCatalogs.map(convertCatalogsToListElement);
+});
 
 const addQuestion = () => {
   const selectedActualCatalogIds = new Set(
