@@ -131,8 +131,14 @@ const closePopup = () => {
       title="yourQuestions"
       isOpen
       isSmallerTitle
+      centerContent
     >
-      <div>Pytania tu beda</div>
+      <div class="manageLibrary_isComing">
+        <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
+        <p>
+          {{ $t('isComing') }}
+        </p>
+      </div>
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>
@@ -159,6 +165,20 @@ const closePopup = () => {
 
   .manageLibrary {
     flex-grow: 1;
+    
+    &_isComing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0.9;
+      color: $mainBrownColor;
+      font-weight: 600;
+      
+      img {
+        width: 160px;
+        height: 140px;
+      }
+    }
   }
 }
 </style>

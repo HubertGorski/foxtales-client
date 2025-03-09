@@ -23,14 +23,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  centerContent: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const containerRef = ref<HTMLElement | null>(null);
-const currentHeight = ref(0);
+const currentHeight = ref<string>('0px');
 
 const setHeight = () => {
   if (containerRef.value) {
-    currentHeight.value = containerRef.value.scrollHeight;
+    currentHeight.value = props.centerContent ? "100%" : `${containerRef.value.scrollHeight}px`;
   }
 };
 
@@ -38,7 +42,7 @@ watchEffect(() => {
   if (props.isOpen) {
     setHeight();
   } else {
-    currentHeight.value = 0;
+    currentHeight.value = '0px';
   }
 });
 
@@ -66,8 +70,9 @@ const toggleAccordion = () => {
     <div
       ref="containerRef"
       class="hubAccordionElement_container"
+      :class="{centerContent: centerContent}"
       :style="{
-        height: isOpen ? `${currentHeight}px` : '0px',
+        height: isOpen ? currentHeight : '0px',
       }"
     >
       <slot></slot>
@@ -125,6 +130,12 @@ const toggleAccordion = () => {
   &_container {
     overflow: hidden;
     transition: height 0.4s;
+
+    &.centerContent {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
 </style>
