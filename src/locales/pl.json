@@ -45,7 +45,9 @@
   "selectedCatalogs": "Wybrane katalogi",
   "selectedQuestionsToCatalog": "Wybrane pytania do katalogu",
   "size": "Rozmiar",
+  "chooseGameType": "Wybierz typ gry",
   "emptyData": "Brak danych",
+  "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",
   "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
   "tooltip": {
     "startNewGame": "By rozpocząć grę wszyscy gracze muszą potwierdzić udział",

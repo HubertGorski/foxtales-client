@@ -5,6 +5,8 @@ import type { Avatar } from "@/models/Avatar";
 import type { LANG } from "@/enums/languagesEnum";
 import type { Catalog } from "@/models/Catalog";
 import type { Question } from "@/models/Question";
+import type { PERMISSION, PERMISSION_GAME } from "@/enums/permissions";
+import { permissions } from "@/assets/data/permissions";
 
 interface UserState {
   user: User;
@@ -19,6 +21,18 @@ export const useUserStore = defineStore({
   getters: {
     getUserRole: (state) => {
       return state.user.role;
+    },
+
+    getPermissionByName: (state) => (name: PERMISSION_GAME | PERMISSION) => {
+      const permission = state.user.permissions.find(
+        (permission) => permission.name === name
+      );
+
+      if (!permission) {
+        throw new Error(`Invalid permission: ${name}`);
+      }
+
+      return permission;
     },
   },
 
@@ -40,11 +54,13 @@ export const useUserStore = defineStore({
     },
 
     editCatalog(catalog: Catalog) {
-      const index = this.user.catalogs.findIndex(userCatalog => userCatalog.id === catalog.id);
+      const index = this.user.catalogs.findIndex(
+        (userCatalog) => userCatalog.id === catalog.id
+      );
       if (index !== -1) {
         this.user.catalogs[index] = catalog;
       }
-    },    
+    },
 
     addQuestion(newQuestion: Question) {
       this.user.questions.push(newQuestion);

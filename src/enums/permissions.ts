@@ -4,3 +4,8 @@ export enum PERMISSION {
   CREATE_GAME_WITH_PRIVATE_QUESTIONS_PER_DAY = "createGameWithPrivateQuestionsPerDay",
   AVAILABLE_CATALOGS = "availableCatalogs",
 }
+export enum PERMISSION_GAME {
+  PSYCH = "psych",
+  DYLEMATY = "dylematy",
+  KILLGAME = "killgame",
+}

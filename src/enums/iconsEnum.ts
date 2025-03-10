@@ -17,4 +17,7 @@ export enum ICON {
   GAME = "mdi-gamepad-variant",
   ACHIEVEMENT = "mdi-trophy",
   X = 'mdi-window-close',
+  GAME_KILLGAME = 'mdi-axe',
+  GAME_PSYCH = 'mdi-bolt',
+  GAME_DYLEMATY = 'mdi-zodiac-libra'
 }

@@ -12,7 +12,7 @@ import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
 import { useI18n } from "vue-i18n";
 import { LANG, languagesMap } from "@/enums/languagesEnum";
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import type { ListElement } from "@/components/whiteSelectList/ListElement";
+import { ListElement } from "@/components/whiteSelectList/ListElement";
 
 const userStore = useUserStore();
 const { t } = useI18n();
@@ -21,24 +21,24 @@ const newUsername = ref<string>("");
 const actualAvatars = ref<Avatar[]>(avatars);
 const currentUser = userStore.user;
 const languages = ref<ListElement[]>([
-  {
+  new ListElement({
     id: 0,
     title: t("languages.polish"),
     description: "",
     isSelected: currentUser.language === LANG.PL,
-  },
-  {
+  }),
+  new ListElement({
     id: 1,
     title: t("languages.english"),
     description: "",
     isSelected: currentUser.language === LANG.EN,
-  },
-  {
+  }),
+  new ListElement({
     id: 2,
     title: t("languages.german"),
     description: "",
     isSelected: currentUser.language === LANG.DE,
-  },
+  }),
 ]);
 
 const allUserAchievements = currentUser.achievements.sort(
@@ -113,7 +113,8 @@ const acceptLanguageBtn = computed(() => {
               <div class="stats_element">
                 <v-icon>{{ ICON.ANSWER }}</v-icon>
                 <span
-                  >Udzielone odpowiedzi: {{ currentUser.answersCount }}</span
+                  >Udzielone odpowiedzi:
+                  {{ currentUser.answersCountPsych }}</span
                 >
               </div>
               <div class="stats_element">
