@@ -1,4 +1,6 @@
 import type { Catalog } from "@/models/Catalog";
+import type { Deck } from "@/models/Deck";
+import type { DylematyCard } from "@/models/DylematyCard";
 import type { Question } from "@/models/Question";
 
 export class ListElement {
@@ -28,6 +30,15 @@ export function convertQuestionToListElement(question: Question): ListElement {
   });
 }
 
+export function convertCardToListElement(card: DylematyCard): ListElement {
+  return new ListElement({
+    id: card.id,
+    title: card.text,
+    description: card.text,
+    isSelected: false,
+  });
+}
+
 export function convertCatalogsToListElement(catalog: Catalog): ListElement {
   return new ListElement({
     id: catalog.id,
@@ -36,5 +47,16 @@ export function convertCatalogsToListElement(catalog: Catalog): ListElement {
     isSelected: false,
     elementsCount: catalog.questionsCount,
     size: catalog.size,
+  });
+}
+
+export function convertDecksToListElement(deck: Deck): ListElement {
+  return new ListElement({
+    id: deck.id,
+    title: deck.title,
+    description: deck.description,
+    isSelected: false,
+    elementsCount: deck.cardsCount,
+    size: deck.size,
   });
 }

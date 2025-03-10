@@ -18,9 +18,6 @@ import {
 
 const userStore = useUserStore();
 
-const isCatalogCreatorOpen = ref<boolean>(false);
-const isQuestionCreatorOpen = ref<boolean>(false);
-
 const addQuestion = (catalogs: Catalog[]) => {
   event.preventDefault();
   if (!newQuestion.value) {
@@ -39,7 +36,7 @@ const addQuestion = (catalogs: Catalog[]) => {
 
 const addNewCatalog = () => {
   editCatalogMode.value = false;
-  isCatalogCreatorOpen.value = true; 
+  isCatalogCreatorOpen.value = true;
   currentCatalog.value = new Catalog();
 };
 
@@ -55,21 +52,6 @@ const showCatalogDetails = (catalog: ListElement) => {
   isCatalogCreatorOpen.value = true;
 };
 
-const addQuestionBtn = {
-  text: "add",
-  isOrange: true,
-  action: addQuestion,
-};
-
-const setOpenTab = ref<string>("addQuestion");
-const newQuestion = ref<string>("");
-const currentCatalog = ref<Catalog>(new Catalog());
-const editCatalogMode = ref<boolean>(true);
-
-const actualCatalogs = ref<ListElement[]>(
-  userStore.user.catalogs.map(convertCatalogsToListElement)
-);
-
 const closePopup = () => {
   isCatalogCreatorOpen.value = false;
   setOpenTab.value = "yourCatalogs";
@@ -77,6 +59,22 @@ const closePopup = () => {
     convertCatalogsToListElement
   );
 };
+
+const isCatalogCreatorOpen = ref<boolean>(false);
+const isQuestionCreatorOpen = ref<boolean>(false);
+const setOpenTab = ref<string>("addQuestion");
+const newQuestion = ref<string>("");
+const currentCatalog = ref<Catalog>(new Catalog());
+const editCatalogMode = ref<boolean>(true);
+const actualCatalogs = ref<ListElement[]>(
+  userStore.user.catalogs.map(convertCatalogsToListElement)
+);
+const addQuestionBtn = {
+  text: "add",
+  isOrange: true,
+  action: addQuestion,
+};
+
 </script>
 
 <template>
@@ -85,7 +83,11 @@ const closePopup = () => {
       <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">
-      <CatalogCreator v-model="currentCatalog" :editMode="editCatalogMode" @closePopup="closePopup" />
+      <CatalogCreator
+        v-model="currentCatalog"
+        :editMode="editCatalogMode"
+        @closePopup="closePopup"
+      />
     </HubPopup>
     <HubAccordionElement
       @click="addNewCatalog"
@@ -136,7 +138,7 @@ const closePopup = () => {
       <div class="manageLibrary_isComing">
         <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
         <p>
-          {{ $t('isComing') }}
+          {{ $t("isComing") }}
         </p>
       </div>
     </HubAccordionElement>
@@ -165,7 +167,7 @@ const closePopup = () => {
 
   .manageLibrary {
     flex-grow: 1;
-    
+
     &_isComing {
       display: flex;
       flex-direction: column;
@@ -173,7 +175,7 @@ const closePopup = () => {
       opacity: 0.9;
       color: $mainBrownColor;
       font-weight: 600;
-      
+
       img {
         width: 160px;
         height: 140px;

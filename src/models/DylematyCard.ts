@@ -18,6 +18,14 @@ export class DylematyCard {
     this.isPublic = isPublic;
     this.decksIds = decksIds;
   }
+
+  get isPositiveCard(): boolean {
+    return this.type === DYLEMATY_CARD_TYPE.POSITIVE;
+  }
+
+  get isNegativeCard(): boolean {
+    return this.type === DYLEMATY_CARD_TYPE.NEGATIVE;
+  }
 }
 
 export enum DYLEMATY_CARD_TYPE {

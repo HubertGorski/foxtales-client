@@ -26,9 +26,9 @@ const catalog = defineModel({ type: Catalog, required: true });
 
 const userStore = useUserStore();
 
-const addCatalogBtn = computed(() => {
+const formBtn = computed(() => {
   return {
-    text: "add",
+    text: props.editMode ? "accept" : "add",
     isOrange: true,
     action: props.editMode ? editCatalog : addCatalog,
     disabled: catalog.value.title.length < 3 || !catalog.value.size,
@@ -94,18 +94,18 @@ watch(catalog, () => {
 <template>
   <div class="catalogCreator creamCard">
     <div class="catalogCreator_title">
-      <div v-if="editMode">Edytuj katalog</div>
-      <div v-else>Utwórz katalog</div>
+      <div v-if="editMode">{{ $t('editCatalog') }}</div>
+      <div v-else>{{ $t('createCatalog') }}</div>
       <v-icon @click="closePopup">{{ ICON.X }}</v-icon>
     </div>
-    <v-text-field v-model="catalog.title" label="Tytuł" hide-details />
+    <v-text-field v-model="catalog.title" :label="$t('title')" hide-details />
     <v-textarea
       v-model="catalog.description"
-      label="Opis"
+      :label="$t('description')"
       :rows="3"
       hide-details
     />
-    <div class="catalogCreator_subtitle">Wybierz wielkość katalogu</div>
+    <div class="catalogCreator_subtitle">{{ $t('chooseCatalogSize') }}</div>
     <div class="selectSize">
       <div
         class="selectSize_size"
@@ -128,10 +128,10 @@ watch(catalog, () => {
     />
     <HubBtn
       class="catalogCreator_btn"
-      :action="addCatalogBtn.action"
-      :text="addCatalogBtn.text"
-      :disabled="addCatalogBtn.disabled"
-      :isOrange="addCatalogBtn.isOrange"
+      :action="formBtn.action"
+      :text="formBtn.text"
+      :disabled="formBtn.disabled"
+      :isOrange="formBtn.isOrange"
     />
   </div>
 </template>

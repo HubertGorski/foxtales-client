@@ -13,6 +13,7 @@ import ChooseGameViewVue from "@/views/ChooseGameView.vue";
 import { useUserStore } from "@/stores/userStore";
 import { ROLE } from "@/enums/rolesEnum";
 import NoAccessViewVue from "@/views/NoAccessView.vue";
+import DylematyLibraryViewVue from "@/views/dylematy/DylematyLibraryView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -81,7 +82,7 @@ const router = createRouter({
     {
       path: ROUTE_PATH.LIBRARY_DYLEMATY,
       name: ROUTE_NAME.LIBRARY_DYLEMATY,
-      component: LibraryViewVue,
+      component: DylematyLibraryViewVue,
     },
     {
       path: ROUTE_PATH.LIBRARY_PSYCH,

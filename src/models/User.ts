@@ -40,10 +40,7 @@ export class User {
   //Dylematy game
   totalDylematyGamesPlayed: number = 0;
   decks: Deck[] = [];
-  positiveCards: DylematyCard[] = [];
-  negativeCards: DylematyCard[] = [];
-  publicPositiveCardsCount: number = 0;
-  publicNegativeCardsCount: number = 0;
+  dylematyCards: DylematyCard[] = [];
   answersInDylematyCount: number = 0;
   correctAnswersInDylematyCount: number = 0;
 
@@ -97,6 +94,25 @@ export class User {
     return this.decks.length;
   }
 
+  get dylematyCardsCount(): number {
+    return this.dylematyCards.length;
+  }
+
+  get negativeCards(): DylematyCard[] {
+    return this.dylematyCards.filter(card => card.isNegativeCard );
+  }
+
+  get positiveCards(): DylematyCard[] {
+    return this.dylematyCards.filter(card => card.isPositiveCard );
+  }
+
+  get publicPositiveCardsCount(): number {
+    return this.positiveCards.filter(card => card.isPublic).length;
+  }
+
+  get publicNegativeCardsCount(): number {
+    return this.negativeCards.filter(card => card.isPublic).length;
+  }
 
   getPermission(permissionName: PERMISSION): Permission | undefined {
     return this.permissions.find((p) => p.name === permissionName);

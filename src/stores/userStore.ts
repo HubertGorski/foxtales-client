@@ -7,6 +7,7 @@ import type { Catalog } from "@/models/Catalog";
 import type { Question } from "@/models/Question";
 import type { PERMISSION, PERMISSION_GAME } from "@/enums/permissions";
 import { permissions } from "@/assets/data/permissions";
+import type { Deck } from "@/models/Deck";
 
 interface UserState {
   user: User;
@@ -53,12 +54,25 @@ export const useUserStore = defineStore({
       this.user.catalogs.push(newCatalog);
     },
 
+    addDeck(newDeck: Deck) {
+      this.user.decks.push(newDeck);
+    },
+
     editCatalog(catalog: Catalog) {
       const index = this.user.catalogs.findIndex(
         (userCatalog) => userCatalog.id === catalog.id
       );
       if (index !== -1) {
         this.user.catalogs[index] = catalog;
+      }
+    },
+
+    editDeck(deck: Deck) {
+      const index = this.user.decks.findIndex(
+        (userDeck) => userDeck.id === deck.id
+      );
+      if (index !== -1) {
+        this.user.decks[index] = deck;
       }
     },
 

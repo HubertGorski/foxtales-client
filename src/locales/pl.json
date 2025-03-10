@@ -17,6 +17,7 @@
   "add": "Dodaj",
   "password": "Hasło",
   "accept": "Zatwierdź",
+  "confirmChanges": "Zatwierdź zmiany",
   "level": "Poziom",
   "exp": "pkt",
   "createRoom": "Utwórz swój pokój",
@@ -26,6 +27,7 @@
   "addQuestion": "Dodaj pytanie",
   "addCatalog": "Dodaj katalog",
   "editCatalog": "Edytuj katalog",
+  "createCatalog": "Utwórz katalog",
   "yourCatalogs": "Twoje katalogi",
   "yourQuestions": "Twoje pytania",
   "manageLibrary": "Zarządzaj biblioteką",
@@ -49,6 +51,12 @@
   "emptyData": "Brak danych",
   "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",
   "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
+  "chooseCatalogSize": "Wybierz wielkość katalogu",
+  "title": "Tytuł",
+  "description": "Opis",
+  "small": "Mały",
+  "medium": "Średni",
+  "large": "Duży",
   "tooltip": {
     "startNewGame": "By rozpocząć grę wszyscy gracze muszą potwierdzić udział",
     "privateQuestionsDescription": "Opis prywatnych pytań",
@@ -68,9 +76,15 @@
     "english": "Angielski",
     "german": "Niemiecki"
   },
-  "catalogs": {
-    "small": "Mały",
-    "medium": "Średni",
-    "large": "Duży"
+  "dylematy": {
+    "addCard": "Dodaj kartę",
+    "yourCards": "Twoje karty",
+    "addDeck": "Dodaj talię",
+    "yourDecks": "Twoje talie",
+    "editDeck": "Edytuj talię",
+    "createDeck": "Utwórz talię",
+    "noDeckHasBeenCreatedYet": "Jeszcze nie utworzono żadnej talii.",
+    "noCardHasBeenCreatedYet": "Jeszcze nie utworzono żadnych kart.",
+    "chooseDeckSize": "Wybierz wielkość talii"
   }
 }

@@ -107,7 +107,7 @@ const selectItem = (item: ListElement) => {
 
 <template>
   <div class="whiteSelectList">
-    <div v-if="showSelectedCount" class="whiteSelectList_selectedCount">
+    <div v-if="showSelectedCount && visibleItems.length > 0" class="whiteSelectList_selectedCount">
       {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} /
       {{ items.length }})
     </div>
