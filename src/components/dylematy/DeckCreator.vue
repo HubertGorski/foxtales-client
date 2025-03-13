@@ -1,13 +1,19 @@
 import HubBtn from "./hubComponents/HubBtn.vue";
 <script setup lang="ts">
-import { Deck } from '@/models/Deck';
-import { useUserStore } from '@/stores/userStore';
-import { computed, ref, watch } from 'vue';
-import { convertCardToListElement, ListElement } from '../whiteSelectList/ListElement';
-import { ICON } from '@/enums/iconsEnum';
-import WhiteSelectList from '../whiteSelectList/WhiteSelectList.vue';
-import HubBtn from '../hubComponents/HubBtn.vue';
-
+import { Deck } from "@/models/Deck";
+import { useUserStore } from "@/stores/userStore";
+import { computed, ref, watch } from "vue";
+import {
+  convertDylematyCardToListElement,
+  ListElement,
+} from "../whiteSelectList/ListElement";
+import { ICON } from "@/enums/iconsEnum";
+import WhiteSelectList from "../whiteSelectList/WhiteSelectList.vue";
+import HubBtn from "../hubComponents/HubBtn.vue";
+import { cloneDeep, isEqual } from "lodash";
+import HubSwitchBtns, {
+  type HubSwitchBtnsItem,
+} from "../hubComponents/HubSwitchBtns.vue";
 
 const props = defineProps({
   editMode: {
@@ -17,19 +23,29 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (e: "closePopup"): void;
+  (e: "closePopup", refresh: boolean): void;
 }>();
 
 const deck = defineModel({ type: Deck, required: true });
 
 const userStore = useUserStore();
 
+const isUndoBtnVisible = computed(
+  () =>
+    props.editMode &&
+    (!isEqual(backupDeckDetails.value, deck.value) ||
+      !isEqual(getSelectedCards(), deck.value.cards))
+);
+
 const formBtn = computed(() => {
   return {
     text: props.editMode ? "accept" : "add",
     isOrange: true,
     action: props.editMode ? editDeck : addDeck,
-    disabled: deck.value.title.length < 3 || !deck.value.size,
+    disabled:
+      deck.value.title.length < 3 ||
+      !deck.value.size ||
+      (props.editMode ? !isUndoBtnVisible.value : false),
   };
 });
 
@@ -52,16 +68,16 @@ const editDeck = () => {
   closePopup();
 };
 
-const closePopup = () => {
-  emit("closePopup");
+const closePopup = (refresh: boolean = true) => {
+  emit("closePopup", refresh);
 };
 
 const getActualCards = () => {
-  const items = userStore.user.negativeCards.map(convertCardToListElement);
+  const items = userStore.user.dylematyCards.map(
+    convertDylematyCardToListElement
+  );
   items.forEach((item) => {
-    if (
-      deck.value.cards.map((card) => card.id).includes(item.id)
-    ) {
+    if (deck.value.cards.map((card) => card.id).includes(item.id)) {
       item.setSelected();
     }
   });
@@ -69,32 +85,62 @@ const getActualCards = () => {
   return items;
 };
 
-const addSelectedCardsToDeck = () => {
+const getSelectedCards = () => {
   const selectedCards = actualCards.value
     .filter((card) => card.isSelected)
     .map((card) => card.id);
 
-  const cards = userStore.user.dylematyCards.filter((card) =>
+  return userStore.user.dylematyCards.filter((card) =>
     selectedCards.includes(card.id)
   );
+};
 
+const addSelectedCardsToDeck = () => {
+  const cards = getSelectedCards();
   deck.value.setCards(cards);
 };
 
-const actualCards = ref<ListElement[]>(getActualCards());
+const undoAction = () => {
+  deck.value = backupDeckDetails.value;
+};
 
-watch(deck, () => { 
+const actualCards = ref<ListElement[]>(getActualCards());
+const backupDeckDetails = ref<Deck>(new Deck());
+
+const selectedSize = ref<HubSwitchBtnsItem | null>(null);
+const availableTypes: HubSwitchBtnsItem[] = [
+  { id: 1, title: "small", subtitle: "30" },
+  { id: 2, title: "medium", subtitle: "60" },
+  { id: 3, title: "large", subtitle: "120" },
+];
+
+watch(deck, () => {
+  backupDeckDetails.value = cloneDeep(deck.value);
   actualCards.value = getActualCards();
+  selectedSize.value = availableTypes.find(type => Number(type.subtitle) === deck.value.size) || null;
 });
 
+watch(selectedSize, (newSelectedSize) => {
+  deck.value.size = newSelectedSize ? Number(newSelectedSize.subtitle) : 0;
+});
 </script>
 
 <template>
   <div class="deckCreator creamCard">
     <div class="deckCreator_title">
-      <div v-if="editMode">{{ $t('dylematy.editDeck') }}</div>
-      <div v-else>{{ $t('dylematy.createDeck') }}</div>
-      <v-icon @click="closePopup">{{ ICON.X }}</v-icon>
+      <div v-if="editMode">{{ $t("dylematy.editDeck") }}</div>
+      <div v-else>{{ $t("dylematy.createDeck") }}</div>
+      <div>
+        <v-icon
+          class="controlBtn"
+          v-if="isUndoBtnVisible"
+          @click="undoAction"
+          >{{ ICON.UNDO }}</v-icon
+        >
+        <v-icon class="controlBtn" @click="closePopup(false)">{{
+          ICON.X
+        }}</v-icon>
+      </div>
     </div>
     <v-text-field v-model="deck.title" :label="$t('title')" hide-details />
     <v-textarea
@@ -103,22 +149,11 @@ watch(deck, () => {
       :rows="3"
       hide-details
     />
-    <div class="deckCreator_subtitle">{{ $t('dylematy.chooseDeckSize') }}</div>
-    <div class="selectSize">
-      <div
-        class="selectSize_size"
-        :class="{ isSelected: deck.size === type.size }"
-        @click="deck.size = type.size"
-        v-for="type in deck.availableTypes"
-        :key="type.id"
-      >
-        <p class="deckName">{{ $t(type.name) }}</p>
-        <p class="deckSize">{{ `${$t("size")}: ${type.size}` }}</p>
-      </div>
-    </div>
+    <div class="deckCreator_subtitle">{{ $t("dylematy.chooseDeckSize") }}</div>
+    <HubSwitchBtns v-model="selectedSize" :items="availableTypes" />
     <WhiteSelectList
       v-model="actualCards"
-      customSelectedCountTitle="selectedCardsToDeck"
+      customSelectedCountTitle="dylematy.selectedCardsToDeck"
       emptyDataText="dylematy.noCardHasBeenCreatedYet"
       :fontSize="14"
       showSelectedCount
@@ -151,6 +186,10 @@ watch(deck, () => {
     font-weight: 600;
     display: flex;
     justify-content: space-between;
+
+    .controlBtn {
+      padding: 0 8px;
+    }
   }
 
   &_subtitle {
@@ -158,35 +197,6 @@ watch(deck, () => {
     font-size: 18px;
     font-weight: 600;
     text-align: center;
-  }
-  .selectSize {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    &_size {
-      background-color: white;
-      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-      border-radius: 8px;
-      color: $grayColor;
-      transition: all 0.2s;
-      padding: 12px;
-      &.isSelected {
-        font-weight: 600;
-        transform: scale(1.1);
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 6px;
-        transition: all 0.2s;
-      }
-
-      .deckName {
-        text-align: center;
-      }
-
-      .deckSize {
-        text-align: center;
-        font-size: 12px;
-      }
-    }
   }
 
   &_btn {

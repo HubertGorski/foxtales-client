@@ -12,13 +12,13 @@ export class Deck {
     title: string = "",
     description: string = "",
     size: number = 0,
-    cardsIds: DylematyCard[] = []
+    cards: DylematyCard[] = []
   ) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.size = size;
-    this.cards = cardsIds;
+    this.cards = cards;
   }
 
   get cardsCount(): number {
@@ -29,10 +29,4 @@ export class Deck {
     this.cards = cards;
     return this;
   }
-
-  availableTypes = [
-    { id: 1, name: "small", size: 30 },
-    { id: 2, name: "medium", size: 60 },
-    { id: 3, name: "large", size: 120 },
-  ];
 }

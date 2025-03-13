@@ -52,12 +52,15 @@ const showCatalogDetails = (catalog: ListElement) => {
   isCatalogCreatorOpen.value = true;
 };
 
-const closePopup = () => {
+const closePopup = (refresh: boolean = false) => {
   isCatalogCreatorOpen.value = false;
-  setOpenTab.value = "yourCatalogs";
-  actualCatalogs.value = userStore.user.catalogs.map(
-    convertCatalogsToListElement
-  );
+  
+  if (refresh) {
+    setOpenTab.value = "yourCatalogs";
+    actualCatalogs.value = userStore.user.catalogs.map(
+      convertCatalogsToListElement
+    );
+  }
 };
 
 const isCatalogCreatorOpen = ref<boolean>(false);
@@ -74,7 +77,6 @@ const addQuestionBtn = {
   isOrange: true,
   action: addQuestion,
 };
-
 </script>
 
 <template>

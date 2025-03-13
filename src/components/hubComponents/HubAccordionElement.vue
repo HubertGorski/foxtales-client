@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ICON } from "@/enums/iconsEnum";
-import { ref, watchEffect } from "vue";
+import { nextTick, ref, watchEffect } from "vue";
 
 const props = defineProps({
   title: {
@@ -32,7 +32,8 @@ const props = defineProps({
 const containerRef = ref<HTMLElement | null>(null);
 const currentHeight = ref<string>('0px');
 
-const setHeight = () => {
+const setHeight = async () => {
+  await nextTick();
   if (containerRef.value) {
     currentHeight.value = props.centerContent ? "100%" : `${containerRef.value.scrollHeight}px`;
   }

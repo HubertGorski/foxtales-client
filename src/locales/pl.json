@@ -57,6 +57,8 @@
   "small": "Mały",
   "medium": "Średni",
   "large": "Duży",
+  "positive": "Pozytywna",
+  "negative": "Negatywna",
   "tooltip": {
     "startNewGame": "By rozpocząć grę wszyscy gracze muszą potwierdzić udział",
     "privateQuestionsDescription": "Opis prywatnych pytań",
@@ -85,6 +87,7 @@
     "createDeck": "Utwórz talię",
     "noDeckHasBeenCreatedYet": "Jeszcze nie utworzono żadnej talii.",
     "noCardHasBeenCreatedYet": "Jeszcze nie utworzono żadnych kart.",
-    "chooseDeckSize": "Wybierz wielkość talii"
+    "chooseDeckSize": "Wybierz wielkość talii",
+    "selectedCardsToDeck": "Wybrane karty do talii"
   }
 }

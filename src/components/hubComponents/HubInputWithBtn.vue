@@ -77,6 +77,7 @@ const actualTextPlaceholder = computed(() => {
       :placeholder="actualTextPlaceholder"
       :type="textType"
     />
+    <slot></slot>
     <div class="hubInputWithBtn_controls">
       <HubBtn
         class="btn mainBtn"

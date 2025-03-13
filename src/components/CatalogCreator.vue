@@ -19,7 +19,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (e: "closePopup"): void;
+  (e: "closePopup", refresh: boolean): void;
 }>();
 
 const catalog = defineModel({ type: Catalog, required: true });
@@ -54,8 +54,8 @@ const editCatalog = () => {
   closePopup();
 };
 
-const closePopup = () => {
-  emit("closePopup");
+const closePopup = (refresh: boolean = true) => {
+  emit("closePopup", refresh);
 };
 
 const getActualQuestions = () => {
@@ -85,18 +85,17 @@ const addSelectedQuestionsToCatalog = () => {
 
 const actualQuestions = ref<ListElement[]>(getActualQuestions());
 
-watch(catalog, () => { 
+watch(catalog, () => {
   actualQuestions.value = getActualQuestions();
 });
-
 </script>
 
 <template>
   <div class="catalogCreator creamCard">
     <div class="catalogCreator_title">
-      <div v-if="editMode">{{ $t('editCatalog') }}</div>
-      <div v-else>{{ $t('createCatalog') }}</div>
-      <v-icon @click="closePopup">{{ ICON.X }}</v-icon>
+      <div v-if="editMode">{{ $t("editCatalog") }}</div>
+      <div v-else>{{ $t("createCatalog") }}</div>
+      <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
     </div>
     <v-text-field v-model="catalog.title" :label="$t('title')" hide-details />
     <v-textarea
@@ -105,7 +104,7 @@ watch(catalog, () => {
       :rows="3"
       hide-details
     />
-    <div class="catalogCreator_subtitle">{{ $t('chooseCatalogSize') }}</div>
+    <div class="catalogCreator_subtitle">{{ $t("chooseCatalogSize") }}</div>
     <div class="selectSize">
       <div
         class="selectSize_size"

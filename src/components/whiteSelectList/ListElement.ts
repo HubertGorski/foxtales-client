@@ -1,6 +1,6 @@
 import type { Catalog } from "@/models/Catalog";
-import type { Deck } from "@/models/Deck";
-import type { DylematyCard } from "@/models/DylematyCard";
+import { Deck } from "@/models/Deck";
+import { DYLEMATY_CARD_TYPE, DylematyCard } from "@/models/DylematyCard";
 import type { Question } from "@/models/Question";
 
 export class ListElement {
@@ -10,6 +10,9 @@ export class ListElement {
   isSelected: boolean = false;
   elementsCount?: number;
   size?: number;
+  cards?: DylematyCard[];
+  type?: DYLEMATY_CARD_TYPE;
+  isPublic?: boolean;
 
   constructor(args: Partial<ListElement> = {}) {
     Object.assign(this, { ...args });
@@ -30,13 +33,16 @@ export function convertQuestionToListElement(question: Question): ListElement {
   });
 }
 
-export function convertCardToListElement(card: DylematyCard): ListElement {
+export function convertDylematyCardToListElement(card: DylematyCard): ListElement {
   return new ListElement({
     id: card.id,
     title: card.text,
-    description: card.text,
     isSelected: false,
+    type: card.type,
   });
+}
+export function convertListElementToDylematyCard(item: ListElement): DylematyCard {
+  return new DylematyCard(item.id, item.title, item.type);
 }
 
 export function convertCatalogsToListElement(catalog: Catalog): ListElement {
@@ -58,5 +64,10 @@ export function convertDecksToListElement(deck: Deck): ListElement {
     isSelected: false,
     elementsCount: deck.cardsCount,
     size: deck.size,
+    cards: deck.cards
   });
+}
+
+export function convertListElementToDeck(item: ListElement): Deck {
+  return new Deck(item.id, item.title, item.description, item.size, item.cards);
 }

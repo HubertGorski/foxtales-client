@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
@@ -9,11 +9,15 @@ import NavigationBtns from "@/components/NavigationBtns.vue";
 import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
 import {
   convertDecksToListElement,
+  convertListElementToDeck,
   ListElement,
 } from "@/components/whiteSelectList/ListElement";
-import { DylematyCard } from "@/models/DylematyCard";
+import { DYLEMATY_CARD_TYPE, DylematyCard } from "@/models/DylematyCard";
 import DeckCreator from "@/components/dylematy/DeckCreator.vue";
 import CardCreator from "@/components/dylematy/CardCreator.vue";
+import { ICON } from "@/enums/iconsEnum";
+import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
+import HubSwitchBtns, { type HubSwitchBtnsItem } from "@/components/hubComponents/HubSwitchBtns.vue";
 
 const userStore = useUserStore();
 
@@ -25,17 +29,20 @@ const addCard = (decks: Deck[]) => {
 
   console.log(`Dodano kartę: "${newCard.value}"`);
   if (decks && decks.length > 0) {
-    console.log(
-      `Dodano do talii: "${decks.map((deck) => deck.title)}"`
-    );
+    console.log(`Dodano do talii: "${decks.map((deck) => deck.title)}"`);
   }
   isCardCreatorOpen.value = false;
   newCard.value = new DylematyCard();
 };
-
+const addCardkBtn = {
+  text: "add",
+  isOrange: true,
+  action: addCard,
+};
 const addNewDeck = () => {
   editDeckMode.value = false;
   isDeckCreatorOpen.value = true;
+  setOpenTab.value = "";
   currentDeck.value = new Deck();
 };
 
@@ -44,9 +51,9 @@ const showDecksList = () => {
 };
 
 const showDeckDetails = (deck: ListElement) => {
-  currentDeck.value = userStore.user.decks.find(
-    (actualDeck) => actualDeck.id === deck.id
-  )!;
+  currentDeck.value = convertListElementToDeck(
+    actualDecks.value.find((actualDeck) => actualDeck.id === deck.id)!
+  );
   editDeckMode.value = true;
   isDeckCreatorOpen.value = true;
 };
@@ -61,12 +68,13 @@ const actualDecks = ref<ListElement[]>(
   userStore.user.decks.map(convertDecksToListElement)
 );
 
-const closePopup = () => {
+const closePopup = (refresh: boolean = false) => {
   isDeckCreatorOpen.value = false;
-  setOpenTab.value = "dylematy.yourDecks";
-  actualDecks.value = userStore.user.decks.map(
-    convertDecksToListElement
-  );
+
+  if (refresh) {
+    setOpenTab.value = "dylematy.yourDecks";
+    actualDecks.value = userStore.user.decks.map(convertDecksToListElement);
+  }
 };
 
 const isDeckCreatorOpen = ref<boolean>(false);
@@ -75,6 +83,15 @@ const setOpenTab = ref<string>("addCard");
 const newCard = ref<DylematyCard>(new DylematyCard());
 const currentDeck = ref<Deck>(new Deck());
 const editDeckMode = ref<boolean>(true);
+const selectedCardType = ref<HubSwitchBtnsItem | null>(null);
+const availableTypes: HubSwitchBtnsItem[] = [
+  { id: 1, title: DYLEMATY_CARD_TYPE.POSITIVE },
+  { id: 2, title: DYLEMATY_CARD_TYPE.NEGATIVE }
+];
+
+watch(selectedCardType, (newSelectedCardType) => {
+  newCard.value.type = newSelectedCardType ? newSelectedCardType.subtitle as DYLEMATY_CARD_TYPE || null : null;
+});
 </script>
 
 <template>
@@ -115,7 +132,19 @@ const editDeckMode = ref<boolean>(true);
         />
       </template>
       <template #dylematy.addCard>
-        <div>addCardToLibraryxd</div>
+        <div class="addCardToLibrary">
+          <HubInputWithBtn
+            v-model="newCard.text"
+            :btnAction="addCardkBtn.action"
+            :btnText="addCardkBtn.text"
+            :extraBtnIcon="ICON.ADD_TO_COLLECTION"
+            :extraBtnAction="showDecksList"
+            :btnIsOrange="addCardkBtn.isOrange"
+            isTextarea
+          >
+            <HubSwitchBtns v-model="selectedCardType" :items="availableTypes" />
+          </HubInputWithBtn>
+        </div>
       </template>
     </HubAccordion>
     <HubAccordionElement
