@@ -1,14 +1,14 @@
 import HubBtn from "./hubComponents/HubBtn.vue";
 <script setup lang="ts">
 import { Catalog } from "@/models/Catalog";
-import WhiteSelectList from "./whiteSelectList/WhiteSelectList.vue";
+import WhiteSelectList from "./selectLists/WhiteSelectList.vue";
 import { useUserStore } from "@/stores/userStore";
 import { computed, ref, watch } from "vue";
 import { ICON } from "@/enums/iconsEnum";
 import {
   convertQuestionToListElement,
   ListElement,
-} from "./whiteSelectList/ListElement";
+} from "./selectLists/ListElement";
 import HubBtn from "./hubComponents/HubBtn.vue";
 
 const props = defineProps({

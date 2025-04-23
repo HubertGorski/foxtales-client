@@ -4,8 +4,8 @@ import WhiteCard from "./WhiteCard.vue";
 import { ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import HubBtn from "./hubComponents/HubBtn.vue";
-import WhiteSelectList from "./whiteSelectList/WhiteSelectList.vue";
-import { convertCatalogsToListElement, ListElement } from "./whiteSelectList/ListElement";
+import WhiteSelectList from "./selectLists/WhiteSelectList.vue";
+import { convertCatalogsToListElement, ListElement } from "./selectLists/ListElement";
 
 const userStore = useUserStore();
 
@@ -55,14 +55,15 @@ const addQuestionBtn = {
 
 <template>
   <div class="questionCreator creamCard">
-    <div class="questionCreator_title">Dodaj do katalogu</div>
-    <WhiteCard header="Utworzone pytanie:">
+    <div class="questionCreator_title">{{ $t('psych.addToCatalog') }}</div>
+    <WhiteCard :header="$t('psych.createdQuestion')">
       <div class="question">
         {{ newQuestion }}
       </div>
     </WhiteCard>
     <WhiteSelectList
       v-model="actualCatalogs"
+      emptyDataText="psych.noDirectoryHasBeenCreatedYet"
       customSelectedCountTitle="selectedCatalogs"
       :height="198"
       showSelectedCount

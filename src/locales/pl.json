@@ -50,7 +50,6 @@
   "chooseGameType": "Wybierz typ gry",
   "emptyData": "Brak danych",
   "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",
-  "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
   "chooseCatalogSize": "Wybierz wielkość katalogu",
   "title": "Tytuł",
   "description": "Opis",
@@ -78,16 +77,24 @@
     "english": "Angielski",
     "german": "Niemiecki"
   },
+  "psych": {
+    "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
+    "addToCatalog": "Dodaj do katalogu",
+    "createdQuestion": "Utworzone pytanie:"
+  },
   "dylematy": {
     "addCard": "Dodaj kartę",
     "yourCards": "Twoje karty",
     "addDeck": "Dodaj talię",
+    "addToDeck": "Dodaj do talii",
+    "createdCard": "Utworzona {type} karta:",
     "yourDecks": "Twoje talie",
     "editDeck": "Edytuj talię",
     "createDeck": "Utwórz talię",
     "noDeckHasBeenCreatedYet": "Jeszcze nie utworzono żadnej talii.",
     "noCardHasBeenCreatedYet": "Jeszcze nie utworzono żadnych kart.",
     "chooseDeckSize": "Wybierz wielkość talii",
-    "selectedCardsToDeck": "Wybrane karty do talii"
+    "selectedCardsToDeck": "Wybrane karty do talii",
+    "selectedDecks": "Wybrane talie"
   }
 }

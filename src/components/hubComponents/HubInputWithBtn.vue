@@ -11,6 +11,10 @@ const props = defineProps({
   btnIsOrange: {
     type: Boolean,
   },
+  btnIsDisabled: {
+    type: Boolean,
+    default: false,
+  },
   btnAction: {
     type: Function,
     required: true,
@@ -47,7 +51,7 @@ const { t } = useI18n();
 const text = defineModel({ type: String, required: true });
 
 const btnIsDisabled = computed(() => {
-  return text.value.length === 0;
+  return text.value.length === 0 || props.btnIsDisabled;
 });
 
 const actualTextPlaceholder = computed(() => {

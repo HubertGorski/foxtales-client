@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { Deck } from '@/models/Deck';
 import { useUserStore } from '@/stores/userStore';
-import { ref, watch } from 'vue';
-import { convertDecksToListElement, type ListElement } from '../whiteSelectList/ListElement';
+import { computed, ref, watch } from 'vue';
+import { convertDecksToListElement, type ListElement } from '../selectLists/ListElement';
 import WhiteCard from '../WhiteCard.vue';
-import WhiteSelectList from '../whiteSelectList/WhiteSelectList.vue';
+import WhiteSelectList from '../selectLists/WhiteSelectList.vue';
 import HubBtn from '../hubComponents/HubBtn.vue';
 import { DylematyCard } from '@/models/DylematyCard';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const userStore = useUserStore();
 
 const props = defineProps({
@@ -52,19 +54,25 @@ const addCardBtn = {
   isOrange: true,
   action: addCard,
 };
+
+const translatedCardType = computed(() => {
+  return t(`${props.newCard.type}`).toLowerCase();
+});
+
 </script>
 
 <template>
   <div class="cardCreator creamCard">
-    <div class="cardCreator_title">Dodaj do katalogu</div>
-    <WhiteCard header="Utworzone pytanie:">
+    <div class="cardCreator_title">{{ $t('dylematy.addToDeck') }}</div>
+    <WhiteCard :header="$t('dylematy.createdCard', {type: translatedCardType})">
       <div class="card">
         {{ newCard.text }}
       </div>
     </WhiteCard>
     <WhiteSelectList
       v-model="actualDecks"
-      customSelectedCountTitle="selectedDecks"
+      emptyDataText="dylematy.noDeckHasBeenCreatedYet"
+      customSelectedCountTitle="dylematy.selectedDecks"
       :height="198"
       showSelectedCount
       multiple

@@ -13,4 +13,5 @@ export const questions = [
   new Question(10, 'Odkryłeś w lodówce Adama jego największy sekret. Co to jest?'),
   new Question(11, 'Gdyby Natalia była gwiazdą rocka to na jakim instrumencie by grała?'),
   new Question(12, 'Odkryłeś w lodówce Adama jego największy sekret. Co to jest?'),
+  new Question(13, 'Odkryłeś kokojambo'),
 ];

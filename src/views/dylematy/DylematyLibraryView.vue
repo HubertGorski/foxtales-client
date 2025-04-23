@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import { Deck } from "@/models/Deck";
 import { useUserStore } from "@/stores/userStore";
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
+import WhiteSelectList from "@/components/selectLists/WhiteSelectList.vue";
 import {
   convertDecksToListElement,
   convertListElementToDeck,
   ListElement,
-} from "@/components/whiteSelectList/ListElement";
+} from "@/components/selectLists/ListElement";
 import { DYLEMATY_CARD_TYPE, DylematyCard } from "@/models/DylematyCard";
 import DeckCreator from "@/components/dylematy/DeckCreator.vue";
 import CardCreator from "@/components/dylematy/CardCreator.vue";
@@ -27,18 +27,22 @@ const addCard = (decks: Deck[]) => {
     return;
   }
 
-  console.log(`Dodano kartę: "${newCard.value}"`);
+  console.log(`Dodano kartę: "${newCard.value.text}", która jest "${newCard.value.type}"`);
   if (decks && decks.length > 0) {
     console.log(`Dodano do talii: "${decks.map((deck) => deck.title)}"`);
   }
   isCardCreatorOpen.value = false;
   newCard.value = new DylematyCard();
+  selectedCardType.value = null;
 };
-const addCardkBtn = {
-  text: "add",
+
+const addCardBtn = computed(() => {
+  return {text: "add",
   isOrange: true,
   action: addCard,
-};
+  btnIsDisabled: selectedCardType.value === null}
+});
+
 const addNewDeck = () => {
   editDeckMode.value = false;
   isDeckCreatorOpen.value = true;
@@ -56,12 +60,6 @@ const showDeckDetails = (deck: ListElement) => {
   );
   editDeckMode.value = true;
   isDeckCreatorOpen.value = true;
-};
-
-const addCardBtn = {
-  text: "add",
-  isOrange: true,
-  action: addCard,
 };
 
 const actualDecks = ref<ListElement[]>(
@@ -90,7 +88,7 @@ const availableTypes: HubSwitchBtnsItem[] = [
 ];
 
 watch(selectedCardType, (newSelectedCardType) => {
-  newCard.value.type = newSelectedCardType ? newSelectedCardType.subtitle as DYLEMATY_CARD_TYPE || null : null;
+  newCard.value.type = newSelectedCardType ? newSelectedCardType.title as DYLEMATY_CARD_TYPE || null : null;
 });
 </script>
 
@@ -135,11 +133,12 @@ watch(selectedCardType, (newSelectedCardType) => {
         <div class="addCardToLibrary">
           <HubInputWithBtn
             v-model="newCard.text"
-            :btnAction="addCardkBtn.action"
-            :btnText="addCardkBtn.text"
+            :btnAction="addCardBtn.action"
+            :btnText="addCardBtn.text"
+            :btnIsDisabled="addCardBtn.btnIsDisabled"
             :extraBtnIcon="ICON.ADD_TO_COLLECTION"
             :extraBtnAction="showDecksList"
-            :btnIsOrange="addCardkBtn.isOrange"
+            :btnIsOrange="addCardBtn.isOrange"
             isTextarea
           >
             <HubSwitchBtns v-model="selectedCardType" :items="availableTypes" />

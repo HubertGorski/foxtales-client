@@ -10,11 +10,13 @@ import { ICON } from "@/enums/iconsEnum";
 import CatalogCreator from "@/components/CatalogCreator.vue";
 import { useUserStore } from "@/stores/userStore";
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
+import WhiteSelectList from "@/components/selectLists/WhiteSelectList.vue";
 import {
   convertCatalogsToListElement,
+  convertQuestionToListElement,
   ListElement,
-} from "@/components/whiteSelectList/ListElement";
+} from "@/components/selectLists/ListElement";
+import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
 
 const userStore = useUserStore();
 
@@ -69,6 +71,7 @@ const setOpenTab = ref<string>("addQuestion");
 const newQuestion = ref<string>("");
 const currentCatalog = ref<Catalog>(new Catalog());
 const editCatalogMode = ref<boolean>(true);
+const actualQuestions = ref<ListElement[]>(userStore.user.questions.map(convertQuestionToListElement));
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
 );
@@ -108,7 +111,7 @@ const addQuestionBtn = {
           :height="146"
           :itemsPerPage="3"
           :fontSize="14"
-          emptyDataText="noDirectoryHasBeenCreatedYet"
+          emptyDataText="psych.noDirectoryHasBeenCreatedYet"
           multiple
           showPagination
           showElementsCountInItem
@@ -137,12 +140,7 @@ const addQuestionBtn = {
       isSmallerTitle
       centerContent
     >
-      <div class="manageLibrary_isComing">
-        <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
-        <p>
-          {{ $t("isComing") }}
-        </p>
-      </div>
+      <ScrollSelectList v-model="actualQuestions" />
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>
@@ -169,20 +167,6 @@ const addQuestionBtn = {
 
   .manageLibrary {
     flex-grow: 1;
-
-    &_isComing {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      opacity: 0.9;
-      color: $mainBrownColor;
-      font-weight: 600;
-
-      img {
-        width: 160px;
-        height: 140px;
-      }
-    }
   }
 }
 </style>

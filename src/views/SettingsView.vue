@@ -8,11 +8,11 @@ import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import LevelBar from "@/components/LevelBar.vue";
 import { ICON } from "@/enums/iconsEnum";
-import WhiteSelectList from "@/components/whiteSelectList/WhiteSelectList.vue";
+import WhiteSelectList from "@/components/selectLists/WhiteSelectList.vue";
 import { useI18n } from "vue-i18n";
 import { LANG, languagesMap } from "@/enums/languagesEnum";
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import { ListElement } from "@/components/whiteSelectList/ListElement";
+import { ListElement } from "@/components/selectLists/ListElement";
 
 const userStore = useUserStore();
 const { t } = useI18n();

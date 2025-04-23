@@ -1,19 +1,13 @@
-import HubBtn from "./hubComponents/HubBtn.vue";
 <script setup lang="ts">
 import { Deck } from "@/models/Deck";
 import { useUserStore } from "@/stores/userStore";
 import { computed, ref, watch } from "vue";
-import {
-  convertDylematyCardToListElement,
-  ListElement,
-} from "../whiteSelectList/ListElement";
 import { ICON } from "@/enums/iconsEnum";
-import WhiteSelectList from "../whiteSelectList/WhiteSelectList.vue";
-import HubBtn from "../hubComponents/HubBtn.vue";
-import { cloneDeep, isEqual } from "lodash";
 import HubSwitchBtns, {
   type HubSwitchBtnsItem,
 } from "../hubComponents/HubSwitchBtns.vue";
+import HubBtn from "../hubComponents/HubBtn.vue";
+import { cloneDeep, isEqual } from "lodash";
 
 const props = defineProps({
   editMode: {
@@ -30,12 +24,7 @@ const deck = defineModel({ type: Deck, required: true });
 
 const userStore = useUserStore();
 
-const isUndoBtnVisible = computed(
-  () =>
-    props.editMode &&
-    (!isEqual(backupDeckDetails.value, deck.value) ||
-      !isEqual(getSelectedCards(), deck.value.cards))
-);
+const backupDeckDetails = ref<Deck>(new Deck());
 
 const formBtn = computed(() => {
   return {
@@ -44,26 +33,23 @@ const formBtn = computed(() => {
     action: props.editMode ? editDeck : addDeck,
     disabled:
       deck.value.title.length < 3 ||
-      !deck.value.size ||
-      (props.editMode ? !isUndoBtnVisible.value : false),
+      !deck.value.size
   };
 });
 
 const addDeck = () => {
-  addSelectedCardsToDeck();
   deck.value.id = Math.floor(Math.random() * 999);
   userStore.addDeck(deck.value);
   console.log("Dodano katalog: ", deck.value.title);
-  actualCards.value = getActualCards();
   deck.value = new Deck();
   closePopup();
 };
 
 const editDeck = () => {
-  addSelectedCardsToDeck();
-  userStore.editDeck(deck.value);
-  console.log("Edytowano katalog: ", deck.value.title);
-  actualCards.value = getActualCards();
+  if(!isEqual(backupDeckDetails.value, deck.value)) {
+    userStore.editDeck(deck.value);
+    console.log("Edytowano katalog: ", deck.value.title);
+  }
   deck.value = new Deck();
   closePopup();
 };
@@ -71,41 +57,6 @@ const editDeck = () => {
 const closePopup = (refresh: boolean = true) => {
   emit("closePopup", refresh);
 };
-
-const getActualCards = () => {
-  const items = userStore.user.dylematyCards.map(
-    convertDylematyCardToListElement
-  );
-  items.forEach((item) => {
-    if (deck.value.cards.map((card) => card.id).includes(item.id)) {
-      item.setSelected();
-    }
-  });
-
-  return items;
-};
-
-const getSelectedCards = () => {
-  const selectedCards = actualCards.value
-    .filter((card) => card.isSelected)
-    .map((card) => card.id);
-
-  return userStore.user.dylematyCards.filter((card) =>
-    selectedCards.includes(card.id)
-  );
-};
-
-const addSelectedCardsToDeck = () => {
-  const cards = getSelectedCards();
-  deck.value.setCards(cards);
-};
-
-const undoAction = () => {
-  deck.value = backupDeckDetails.value;
-};
-
-const actualCards = ref<ListElement[]>(getActualCards());
-const backupDeckDetails = ref<Deck>(new Deck());
 
 const selectedSize = ref<HubSwitchBtnsItem | null>(null);
 const availableTypes: HubSwitchBtnsItem[] = [
@@ -116,7 +67,6 @@ const availableTypes: HubSwitchBtnsItem[] = [
 
 watch(deck, () => {
   backupDeckDetails.value = cloneDeep(deck.value);
-  actualCards.value = getActualCards();
   selectedSize.value = availableTypes.find(type => Number(type.subtitle) === deck.value.size) || null;
 });
 
@@ -130,17 +80,7 @@ watch(selectedSize, (newSelectedSize) => {
     <div class="deckCreator_title">
       <div v-if="editMode">{{ $t("dylematy.editDeck") }}</div>
       <div v-else>{{ $t("dylematy.createDeck") }}</div>
-      <div>
-        <v-icon
-          class="controlBtn"
-          v-if="isUndoBtnVisible"
-          @click="undoAction"
-          >{{ ICON.UNDO }}</v-icon
-        >
-        <v-icon class="controlBtn" @click="closePopup(false)">{{
-          ICON.X
-        }}</v-icon>
-      </div>
+        <v-icon class="controlBtn" @click="closePopup(false)">{{ICON.X}}</v-icon>
     </div>
     <v-text-field v-model="deck.title" :label="$t('title')" hide-details />
     <v-textarea
@@ -151,15 +91,6 @@ watch(selectedSize, (newSelectedSize) => {
     />
     <div class="deckCreator_subtitle">{{ $t("dylematy.chooseDeckSize") }}</div>
     <HubSwitchBtns v-model="selectedSize" :items="availableTypes" />
-    <WhiteSelectList
-      v-model="actualCards"
-      customSelectedCountTitle="dylematy.selectedCardsToDeck"
-      emptyDataText="dylematy.noCardHasBeenCreatedYet"
-      :fontSize="14"
-      showSelectedCount
-      multiple
-      showPagination
-    />
     <HubBtn
       class="deckCreator_btn"
       :action="formBtn.action"
