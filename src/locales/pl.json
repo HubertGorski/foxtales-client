@@ -1,4 +1,6 @@
 {
+  "confirmDeleteItemsTextPopup": "Czy na pewno chcesz usunąć wybrane elementy?",
+  "delete": "Usuń",
   "login": "Zaloguj się",
   "register": "Załóż konto",
   "registerTitle": "Rejestracja",

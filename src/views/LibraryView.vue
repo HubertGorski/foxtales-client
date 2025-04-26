@@ -22,6 +22,10 @@ const userStore = useUserStore();
 
 const addQuestion = (catalogs: Catalog[]) => {
   event.preventDefault();
+  if (addManyQuestonsToCatalogs.value) {
+    return assignedQuestionsToCatalogs(catalogs);
+  }
+
   if (!newQuestion.value) {
     return;
   }
@@ -36,13 +40,36 @@ const addQuestion = (catalogs: Catalog[]) => {
   newQuestion.value = "";
 };
 
+const deleteQuestions = (questions: ListElement[]) => {
+  const questionsIds = questions.map((question) => question.id);
+  console.log('usuwam pytania o ids:', questionsIds);
+  
+}
+
+const assignedQuestionsToCatalogs = (catalogs: Catalog[]) => {
+  const selectedActualQuestionsIds = selectedQuestions.value.map((question) => question.id);
+  const selectedActualCatalogsIds = catalogs.map((catalog) => catalog.id);
+  console.log('dodaje catalogi o id: ', selectedActualCatalogsIds, 'i pytania o id: ', selectedActualQuestionsIds, 'do bazy relacja manyTomany');
+  isQuestionCreatorOpen.value = false;
+  addManyQuestonsToCatalogs.value = false;
+  selectedQuestions.value = [];
+  actualQuestions.value.forEach(question => question.isSelected = false);
+}
+
 const addNewCatalog = () => {
   editCatalogMode.value = false;
   isCatalogCreatorOpen.value = true;
   currentCatalog.value = new Catalog();
 };
 
+const addQuestionsToCatalog = (questions: ListElement[]) => {
+  addManyQuestonsToCatalogs.value = true;
+  isQuestionCreatorOpen.value = true;
+  selectedQuestions.value = questions;
+}
+
 const showCatalogsList = () => {
+  addManyQuestonsToCatalogs.value = false;
   isQuestionCreatorOpen.value = true;
 };
 
@@ -71,7 +98,9 @@ const setOpenTab = ref<string>("addQuestion");
 const newQuestion = ref<string>("");
 const currentCatalog = ref<Catalog>(new Catalog());
 const editCatalogMode = ref<boolean>(true);
+const addManyQuestonsToCatalogs = ref<boolean>(false);
 const actualQuestions = ref<ListElement[]>(userStore.user.questions.map(convertQuestionToListElement));
+const selectedQuestions = ref<ListElement[]>([]);
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
 );
@@ -85,7 +114,7 @@ const addQuestionBtn = {
 <template>
   <div class="libraryView">
     <HubPopup v-model="isQuestionCreatorOpen">
-      <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" />
+      <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" :isQuestionCreatorOpen=isQuestionCreatorOpen :addMany="addManyQuestonsToCatalogs" />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">
       <CatalogCreator
@@ -140,7 +169,7 @@ const addQuestionBtn = {
       isSmallerTitle
       centerContent
     >
-      <ScrollSelectList v-model="actualQuestions" />
+      <ScrollSelectList v-model="actualQuestions" addCutomText="psych.addToCatalog" @addItems="addQuestionsToCatalog" @deleteItems="deleteQuestions" />
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>

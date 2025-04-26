@@ -1,15 +1,44 @@
 <script setup lang="ts">
 import { computed, ref, type PropType } from "vue";
 import type { ListElement } from "./ListElement";
+import HubDialogPopup from "../hubComponents/HubDialogPopup.vue";
+
+const props = defineProps({
+  addCutomText: {
+    type: String,
+    required: true,
+  },
+});
+
+const emit = defineEmits<{
+  (e: "addItems", selectedItems: ListElement[]): void;
+  (e: "deleteItems", selectedItems: ListElement[]): void;
+}>();
 
 const items = defineModel({
   type: Array as PropType<Array<ListElement>>,
   required: true,
 });
 
+const isDeletePopupOpen = ref<boolean>(false);
+
 const isControlPanelVisible = computed(() => {
   return !!items.value.filter(item => item.isSelected).length;
 });
+
+const deleteSelectedItems = () => {
+  isDeletePopupOpen.value = true;
+}
+
+const addItems = () => {
+  emit("addItems", items.value.filter(item => item.isSelected));
+};
+
+const deleteItems = () => {
+  emit("deleteItems", items.value.filter(item => item.isSelected));
+  items.value = items.value.filter(item => !item.isSelected);
+  isDeletePopupOpen.value = false;
+};
 
 </script>
 
@@ -22,13 +51,14 @@ const isControlPanelVisible = computed(() => {
       </div>
   </div>
   <div class="controlPanel" :class="{isVisible: isControlPanelVisible}">
-    <div>
-      Usuń
+    <div @click="deleteSelectedItems">
+      {{ $t('delete') }}
     </div>
-    <div>
-      Dodaj do katalogu
+    <div @click="addItems">
+      {{ $t(addCutomText) }}
     </div>
   </div>
+  <HubDialogPopup v-model="isDeletePopupOpen" :textPopup="$t('confirmDeleteItemsTextPopup')" :confirmAction="deleteItems"/>
   </div>
 </template>
 
