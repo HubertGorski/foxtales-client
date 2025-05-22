@@ -9,6 +9,7 @@ import NavigationBtns from "@/components/NavigationBtns.vue";
 import WhiteSelectList from "@/components/selectLists/WhiteSelectList.vue";
 import {
   convertDecksToListElement,
+  convertDylematyCardToListElement,
   convertListElementToDeck,
   ListElement,
 } from "@/components/selectLists/ListElement";
@@ -18,11 +19,16 @@ import CardCreator from "@/components/dylematy/CardCreator.vue";
 import { ICON } from "@/enums/iconsEnum";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubSwitchBtns, { type HubSwitchBtnsItem } from "@/components/hubComponents/HubSwitchBtns.vue";
+import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
 
 const userStore = useUserStore();
 
 const addCard = (decks: Deck[]) => {
   event.preventDefault();
+  if (addManyCardsToDecks.value) {
+    return assignedCardsToDecks(decks);
+  }
+
   if (!newCard.value) {
     return;
   }
@@ -50,9 +56,26 @@ const addNewDeck = () => {
   currentDeck.value = new Deck();
 };
 
+const addCardsToDeck = (questions: ListElement[]) => {
+  addManyCardsToDecks.value = true;
+  isCardCreatorOpen.value = true;
+  selectedCards.value = questions;
+}
+
 const showDecksList = () => {
+  addManyCardsToDecks.value = false;
   isCardCreatorOpen.value = true;
 };
+
+const assignedCardsToDecks = (decks: Deck[]) => {
+  const selectedActualCardsIds = selectedCards.value.map((question) => question.id);
+  const selectedActualDecksIds = decks.map((deck) => deck.id);
+  console.log('dodaje decki o id: ', selectedActualDecksIds, 'i karty o id: ', selectedActualCardsIds, 'do bazy relacja manyTomany');
+  isCardCreatorOpen.value = false;
+  addManyCardsToDecks.value = false;
+  selectedCards.value = [];
+  actualCards.value.forEach(card => card.isSelected = false);
+}
 
 const showDeckDetails = (deck: ListElement) => {
   currentDeck.value = convertListElementToDeck(
@@ -75,13 +98,21 @@ const closePopup = (refresh: boolean = false) => {
   }
 };
 
+const deleteCards = (cards: ListElement[]) => {
+  const cardsIds = cards.map((card) => card.id);
+  console.log('usuwam carty o ids:', cardsIds);
+}
+
 const isDeckCreatorOpen = ref<boolean>(false);
 const isCardCreatorOpen = ref<boolean>(false);
 const setOpenTab = ref<string>("addCard");
 const newCard = ref<DylematyCard>(new DylematyCard());
+const actualCards = ref<ListElement[]>(userStore.user.dylematyCards.map(convertDylematyCardToListElement));
 const currentDeck = ref<Deck>(new Deck());
 const editDeckMode = ref<boolean>(true);
 const selectedCardType = ref<HubSwitchBtnsItem | null>(null);
+const addManyCardsToDecks = ref<boolean>(false);
+const selectedCards = ref<ListElement[]>([]);
 const availableTypes: HubSwitchBtnsItem[] = [
   { id: 1, title: DYLEMATY_CARD_TYPE.POSITIVE },
   { id: 2, title: DYLEMATY_CARD_TYPE.NEGATIVE }
@@ -95,7 +126,7 @@ watch(selectedCardType, (newSelectedCardType) => {
 <template>
   <div class="libraryView">
     <HubPopup v-model="isCardCreatorOpen">
-      <CardCreator :newCard="newCard" @addCard="addCard" />
+      <CardCreator :newCard="newCard" @addCard="addCard" :isCardCreatorOpen=isCardCreatorOpen :addMany="addManyCardsToDecks" />
     </HubPopup>
     <HubPopup v-model="isDeckCreatorOpen">
       <DeckCreator
@@ -154,12 +185,7 @@ watch(selectedCardType, (newSelectedCardType) => {
       isSmallerTitle
       centerContent
     >
-      <div class="manageLibrary_isComing">
-        <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
-        <p>
-          {{ $t("isComing") }}
-        </p>
-      </div>
+      <ScrollSelectList v-model="actualCards" addCutomText="dylematy.addToDeck" isTypeAvailable @addItems="addCardsToDeck" @deleteItems="deleteCards" />
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>
@@ -186,20 +212,6 @@ watch(selectedCardType, (newSelectedCardType) => {
 
   .manageLibrary {
     flex-grow: 1;
-
-    &_isComing {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      opacity: 0.9;
-      color: $mainBrownColor;
-      font-weight: 600;
-
-      img {
-        width: 160px;
-        height: 140px;
-      }
-    }
   }
 }
 </style>

@@ -5,7 +5,10 @@ import { computed, ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import HubBtn from "./hubComponents/HubBtn.vue";
 import WhiteSelectList from "./selectLists/WhiteSelectList.vue";
-import { convertCatalogsToListElement, ListElement } from "./selectLists/ListElement";
+import {
+  convertCatalogsToListElement,
+  ListElement,
+} from "./selectLists/ListElement";
 
 const userStore = useUserStore();
 
@@ -35,11 +38,14 @@ watch(userStore.user.catalogs, (newCatalogs) => {
   actualCatalogs.value = newCatalogs.map(convertCatalogsToListElement);
 });
 
-watch(() => props.isQuestionCreatorOpen, (isOpen) => {
-  if (!isOpen) {
-    actualCatalogs.value.forEach(catalog => catalog.isSelected = false);
+watch(
+  () => props.isQuestionCreatorOpen,
+  (isOpen) => {
+    if (!isOpen) {
+      actualCatalogs.value.forEach((catalog) => (catalog.isSelected = false));
+    }
   }
-});
+);
 
 const addQuestion = () => {
   const selectedActualCatalogIds = new Set(
@@ -63,13 +69,14 @@ const addQuestionBtn = computed(() => ({
   text: "add",
   isOrange: true,
   action: addQuestion,
-  disabled: !actualCatalogs.value.filter(catalog => catalog.isSelected).length
-  }));
+  disabled: !actualCatalogs.value.filter((catalog) => catalog.isSelected)
+    .length,
+}));
 </script>
 
 <template>
   <div class="questionCreator creamCard">
-    <div class="questionCreator_title">{{ $t('psych.addToCatalog') }}</div>
+    <div class="questionCreator_title">{{ $t("psych.addToCatalog") }}</div>
     <WhiteCard v-if="!addMany" :header="$t('psych.createdQuestion')">
       <div class="question">
         {{ newQuestion }}

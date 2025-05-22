@@ -20,5 +20,7 @@ export enum ICON {
   UNDO = 'mdi-undo',
   GAME_KILLGAME = 'mdi-axe',
   GAME_PSYCH = 'mdi-bolt',
-  GAME_DYLEMATY = 'mdi-zodiac-libra'
+  GAME_DYLEMATY = 'mdi-zodiac-libra',
+  HAPPY = 'mdi-emoticon-happy-outline',
+  SAD = 'mdi-emoticon-sad-outline'
 }
