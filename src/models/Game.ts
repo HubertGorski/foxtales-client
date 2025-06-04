@@ -8,6 +8,7 @@ export class Game {
   password: string | null;
   usePublicQuestions: boolean;
   usePrivateQuestions: boolean;
+  isQuestionsFromAnotherGamesAllowed: boolean;
 
   constructor(
     code: string,
@@ -16,7 +17,8 @@ export class Game {
     users: User[] = [],
     password: string | null = null,
     usePublicQuestions = true,
-    usePrivateQuestions = true
+    usePrivateQuestions = true,
+    isQuestionsFromAnotherGamesAllowed = false,
   ) {
     this.code = code;
     this.isPublic = isPublic;
@@ -25,6 +27,7 @@ export class Game {
     this.password = password;
     this.usePublicQuestions = usePublicQuestions;
     this.usePrivateQuestions = usePrivateQuestions;
+    this.isQuestionsFromAnotherGamesAllowed = isQuestionsFromAnotherGamesAllowed;
   }
 
   get usersCount(): number {

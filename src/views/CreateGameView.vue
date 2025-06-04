@@ -16,6 +16,7 @@ const newGame = ref(new Game("PIESEK1"));
           <HubSwitch v-model="newGame.usePrivateQuestions" label="lobby.usePrivateQuestions" tooltipText="tooltip.privateQuestionsDescription" withIcon/>
           <HubSwitch v-model="newGame.usePublicQuestions" label="lobby.usePublicQuestions" tooltipText="tooltip.publicQuestionsDescription" withIcon/>
           <HubSwitch v-model="newGame.isPublic" label="lobby.gameVisibleOnList" tooltipText=tooltip.roomOnListDescription withIcon/>
+          <HubSwitch v-model="newGame.isQuestionsFromAnotherGamesAllowed" label="lobby.isQuestionsFromAnotherGamesAllowed"/>
         </div>
         <div v-if="!newGame.isPublic" class="customCodeSection">
           <p class="customCodeSection_description">
@@ -68,6 +69,10 @@ const newGame = ref(new Game("PIESEK1"));
     }
     .settings {
       padding-bottom: 12px;
+
+      .hubSwitch_content {
+        max-width: 210px;
+      }
     }
 
     .customCodeSection {

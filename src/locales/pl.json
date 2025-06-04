@@ -73,7 +73,8 @@
   "lobby": {
     "usePrivateQuestions": "Używaj prywatnych pytań",
     "usePublicQuestions": "Używaj publicznych pytań",
-    "gameVisibleOnList": "Gra widoczna na liście"
+    "gameVisibleOnList": "Gra widoczna na liście",
+    "isQuestionsFromAnotherGamesAllowed": "Zezwól na dodawanie swoich pytań innym graczom"
   },
   "languages": {
     "polish": "Polski",
