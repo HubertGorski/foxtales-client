@@ -1,12 +1,18 @@
-import Api from "@/services/Api";
+import { apiClient } from '../api/Client';
 
-interface User {
-  login: string;
-  password: string;
-}
-
-export default {
-  register(credentials: User) {
-    return Api().post("register", credentials);
+export const AuthenticationService = {
+  
+  login(email: string, password: string): Promise<string> {
+    return apiClient.post('/user/login', { email, password });
   },
+  
+  register(email: string, username: string, password: string) {
+    return apiClient.post('/user/register', { email, username, password });
+  },
+  
+  test() {
+    return apiClient.get('/user/get');
+  },
+  
+  
 };

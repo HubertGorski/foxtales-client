@@ -1,46 +1,65 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
+import { AuthenticationService } from "@/services/AuthenticationService";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
+import { ref } from "vue";
 
 const router = useRouter();
+const errorLogin = ref("");
 
-const form = ref({
-  username: "",
-  password: "",
+const schema = yup.object({
+  email: yup
+    .string()
+    .required("Email jest wymagany")
+    .email("Niepoprawny email"),
+  password: yup.string().required("Hasło jest wymagane"),
 });
 
-const submitForm = () => {
-  console.log("Form submitted:", form.value);
-  router.push(ROUTE_PATH.MENU);
-};
+const { handleSubmit } = useForm({ validationSchema: schema });
+const { value: email, errorMessage: emailError } = useField("email");
+const { value: password, errorMessage: passwordError } = useField("password");
 
 const navigateBack = () => {
   router.push(ROUTE_PATH.HOME);
 };
+
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    const token = await AuthenticationService.login(
+      values.email,
+      values.password
+    );
+    localStorage.setItem("token", token);
+    router.push(ROUTE_PATH.MENU);
+  } catch (err: any) {
+    errorLogin.value = err?.response?.data || "Błąd logowania";
+  }
+});
 </script>
 
 <template>
   <div class="loginView">
     <img src="@/assets/imgs/4.png" alt="Lisek" class="loginView_fox" />
-    <form @submit.prevent="submitForm" class="creamCard">
+    <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="loginView_title">Logowanie</h1>
       <v-text-field
-        v-model="form.username"
-        label="Nazwa użytkownika"
+        v-model="email"
+        label="Email"
         outlined
         dense
         class="loginView_input"
-        required
+        :error-messages="emailError"
       />
       <v-text-field
-        v-model="form.password"
+        v-model="password"
         label="Hasło"
         type="password"
         outlined
         dense
         class="loginView_input"
-        required
+        :error-messages="passwordError"
       />
       <div class="loginView_actions">
         <button
@@ -53,6 +72,9 @@ const navigateBack = () => {
         <button type="submit" class="loginView_btn loginView_btn--submit">
           Zaloguj
         </button>
+      </div>
+      <div class="error">
+        {{ errorLogin }}
       </div>
     </form>
   </div>
@@ -68,6 +90,13 @@ const navigateBack = () => {
   height: 100vh;
   background: $mainBackground;
   padding: 0 16px;
+
+  .error {
+    width: 100%;
+    text-align: center;
+    padding-top: 12px;
+    color: $errorColor;
+  }
 
   .creamCard {
     padding: 24px;
@@ -88,6 +117,7 @@ const navigateBack = () => {
 
   &_input {
     width: 100%;
+    padding: 8px 0;
   }
 
   &_actions {
