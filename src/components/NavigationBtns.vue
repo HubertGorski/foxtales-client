@@ -10,6 +10,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  btnCustomAction: {
+    type: Function,
+    required: false,
+  },
+  btn2CustomAction: {
+    type: Function,
+    required: false,
+  },
   btn: {
     type: String,
     required: true,
@@ -80,9 +88,17 @@ const allBtns = [
 ];
 
 const selectedBtn = allBtns.find((btn) => btn.text === props.btn)!;
+if (typeof props.btnCustomAction === 'function') {
+  selectedBtn.action = () => props.btnCustomAction!();
+}
+
 const selectedBtn2 = props.btn2
   ? allBtns.find((btn) => btn.text === props.btn2)!
   : null;
+
+if (selectedBtn2 && typeof props.btn2CustomAction === 'function') {
+  selectedBtn2.action = () => props.btn2CustomAction!();
+}
 
 const isTooltip2Visible = !!selectedBtn2 && !props.btn2Disabled;
 </script>

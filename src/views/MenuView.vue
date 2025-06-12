@@ -31,6 +31,7 @@ const selectedFox = computed(() => {
 
 const logout = () => {
   UserService.logout();
+  router.push(ROUTE_PATH.HOME);
 };
 </script>
 
@@ -53,7 +54,7 @@ const logout = () => {
       </div>
     </div>
     <img :src="selectedFox" alt="Lisek" class="mainFox" />
-    <NavigationBtns class="navigationBtns" btn="settings" btn2="logout" isColumnDirection />
+    <NavigationBtns class="navigationBtns" btn="settings" btn2="logout" :btn2CustomAction="logout" isColumnDirection />
   </div>
 </template>
 
