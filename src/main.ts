@@ -8,6 +8,7 @@ import VueApexCharts from "vue3-apexcharts";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@/assets/styles/hubStyles.scss';
 import '@vuepic/vue-datepicker/dist/main.css';
+import { setupInterceptors } from "./api/Interceptors";
 
 const app = createApp(App);
 
@@ -17,5 +18,6 @@ app.use(vuetify);
 app.component('VueDatePicker', VueDatePicker);
 app.use(VueApexCharts);
 app.use(i18n);
+setupInterceptors();
 
 app.mount("#app");

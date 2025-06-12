@@ -1,6 +1,10 @@
-import { apiClient } from '../api/Client';
+import { apiClient } from '../Client';
 
-export const AuthenticationService = {
+export const UserClient = {
+  
+  logout(): Promise<string> {
+    return apiClient.post('/user/logout');
+  },
   
   login(email: string, password: string): Promise<string> {
     return apiClient.post('/user/login', { email, password });
@@ -13,6 +17,5 @@ export const AuthenticationService = {
   test() {
     return apiClient.get('/user/get');
   },
-  
   
 };

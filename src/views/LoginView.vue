@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
-import { AuthenticationService } from "@/services/AuthenticationService";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { ref } from "vue";
+import { UserService } from "@/api/services/UserService";
 
 const router = useRouter();
 const errorLogin = ref("");
@@ -27,11 +27,7 @@ const navigateBack = () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const token = await AuthenticationService.login(
-      values.email,
-      values.password
-    );
-    localStorage.setItem("token", token);
+    await UserService.login(values.email, values.password);
     router.push(ROUTE_PATH.MENU);
   } catch (err: any) {
     errorLogin.value = err?.response?.data || "Błąd logowania";
@@ -41,7 +37,11 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div class="loginView">
-    <img src="@/assets/imgs/4.png" alt="Lisek" class="loginView_fox" />
+    <img
+      src="@/assets/imgs/4.png"
+      alt="Lisek"
+      class="loginView_fox"
+    />
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="loginView_title">Logowanie</h1>
       <v-text-field

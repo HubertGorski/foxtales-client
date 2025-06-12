@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import NavigationBtns from "@/components/NavigationBtns.vue";
+import { UserService } from "@/api/services/UserService";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -27,6 +28,10 @@ const selectedFox = computed(() => {
   return new URL(`../assets/imgs/${currentUser.avatar.id}.png`, import.meta.url)
     .href;
 });
+
+const logout = () => {
+  UserService.logout();
+};
 </script>
 
 <template>
