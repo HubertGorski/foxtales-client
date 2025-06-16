@@ -102,6 +102,19 @@
     "selectedDecks": "Wybrane talie"
   },
   "auth": {
-    "emailRequired": "Email jest wymagany"
+    "emailIsRequired": "Email jest wymagany",
+    "emailCannotBeEmpty": "Email nie może być pusty",
+    "emailFormatIsIncorrect": "Podany email jest niepoprawny",
+    "emailIsAlreadyTaken": "Ten adres email jest już zajęty",
+    "usernameCannotBeEmpty": "Nazwa użytkownika nie może być pusta",
+    "usernameFormatIsIncorrect": "Format nazwy użytkownika jest niepoprawny",
+    "usernameIsAlreadyTaken": "Ta nazwa użytkownika jest już zajęta",
+    "passwordIsRequired": "Hasło jest wymagane",
+    "passwordIsTooShort": "Hasło jest zbyt krótkie",
+    "passwordsAreNotIdentical": "Hasła nie są identyczne",
+    "invalidEmailOrPassword": "Niepoprawny email lub hasło",
+    "unexpectedError": "Nieoczekiwany błąd. Spróbuj ponownie później.",
+    "loginTitle": "Logowanie",
+    "logIn": "Zaloguj"
   }
 }

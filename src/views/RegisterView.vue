@@ -5,7 +5,9 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { UserService } from "@/api/services/UserService";
 import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const router = useRouter();
 
 const errorLogin = ref("");
@@ -13,11 +15,11 @@ const errorLogin = ref("");
 const schema = yup.object({
   email: yup
     .string()
-    .required("Email jest wymagany")
-    .email("Niepoprawny email"),
-  password: yup.string().required("Hasło jest wymagane"),
-  confirmpassword: yup.string().required("Hasło jest wymagane"),
-  username: yup.string().required("Username jest wymagany"),
+    .required(t("auth.emailIsRequired"))
+    .email(t("auth.emailFormatIsIncorrect")),
+  password: yup.string().required(t("auth.passwordIsRequired")),
+  confirmpassword: yup.string().required(t("auth.passwordIsRequired")),
+  username: yup.string().required(t("auth.usernameCannotBeEmpty")),
 });
 
 const { handleSubmit, setFieldError } = useForm({ validationSchema: schema });
@@ -37,12 +39,12 @@ const onSubmit = handleSubmit(async (values) => {
       Object.entries(data.errors).forEach(
         ([field, messages]: [string, any]) => {
           if (Array.isArray(messages)) {
-            setFieldError(field.toLowerCase(), messages[0]);
+            setFieldError(field.toLowerCase(), t(`auth.${messages[0]}`));
           }
         }
       );
     } else {
-      errorLogin.value = data?.title || "Błąd rejestracji";
+      errorLogin.value = data?.title ? t(`auth.${data.title}`) : t("auth.unexpectedError");
     }
   }
 });

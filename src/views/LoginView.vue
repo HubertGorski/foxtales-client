@@ -6,7 +6,9 @@ import * as yup from "yup";
 import { ref } from "vue";
 import { UserService } from "@/api/services/UserService";
 import { useUserStore } from "@/stores/userStore";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const userStore = useUserStore();
 const router = useRouter();
 const errorLogin = ref("");
@@ -14,9 +16,9 @@ const errorLogin = ref("");
 const schema = yup.object({
   email: yup
     .string()
-    .required("Email jest wymagany")
-    .email("Niepoprawny email"),
-  password: yup.string().required("Hasło jest wymagane"),
+    .required(t("auth.emailIsRequired"))
+    .email(t("auth.emailFormatIsIncorrect")),
+  password: yup.string().required(t("auth.passwordIsRequired")),
 });
 
 const { handleSubmit } = useForm({ validationSchema: schema });
@@ -33,7 +35,7 @@ const onSubmit = handleSubmit(async (values) => {
     router.push(ROUTE_PATH.MENU);
     userStore.setUsername(response.username);
   } catch (err: any) {
-    errorLogin.value = err?.response?.data || "Błąd logowania";
+    errorLogin.value = err?.response?.data ? t(`auth.${err.response.data}`) : t("auth.unexpectedError");
   }
 });
 </script>
@@ -46,7 +48,7 @@ const onSubmit = handleSubmit(async (values) => {
       class="loginView_fox"
     />
     <form @submit.prevent="onSubmit" class="creamCard">
-      <h1 class="loginView_title">Logowanie</h1>
+      <h1 class="loginView_title">{{ $t("auth.loginTitle") }}</h1>
       <v-text-field
         v-model="email"
         label="Email"
@@ -70,10 +72,10 @@ const onSubmit = handleSubmit(async (values) => {
           @click="navigateBack"
           class="loginView_btn loginView_btn--back"
         >
-          Wstecz
+          {{ $t("back2") }}
         </button>
         <button type="submit" class="loginView_btn loginView_btn--submit">
-          Zaloguj
+          {{ $t("auth.logIn") }}
         </button>
       </div>
       <div class="error">

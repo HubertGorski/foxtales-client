@@ -1,4 +1,9 @@
-import { AxiosError, type AxiosRequestConfig, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
+import {
+  AxiosError,
+  type AxiosRequestConfig,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from "axios";
 import Client from "./Client";
 
 type FailedRequest = {
@@ -41,7 +46,15 @@ export function setupInterceptors() {
         _retry?: boolean;
       };
 
-      if (error.response?.status === 401 && !originalRequest._retry) {
+      const isAuthRoute =
+        originalRequest.url?.includes("/login") ||
+        originalRequest.url?.includes("/register");
+
+      if (
+        error.response?.status === 401 &&
+        !originalRequest._retry &&
+        !isAuthRoute
+      ) {
         originalRequest._retry = true;
 
         if (isRefreshing) {
@@ -58,9 +71,8 @@ export function setupInterceptors() {
         isRefreshing = true;
 
         try {
-          const response = await Client.post("/user/refresh");          
+          const response = await Client.post("/user/refresh");
           const newToken = response.data;
-          console.log(newToken);
           localStorage.setItem("token", newToken);
           Client.defaults.headers.common["Authorization"] =
             `Bearer ${newToken}`;
