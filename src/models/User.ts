@@ -107,14 +107,6 @@ export class User {
     return this.dylematyCards.filter((card) => card.isPositiveCard);
   }
 
-  get publicPositiveCardsCount(): number {
-    return this.positiveCards.filter((card) => card.isPublic).length;
-  }
-
-  get publicNegativeCardsCount(): number {
-    return this.negativeCards.filter((card) => card.isPublic).length;
-  }
-
   getPermission(permissionName: PERMISSION): Permission | undefined {
     return this.permissions.find((p) => p.name === permissionName);
   }

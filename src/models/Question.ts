@@ -29,7 +29,6 @@ export class Question {
     this.ownerId = ownerId;
     this.language = language;
     this.targetGender = targetGender;
-    this.isPublic = isPublic;
     this.usedCount = usedCount;
     this.publicDate = publicDate;
     this.createdDate = createdDate;
