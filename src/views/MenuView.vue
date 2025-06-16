@@ -5,7 +5,8 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.vue";
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import { UserService } from "@/api/services/UserService";
+import { userService } from "@/api/services/UserService";
+import { User } from "@/models/User";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -29,9 +30,10 @@ const selectedFox = computed(() => {
     .href;
 });
 
-const logout = () => {
-  UserService.logout();
+const logout = async () => {
+  await userService.logout();
   router.push(ROUTE_PATH.HOME);
+  userStore.setUserSession(new User());
 };
 </script>
 
@@ -54,7 +56,13 @@ const logout = () => {
       </div>
     </div>
     <img :src="selectedFox" alt="Lisek" class="mainFox" />
-    <NavigationBtns class="navigationBtns" btn="settings" btn2="logout" :btn2CustomAction="logout" isColumnDirection />
+    <NavigationBtns
+      class="navigationBtns"
+      btn="settings"
+      btn2="logout"
+      :btn2CustomAction="logout"
+      isColumnDirection
+    />
   </div>
 </template>
 

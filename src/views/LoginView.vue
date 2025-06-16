@@ -4,10 +4,12 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { ref } from "vue";
-import { UserService } from "@/api/services/UserService";
+import { userService } from "@/api/services/UserService";
 import { useUserStore } from "@/stores/userStore";
 import { useI18n } from "vue-i18n";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
+import { User } from "@/models/User";
+import { setupInterceptors } from "@/api/Interceptors";
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -32,9 +34,11 @@ const navigateBack = () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const response = await UserService.login(values.email, values.password);
-    const redirectUrl = sessionStorage.getItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
-    
+    const response = await userService.login(values.email, values.password);
+    const redirectUrl = sessionStorage.getItem(
+      SESSION_STORAGE.REDIRECT_AFTER_LOGIN
+    );
+
     if (redirectUrl) {
       sessionStorage.removeItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
       router.push(redirectUrl);
@@ -42,7 +46,13 @@ const onSubmit = handleSubmit(async (values) => {
       router.push(ROUTE_PATH.MENU);
     }
 
-    userStore.setUsername(response.username);
+    userStore.setUserSession(
+      new User({
+        userId: response.userId,
+        username: response.username,
+        accessToken: response.accessToken,
+      })
+    );
   } catch (err: any) {
     errorLogin.value = err?.response?.data
       ? t(`auth.${err.response.data}`)

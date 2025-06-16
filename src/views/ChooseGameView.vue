@@ -9,7 +9,9 @@ import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 
 const router = useRouter();
 const currentUser = useUserStore();
-const confirmationTarget = sessionStorage.getItem(SESSION_STORAGE.URL_SELECTED_GAME);
+const confirmationTarget = sessionStorage.getItem(
+  SESSION_STORAGE.URL_SELECTED_GAME
+);
 if (!confirmationTarget) {
   router.push(ROUTE_PATH.MENU);
 }

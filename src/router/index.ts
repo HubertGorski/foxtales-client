@@ -150,7 +150,7 @@ function isAdmin(): boolean {
 }
 
 function isAuthenticated(): boolean {
-  return !!localStorage.getItem("token");
+  return !!useUserStore().user.accessToken;
 }
 
 export default router;

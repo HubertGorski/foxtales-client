@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
-import { UserService } from "@/api/services/UserService";
+import { userService } from "@/api/services/UserService";
 import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
@@ -30,7 +30,7 @@ const { value: username, errorMessage: usernameError } = useField("username");
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await UserService.register(values.email, values.username, values.password, values.confirmpassword);
+    await userService.register(values.email, values.username, values.password, values.confirmpassword);
     router.push(ROUTE_PATH.LOGIN);
   } catch (err: any) {
     const data = err?.response?.data;

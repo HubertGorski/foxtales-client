@@ -1,6 +1,6 @@
 import { DEFAULT_AVATAR_SOURCE, GENDER } from "@/enums/userEnum";
 import { ROLE } from "@/enums/rolesEnum";
-import { PERMISSION } from "@/enums/permissions";
+import { defaultPermissions, PERMISSION } from "@/enums/permissions";
 import { Catalog } from "./Catalog";
 import { Avatar } from "./Avatar";
 import type { Achievement } from "./Achievement";
@@ -19,6 +19,7 @@ export class User {
   invitedUsersToAppCount: number = 0;
   lastSign: Date = new Date();
   registerDate: Date = new Date();
+  accessToken: string = "";
 
   username: string = "Fox Gamer";
   avatar: Avatar = new Avatar(1, DEFAULT_AVATAR_SOURCE);
@@ -27,7 +28,7 @@ export class User {
   requiredAccountPointsToNextLevel: number = 0;
   achievements: Achievement[] = [];
   avatarsIds: number[] = [];
-  permissions: Permission[] = [];
+  permissions: Permission[] = defaultPermissions;
 
   //Psych game
   totalPsychGamesPlayed: number = 0;
@@ -36,7 +37,7 @@ export class User {
   averageResponseTime: number = 0;
   catalogs: Catalog[] = [];
   questions: Question[] = [];
-  
+
   //Dylematy game
   totalDylematyGamesPlayed: number = 0;
   decks: Deck[] = [];
@@ -48,7 +49,7 @@ export class User {
   isReady: boolean = false;
   pointsInGame: number = 0;
   round: number = 1;
-  
+
   // In Psych Game
   chosenPlayerAnswer: User | null = null;
   votersForHisAnswer: User[] = [];
@@ -86,9 +87,9 @@ export class User {
   }
 
   get publicQuestionsCount(): number {
-    return this.questions.filter(question => question.isPublic).length;
+    return this.questions.filter((question) => question.isPublic).length;
   }
-  
+
   //DYLEMATY
   get decksCount(): number {
     return this.decks.length;
@@ -99,19 +100,19 @@ export class User {
   }
 
   get negativeCards(): DylematyCard[] {
-    return this.dylematyCards.filter(card => card.isNegativeCard );
+    return this.dylematyCards.filter((card) => card.isNegativeCard);
   }
 
   get positiveCards(): DylematyCard[] {
-    return this.dylematyCards.filter(card => card.isPositiveCard );
+    return this.dylematyCards.filter((card) => card.isPositiveCard);
   }
 
   get publicPositiveCardsCount(): number {
-    return this.positiveCards.filter(card => card.isPublic).length;
+    return this.positiveCards.filter((card) => card.isPublic).length;
   }
 
   get publicNegativeCardsCount(): number {
-    return this.negativeCards.filter(card => card.isPublic).length;
+    return this.negativeCards.filter((card) => card.isPublic).length;
   }
 
   getPermission(permissionName: PERMISSION): Permission | undefined {

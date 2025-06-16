@@ -15,12 +15,12 @@ interface UserState {
 export const useUserStore = defineStore({
   id: "userStore",
   state: (): UserState => ({
-    user: users[7],
+    user: users[7]
   }),
 
   getters: {
-    getUserRole: (state) => {
-      return state.user.role;
+    getAccessToken: (state) => () => {
+      return state.user.accessToken;
     },
 
     getPermissionByName: (state) => (name: PERMISSION_GAME | PERMISSION) => {
@@ -37,6 +37,14 @@ export const useUserStore = defineStore({
   },
 
   actions: {
+    setUserSession(user: User) {
+      this.user = user;
+    },
+
+    setAccessToken(accessToken: string) {
+      this.user.accessToken = accessToken;
+    },
+
     setUsername(newUsername: string) {
       this.user.username = newUsername;
     },

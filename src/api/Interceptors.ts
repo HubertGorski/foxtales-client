@@ -26,10 +26,13 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-export function setupInterceptors() {
+export function setupInterceptors(
+  getToken: () => string | null,
+  setToken: (token: string) => void
+) {
   Client.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-      const token = localStorage.getItem("token");
+      const token = getToken();
       if (token) {
         config.headers.set("Authorization", `Bearer ${token}`);
       }
@@ -73,7 +76,7 @@ export function setupInterceptors() {
         try {
           const response = await Client.post("/user/refresh");
           const newToken = response.data;
-          localStorage.setItem("token", newToken);
+          setToken(newToken);
           Client.defaults.headers.common["Authorization"] =
             `Bearer ${newToken}`;
           processQueue(null, newToken);
