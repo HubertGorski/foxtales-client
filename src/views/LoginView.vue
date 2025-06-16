@@ -51,7 +51,7 @@ const onSubmit = handleSubmit(async (values) => {
       <h1 class="loginView_title">{{ $t("auth.loginTitle") }}</h1>
       <v-text-field
         v-model="email"
-        label="Email"
+        :label="$t('auth.email')"
         outlined
         dense
         class="loginView_input"
@@ -59,7 +59,7 @@ const onSubmit = handleSubmit(async (values) => {
       />
       <v-text-field
         v-model="password"
-        label="Hasło"
+        :label="$t('auth.password')"
         type="password"
         outlined
         dense

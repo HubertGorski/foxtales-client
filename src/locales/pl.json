@@ -35,7 +35,6 @@
   "manageLibrary": "Zarządzaj biblioteką",
   "changeName": "Zmień imię",
   "chooseFox": "Wybierz liska",
-  "createGame": "Utwórz grę",
   "createNewGame": "Utwórz nową grę",
   "joinTheGame": "Dołącz do gry",
   "seeMore": "Zobacz więcej",
@@ -75,7 +74,10 @@
     "usePrivateQuestions": "Używaj prywatnych pytań",
     "usePublicQuestions": "Używaj publicznych pytań",
     "gameVisibleOnList": "Gra widoczna na liście",
-    "isQuestionsFromAnotherGamesAllowed": "Zezwól na dodawanie swoich pytań innym graczom"
+    "isQuestionsFromAnotherGamesAllowed": "Zezwól na dodawanie swoich pytań innym graczom",
+    "createGame": "Utwórz grę",
+    "inviteOtherPlayers": "Zaproś pozostałych podając kod:",
+    "entryPassword": "Hasło wstępu"
   },
   "languages": {
     "polish": "Polski",
@@ -117,6 +119,10 @@
     "unexpectedError": "Nieoczekiwany błąd. Spróbuj ponownie później.",
     "loginTitle": "Logowanie",
     "logIn": "Zaloguj",
-    "tryLoginAgain": "Coś poszło nie tak. Zaloguj się ponownie."
+    "tryLoginAgain": "Coś poszło nie tak. Zaloguj się ponownie.",
+    "email": "Email",
+    "password": "Hasło",
+    "repeatPassword": "Powtórz hasło",
+    "username": "Nazwa użytkownika"
   }
 }

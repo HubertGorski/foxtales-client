@@ -60,7 +60,7 @@ const navigateBack = () => {
       <h1 class="registerView_title">{{ $t("registerTitle") }}</h1>
       <v-text-field
         v-model="username"
-        label="Nazwa użytkownika"
+        :label="$t('auth.username')"
         outlined
         dense
         class="registerView_input"
@@ -68,7 +68,7 @@ const navigateBack = () => {
       />
       <v-text-field
         v-model="email"
-        label="Email"
+        :label="$t('auth.email')"
         outlined
         dense
         class="registerView_input"
@@ -76,7 +76,7 @@ const navigateBack = () => {
       />
       <v-text-field
         v-model="password"
-        label="Hasło"
+        :label="$t('auth.password')"
         type="password"
         outlined
         dense
@@ -85,7 +85,7 @@ const navigateBack = () => {
       />
       <v-text-field
         v-model="confirmpassword"
-        label="Powtórz hasło"
+        :label="$t('auth.repeatPassword')"
         type="password"
         outlined
         dense

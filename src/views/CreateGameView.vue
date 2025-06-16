@@ -11,16 +11,34 @@ const newGame = ref(new Game("PIESEK1"));
   <div class="createGameView">
     <div class="createGameView_card">
       <div class="creamCard">
-        <p class="title">{{ $t('createGame') }}</p>
+        <p class="title">{{ $t("lobby.createGame") }}</p>
         <div class="settings">
-          <HubSwitch v-model="newGame.usePrivateQuestions" label="lobby.usePrivateQuestions" tooltipText="tooltip.privateQuestionsDescription" withIcon/>
-          <HubSwitch v-model="newGame.usePublicQuestions" label="lobby.usePublicQuestions" tooltipText="tooltip.publicQuestionsDescription" withIcon/>
-          <HubSwitch v-model="newGame.isPublic" label="lobby.gameVisibleOnList" tooltipText=tooltip.roomOnListDescription withIcon/>
-          <HubSwitch v-model="newGame.isQuestionsFromAnotherGamesAllowed" label="lobby.isQuestionsFromAnotherGamesAllowed"/>
+          <HubSwitch
+            v-model="newGame.usePrivateQuestions"
+            label="lobby.usePrivateQuestions"
+            tooltipText="tooltip.privateQuestionsDescription"
+            withIcon
+          />
+          <HubSwitch
+            v-model="newGame.usePublicQuestions"
+            label="lobby.usePublicQuestions"
+            tooltipText="tooltip.publicQuestionsDescription"
+            withIcon
+          />
+          <HubSwitch
+            v-model="newGame.isPublic"
+            label="lobby.gameVisibleOnList"
+            tooltipText="tooltip.roomOnListDescription"
+            withIcon
+          />
+          <HubSwitch
+            v-model="newGame.isQuestionsFromAnotherGamesAllowed"
+            label="lobby.isQuestionsFromAnotherGamesAllowed"
+          />
         </div>
         <div v-if="!newGame.isPublic" class="customCodeSection">
           <p class="customCodeSection_description">
-            Zaproś pozostałych podając kod:
+            {{ $t("lobby.inviteOtherPlayers") }}
           </p>
           <p class="customCodeSection_code">{{ newGame.code }}</p>
         </div>
@@ -28,7 +46,7 @@ const newGame = ref(new Game("PIESEK1"));
           <v-text-field
             class="publicSection_input"
             v-model="newGame.password"
-            label="Hasło wstępu"
+            :label="$t('lobby.entryPassword')"
             type="password"
             outlined
             dense
