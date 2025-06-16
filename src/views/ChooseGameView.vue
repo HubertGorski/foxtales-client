@@ -8,7 +8,7 @@ import foxGames from "@/configs/foxGames";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 
 const router = useRouter();
-const currentUser = useUserStore();
+const userStore = useUserStore();
 const confirmationTarget = sessionStorage.getItem(
   SESSION_STORAGE.URL_SELECTED_GAME
 );
@@ -32,7 +32,7 @@ const action = (id: PERMISSION_GAME) => {
           @click="action(game.permission)"
           class="creamCard chooseGame_game"
           :class="{
-            isLocked: !currentUser.getPermissionByName(game.permission)
+            isLocked: !userStore.getPermissionByName(game.permission)
               .isGameUnlocked,
           }"
         >

@@ -16,6 +16,7 @@ import NoAccessViewVue from "@/views/NoAccessView.vue";
 import DylematyLibraryViewVue from "@/views/dylematy/DylematyLibraryView.vue";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
+import { PERMISSION_GAME } from "@/enums/permissions";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -78,11 +79,17 @@ function getRoutesWithAuth() {
       path: ROUTE_PATH.CREATE_GAME_DYLEMATY,
       name: ROUTE_NAME.CREATE_GAME_DYLEMATY,
       component: CreateGameViewVue,
+      meta: {
+        permission: PERMISSION_GAME.DYLEMATY,
+      },
     },
     {
       path: ROUTE_PATH.CREATE_GAME_PSYCH,
       name: ROUTE_NAME.CREATE_GAME_PSYCH,
       component: CreateGameViewVue,
+      meta: {
+        permission: PERMISSION_GAME.PSYCH,
+      },
     },
     {
       path: ROUTE_PATH.LIBRARY,
@@ -96,11 +103,17 @@ function getRoutesWithAuth() {
       path: ROUTE_PATH.LIBRARY_DYLEMATY,
       name: ROUTE_NAME.LIBRARY_DYLEMATY,
       component: DylematyLibraryViewVue,
+      meta: {
+        permission: PERMISSION_GAME.DYLEMATY,
+      },
     },
     {
       path: ROUTE_PATH.LIBRARY_PSYCH,
       name: ROUTE_NAME.LIBRARY_PSYCH,
       component: LibraryViewVue,
+      meta: {
+        permission: PERMISSION_GAME.PSYCH,
+      },
     },
     {
       path: ROUTE_PATH.CHOOSE_GAME,
@@ -124,7 +137,8 @@ function getRoutesWithAuth() {
 }
 
 router.beforeEach((to, from, next) => {
-  const isGameSelected = sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
+  const isGameSelected =
+    sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
   if (to.meta.requiredGameSelected && !isGameSelected) {
     sessionStorage.setItem(SESSION_STORAGE.URL_SELECTED_GAME, to.fullPath);
     next(ROUTE_PATH.CHOOSE_GAME);
@@ -139,6 +153,11 @@ router.beforeEach((to, from, next) => {
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
     });
+  } else if (to.meta.permission && !hasAccessToGame(to.meta.permission as PERMISSION_GAME)) {
+    next({
+      path: ROUTE_PATH.NO_ACCESS,
+      query: { reason: NO_ACCESS_REASON.NO_PERMISSION_GAME },
+    });
   } else {
     sessionStorage.removeItem(SESSION_STORAGE.IS_GAME_SELECTED);
     next();
@@ -147,6 +166,10 @@ router.beforeEach((to, from, next) => {
 
 function isAdmin(): boolean {
   return useUserStore().user.role === ROLE.ADMIN;
+}
+
+function hasAccessToGame(permission: PERMISSION_GAME): boolean {  
+  return useUserStore().getPermissionByName(permission).isGameUnlocked;
 }
 
 function isAuthenticated(): boolean {
