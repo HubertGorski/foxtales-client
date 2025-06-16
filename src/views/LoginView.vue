@@ -7,6 +7,7 @@ import { ref } from "vue";
 import { UserService } from "@/api/services/UserService";
 import { useUserStore } from "@/stores/userStore";
 import { useI18n } from "vue-i18n";
+import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -32,10 +33,10 @@ const navigateBack = () => {
 const onSubmit = handleSubmit(async (values) => {
   try {
     const response = await UserService.login(values.email, values.password);
-    const redirectUrl = sessionStorage.getItem("redirectAfterLogin");
+    const redirectUrl = sessionStorage.getItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
     
     if (redirectUrl) {
-      sessionStorage.removeItem("redirectAfterLogin");
+      sessionStorage.removeItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
       router.push(redirectUrl);
     } else {
       router.push(ROUTE_PATH.MENU);

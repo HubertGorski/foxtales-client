@@ -5,18 +5,19 @@ import { useRouter } from "vue-router";
 import { PERMISSION_GAME } from "@/enums/permissions";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import foxGames from "@/configs/foxGames";
+import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 
 const router = useRouter();
 const currentUser = useUserStore();
-const confirmationTarget = sessionStorage.getItem("targetUrl");
+const confirmationTarget = sessionStorage.getItem(SESSION_STORAGE.URL_SELECTED_GAME);
 if (!confirmationTarget) {
   router.push(ROUTE_PATH.MENU);
 }
 
 const action = (id: PERMISSION_GAME) => {
-  sessionStorage.setItem("isGameSelected", "true");
+  sessionStorage.setItem(SESSION_STORAGE.IS_GAME_SELECTED, "true");
   router.push(`${confirmationTarget}-${id}`);
-  sessionStorage.removeItem("targetUrl");
+  sessionStorage.removeItem(SESSION_STORAGE.URL_SELECTED_GAME);
 };
 </script>
 

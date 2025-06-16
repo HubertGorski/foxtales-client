@@ -15,6 +15,7 @@ import { ROLE } from "@/enums/rolesEnum";
 import NoAccessViewVue from "@/views/NoAccessView.vue";
 import DylematyLibraryViewVue from "@/views/dylematy/DylematyLibraryView.vue";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
+import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,9 +124,9 @@ function getRoutesWithAuth() {
 }
 
 router.beforeEach((to, from, next) => {
-  const isGameSelected = sessionStorage.getItem("isGameSelected") === "true";
+  const isGameSelected = sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
   if (to.meta.requiredGameSelected && !isGameSelected) {
-    sessionStorage.setItem("targetUrl", to.fullPath);
+    sessionStorage.setItem(SESSION_STORAGE.URL_SELECTED_GAME, to.fullPath);
     next(ROUTE_PATH.CHOOSE_GAME);
   } else if (to.meta.requiresAdmin && !isAdmin()) {
     next({
@@ -133,13 +134,13 @@ router.beforeEach((to, from, next) => {
       query: { reason: NO_ACCESS_REASON.ADMIN_ONLY },
     });
   } else if (to.meta.requiresAuth && !isAuthenticated()) {
-    sessionStorage.setItem("redirectAfterLogin", to.fullPath);
+    sessionStorage.setItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN, to.fullPath);
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
     });
   } else {
-    sessionStorage.removeItem("isGameSelected");
+    sessionStorage.removeItem(SESSION_STORAGE.IS_GAME_SELECTED);
     next();
   }
 });
