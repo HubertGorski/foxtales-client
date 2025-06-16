@@ -1,7 +1,9 @@
+import { FoxGame } from "./FoxGame";
 import { User } from "./User";
 
 export class Game {
   code: string;
+  foxGame: FoxGame;
   owner: User;
   isPublic: boolean;
   users: User[];
@@ -12,6 +14,7 @@ export class Game {
 
   constructor(
     code: string,
+    foxGame = new FoxGame(),
     isPublic: boolean = false,
     owner: User = new User(),
     users: User[] = [],
@@ -21,6 +24,7 @@ export class Game {
     isQuestionsFromAnotherGamesAllowed = false,
   ) {
     this.code = code;
+    this.foxGame = foxGame;
     this.isPublic = isPublic;
     this.owner = owner;
     this.users = users;

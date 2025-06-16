@@ -71,10 +71,10 @@ const openPasswordPopup = () => {
     />
     <HubDivider />
     <div class="joinGameView_chooseRoom creamCard">
-      <p class="subtitle">Wybierz pokój z listy</p>
+      <p class="subtitle">{{ $t("joinGame.chooseRoomFromList") }}</p>
       <div v-if="actualGames.length === 0" class="emptyGamesList">
         <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
-        <p>Brak publicznych pokoi</p>
+        <p>{{ $t("joinGame.noPublicRooms") }}</p>
       </div>
       <div v-else class="gamesList">
         <WhiteCard
@@ -84,13 +84,19 @@ const openPasswordPopup = () => {
           :key="game.code"
         >
           <div class="details">
+            <div>
+              <v-icon>{{ game.foxGame.icon }}</v-icon>
+              <span>{{ $t(game.foxGame.name) }}</span>
+            </div>
             <div v-if="game.password">
               <v-icon>{{ ICON.LOCK }}</v-icon>
-              <span>Wymagane hasło</span>
+              <span>{{ $t("passwordRequired") }}</span>
             </div>
             <div>
               <v-icon>{{ ICON.USERS }}</v-icon>
-              <span>{{ game.usersCount }} graczy w pokoju</span>
+              <span>{{
+                $t("joinGame.playersInRoom", { count: game.usersCount })
+              }}</span>
             </div>
           </div>
         </WhiteCard>

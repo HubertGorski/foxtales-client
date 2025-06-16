@@ -6,7 +6,6 @@ import type { LANG } from "@/enums/languagesEnum";
 import type { Catalog } from "@/models/Catalog";
 import type { Question } from "@/models/Question";
 import type { PERMISSION, PERMISSION_GAME } from "@/enums/permissions";
-import { permissions } from "@/assets/data/permissions";
 import type { Deck } from "@/models/Deck";
 
 interface UserState {

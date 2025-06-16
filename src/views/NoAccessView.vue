@@ -22,7 +22,7 @@ const reason = useRoute().query.reason;
       btn="back2"
       btn2="logout"
     />
-    <NavigationBtns v-else btn="home" />
+    <NavigationBtns v-else btn="goToLogin" />
   </div>
 </template>
 

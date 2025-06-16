@@ -128,9 +128,16 @@ router.beforeEach((to, from, next) => {
     sessionStorage.setItem("targetUrl", to.fullPath);
     next(ROUTE_PATH.CHOOSE_GAME);
   } else if (to.meta.requiresAdmin && !isAdmin()) {
-    next({ path: ROUTE_PATH.NO_ACCESS, query: { reason: NO_ACCESS_REASON.ADMIN_ONLY } });
+    next({
+      path: ROUTE_PATH.NO_ACCESS,
+      query: { reason: NO_ACCESS_REASON.ADMIN_ONLY },
+    });
   } else if (to.meta.requiresAuth && !isAuthenticated()) {
-    next({ path: ROUTE_PATH.NO_ACCESS, query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED } });
+    sessionStorage.setItem("redirectAfterLogin", to.fullPath);
+    next({
+      path: ROUTE_PATH.NO_ACCESS,
+      query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
+    });
   } else {
     sessionStorage.removeItem("isGameSelected");
     next();

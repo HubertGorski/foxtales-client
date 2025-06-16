@@ -26,6 +26,7 @@
   "pageNotExist": "Strona w budowie",
   "joinWithCode": "Dołącz za pomocą kodu",
   "accessPasswordRequired": "Wymagane hasło dostępu",
+  "passwordRequired": "Wymagane hasło",
   "addQuestion": "Dodaj pytanie",
   "addCatalog": "Dodaj katalog",
   "editCatalog": "Edytuj katalog",
@@ -41,7 +42,7 @@
   "accountStats": "Statystyki konta",
   "shop": "Sklep",
   "hi": "Cześć",
-  "home": "Przejdź do strony logowania",
+  "goToLogin": "Przejdź do strony logowania",
   "haveFunAndEnjoyGame": "Baw się dobrze i miłej gry.",
   "changeLanguage": "Zmień język",
   "isComing": "Dostępne wkrótce",
@@ -124,5 +125,24 @@
     "password": "Hasło",
     "repeatPassword": "Powtórz hasło",
     "username": "Nazwa użytkownika"
+  },
+  "foxGame": {
+    "psych": {
+      "name": "Opowieści",
+      "description": "Opis gry psych"
+    },
+    "dylematy": {
+      "name": "Dylematy",
+      "description": "Opis gry dylematy"
+    },
+    "killGame": {
+      "name": "Kill game",
+      "description": "Opis gry kill game"
+    }
+  },
+  "joinGame": {
+    "chooseRoomFromList": "Wybierz pokój z listy",
+    "noPublicRooms": "Brak publicznych pokoi",
+    "playersInRoom": "{count} graczy w pokoju"
   }
 }

@@ -1,46 +1,19 @@
 <script setup lang="ts">
 import NavigationBtns from "@/components/NavigationBtns.vue";
-import { ICON } from "@/enums/iconsEnum";
 import { useUserStore } from "@/stores/userStore";
 import { useRouter } from "vue-router";
 import { PERMISSION_GAME } from "@/enums/permissions";
+import { ROUTE_PATH } from "@/router/routeEnums";
+import foxGames from "@/configs/foxGames";
 
 const router = useRouter();
 const currentUser = useUserStore();
-
-const games = [
-  {
-    id: PERMISSION_GAME.PSYCH,
-    name: "Opowieści",
-    icon: ICON.GAME_PSYCH,
-    description: "Opis gry psych",
-    isAvailable: currentUser.getPermissionByName(PERMISSION_GAME.PSYCH)
-      .isGameUnlocked,
-  },
-  {
-    id: PERMISSION_GAME.DYLEMATY,
-    name: "Dylematy",
-    icon: ICON.GAME_DYLEMATY,
-    description: "Opis gry dylematy",
-    isAvailable: currentUser.getPermissionByName(PERMISSION_GAME.DYLEMATY)
-      .isGameUnlocked,
-  },
-  {
-    id: PERMISSION_GAME.KILLGAME,
-    name: "Kill game",
-    icon: ICON.GAME_KILLGAME,
-    description: "Opis gry kill game",
-    isAvailable: currentUser.getPermissionByName(PERMISSION_GAME.KILLGAME)
-      .isGameUnlocked,
-  },
-];
+const confirmationTarget = sessionStorage.getItem("targetUrl");
+if (!confirmationTarget) {
+  router.push(ROUTE_PATH.MENU);
+}
 
 const action = (id: PERMISSION_GAME) => {
-  const confirmationTarget = sessionStorage.getItem("targetUrl");
-  if (!confirmationTarget) {
-    return;
-  }
-
   sessionStorage.setItem("isGameSelected", "true");
   router.push(`${confirmationTarget}-${id}`);
   sessionStorage.removeItem("targetUrl");
@@ -51,14 +24,17 @@ const action = (id: PERMISSION_GAME) => {
   <div class="chooseGameView">
     <div class="title">{{ $t("chooseGameType") }}</div>
     <div class="chooseGame">
-      <div v-for="game in games" :key="game.id">
+      <div v-for="game in foxGames" :key="game.permission">
         <div
-          @click="action(game.id)"
+          @click="action(game.permission)"
           class="creamCard chooseGame_game"
-          :class="{ isLocked: !game.isAvailable }"
+          :class="{
+            isLocked: !currentUser.getPermissionByName(game.permission)
+              .isGameUnlocked,
+          }"
         >
           <v-icon class="icon">{{ game.icon }}</v-icon>
-          <div class="name">{{ game.name }}</div>
+          <div class="name">{{ $t(game.name) }}</div>
         </div>
       </div>
     </div>

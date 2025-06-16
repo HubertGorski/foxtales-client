@@ -31,22 +31,28 @@ const navigateBack = () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const response = await UserService.login(values.email, values.password);    
-    router.push(ROUTE_PATH.MENU);
+    const response = await UserService.login(values.email, values.password);
+    const redirectUrl = sessionStorage.getItem("redirectAfterLogin");
+    
+    if (redirectUrl) {
+      sessionStorage.removeItem("redirectAfterLogin");
+      router.push(redirectUrl);
+    } else {
+      router.push(ROUTE_PATH.MENU);
+    }
+
     userStore.setUsername(response.username);
   } catch (err: any) {
-    errorLogin.value = err?.response?.data ? t(`auth.${err.response.data}`) : t("auth.unexpectedError");
+    errorLogin.value = err?.response?.data
+      ? t(`auth.${err.response.data}`)
+      : t("auth.unexpectedError");
   }
 });
 </script>
 
 <template>
   <div class="loginView">
-    <img
-      src="@/assets/imgs/4.png"
-      alt="Lisek"
-      class="loginView_fox"
-    />
+    <img src="@/assets/imgs/4.png" alt="Lisek" class="loginView_fox" />
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="loginView_title">{{ $t("auth.loginTitle") }}</h1>
       <v-text-field
