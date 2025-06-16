@@ -10,8 +10,8 @@ export const UserClient = {
     return apiClient.post('/user/login', { email, password });
   },
   
-  register(email: string, username: string, password: string) {
-    return apiClient.post('/user/register', { email, username, password });
+  register(email: string, username: string, password: string, confirmPassword: string) {
+    return apiClient.post('/user/register', { email, username, password, confirmPassword });
   },
   
   test() {

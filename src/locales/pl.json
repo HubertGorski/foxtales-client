@@ -100,5 +100,8 @@
     "chooseDeckSize": "Wybierz wielkość talii",
     "selectedCardsToDeck": "Wybrane karty do talii",
     "selectedDecks": "Wybrane talie"
+  },
+  "auth": {
+    "emailRequired": "Email jest wymagany"
   }
 }

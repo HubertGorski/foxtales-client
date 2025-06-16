@@ -2,19 +2,50 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
+import { UserService } from "@/api/services/UserService";
+import * as yup from "yup";
+import { useField, useForm } from "vee-validate";
 
 const router = useRouter();
 
-const form = ref({
-  username: "",
-  password: "",
-  confirmPassword: "",
+const errorLogin = ref("");
+
+const schema = yup.object({
+  email: yup
+    .string()
+    .required("Email jest wymagany")
+    .email("Niepoprawny email"),
+  password: yup.string().required("Hasło jest wymagane"),
+  confirmpassword: yup.string().required("Hasło jest wymagane"),
+  username: yup.string().required("Username jest wymagany"),
 });
 
-const submitForm = () => {
-  console.log("Form submitted:", form.value);
-  router.push(ROUTE_PATH.LOGIN);
-};
+const { handleSubmit, setFieldError } = useForm({ validationSchema: schema });
+const { value: email, errorMessage: emailError } = useField("email");
+const { value: confirmpassword, errorMessage: confirmpasswordError } = useField("confirmpassword");
+const { value: password, errorMessage: passwordError } = useField("password");
+const { value: username, errorMessage: usernameError } = useField("username");
+
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    await UserService.register(values.email, values.username, values.password, values.confirmpassword);
+    router.push(ROUTE_PATH.LOGIN);
+  } catch (err: any) {
+    const data = err?.response?.data;
+
+    if (data?.errors) {
+      Object.entries(data.errors).forEach(
+        ([field, messages]: [string, any]) => {
+          if (Array.isArray(messages)) {
+            setFieldError(field.toLowerCase(), messages[0]);
+          }
+        }
+      );
+    } else {
+      errorLogin.value = data?.title || "Błąd rejestracji";
+    }
+  }
+});
 
 const navigateBack = () => {
   router.push(ROUTE_PATH.HOME);
@@ -23,33 +54,41 @@ const navigateBack = () => {
 
 <template>
   <div class="registerView">
-    <form @submit.prevent="submitForm" class="creamCard">
+    <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="registerView_title">{{ $t("registerTitle") }}</h1>
       <v-text-field
-        v-model="form.username"
+        v-model="username"
         label="Nazwa użytkownika"
         outlined
         dense
         class="registerView_input"
-        required
+        :error-messages="usernameError"
       />
       <v-text-field
-        v-model="form.password"
+        v-model="email"
+        label="Email"
+        outlined
+        dense
+        class="registerView_input"
+        :error-messages="emailError"
+      />
+      <v-text-field
+        v-model="password"
         label="Hasło"
         type="password"
         outlined
         dense
         class="registerView_input"
-        required
+        :error-messages="passwordError"
       />
       <v-text-field
-        v-model="form.confirmPassword"
+        v-model="confirmpassword"
         label="Powtórz hasło"
         type="password"
         outlined
         dense
         class="registerView_input"
-        required
+        :error-messages="confirmpasswordError"
       />
       <div class="registerView_actions">
         <button
@@ -62,6 +101,9 @@ const navigateBack = () => {
         <button type="submit" class="registerView_btn registerView_btn--submit">
           {{ $t("create") }}
         </button>
+      </div>
+      <div class="error">
+        {{ errorLogin }}
       </div>
     </form>
     <img src="@/assets/imgs/fox10.png" alt="Lisek" class="registerView_fox" />
@@ -77,7 +119,7 @@ const navigateBack = () => {
   flex-direction: column;
   height: 100vh;
   background: $mainBackground;
-  padding: 120px 16px;
+  padding: 80px 16px;
 
   .creamCard {
     padding: 24px;
@@ -85,9 +127,8 @@ const navigateBack = () => {
 
   &_fox {
     position: relative;
-    bottom: -52px;
+    bottom: 16px;
     left: -32px;
-    transform: scale(1.2);
   }
 
   &_title {
@@ -100,6 +141,7 @@ const navigateBack = () => {
 
   &_input {
     width: 100%;
+    padding-bottom: 12px;
   }
 
   &_actions {

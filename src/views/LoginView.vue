@@ -5,7 +5,9 @@ import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { ref } from "vue";
 import { UserService } from "@/api/services/UserService";
+import { useUserStore } from "@/stores/userStore";
 
+const userStore = useUserStore();
 const router = useRouter();
 const errorLogin = ref("");
 
@@ -27,8 +29,9 @@ const navigateBack = () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await UserService.login(values.email, values.password);
+    const response = await UserService.login(values.email, values.password);    
     router.push(ROUTE_PATH.MENU);
+    userStore.setUsername(response.username);
   } catch (err: any) {
     errorLogin.value = err?.response?.data || "Błąd logowania";
   }
