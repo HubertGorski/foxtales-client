@@ -14,10 +14,22 @@ import { useUserStore } from "@/stores/userStore";
 import { ROLE } from "@/enums/rolesEnum";
 import NoAccessViewVue from "@/views/NoAccessView.vue";
 import DylematyLibraryViewVue from "@/views/dylematy/DylematyLibraryView.vue";
+import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+  routes: getRoutesWithAuth(),
+});
+
+function getRoutesWithAuth() {
+  const publicRoutes = [
+    ROUTE_NAME.LOGIN,
+    ROUTE_NAME.REGISTER,
+    ROUTE_NAME.NO_ACCESS,
+    ROUTE_NAME.HOME,
+  ];
+
+  return [
     {
       path: ROUTE_PATH.LOGIN,
       name: ROUTE_NAME.LOGIN,
@@ -99,24 +111,38 @@ const router = createRouter({
       name: ROUTE_NAME.NO_ACCESS,
       component: NoAccessViewVue,
     },
-  ],
-});
+  ].map((route) => {
+    if (!publicRoutes.includes(route.name)) {
+      route.meta = {
+        ...(route.meta || {}),
+        requiresAuth: true,
+      };
+    }
+    return route;
+  });
+}
 
 router.beforeEach((to, from, next) => {
   const isGameSelected = sessionStorage.getItem("isGameSelected") === "true";
   if (to.meta.requiredGameSelected && !isGameSelected) {
     sessionStorage.setItem("targetUrl", to.fullPath);
     next(ROUTE_PATH.CHOOSE_GAME);
-  } else if (to.meta.requiresAuth && !isAdmin()) {
-    next(ROUTE_PATH.NO_ACCESS);
+  } else if (to.meta.requiresAdmin && !isAdmin()) {
+    next({ path: ROUTE_PATH.NO_ACCESS, query: { reason: NO_ACCESS_REASON.ADMIN_ONLY } });
+  } else if (to.meta.requiresAuth && !isAuthenticated()) {
+    next({ path: ROUTE_PATH.NO_ACCESS, query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED } });
   } else {
     sessionStorage.removeItem("isGameSelected");
     next();
   }
 });
 
-function isAdmin() {
-  return useUserStore().user.role === ROLE.ADMIN ;
+function isAdmin(): boolean {
+  return useUserStore().user.role === ROLE.ADMIN;
+}
+
+function isAuthenticated(): boolean {
+  return !!localStorage.getItem("token");
 }
 
 export default router;

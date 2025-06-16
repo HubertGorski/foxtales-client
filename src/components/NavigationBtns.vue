@@ -71,6 +71,11 @@ const allBtns = [
     action: () => router.push(ROUTE_PATH.HOME),
   },
   {
+    text: "home",
+    isOrange: false,
+    action: () => router.push(ROUTE_PATH.HOME),
+  },
+  {
     text: "next",
     isOrange: true,
     action: () => router.push(ROUTE_PATH.LOBBY),

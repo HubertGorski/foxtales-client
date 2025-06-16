@@ -42,6 +42,7 @@
   "accountStats": "Statystyki konta",
   "shop": "Sklep",
   "hi": "Cześć",
+  "home": "Przejdź do strony logowania",
   "haveFunAndEnjoyGame": "Baw się dobrze i miłej gry.",
   "changeLanguage": "Zmień język",
   "isComing": "Dostępne wkrótce",
@@ -115,6 +116,7 @@
     "invalidEmailOrPassword": "Niepoprawny email lub hasło",
     "unexpectedError": "Nieoczekiwany błąd. Spróbuj ponownie później.",
     "loginTitle": "Logowanie",
-    "logIn": "Zaloguj"
+    "logIn": "Zaloguj",
+    "tryLoginAgain": "Coś poszło nie tak. Zaloguj się ponownie."
   }
 }
