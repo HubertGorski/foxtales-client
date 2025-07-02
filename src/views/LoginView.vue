@@ -8,8 +8,6 @@ import { userService } from "@/api/services/UserService";
 import { useUserStore } from "@/stores/userStore";
 import { useI18n } from "vue-i18n";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
-import { User } from "@/models/User";
-import { setupInterceptors } from "@/api/Interceptors";
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -46,13 +44,7 @@ const onSubmit = handleSubmit(async (values) => {
       router.push(ROUTE_PATH.MENU);
     }
 
-    userStore.setUserSession(
-      new User({
-        userId: response.userId,
-        username: response.username,
-        accessToken: response.accessToken,
-      })
-    );
+    userStore.setUserSession(response);
   } catch (err: any) {
     errorLogin.value = err?.response?.data
       ? t(`auth.${err.response.data}`)

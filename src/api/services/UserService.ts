@@ -1,3 +1,4 @@
+import { User } from "@/models/User";
 import { UserClient } from "../clients/UserClient";
 
 
@@ -6,7 +7,7 @@ export const userService = {
     await UserClient.logout();
   },
 
-  async login(email: string, password: string): Promise<LoginUserResponseDto> {
+  async login(email: string, password: string): Promise<User> {
     return (await UserClient.login(email, password)).data;
   },
 
@@ -14,10 +15,3 @@ export const userService = {
     return UserClient.register(email, username, password, confirmPassword);
   },
 };
-
-// TODO: przeniesc
-class LoginUserResponseDto {
-  userId: number = 0;
-  username: string = "";
-  accessToken: string = "";
-}

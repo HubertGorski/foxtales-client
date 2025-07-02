@@ -2,27 +2,27 @@ import { PERMISSION_GAME, type PERMISSION } from "@/enums/permissions";
 
 export class Permission {
   name: PERMISSION | PERMISSION_GAME;
-  maxLimit: number;
+  closestLimit: number;
   currentUsage: number;
 
   constructor(
     name: PERMISSION | PERMISSION_GAME,
-    maxLimit: number,
+    closestLimit: number,
     currentUsage: number = 0
   ) {
     this.name = name;
-    this.maxLimit = maxLimit;
+    this.closestLimit = closestLimit;
     this.currentUsage = currentUsage;
   }
 
   get isLimitExceeded(): boolean {
-    return this.currentUsage >= this.maxLimit;
+    return this.currentUsage >= this.closestLimit;
   }
 
   get isGameUnlocked(): boolean {
     this.isPermissionGame(this.name, true);
-    return this.maxLimit === this.currentUsage;
-  }
+    return this.closestLimit === this.currentUsage;
+  } 
 
   isPermissionGame(value: any, shouldThrowError: boolean = false): boolean {
     const isValid = Object.values(PERMISSION_GAME).includes(value);

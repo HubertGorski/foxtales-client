@@ -106,6 +106,7 @@
     "selectedDecks": "Wybrane talie"
   },
   "auth": {
+    "youAreAlreadyAuthenticated": "Niespodziewany błąd. Konto już jest zalogowane.",
     "emailIsRequired": "Email jest wymagany",
     "emailCannotBeEmpty": "Email nie może być pusty",
     "emailFormatIsIncorrect": "Podany email jest niepoprawny",
