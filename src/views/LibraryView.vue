@@ -31,7 +31,11 @@ const addQuestion = async (catalogs: Catalog[]) => {
   if (!newQuestion.value) {
     return;
   }
-  const questionToStore = new Question(null, newQuestion.value, userStore.user.userId)
+  const questionToStore = new Question(
+    null,
+    newQuestion.value,
+    userStore.user.userId
+  );
   if (catalogs && catalogs.length > 0) {
     console.log(
       `Dodano do katalogów: "${catalogs.map((catalog) => catalog.title)}"`
@@ -39,9 +43,13 @@ const addQuestion = async (catalogs: Catalog[]) => {
   }
   const response = await userService.addQuestion(questionToStore);
   if (response) {
+    questionToStore.id = response;
     userStore.addQuestion(questionToStore);
     isQuestionCreatorOpen.value = false;
     newQuestion.value = "";
+    actualQuestions.value = userStore.user.questions.map(
+      convertQuestionToListElement
+    );
   }
 };
 
@@ -49,6 +57,7 @@ const deleteQuestions = (questions: ListElement[]) => {
   const questionsIds = questions.map((question) => question.id);
   questionsIds.forEach((questionId) => {
     console.log("usuwam pytanie o id:", questionId);
+    userService.removeQuestion(questionId); // TODO: zrobic zeby nie szly requesty w pętli.
     userStore.removeQuestion(questionId);
   });
 };

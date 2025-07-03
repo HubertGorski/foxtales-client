@@ -75,7 +75,11 @@ export const userService = {
     return await UserClient.setUsername(username);
   },
 
-  async addQuestion(question: Question): Promise<boolean> {
+  async addQuestion(question: Question): Promise<number> {
     return await UserClient.addQuestion(question);
+  },
+
+  async removeQuestion(questionId: number): Promise<boolean> {
+    return await UserClient.removeQuestion(questionId);
   },
 };

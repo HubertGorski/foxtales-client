@@ -26,8 +26,12 @@ export const UserClient = {
     return apiClient.post('/user/setUsername', { username });
   },
   
-  addQuestion(question: Question): Promise<boolean> {
+  addQuestion(question: Question): Promise<number> {
     return apiClient.post('/user/addQuestion', { question });
+  },
+  
+  removeQuestion(questionId: number): Promise<boolean> {
+    return apiClient.post('/user/removeQuestion', { questionId });
   },
   
 };
