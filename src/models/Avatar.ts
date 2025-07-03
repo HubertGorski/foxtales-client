@@ -1,6 +1,13 @@
+import { Expose } from "class-transformer";
+
 export class Avatar {
+  @Expose({ name: "avatarId" })
   id: number;
+
+  @Expose()
   source: string;
+
+  @Expose()
   isPremium: boolean;
 
   constructor(id = 0, source: string = "", isPremium: boolean = false) {

@@ -3,7 +3,6 @@ import { computed, ref } from "vue";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useUserStore } from "@/stores/userStore";
 import type { Avatar } from "@/models/Avatar";
-import { avatars } from "@/assets/data/avatars";
 import HubAccordion from "@/components/hubComponents/HubAccordion.vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import LevelBar from "@/components/LevelBar.vue";
@@ -18,7 +17,7 @@ const userStore = useUserStore();
 const { t } = useI18n();
 
 const newUsername = ref<string>("");
-const actualAvatars = ref<Avatar[]>(avatars);
+const actualAvatars = ref<Avatar[]>(userStore.avatars);
 const currentUser = userStore.user;
 const languages = ref<ListElement[]>([
   new ListElement({

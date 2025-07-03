@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { User } from "@/models/User";
 import { users } from "@/assets/data/users";
-import type { Avatar } from "@/models/Avatar";
+import { Avatar } from "@/models/Avatar";
 import type { LANG } from "@/enums/languagesEnum";
 import type { Catalog } from "@/models/Catalog";
 import type { Question } from "@/models/Question";
@@ -10,12 +10,14 @@ import type { Deck } from "@/models/Deck";
 
 interface UserState {
   user: User;
+  avatars: Avatar[];
 }
 
 export const useUserStore = defineStore({
   id: "userStore",
   state: (): UserState => ({
     user: new User(),
+    avatars: [],
   }),
 
   getters: {
@@ -37,6 +39,10 @@ export const useUserStore = defineStore({
   },
 
   actions: {
+    setAvatars(avatars: Avatar[]) {
+      this.avatars = avatars;
+    },
+
     setUserSession(user: User) {
       this.user = user;
     },

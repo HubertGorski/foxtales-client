@@ -4,13 +4,14 @@ import { plainToInstance } from "class-transformer";
 import { USER_LIMIT } from "@/enums/userLimitEnum";
 import { Permission } from "@/models/Permission";
 import { FoxGame } from "@/models/FoxGame";
+import { Avatar } from "@/models/Avatar";
 
 export const userService = {
   async logout(): Promise<void> {
     await UserClient.logout();
   },
 
-  async login(email: string, password: string): Promise<User> {
+  async login(email: string, password: string): Promise<{user: User, avatars: Avatar[]}> {
     const response = await UserClient.login(email, password);
     const user = plainToInstance(User, response.data.user);
 
@@ -31,7 +32,13 @@ export const userService = {
       }
     }
 
+    const avatars: Avatar[] = [];
     const foxGames: FoxGame[] = [];
+
+    response.data.avatars.forEach((avatar) => {
+      avatars.push(plainToInstance(Avatar, avatar));
+    });
+    
     response.data.foxGames.forEach((game) => {
       foxGames.push(plainToInstance(FoxGame, game));
     });
@@ -46,7 +53,7 @@ export const userService = {
       }
     });
 
-    return user;
+    return {user, avatars};
   },
 
   register(
