@@ -1,14 +1,15 @@
 import { DEFAULT_AVATAR_SOURCE, GENDER } from "@/enums/userEnum";
 import { ROLE } from "@/enums/rolesEnum";
-import { defaultPermissions, PERMISSION } from "@/enums/permissions";
+import { PERMISSION } from "@/enums/permissions";
 import { Catalog } from "./Catalog";
 import { Avatar } from "./Avatar";
 import type { Achievement } from "./Achievement";
-import type { Permission } from "./Permission";
+import { Permission } from "./Permission";
 import { LANG } from "@/enums/languagesEnum";
 import type { Question } from "./Question";
 import type { DylematyCard } from "./DylematyCard";
 import type { Deck } from "./Deck";
+import type { UserLimit } from "./UserLimit";
 
 export class User {
   // Basic info
@@ -28,7 +29,8 @@ export class User {
   requiredAccountPointsToNextLevel: number = 0;
   achievements: Achievement[] = [];
   avatarsIds: number[] = [];
-  permissions: Permission[] = defaultPermissions;
+  permissions: Permission[] = [];
+  userLimits: UserLimit[] = [];
 
   //Psych game
   totalPsychGamesPlayed: number = 0;

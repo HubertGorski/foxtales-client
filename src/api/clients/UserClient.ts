@@ -1,4 +1,7 @@
+import type { Avatar } from '@/models/Avatar';
 import { apiClient } from '../Client';
+import type { User } from '@/models/User';
+import type { FoxGame } from '@/models/FoxGame';
 
 export const UserClient = {
   
@@ -6,7 +9,7 @@ export const UserClient = {
     return apiClient.post('/user/logout');
   },
   
-  login(email: string, password: string): Promise<string> {
+  login(email: string, password: string): Promise<{data: {user: User, avatars: Avatar[], foxGames: FoxGame[]}}> {
     return apiClient.post('/user/login', { email, password });
   },
   

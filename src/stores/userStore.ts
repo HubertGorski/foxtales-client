@@ -15,7 +15,7 @@ interface UserState {
 export const useUserStore = defineStore({
   id: "userStore",
   state: (): UserState => ({
-    user: users[7],
+    user: new User(),
   }),
 
   getters: {

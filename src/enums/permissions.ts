@@ -1,15 +1,15 @@
 import { Permission } from "@/models/Permission";
 
 export enum PERMISSION {
-  ADD_NEW_PRIVATE_QUESTION_PER_DAY = "addNewPrivateQuestionPerDay",
-  CONVERT_PRIVATE_QUESTION_TO_PUBLIC_PER_DAY = "convertPrivateQuestionToPublicPerDay",
-  CREATE_GAME_WITH_PRIVATE_QUESTIONS_PER_DAY = "createGameWithPrivateQuestionsPerDay",
-  AVAILABLE_CATALOGS = "availableCatalogs",
+  ADD_NEW_PRIVATE_QUESTION_PER_DAY,
+  CONVERT_PRIVATE_QUESTION_TO_PUBLIC_PER_DAY,
+  CREATE_GAME_WITH_PRIVATE_QUESTIONS_PER_DAY,
+  AVAILABLE_CATALOGS,
 }
 export enum PERMISSION_GAME {
-  PSYCH = "psych",
-  DYLEMATY = "dylematy",
-  KILLGAME = "killgame",
+  PSYCH = 1,
+  DYLEMATY = 2,
+  KILLGAME = 3,
 }
 
 export const defaultPermissions = [

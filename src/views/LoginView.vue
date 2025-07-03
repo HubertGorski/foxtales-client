@@ -32,7 +32,7 @@ const navigateBack = () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const response = await userService.login(values.email, values.password);
+    const userData = await userService.login(values.email, values.password);
     const redirectUrl = sessionStorage.getItem(
       SESSION_STORAGE.REDIRECT_AFTER_LOGIN
     );
@@ -44,7 +44,7 @@ const onSubmit = handleSubmit(async (values) => {
       router.push(ROUTE_PATH.MENU);
     }
 
-    userStore.setUserSession(response);
+    userStore.setUserSession(userData);
   } catch (err: any) {
     errorLogin.value = err?.response?.data
       ? t(`auth.${err.response.data}`)
