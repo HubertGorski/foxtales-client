@@ -57,7 +57,7 @@ const changeLanguage = () => {
 };
 
 const changeAvatar = async (avatar: Avatar) => {
-  const response = await userService.setAvatar(avatar.id);
+  const response = await userService.setAvatar(avatar.id); // TODO: istnieje mozliwosc spamu, zablokowac kiedy sie klika w zaznaczonego
   if (response) {
     userStore.setAvatar(avatar);
   }
