@@ -5,6 +5,7 @@ import { USER_LIMIT } from "@/enums/userLimitEnum";
 import { Permission } from "@/models/Permission";
 import { FoxGame } from "@/models/FoxGame";
 import { Avatar } from "@/models/Avatar";
+import type { Question } from "@/models/Question";
 
 export const userService = {
   async logout(): Promise<void> {
@@ -72,5 +73,9 @@ export const userService = {
   
   async setUsername(username: string): Promise<boolean> {
     return await UserClient.setUsername(username);
+  },
+
+  async addQuestion(question: Question): Promise<boolean> {
+    return await UserClient.addQuestion(question);
   },
 };

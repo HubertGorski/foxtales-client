@@ -17,10 +17,12 @@ import {
   ListElement,
 } from "@/components/selectLists/ListElement";
 import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
+import { Question } from "@/models/Question";
+import { userService } from "@/api/services/UserService";
 
 const userStore = useUserStore();
 
-const addQuestion = (catalogs: Catalog[]) => {
+const addQuestion = async (catalogs: Catalog[]) => {
   event.preventDefault();
   if (addManyQuestonsToCatalogs.value) {
     return assignedQuestionsToCatalogs(catalogs);
@@ -29,32 +31,45 @@ const addQuestion = (catalogs: Catalog[]) => {
   if (!newQuestion.value) {
     return;
   }
-
-  console.log(`Dodano pytanie: "${newQuestion.value}"`);
+  const questionToStore = new Question(null, newQuestion.value, userStore.user.userId)
   if (catalogs && catalogs.length > 0) {
     console.log(
       `Dodano do katalogów: "${catalogs.map((catalog) => catalog.title)}"`
     );
   }
-  isQuestionCreatorOpen.value = false;
-  newQuestion.value = "";
+  const response = await userService.addQuestion(questionToStore);
+  if (response) {
+    userStore.addQuestion(questionToStore);
+    isQuestionCreatorOpen.value = false;
+    newQuestion.value = "";
+  }
 };
 
 const deleteQuestions = (questions: ListElement[]) => {
   const questionsIds = questions.map((question) => question.id);
-  console.log('usuwam pytania o ids:', questionsIds);
-  
-}
+  questionsIds.forEach((questionId) => {
+    console.log("usuwam pytanie o id:", questionId);
+    userStore.removeQuestion(questionId);
+  });
+};
 
 const assignedQuestionsToCatalogs = (catalogs: Catalog[]) => {
-  const selectedActualQuestionsIds = selectedQuestions.value.map((question) => question.id);
+  const selectedActualQuestionsIds = selectedQuestions.value.map(
+    (question) => question.id
+  );
   const selectedActualCatalogsIds = catalogs.map((catalog) => catalog.id);
-  console.log('dodaje catalogi o id: ', selectedActualCatalogsIds, 'i pytania o id: ', selectedActualQuestionsIds, 'do bazy relacja manyTomany');
+  console.log(
+    "dodaje catalogi o id: ",
+    selectedActualCatalogsIds,
+    "i pytania o id: ",
+    selectedActualQuestionsIds,
+    "do bazy relacja manyTomany"
+  );
   isQuestionCreatorOpen.value = false;
   addManyQuestonsToCatalogs.value = false;
   selectedQuestions.value = [];
-  actualQuestions.value.forEach(question => question.isSelected = false);
-}
+  actualQuestions.value.forEach((question) => (question.isSelected = false));
+};
 
 const addNewCatalog = () => {
   editCatalogMode.value = false;
@@ -66,7 +81,7 @@ const addQuestionsToCatalog = (questions: ListElement[]) => {
   addManyQuestonsToCatalogs.value = true;
   isQuestionCreatorOpen.value = true;
   selectedQuestions.value = questions;
-}
+};
 
 const showCatalogsList = () => {
   addManyQuestonsToCatalogs.value = false;
@@ -83,7 +98,7 @@ const showCatalogDetails = (catalog: ListElement) => {
 
 const closePopup = (refresh: boolean = false) => {
   isCatalogCreatorOpen.value = false;
-  
+
   if (refresh) {
     setOpenTab.value = "yourCatalogs";
     actualCatalogs.value = userStore.user.catalogs.map(
@@ -99,7 +114,9 @@ const newQuestion = ref<string>("");
 const currentCatalog = ref<Catalog>(new Catalog());
 const editCatalogMode = ref<boolean>(true);
 const addManyQuestonsToCatalogs = ref<boolean>(false);
-const actualQuestions = ref<ListElement[]>(userStore.user.questions.map(convertQuestionToListElement));
+const actualQuestions = ref<ListElement[]>(
+  userStore.user.questions.map(convertQuestionToListElement)
+);
 const selectedQuestions = ref<ListElement[]>([]);
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
@@ -114,7 +131,12 @@ const addQuestionBtn = {
 <template>
   <div class="libraryView">
     <HubPopup v-model="isQuestionCreatorOpen">
-      <QuestionCreator :newQuestion="newQuestion" @addQuestion="addQuestion" :isQuestionCreatorOpen=isQuestionCreatorOpen :addMany="addManyQuestonsToCatalogs" />
+      <QuestionCreator
+        :newQuestion="newQuestion"
+        @addQuestion="addQuestion"
+        :isQuestionCreatorOpen="isQuestionCreatorOpen"
+        :addMany="addManyQuestonsToCatalogs"
+      />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">
       <CatalogCreator
@@ -169,7 +191,13 @@ const addQuestionBtn = {
       isSmallerTitle
       centerContent
     >
-      <ScrollSelectList v-model="actualQuestions" addCutomText="psych.addToCatalog" @addItems="addQuestionsToCatalog" @deleteItems="deleteQuestions" />
+      <ScrollSelectList
+        v-model="actualQuestions"
+        addCutomText="psych.addToCatalog"
+        emptyDataText="psych.noQuestionsHasBeenCreatedYet"
+        @addItems="addQuestionsToCatalog"
+        @deleteItems="deleteQuestions"
+      />
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>

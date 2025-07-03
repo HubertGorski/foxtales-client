@@ -2,7 +2,7 @@ import { GENDER } from "@/enums/userEnum";
 import { LANG } from "@/enums/languagesEnum";
 
 export class Question {
-  id: number;
+  id: number | null;
   text: string;
   ownerId: number;
   language: LANG;
@@ -13,7 +13,7 @@ export class Question {
   createdDate: Date;
 
   constructor(
-    id: number = 0,
+    id: number | null = null,
     text: string = "",
     ownerId: number = 0,
     language: LANG = LANG.PL,

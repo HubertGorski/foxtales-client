@@ -87,6 +87,7 @@
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
+    "noQuestionsHasBeenCreatedYet": "Jeszcze nie utworzono żadnych pytań.",
     "addToCatalog": "Dodaj do katalogu",
     "createdQuestion": "Utworzone pytanie:"
   },

@@ -185,7 +185,7 @@ watch(selectedCardType, (newSelectedCardType) => {
       isSmallerTitle
       centerContent
     >
-      <ScrollSelectList v-model="actualCards" addCutomText="dylematy.addToDeck" isTypeAvailable @addItems="addCardsToDeck" @deleteItems="deleteCards" />
+      <ScrollSelectList v-model="actualCards" addCutomText="dylematy.addToDeck" emptyDataText="dylematy.noCardHasBeenCreatedYet" isTypeAvailable @addItems="addCardsToDeck" @deleteItems="deleteCards" />
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>

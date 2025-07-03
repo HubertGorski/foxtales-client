@@ -92,5 +92,11 @@ export const useUserStore = defineStore({
     addQuestion(newQuestion: Question) {
       this.user.questions.push(newQuestion);
     },
+    
+    removeQuestion(questionId: number) {
+      this.user.questions = this.user.questions.filter(
+        (question) => question.id !== questionId
+      );
+    },
   },
 });

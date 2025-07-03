@@ -117,14 +117,15 @@ watch(catalog, () => {
         <p class="catalogSize">{{ `${$t("size")}: ${type.size}` }}</p>
       </div>
     </div>
-    <WhiteSelectList
+    <!-- <WhiteSelectList
       v-model="actualQuestions"
       customSelectedCountTitle="selectedQuestionsToCatalog"
       :fontSize="14"
       showSelectedCount
       multiple
       showPagination
-    />
+      TODO: Dodac przegladanie
+    /> -->
     <HubBtn
       class="catalogCreator_btn"
       :action="formBtn.action"

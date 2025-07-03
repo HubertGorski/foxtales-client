@@ -18,6 +18,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  emptyDataText: {
+    type: String,
+    default: "emptyData",
+  },
 });
 
 const emit = defineEmits<{
@@ -60,6 +64,10 @@ const deleteItems = () => {
 <template>
   <div class="scrollSelectList">
     <div class="items" :class="{ isPaddingBottom: isControlPanelVisible }">
+      <div v-if="items.length === 0" class="noData">
+        <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
+        <p>{{ $t(emptyDataText) }}</p>
+      </div>
       <div
         v-for="item in items"
         :key="item.id"
@@ -71,7 +79,7 @@ const deleteItems = () => {
           <v-icon class="itemContent_typeIcon" v-if="isTypeAvailable">{{
             item.type === DYLEMATY_CARD_TYPE.POSITIVE ? ICON.HAPPY : ICON.SAD
           }}</v-icon>
-            {{ item.description || item.title }}
+          {{ item.description || item.title }}
         </div>
         <v-divider v-if="!item.isSelected" />
       </div>
@@ -100,6 +108,23 @@ const deleteItems = () => {
   position: relative;
   height: 100%;
   width: 100%;
+
+  .noData {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    opacity: 0.9;
+    img {
+      padding: 16px 64px;
+      width: 100%;
+    }
+    p {
+      color: $mainBrownColor;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 14px;
+    }
+  }
 
   .items {
     height: 100%;

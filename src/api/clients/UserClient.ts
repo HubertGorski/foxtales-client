@@ -2,6 +2,7 @@ import type { Avatar } from '@/models/Avatar';
 import { apiClient } from '../Client';
 import type { User } from '@/models/User';
 import type { FoxGame } from '@/models/FoxGame';
+import type { Question } from '@/models/Question';
 
 export const UserClient = {
   
@@ -23,6 +24,10 @@ export const UserClient = {
   
   setUsername(username: string): Promise<boolean> {
     return apiClient.post('/user/setUsername', { username });
+  },
+  
+  addQuestion(question: Question): Promise<boolean> {
+    return apiClient.post('/user/addQuestion', { question });
   },
   
 };
