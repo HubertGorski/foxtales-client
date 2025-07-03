@@ -17,8 +17,12 @@ export const UserClient = {
     return apiClient.post('/user/register', { email, username, password, confirmPassword });
   },
   
-  test() {
-    return apiClient.get('/user/get');
+  setAvatar(avatarId: number): Promise<boolean> {
+    return apiClient.post('/user/setAvatar', { avatarId });
+  },
+  
+  setUsername(username: string): Promise<boolean> {
+    return apiClient.post('/user/setUsername', { username });
   },
   
 };

@@ -1,10 +1,23 @@
 import { User } from "@/models/User";
-import { avatars } from "./avatars";
 import { achievements } from "./achievements";
 import { catalogs } from "./catalogs";
 import { permissions } from "./permissions";
 import { questions } from "./questions";
 import { dylematyCards } from "./dylematyCards";
+import { Avatar } from "@/models/Avatar";
+
+const avatars = [
+  new Avatar(1, "/src/assets/imgs/defaultAvatars/1.png", true),
+  new Avatar(2, "/src/assets/imgs/defaultAvatars/2.png", true),
+  new Avatar(3, "/src/assets/imgs/defaultAvatars/3.png", true),
+  new Avatar(4, "/src/assets/imgs/defaultAvatars/4.png", true),
+  new Avatar(5, "/src/assets/imgs/defaultAvatars/5.png", true),
+  new Avatar(6, "/src/assets/imgs/defaultAvatars/1.png", true),
+  new Avatar(7, "/src/assets/imgs/defaultAvatars/2.png", true),
+  new Avatar(8, "/src/assets/imgs/defaultAvatars/2.png"),
+  new Avatar(9, "/src/assets/imgs/defaultAvatars/2.png"),
+  new Avatar(10, "/src/assets/imgs/defaultAvatars/3.png")
+];
 
 export const users = [
   new User({ userId: 1, avatar: avatars[3], username: "Natalia Bardzodlug ienazwisko" }),

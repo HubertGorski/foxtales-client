@@ -14,6 +14,7 @@ export const userService = {
   async login(email: string, password: string): Promise<{user: User, avatars: Avatar[]}> {
     const response = await UserClient.login(email, password);
     const user = plainToInstance(User, response.data.user);
+    user.avatar = plainToInstance(Avatar, user.avatar);
 
     for (const limit of user.userLimits) {
       switch (limit.type) {
@@ -56,12 +57,20 @@ export const userService = {
     return {user, avatars};
   },
 
-  register(
+  async register(
     email: string,
     username: string,
     password: string,
     confirmPassword: string
   ) {
-    return UserClient.register(email, username, password, confirmPassword);
+    return await UserClient.register(email, username, password, confirmPassword);
+  },
+  
+  async setAvatar(avatarId: number): Promise<boolean> {
+    return await UserClient.setAvatar(avatarId);
+  },
+  
+  async setUsername(username: string): Promise<boolean> {
+    return await UserClient.setUsername(username);
   },
 };

@@ -12,6 +12,7 @@ import { useI18n } from "vue-i18n";
 import { LANG, languagesMap } from "@/enums/languagesEnum";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { ListElement } from "@/components/selectLists/ListElement";
+import { userService } from "@/api/services/UserService";
 
 const userStore = useUserStore();
 const { t } = useI18n();
@@ -55,13 +56,20 @@ const changeLanguage = () => {
   userStore.setLanguage(selectedLanguage.value);
 };
 
-const changeAvatar = (avatar: Avatar) => {
-  userStore.setAvatar(avatar);
+const changeAvatar = async (avatar: Avatar) => {
+  const response = await userService.setAvatar(avatar.id);
+  if (response) {
+    userStore.setAvatar(avatar);
+  }
 };
 
-const changeUsername = () => {
-  userStore.setUsername(newUsername.value);
-  newUsername.value = "";
+//TODO: add validation
+const changeUsername = async () => {
+  const response = await userService.setUsername(newUsername.value);
+  if (response) {
+    userStore.setUsername(newUsername.value);
+    newUsername.value = "";
+  }
 };
 
 const selectedLanguage = computed(
