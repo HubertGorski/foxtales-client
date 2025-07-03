@@ -57,7 +57,7 @@ const deleteQuestions = (questions: ListElement[]) => {
   const questionsIds = questions.map((question) => question.id);
   questionsIds.forEach((questionId) => {
     console.log("usuwam pytanie o id:", questionId);
-    userService.removeQuestion(questionId); // TODO: zrobic zeby nie szly requesty w pętli.
+    userService.removeQuestion(questionId); // TODO: zrobic zeby nie szly requesty w pętli. i dodac await
     userStore.removeQuestion(questionId);
   });
 };
