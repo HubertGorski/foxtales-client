@@ -13,6 +13,7 @@ import { LANG, languagesMap } from "@/enums/languagesEnum";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { ListElement } from "@/components/selectLists/ListElement";
 import { userService } from "@/api/services/UserService";
+import { isEqual } from "lodash";
 
 const userStore = useUserStore();
 const { t } = useI18n();
@@ -57,7 +58,11 @@ const changeLanguage = () => {
 };
 
 const changeAvatar = async (avatar: Avatar) => {
-  const response = await userService.setAvatar(avatar.id); // TODO: istnieje mozliwosc spamu, zablokowac kiedy sie klika w zaznaczonego
+  if (isEqual(userStore.getAvatar(), avatar)) {
+    return;
+  }
+
+  const response = await userService.setAvatar(avatar.id);
   if (response) {
     userStore.setAvatar(avatar);
   }
