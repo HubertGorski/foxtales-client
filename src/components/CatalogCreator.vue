@@ -10,6 +10,7 @@ import {
   ListElement,
 } from "./selectLists/ListElement";
 import HubBtn from "./hubComponents/HubBtn.vue";
+import { userService } from "@/api/services/UserService";
 
 const props = defineProps({
   editMode: {
@@ -35,28 +36,38 @@ const formBtn = computed(() => {
   };
 });
 
-const addCatalog = () => {
+const addCatalog = async () => {
   addSelectedQuestionsToCatalog();
-  catalog.value.id = Math.floor(Math.random() * 999);
+  const response = await userService.addCatalog(catalog.value);
+  if (!response) {
+    return;
+  }
+  
+  catalog.value.id = response;
   userStore.addCatalog(catalog.value);
-  console.log("Dodano katalog: ", catalog.value.title);
-  actualQuestions.value = getActualQuestions();
-  catalog.value = new Catalog();
   closePopup();
 };
 
-const editCatalog = () => {
+const editCatalog = async () => {
   addSelectedQuestionsToCatalog();
+  const response = await userService.editCatalog(catalog.value);
+  if (!response) {
+    return;
+  }
+
   userStore.editCatalog(catalog.value);
-  console.log("Edytowano katalog: ", catalog.value.title);
-  actualQuestions.value = getActualQuestions();
-  catalog.value = new Catalog();
   closePopup();
 };
 
 const closePopup = (refresh: boolean = true) => {
+  clearPopup();
   emit("closePopup", refresh);
 };
+
+const clearPopup = () => {
+  actualQuestions.value = getActualQuestions();
+  catalog.value = new Catalog();
+}
 
 const getActualQuestions = () => {
   const items = userStore.user.questions.map(convertQuestionToListElement);
@@ -77,7 +88,7 @@ const addSelectedQuestionsToCatalog = () => {
     .map((question) => question.id);
 
   const questions = userStore.user.questions.filter((question) =>
-    selectedQuestions.includes(question.id)
+    selectedQuestions.includes(question.id ?? 0)
   );
 
   catalog.value.setQuestions(questions);

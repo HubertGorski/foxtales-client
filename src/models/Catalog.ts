@@ -47,7 +47,7 @@ export class Catalog {
     { id: 3, name: "large", size: 35 },
   ];
 
-  setQuestions(questions: Question[]): Catalog {
+  setQuestions(questions: Question[]): this {
     this.questions = questions;
     return this;
   }

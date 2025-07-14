@@ -3,6 +3,7 @@ import { apiClient } from '../Client';
 import type { User } from '@/models/User';
 import type { FoxGame } from '@/models/FoxGame';
 import type { Question } from '@/models/Question';
+import type { Catalog } from '@/models/Catalog';
 
 export const UserClient = {
   
@@ -32,6 +33,14 @@ export const UserClient = {
   
   removeQuestion(questionId: number): Promise<boolean> {
     return apiClient.post('/user/removeQuestion', { questionId });
+  },
+  
+  addCatalog(catalog: Catalog): Promise<number> {
+    return apiClient.post('/user/addCatalog', { catalog });
+  },
+  
+  editCatalog(catalog: Catalog): Promise<number> {
+    return apiClient.post('/user/editCatalog', { catalog });
   },
   
 };

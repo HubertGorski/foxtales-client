@@ -6,13 +6,17 @@ import { Permission } from "@/models/Permission";
 import { FoxGame } from "@/models/FoxGame";
 import { Avatar } from "@/models/Avatar";
 import type { Question } from "@/models/Question";
+import type { Catalog } from "@/models/Catalog";
 
 export const userService = {
   async logout(): Promise<void> {
     await UserClient.logout();
   },
 
-  async login(email: string, password: string): Promise<{user: User, avatars: Avatar[]}> {
+  async login(
+    email: string,
+    password: string
+  ): Promise<{ user: User; avatars: Avatar[] }> {
     const response = await UserClient.login(email, password);
     const user = plainToInstance(User, response.data.user);
     user.avatar = plainToInstance(Avatar, user.avatar);
@@ -40,7 +44,7 @@ export const userService = {
     response.data.avatars.forEach((avatar) => {
       avatars.push(plainToInstance(Avatar, avatar));
     });
-    
+
     response.data.foxGames.forEach((game) => {
       foxGames.push(plainToInstance(FoxGame, game));
     });
@@ -55,7 +59,7 @@ export const userService = {
       }
     });
 
-    return {user, avatars};
+    return { user, avatars };
   },
 
   async register(
@@ -64,13 +68,18 @@ export const userService = {
     password: string,
     confirmPassword: string
   ) {
-    return await UserClient.register(email, username, password, confirmPassword);
+    return await UserClient.register(
+      email,
+      username,
+      password,
+      confirmPassword
+    );
   },
-  
+
   async setAvatar(avatarId: number): Promise<boolean> {
     return await UserClient.setAvatar(avatarId);
   },
-  
+
   async setUsername(username: string): Promise<boolean> {
     return await UserClient.setUsername(username);
   },
@@ -81,5 +90,13 @@ export const userService = {
 
   async removeQuestion(questionId: number): Promise<boolean> {
     return await UserClient.removeQuestion(questionId);
+  },
+
+  async addCatalog(catalog: Catalog): Promise<number> {
+    return await UserClient.addCatalog(catalog);
+  },
+
+  async editCatalog(catalog: Catalog): Promise<number> {
+    return await UserClient.editCatalog(catalog);
   },
 };
