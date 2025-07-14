@@ -45,6 +45,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  errorMessages: {
+    type: String,
+  },
 });
 
 const { t } = useI18n();
@@ -55,12 +58,20 @@ const btnIsDisabled = computed(() => {
 });
 
 const actualTextPlaceholder = computed(() => {
-  if(!props.textPlaceholder) {
-    return '';
+  if (!props.textPlaceholder) {
+    return "";
   }
 
   return props.dictsDisabled ? props.textPlaceholder : t(props.textPlaceholder);
 });
+
+const handleEnter = (e: KeyboardEvent) => {
+  if (!btnIsDisabled.value) {
+    props.btnAction(e);
+  } else {
+    e.preventDefault();
+  }
+};
 </script>
 
 <template>
@@ -68,18 +79,20 @@ const actualTextPlaceholder = computed(() => {
     <v-textarea
       v-if="isTextarea"
       v-model="text"
-      @keydown.enter="btnAction"
+      @keydown.enter="handleEnter"
       :auto-grow="false"
       rows="2"
-      hide-details
+      :error-messages="errorMessages"
+      :hide-details="!errorMessages"
     />
     <v-text-field
       v-else
       v-model="text"
-      hide-details
-      @keydown.enter="btnAction"
+      @keydown.enter="handleEnter"
       :placeholder="actualTextPlaceholder"
       :type="textType"
+      :error-messages="errorMessages"
+      :hide-details="!errorMessages"
     />
     <slot></slot>
     <div class="hubInputWithBtn_controls">
@@ -91,7 +104,7 @@ const actualTextPlaceholder = computed(() => {
         :disabled="btnIsDisabled"
       />
       <HubBtn
-      v-if="extraBtnAction && extraBtnIcon"
+        v-if="extraBtnAction && extraBtnIcon"
         class="btn"
         :action="extraBtnAction"
         :icon="extraBtnIcon"

@@ -14,11 +14,12 @@ import NavigationBtns from "@/components/NavigationBtns.vue";
 import { ListElement } from "@/components/selectLists/ListElement";
 import { userService } from "@/api/services/UserService";
 import { isEqual } from "lodash";
+import { useField, useForm } from "vee-validate";
+import * as yup from "yup";
 
 const userStore = useUserStore();
 const { t } = useI18n();
 
-const newUsername = ref<string>("");
 const actualAvatars = ref<Avatar[]>(userStore.avatars);
 const currentUser = userStore.user;
 const languages = ref<ListElement[]>([
@@ -68,14 +69,35 @@ const changeAvatar = async (avatar: Avatar) => {
   }
 };
 
-//TODO: add validation
-const changeUsername = async () => {
-  const response = await userService.setUsername(newUsername.value);
-  if (response) {
-    userStore.setUsername(newUsername.value);
-    newUsername.value = "";
+const schema = yup.object({
+  username: yup.string(),
+});
+const { handleSubmit, setFieldError } = useForm({
+  validationSchema: schema,
+});
+const { value: username, errorMessage: usernameError } = useField("username");
+username.value = "";
+
+const changeUsername = handleSubmit(async (values) => {
+  try {
+    const response = await userService.setUsername(values.username);
+    if (response) {
+      userStore.setUsername(values.username);
+      username.value = "";
+    }
+  } catch (err: any) {
+    const data = err?.response?.data;
+    if (data?.errors) {
+      Object.entries(data.errors).forEach(
+        ([field, messages]: [string, any]) => {
+          if (Array.isArray(messages)) {
+            setFieldError(field.toLowerCase(), t(`auth.${messages[0]}`));
+          }
+        }
+      );
+    }
   }
-};
+});
 
 const selectedLanguage = computed(
   () => languagesMap[languages.value.find((lang) => lang.isSelected)!.id]
@@ -85,7 +107,7 @@ const acceptUsernameBtn = computed(() => {
   return {
     text: "accept",
     isOrange: true,
-    disabled: newUsername.value.length === 0,
+    disabled: !!usernameError.value,
     action: () => changeUsername(),
   };
 });
@@ -197,12 +219,14 @@ const acceptLanguageBtn = computed(() => {
         </template>
         <template #changeName>
           <HubInputWithBtn
-            v-model="newUsername"
+            v-model="username"
             class="accordionContent"
             :btnAction="acceptUsernameBtn.action"
             :btnText="acceptUsernameBtn.text"
             :btnIsOrange="acceptUsernameBtn.isOrange"
+            :btnIsDisabled="acceptUsernameBtn.disabled"
             :textPlaceholder="currentUser.username"
+            :error-messages="usernameError"
             dictsDisabled
           />
         </template>

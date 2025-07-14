@@ -17,10 +17,10 @@ const props = defineProps({
     default: false,
   },
 });
-const setOpenTab = defineModel({ type: String, default: '' });
+const setOpenTab = defineModel({ type: String, default: "" });
 
 const toggleAccordion = (slotName: string) => {
-  setOpenTab.value = setOpenTab.value === slotName ? '' : slotName;
+  setOpenTab.value = setOpenTab.value === slotName ? "" : slotName;
 };
 
 const showDivider = (index: number) => {
@@ -28,7 +28,7 @@ const showDivider = (index: number) => {
 };
 </script>
 
-<template>  
+<template>
   <div v-for="(slotName, index) in slotNames" :key="index" class="hubAccordion">
     <HubAccordionElement
       :key="index"
