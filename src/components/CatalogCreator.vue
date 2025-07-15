@@ -38,12 +38,12 @@ const formBtn = computed(() => {
 
 const addCatalog = async () => {
   addSelectedQuestionsToCatalog();
-  const response = await userService.addCatalog(catalog.value);
-  if (!response) {
+  const newCatalogId = await userService.addCatalog(catalog.value);
+  if (!newCatalogId) {
     return;
   }
   
-  catalog.value.id = response;
+  catalog.value.id = newCatalogId;
   userStore.addCatalog(catalog.value);
   closePopup();
 };

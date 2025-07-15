@@ -93,7 +93,7 @@ export const userService = {
   },
 
   async addCatalog(catalog: Catalog): Promise<number> {
-    return await UserClient.addCatalog(catalog);
+    return (await UserClient.addCatalog(catalog)).data;
   },
 
   async editCatalog(catalog: Catalog): Promise<number> {

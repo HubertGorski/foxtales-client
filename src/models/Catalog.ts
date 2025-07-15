@@ -1,15 +1,31 @@
+import { Expose } from "class-transformer";
 import type { Question } from "./Question";
 
 export class Catalog {
+  @Expose({ name: "catalogId" })
   id: number;
+
+  @Expose()
   size: number;
+
+  @Expose()
   title: string;
+
+  @Expose()
   description: string;
+
+  @Expose()
   ownerId: number;
-  createdDate: Date;
-  usedCount: number;
-  isSelected: boolean;
+
+  @Expose()
   questions: Question[];
+
+  @Expose()
+  usedCount: number;
+
+  createdDate: Date;
+
+  isSelected: boolean;
 
   constructor(
     id: number = 0,
