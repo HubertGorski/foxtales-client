@@ -3,13 +3,14 @@ import { ROLE } from "@/enums/rolesEnum";
 import { PERMISSION } from "@/enums/permissions";
 import { Catalog } from "./Catalog";
 import { Avatar } from "./Avatar";
-import type { Achievement } from "./Achievement";
+import { Achievement } from "./Achievement";
 import { Permission } from "./Permission";
 import { LANG } from "@/enums/languagesEnum";
-import type { Question } from "./Question";
-import type { DylematyCard } from "./DylematyCard";
-import type { Deck } from "./Deck";
-import type { UserLimit } from "./UserLimit";
+import { Question } from "./Question";
+import { DylematyCard } from "./DylematyCard";
+import { Deck } from "./Deck";
+import { UserLimit } from "./UserLimit";
+import { Type } from "class-transformer";
 
 export class User {
   // Basic info
@@ -23,13 +24,23 @@ export class User {
   accessToken: string = "";
 
   username: string = "Fox Gamer";
+
+  @Type(() => Avatar)
   avatar: Avatar = new Avatar(1, DEFAULT_AVATAR_SOURCE);
+
   level: number = 0;
   accountPoints: number = 0;
   requiredAccountPointsToNextLevel: number = 0;
+
+  @Type(() => Achievement)
   achievements: Achievement[] = [];
+
   avatarsIds: number[] = [];
+
+  @Type(() => Permission)
   permissions: Permission[] = [];
+
+  @Type(() => UserLimit)
   userLimits: UserLimit[] = [];
 
   //Psych game
@@ -37,13 +48,22 @@ export class User {
   answersPickedByOthers: number = 0;
   answersCountPsych: number = 0;
   averageResponseTime: number = 0;
+
+  @Type(() => Catalog)
   catalogs: Catalog[] = [];
+  
+  @Type(() => Question)
   questions: Question[] = [];
 
   //Dylematy game
   totalDylematyGamesPlayed: number = 0;
+
+  @Type(() => Deck)
   decks: Deck[] = [];
+
+  @Type(() => DylematyCard)
   dylematyCards: DylematyCard[] = [];
+  
   answersInDylematyCount: number = 0;
   correctAnswersInDylematyCount: number = 0;
 
@@ -53,13 +73,18 @@ export class User {
   round: number = 1;
 
   // In Psych Game
+  @Type(() => User)
   chosenPlayerAnswer: User | null = null;
+  
+  @Type(() => User)
   votersForHisAnswer: User[] = [];
+  
   votersAndVoteCounts: { voterId: number; voteCount: number }[] = [];
   responseTime: number = 0;
   averageResponseTimeInCurrentGame: number = 0;
 
   // In Dylematy Game
+  @Type(() => User)
   playersWithCorrectAnswer: User[] = [];
 
   //Statistics

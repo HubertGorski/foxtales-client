@@ -66,7 +66,7 @@ const assignedQuestionsToCatalogs = (catalogs: Catalog[]) => {
   const selectedActualQuestionsIds = selectedQuestions.value.map(
     (question) => question.id
   );
-  const selectedActualCatalogsIds = catalogs.map((catalog) => catalog.id);
+  const selectedActualCatalogsIds = catalogs.map((catalog) => catalog.catalogId);
   console.log(
     "dodaje catalogi o id: ",
     selectedActualCatalogsIds,
@@ -99,7 +99,7 @@ const showCatalogsList = () => {
 
 const showCatalogDetails = (catalog: ListElement) => {
   currentCatalog.value = userStore.user.catalogs.find(
-    (actualCatalog) => actualCatalog.id === catalog.id
+    (actualCatalog) => actualCatalog.catalogId === catalog.id
   )!;
   editCatalogMode.value = true;
   isCatalogCreatorOpen.value = true;

@@ -47,12 +47,12 @@ export function convertListElementToDylematyCard(item: ListElement): DylematyCar
 
 export function convertCatalogsToListElement(catalog: Catalog): ListElement {
   return new ListElement({
-    id: catalog.id,
+    id: catalog.catalogId,
     title: catalog.title,
     description: catalog.description,
     isSelected: false,
     elementsCount: catalog.questionsCount,
-    size: catalog.size,
+    size: catalog.catalogType.size,
   });
 }
 

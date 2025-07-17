@@ -1,12 +1,11 @@
-import { Expose } from "class-transformer";
-import type { Question } from "./Question";
+import { Expose, Type } from "class-transformer";
+import { Question } from "./Question";
 import { CatalogType } from "./CatalogType";
 
 export class Catalog {
-  @Expose({ name: "catalogId" })
-  id: number | null;
-  
-  @Expose({ name: "catalogType" })
+  catalogId: number | null;
+
+  @Type(() => CatalogType)
   catalogType: CatalogType;
 
   @Expose()
@@ -18,12 +17,14 @@ export class Catalog {
   @Expose()
   ownerId: number;
 
+  @Type(() => Question)
   @Expose()
   questions: Question[];
 
   @Expose()
   usedCount: number;
 
+  @Type(() => CatalogType)
   @Expose()
   availableTypes: CatalogType[];
 
@@ -43,7 +44,7 @@ export class Catalog {
     questions: Question[] = [],
     availableTypes: CatalogType[] = []
   ) {
-    this.id = id;
+    this.catalogId = id;
     this.catalogType = catalogType;
     this.title = title;
     this.description = description;
@@ -61,6 +62,16 @@ export class Catalog {
 
   get isFull(): boolean {
     return this.questionsCount === this.catalogType.size;
+  }
+
+  @Expose()
+  get catalogTypeId(): number {
+    return this.catalogType.catalogTypeId;
+  }
+
+  @Expose()
+  get availableTypeIds(): number[] {
+    return this.availableTypes.map((type: CatalogType) => type.catalogTypeId);
   }
 
   setQuestions(questions: Question[]): this {

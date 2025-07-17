@@ -49,7 +49,7 @@ const addCatalog = async () => {
     return;
   }
 
-  catalog.value.id = newCatalogId;
+  catalog.value.catalogId = newCatalogId;
   userStore.addCatalog(catalog.value);
   closePopup();
 };

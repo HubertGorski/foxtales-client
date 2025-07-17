@@ -55,7 +55,7 @@ const addQuestion = () => {
   );
 
   const selectedUserCatalogs = userStore.user.catalogs.filter((catalog) =>
-    selectedActualCatalogIds.has(catalog.id)
+    selectedActualCatalogIds.has(catalog.catalogId)
   );
 
   actualCatalogs.value = userStore.user.catalogs.map(

@@ -88,7 +88,7 @@ export const useUserStore = defineStore({
 
     editCatalog(catalog: Catalog) {
       const index = this.user.catalogs.findIndex(
-        (userCatalog) => userCatalog.id === catalog.id
+        (userCatalog) => userCatalog.catalogId === catalog.catalogId
       );
       if (index !== -1) {
         this.user.catalogs[index] = catalog;

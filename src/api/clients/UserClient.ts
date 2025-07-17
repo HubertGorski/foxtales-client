@@ -58,8 +58,6 @@ export const UserClient = {
 
   addCatalog(newCatalog: Catalog): Promise<{ data: number }> {
     const catalog = instanceToPlain(newCatalog);
-    catalog.catalogTypeId = catalog.catalogType.catalogTypeId;    
-    catalog.availableTypeIds = catalog.availableTypes.map((type: CatalogType) => type.catalogTypeId);    
     return apiClient.post("/user/addCatalog", { catalog });
   },
 
