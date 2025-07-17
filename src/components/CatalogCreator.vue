@@ -11,6 +11,7 @@ import {
 } from "./selectLists/ListElement";
 import HubBtn from "./hubComponents/HubBtn.vue";
 import { userService } from "@/api/services/UserService";
+import type { CatalogType } from "@/models/CatalogType";
 
 const props = defineProps({
   editMode: {
@@ -27,22 +28,27 @@ const catalog = defineModel({ type: Catalog, required: true });
 
 const userStore = useUserStore();
 
+const availableTypes: CatalogType[] = catalog.value.availableTypes.length
+  ? catalog.value.availableTypes
+  : userStore.getAvailableCatalogTypes();
+
 const formBtn = computed(() => {
   return {
     text: props.editMode ? "accept" : "add",
     isOrange: true,
     action: props.editMode ? editCatalog : addCatalog,
-    disabled: catalog.value.title.length < 3 || !catalog.value.size,
+    disabled: catalog.value.title.length < 3 || !catalog.value.catalogType.size,
   };
 });
 
 const addCatalog = async () => {
   addSelectedQuestionsToCatalog();
+  catalog.value.availableTypes = availableTypes;
   const newCatalogId = await userService.addCatalog(catalog.value);
   if (!newCatalogId) {
     return;
   }
-  
+
   catalog.value.id = newCatalogId;
   userStore.addCatalog(catalog.value);
   closePopup();
@@ -67,7 +73,7 @@ const closePopup = (refresh: boolean = true) => {
 const clearPopup = () => {
   actualQuestions.value = getActualQuestions();
   catalog.value = new Catalog();
-}
+};
 
 const getActualQuestions = () => {
   const items = userStore.user.questions.map(convertQuestionToListElement);
@@ -119,10 +125,10 @@ watch(catalog, () => {
     <div class="selectSize">
       <div
         class="selectSize_size"
-        :class="{ isSelected: catalog.size === type.size }"
-        @click="catalog.size = type.size"
-        v-for="type in catalog.availableTypes"
-        :key="type.id"
+        :class="{ isSelected: catalog.catalogType.catalogTypeId === type.catalogTypeId }"
+        @click="catalog.catalogType = type"
+        v-for="type in availableTypes"
+        :key="type.catalogTypeId"
       >
         <p class="catalogName">{{ $t(type.name) }}</p>
         <p class="catalogSize">{{ `${$t("size")}: ${type.size}` }}</p>

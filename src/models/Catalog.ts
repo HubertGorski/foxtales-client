@@ -1,12 +1,13 @@
 import { Expose } from "class-transformer";
 import type { Question } from "./Question";
+import { CatalogType } from "./CatalogType";
 
 export class Catalog {
   @Expose({ name: "catalogId" })
-  id: number;
-
-  @Expose()
-  size: number;
+  id: number | null;
+  
+  @Expose({ name: "catalogType" })
+  catalogType: CatalogType;
 
   @Expose()
   title: string;
@@ -23,23 +24,27 @@ export class Catalog {
   @Expose()
   usedCount: number;
 
+  @Expose()
+  availableTypes: CatalogType[];
+
   createdDate: Date;
 
   isSelected: boolean;
 
   constructor(
-    id: number = 0,
-    size: number = 0,
+    id: number | null = null,
+    catalogType: CatalogType = new CatalogType(),
     title: string = "",
     description: string = "",
     ownerId: number = 0,
     createdDate: Date = new Date(),
     usedCount: number = 0,
     isSelected: boolean = false,
-    questions: Question[] = []
+    questions: Question[] = [],
+    availableTypes: CatalogType[] = []
   ) {
     this.id = id;
-    this.size = size;
+    this.catalogType = catalogType;
     this.title = title;
     this.description = description;
     this.ownerId = ownerId;
@@ -47,6 +52,7 @@ export class Catalog {
     this.usedCount = usedCount;
     this.isSelected = isSelected;
     this.questions = questions;
+    this.availableTypes = availableTypes;
   }
 
   get questionsCount(): number {
@@ -54,14 +60,8 @@ export class Catalog {
   }
 
   get isFull(): boolean {
-    return this.questionsCount === this.size;
+    return this.questionsCount === this.catalogType.size;
   }
-
-  availableTypes = [
-    { id: 1, name: "small", size: 10 },
-    { id: 2, name: "medium", size: 20 },
-    { id: 3, name: "large", size: 35 },
-  ];
 
   setQuestions(questions: Question[]): this {
     this.questions = questions;

@@ -1,16 +1,17 @@
 import { defineStore } from "pinia";
 import { User } from "@/models/User";
-import { users } from "@/assets/data/users";
 import { Avatar } from "@/models/Avatar";
 import type { LANG } from "@/enums/languagesEnum";
 import type { Catalog } from "@/models/Catalog";
 import type { Question } from "@/models/Question";
 import type { PERMISSION, PERMISSION_GAME } from "@/enums/permissions";
 import type { Deck } from "@/models/Deck";
+import type { CatalogType } from "@/models/CatalogType";
 
 interface UserState {
   user: User;
   avatars: Avatar[];
+  availableCatalogType: CatalogType[];
 }
 
 export const useUserStore = defineStore({
@@ -18,6 +19,7 @@ export const useUserStore = defineStore({
   state: (): UserState => ({
     user: new User(),
     avatars: [],
+    availableCatalogType: []
   }),
 
   getters: {
@@ -40,10 +42,18 @@ export const useUserStore = defineStore({
     getAvatar: (state) => () => {
       return state.user.avatar;
     },
+
+    getAvailableCatalogTypes: (state) => () => {
+      return state.availableCatalogType;
+    },
     
   },
 
   actions: {
+    setAvailableCatalogTypes(availableCatalogType: CatalogType[]) {      
+      this.availableCatalogType = availableCatalogType;
+    },
+
     setAvatars(avatars: Avatar[]) {
       this.avatars = avatars;
     },

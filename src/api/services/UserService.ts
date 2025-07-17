@@ -7,6 +7,7 @@ import { FoxGame } from "@/models/FoxGame";
 import { Avatar } from "@/models/Avatar";
 import type { Question } from "@/models/Question";
 import type { Catalog } from "@/models/Catalog";
+import { CatalogType } from "@/models/CatalogType";
 
 export const userService = {
   async logout(): Promise<void> {
@@ -16,7 +17,11 @@ export const userService = {
   async login(
     email: string,
     password: string
-  ): Promise<{ user: User; avatars: Avatar[] }> {
+  ): Promise<{
+    user: User;
+    avatars: Avatar[];
+    availableCatalogTypes: CatalogType[];
+  }> {
     const response = await UserClient.login(email, password);
     const user = plainToInstance(User, response.data.user);
     user.avatar = plainToInstance(Avatar, user.avatar);
@@ -39,10 +44,15 @@ export const userService = {
     }
 
     const avatars: Avatar[] = [];
+    const availableCatalogTypes: CatalogType[] = [];
     const foxGames: FoxGame[] = [];
 
     response.data.avatars.forEach((avatar) => {
       avatars.push(plainToInstance(Avatar, avatar));
+    });
+
+    response.data.availableCatalogTypes.forEach((catalogType) => {
+      availableCatalogTypes.push(plainToInstance(CatalogType, catalogType));
     });
 
     response.data.foxGames.forEach((game) => {
@@ -59,7 +69,7 @@ export const userService = {
       }
     });
 
-    return { user, avatars };
+    return { user, avatars, availableCatalogTypes };
   },
 
   async register(
@@ -85,7 +95,7 @@ export const userService = {
   },
 
   async addQuestion(question: Question): Promise<number> {
-    return await UserClient.addQuestion(question);
+    return (await UserClient.addQuestion(question)).data;
   },
 
   async removeQuestion(questionId: number): Promise<boolean> {
@@ -98,5 +108,9 @@ export const userService = {
 
   async editCatalog(catalog: Catalog): Promise<number> {
     return await UserClient.editCatalog(catalog);
+  },
+
+  async getUserCatalogs(): Promise<Catalog[]> {
+    return (await UserClient.getUserCatalogs()).data;
   },
 };
