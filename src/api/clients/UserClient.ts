@@ -69,4 +69,8 @@ export const UserClient = {
   getUserCatalogs(): Promise<{ data: Catalog[] }> {
     return apiClient.get("/user/getUserCatalogs");
   },
+
+  assignedQuestionsToCatalogs(questionsIds: number[], catalogsIds: number[]): Promise<{ data: boolean }> {
+    return apiClient.post("/user/assignedQuestionsToCatalogs", { questionsIds, catalogsIds });
+  },
 };

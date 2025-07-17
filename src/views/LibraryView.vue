@@ -31,26 +31,32 @@ const addQuestion = async (catalogs: Catalog[]) => {
   if (!newQuestion.value) {
     return;
   }
+
   const questionToStore = new Question(
     null,
     newQuestion.value,
     userStore.user.userId
   );
+
   if (catalogs && catalogs.length > 0) {
-    console.log(
-      `Dodano do katalogów: "${catalogs.map((catalog) => catalog.title)}"`
-    );
+    const catalogIds = catalogs
+      .map((catalog) => catalog.catalogId)
+      .filter((id): id is number => id !== null);
+    questionToStore.addCatalogs(catalogIds);
   }
+
   const response = await userService.addQuestion(questionToStore);
-  if (response) {
-    questionToStore.id = response;
-    userStore.addQuestion(questionToStore);
-    isQuestionCreatorOpen.value = false;
-    newQuestion.value = "";
-    actualQuestions.value = userStore.user.questions.map(
-      convertQuestionToListElement
-    );
+  if (!response) {
+    return;
   }
+
+  questionToStore.id = response;
+  userStore.addQuestion(questionToStore);
+  isQuestionCreatorOpen.value = false;
+  newQuestion.value = "";
+  actualQuestions.value = userStore.user.questions.map(
+    convertQuestionToListElement
+  );
 };
 
 const deleteQuestions = (questions: ListElement[]) => {
@@ -62,18 +68,23 @@ const deleteQuestions = (questions: ListElement[]) => {
   });
 };
 
-const assignedQuestionsToCatalogs = (catalogs: Catalog[]) => {
+const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
   const selectedActualQuestionsIds = selectedQuestions.value.map(
     (question) => question.id
   );
-  const selectedActualCatalogsIds = catalogs.map((catalog) => catalog.catalogId);
-  console.log(
-    "dodaje catalogi o id: ",
-    selectedActualCatalogsIds,
-    "i pytania o id: ",
+  const selectedActualCatalogsIds = catalogs
+    .map((catalog) => catalog.catalogId)
+    .filter((catalogId) => catalogId !== null);
+  
+    const response = await userService.assignedQuestionsToCatalogs(
     selectedActualQuestionsIds,
-    "do bazy relacja manyTomany"
+    selectedActualCatalogsIds
   );
+
+  if (!response) {
+    return;
+  }
+
   isQuestionCreatorOpen.value = false;
   addManyQuestonsToCatalogs.value = false;
   selectedQuestions.value = [];

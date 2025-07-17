@@ -113,4 +113,8 @@ export const userService = {
   async getUserCatalogs(): Promise<Catalog[]> {
     return (await UserClient.getUserCatalogs()).data;
   },
+
+  async assignedQuestionsToCatalogs(questionsIds: number[], catalogsIds: number[]): Promise<boolean> {
+    return (await UserClient.assignedQuestionsToCatalogs(questionsIds, catalogsIds)).data;
+  },
 };
