@@ -50,6 +50,19 @@ const addCatalog = async () => {
 
   catalog.value.catalogId = newCatalogId;
   userStore.addCatalog(catalog.value);
+
+  const selectedQuestions = actualQuestions.value
+    .filter((question) => question.isSelected)
+    .map((question) => question.id);
+
+  const questions = userStore.user.questions.filter((question) =>
+    selectedQuestions.includes(question.id ?? 0)
+  );
+
+  questions.forEach((question) => {
+    question.catalogIds.push(newCatalogId);
+  });
+
   closePopup();
 };
 
