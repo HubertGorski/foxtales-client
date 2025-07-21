@@ -38,20 +38,26 @@ const addQuestion = async (catalogs: Catalog[]) => {
     userStore.user.userId
   );
 
-  if (catalogs && catalogs.length > 0) {
-    const catalogIds = catalogs
-      .map((catalog) => catalog.catalogId)
-      .filter((id): id is number => id !== null);
-    questionToStore.addCatalogs(catalogIds);
-  }
-
   const response = await userService.addQuestion(questionToStore);
   if (!response) {
     return;
   }
 
+  let catalogIds: number[] = [];
+  if (catalogs && catalogs.length > 0) {
+    catalogIds = catalogs
+      .map((catalog) => catalog.catalogId)
+      .filter((id): id is number => id !== null);
+    questionToStore.addCatalogs(catalogIds);
+  }
+
   questionToStore.id = response;
   userStore.addQuestion(questionToStore);
+  if (catalogIds.length) {
+    userStore.assignedQuestionsToCatalogs([response], catalogIds);
+    refreshCatalogList();
+  }
+
   isQuestionCreatorOpen.value = false;
   newQuestion.value = "";
   actualQuestions.value = userStore.user.questions.map(
@@ -62,9 +68,9 @@ const addQuestion = async (catalogs: Catalog[]) => {
 const deleteQuestions = (questions: ListElement[]) => {
   const questionsIds = questions.map((question) => question.id);
   questionsIds.forEach((questionId) => {
-    console.log("usuwam pytanie o id:", questionId);
     userService.removeQuestion(questionId); // TODO: zrobic zeby nie szly requesty w pętli. i dodac await
     userStore.removeQuestion(questionId);
+    refreshCatalogList();
   });
 };
 
@@ -75,8 +81,8 @@ const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
   const selectedActualCatalogsIds = catalogs
     .map((catalog) => catalog.catalogId)
     .filter((catalogId) => catalogId !== null);
-  
-    const response = await userService.assignedQuestionsToCatalogs(
+
+  const response = await userService.assignedQuestionsToCatalogs(
     selectedActualQuestionsIds,
     selectedActualCatalogsIds
   );
@@ -85,6 +91,12 @@ const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
     return;
   }
 
+  userStore.assignedQuestionsToCatalogs(
+    selectedActualQuestionsIds,
+    selectedActualCatalogsIds
+  );
+
+  refreshCatalogList();
   isQuestionCreatorOpen.value = false;
   addManyQuestonsToCatalogs.value = false;
   selectedQuestions.value = [];
@@ -121,10 +133,14 @@ const closePopup = (refresh: boolean = false) => {
 
   if (refresh) {
     setOpenTab.value = "yourCatalogs";
-    actualCatalogs.value = userStore.user.catalogs.map(
-      convertCatalogsToListElement
-    );
+    refreshCatalogList();
   }
+};
+
+const refreshCatalogList = () => {
+  actualCatalogs.value = userStore.user.catalogs.map(
+    convertCatalogsToListElement
+  );
 };
 
 const isCatalogCreatorOpen = ref<boolean>(false);

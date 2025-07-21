@@ -19,7 +19,7 @@ export const useUserStore = defineStore({
   state: (): UserState => ({
     user: new User(),
     avatars: [],
-    availableCatalogType: []
+    availableCatalogType: [],
   }),
 
   getters: {
@@ -46,11 +46,10 @@ export const useUserStore = defineStore({
     getAvailableCatalogTypes: (state) => () => {
       return state.availableCatalogType;
     },
-    
   },
 
   actions: {
-    setAvailableCatalogTypes(availableCatalogType: CatalogType[]) {      
+    setAvailableCatalogTypes(availableCatalogType: CatalogType[]) {
       this.availableCatalogType = availableCatalogType;
     },
 
@@ -104,11 +103,49 @@ export const useUserStore = defineStore({
       }
     },
 
+    assignedQuestionsToCatalogs(questionIds: number[], catalogIds: number[]) {
+      const questionsToAssign = this.user.questions.filter(
+        (q) => q.id != null && questionIds.includes(q.id)
+      );
+
+      this.user.catalogs.forEach((catalog) => {
+        if (
+          catalog.catalogId != null &&
+          catalogIds.includes(catalog.catalogId)
+        ) {
+          questionsToAssign.forEach((question) => {
+            const alreadyExists = catalog.questions.some(
+              (q) => q.id === question.id
+            );
+            if (!alreadyExists) {
+              catalog.questions.push(question);
+            }
+          });
+        }
+      });
+    },
+
     addQuestion(newQuestion: Question) {
       this.user.questions.push(newQuestion);
     },
 
     removeQuestion(questionId: number) {
+      const question = this.user.questions.find((q) => q.id === questionId);
+      if (question == null) {
+        return;
+      }
+
+      question.catalogIds.forEach((catalogId) => {
+        const catalog = this.user.catalogs.find(
+          (c) => c.catalogId === catalogId
+        );
+        if (catalog) {          
+          catalog.questions = catalog.questions.filter(
+            (question) => question.id !== questionId
+          );
+        }
+      });
+
       this.user.questions = this.user.questions.filter(
         (question) => question.id !== questionId
       );
