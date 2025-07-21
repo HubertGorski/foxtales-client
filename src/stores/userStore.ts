@@ -117,8 +117,9 @@ export const useUserStore = defineStore({
             const alreadyExists = catalog.questions.some(
               (q) => q.id === question.id
             );
-            if (!alreadyExists) {
+            if (!alreadyExists && catalog.catalogId != null) {
               catalog.questions.push(question);
+              question.catalogIds.push(catalog.catalogId);
             }
           });
         }
@@ -139,7 +140,7 @@ export const useUserStore = defineStore({
         const catalog = this.user.catalogs.find(
           (c) => c.catalogId === catalogId
         );
-        if (catalog) {          
+        if (catalog) {
           catalog.questions = catalog.questions.filter(
             (question) => question.id !== questionId
           );

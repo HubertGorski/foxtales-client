@@ -24,7 +24,7 @@ const userStore = useUserStore();
 
 const addQuestion = async (catalogs: Catalog[]) => {
   event.preventDefault();
-  if (addManyQuestonsToCatalogs.value) {
+  if (addManyQuestonsToCatalogs.value && catalogs != null && catalogs.length) {
     return assignedQuestionsToCatalogs(catalogs);
   }
 
@@ -113,9 +113,22 @@ const addQuestionsToCatalog = (questions: ListElement[]) => {
   addManyQuestonsToCatalogs.value = true;
   isQuestionCreatorOpen.value = true;
   selectedQuestions.value = questions;
+
+  if (
+    selectedQuestions.value.filter((question) => question.isSelected).length ===
+    1
+  ) {
+    const question = userStore.user.questions.find(
+      (q) => q.id === selectedQuestions.value[0].id
+    );
+    catalogsIdsFromSelectedQuestion.value = question?.catalogIds ?? [];
+  } else {
+    catalogsIdsFromSelectedQuestion.value = [];
+  }
 };
 
 const showCatalogsList = () => {
+  catalogsIdsFromSelectedQuestion.value = [];
   addManyQuestonsToCatalogs.value = false;
   isQuestionCreatorOpen.value = true;
 };
@@ -154,6 +167,7 @@ const actualQuestions = ref<ListElement[]>(
   userStore.user.questions.map(convertQuestionToListElement)
 );
 const selectedQuestions = ref<ListElement[]>([]);
+const catalogsIdsFromSelectedQuestion = ref<number[]>([]);
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
 );
@@ -172,6 +186,7 @@ const addQuestionBtn = {
         @addQuestion="addQuestion"
         :isQuestionCreatorOpen="isQuestionCreatorOpen"
         :addMany="addManyQuestonsToCatalogs"
+        :selectedCatalogsIds="catalogsIdsFromSelectedQuestion"
       />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">

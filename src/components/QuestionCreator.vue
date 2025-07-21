@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Catalog } from "@/models/Catalog";
 import WhiteCard from "./WhiteCard.vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, type PropType } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import HubBtn from "./hubComponents/HubBtn.vue";
 import WhiteSelectList from "./selectLists/WhiteSelectList.vue";
@@ -24,6 +24,9 @@ const props = defineProps({
   addMany: {
     type: Boolean,
   },
+  selectedCatalogsIds: {
+    type: Array as PropType<Array<number>>,
+  },
 });
 
 const emit = defineEmits<{
@@ -43,6 +46,8 @@ watch(
   (isOpen) => {
     if (!isOpen) {
       actualCatalogs.value.forEach((catalog) => (catalog.isSelected = false));
+    } else {
+      actualCatalogs.value.forEach((catalog) => (catalog.isSelected = props.selectedCatalogsIds?.includes(catalog.id) ?? false));
     }
   }
 );
@@ -55,7 +60,7 @@ const addQuestion = () => {
   );
 
   const selectedUserCatalogs = userStore.user.catalogs.filter((catalog) =>
-    selectedActualCatalogIds.has(catalog.catalogId)
+    catalog.catalogId != null && selectedActualCatalogIds.has(catalog.catalogId)
   );
 
   actualCatalogs.value = userStore.user.catalogs.map(
