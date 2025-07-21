@@ -24,7 +24,6 @@ export const userService = {
   }> {
     const response = await UserClient.login(email, password);
     const user = plainToInstance(User, response.data.user);
-    user.avatar = plainToInstance(Avatar, user.avatar);
 
     for (const limit of user.userLimits) {
       switch (limit.type) {
