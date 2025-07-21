@@ -75,7 +75,7 @@ const deleteQuestions = (questions: ListElement[]) => {
 };
 
 const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
-  const selectedActualQuestionsIds = selectedQuestions.value.map(
+  const selectedActualQuestionsIds = questionsToSelect.value.map(
     (question) => question.id
   );
   const selectedActualCatalogsIds = catalogs
@@ -99,7 +99,7 @@ const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
   refreshCatalogList();
   isQuestionCreatorOpen.value = false;
   addManyQuestonsToCatalogs.value = false;
-  selectedQuestions.value = [];
+  questionsToSelect.value = [];
   actualQuestions.value.forEach((question) => (question.isSelected = false));
 };
 
@@ -112,14 +112,14 @@ const addNewCatalog = () => {
 const addQuestionsToCatalog = (questions: ListElement[]) => {
   addManyQuestonsToCatalogs.value = true;
   isQuestionCreatorOpen.value = true;
-  selectedQuestions.value = questions;
+  questionsToSelect.value = questions;
+  const selectedQuestions = questionsToSelect.value.filter(
+    (question) => question.isSelected
+  );
 
-  if (
-    selectedQuestions.value.filter((question) => question.isSelected).length ===
-    1
-  ) {
+  if (selectedQuestions.length === 1) {
     const question = userStore.user.questions.find(
-      (q) => q.id === selectedQuestions.value[0].id
+      (q) => q.id === questionsToSelect.value[0].id
     );
     catalogsIdsFromSelectedQuestion.value = question?.catalogIds ?? [];
   } else {
@@ -166,7 +166,7 @@ const addManyQuestonsToCatalogs = ref<boolean>(false);
 const actualQuestions = ref<ListElement[]>(
   userStore.user.questions.map(convertQuestionToListElement)
 );
-const selectedQuestions = ref<ListElement[]>([]);
+const questionsToSelect = ref<ListElement[]>([]);
 const catalogsIdsFromSelectedQuestion = ref<number[]>([]);
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)

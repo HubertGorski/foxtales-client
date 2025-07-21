@@ -1,4 +1,3 @@
-import HubBtn from "./hubComponents/HubBtn.vue";
 <script setup lang="ts">
 import { Catalog } from "@/models/Catalog";
 import WhiteSelectList from "./selectLists/WhiteSelectList.vue";
@@ -97,13 +96,34 @@ const addSelectedQuestionsToCatalog = () => {
     selectedQuestions.includes(question.id ?? 0)
   );
 
+  const removedQuestionsIds = initialQuestionsIds.filter(
+    (id) => !questions.map((q) => q.id).includes(id)
+  );
   catalog.value.setQuestions(questions);
+  if (catalog.value.catalogId) {
+    userStore.unassignCatalogFromQuestions(
+      removedQuestionsIds,
+      catalog.value.catalogId
+    );
+  }
+
+  questions.forEach((question) => {
+    if (catalog.value.catalogId) {
+      question.catalogIds.push(catalog.value.catalogId);
+    }
+  });
 };
 
 const actualQuestions = ref<ListElement[]>(getActualQuestions());
+let initialQuestionsIds: number[] = [];
 
 watch(catalog, () => {
   actualQuestions.value = getActualQuestions();
+  if (catalog.value.questions.length) {
+    initialQuestionsIds = catalog.value.questions
+      .map((q) => q.id)
+      .filter((q) => q != null);
+  }
 });
 </script>
 
@@ -125,7 +145,9 @@ watch(catalog, () => {
     <div class="selectSize">
       <div
         class="selectSize_size"
-        :class="{ isSelected: catalog.catalogType.catalogTypeId === type.catalogTypeId }"
+        :class="{
+          isSelected: catalog.catalogType.catalogTypeId === type.catalogTypeId,
+        }"
         @click="catalog.catalogType = type"
         v-for="type in availableTypes"
         :key="type.catalogTypeId"
@@ -134,15 +156,14 @@ watch(catalog, () => {
         <p class="catalogSize">{{ `${$t("size")}: ${type.size}` }}</p>
       </div>
     </div>
-    <!-- <WhiteSelectList
+    <WhiteSelectList
       v-model="actualQuestions"
       customSelectedCountTitle="selectedQuestionsToCatalog"
       :fontSize="14"
       showSelectedCount
       multiple
       showPagination
-      TODO: Dodac przegladanie
-    /> -->
+    />
     <HubBtn
       class="catalogCreator_btn"
       :action="formBtn.action"

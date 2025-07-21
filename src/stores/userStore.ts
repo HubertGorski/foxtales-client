@@ -130,6 +130,28 @@ export const useUserStore = defineStore({
       this.user.questions.push(newQuestion);
     },
 
+    unassignQuestionFromCatalog(questionId: number, catalogId: number) {
+      const catalog = this.user.catalogs.find((c) => c.catalogId === catalogId);
+      if (catalog) {
+        catalog.questions = catalog.questions.filter(
+          (question) => question.id !== questionId
+        );
+      }
+    },
+
+    unassignCatalogFromQuestions(questionsIds: number[], catalogId: number) {
+      questionsIds.forEach((questionId) => {
+        const question = this.user.questions.find((q) => q.id === questionId);
+        if (question == null) {
+          return;
+        }
+
+        question.catalogIds = question.catalogIds.filter(
+          (id) => id !== catalogId
+        );
+      });
+    },
+
     removeQuestion(questionId: number) {
       const question = this.user.questions.find((q) => q.id === questionId);
       if (question == null) {
@@ -137,14 +159,7 @@ export const useUserStore = defineStore({
       }
 
       question.catalogIds.forEach((catalogId) => {
-        const catalog = this.user.catalogs.find(
-          (c) => c.catalogId === catalogId
-        );
-        if (catalog) {
-          catalog.questions = catalog.questions.filter(
-            (question) => question.id !== questionId
-          );
-        }
+        this.unassignQuestionFromCatalog(questionId, catalogId);
       });
 
       this.user.questions = this.user.questions.filter(
