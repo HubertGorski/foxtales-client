@@ -74,6 +74,13 @@ export class Catalog {
     return this.availableTypes.map((type: CatalogType) => type.catalogTypeId);
   }
 
+  @Expose()
+  get questionsIds(): number[] {
+    return this.questions
+      .map((question: Question) => question.id)
+      .filter((id) => id != null);
+  }
+
   setQuestions(questions: Question[]): this {
     this.questions = questions;
     return this;
