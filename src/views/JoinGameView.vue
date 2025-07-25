@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { computed, ref } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
 import { games } from "@/assets/data/games";
@@ -12,16 +12,23 @@ import { ICON } from "@/enums/iconsEnum";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { useSignalRStore } from "@/stores/signalRStore";
 import { useUserStore } from "@/stores/userStore";
+import { useI18n } from "vue-i18n";
 
 const userStore = useUserStore();
 const signalRStore = useSignalRStore();
 const router = useRouter();
+const { t } = useI18n();
 
 const actualGames: Game[] = games.filter((game) => game.isPublic);
+const error = toRef(signalRStore, "error");
 
 const customCode = ref<string>("");
 const password = ref<string>("");
 const isPasswordPopupOpen = ref<boolean>(false);
+
+const errorMessage = computed(() => {
+  return error.value ? t(`auth.${error.value}`) : undefined;
+});
 
 const acceptCodeBtn = computed(() => {
   return {
@@ -43,6 +50,10 @@ const acceptPasswordBtn = computed(() => {
 
 const goToLobby = async () => {
   await joinRoom();
+  if (errorMessage.value) {
+    return;
+  }
+
   router.push(ROUTE_PATH.LOBBY);
 };
 
@@ -52,9 +63,19 @@ const openPasswordPopup = () => {
 };
 
 const joinRoom = async () => {
+  if (errorMessage.value) {
+    return;
+  }
+
   await signalRStore.connect();
   await signalRStore.joinRoom(customCode.value, userStore.user);
 };
+
+watch(customCode, (newVal) => {
+  if (newVal) {
+    setTimeout(() => error.value = null, 500);
+  }
+});
 </script>
 
 <template>
@@ -78,6 +99,7 @@ const joinRoom = async () => {
       :btnAction="acceptCodeBtn.action"
       :btnText="acceptCodeBtn.text"
       :btnIsOrange="acceptCodeBtn.isOrange"
+      :error-messages="errorMessage"
     />
     <HubDivider />
     <div class="joinGameView_chooseRoom creamCard">

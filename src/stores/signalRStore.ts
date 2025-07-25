@@ -8,6 +8,7 @@ interface SignalRState {
   joinedPlayers: User[];
   gameCode: string | null;
   player: User | null;
+  error: string | null;
 }
 
 export const useSignalRStore = defineStore({
@@ -17,6 +18,7 @@ export const useSignalRStore = defineStore({
     joinedPlayers: [],
     gameCode: null,
     player: null,
+    error: null,
   }),
 
   getters: {},
@@ -49,6 +51,10 @@ export const useSignalRStore = defineStore({
         this.joinedPlayers = joinedPlayers;
       });
 
+      this.connection.on("ReceiveError", (errorMessage) => {
+        this.error = errorMessage;
+      });
+
       await this.connection.start();
     },
 
@@ -61,10 +67,13 @@ export const useSignalRStore = defineStore({
         await this.leaveRoom();
       }
 
+      await this.connection.invoke("JoinRoom", gameCode, player);
+      if (this.error) {
+        return;
+      }
+
       this.gameCode = gameCode;
       this.player = player;
-
-      await this.connection.invoke("JoinRoom", gameCode, player);
     },
 
     async leaveRoom() {

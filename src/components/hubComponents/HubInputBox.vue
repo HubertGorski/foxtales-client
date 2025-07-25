@@ -43,6 +43,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  errorMessages: {
+    type: String,
+  },
 });
 
 const text = defineModel({ type: String, required: true });
@@ -68,6 +71,7 @@ const text = defineModel({ type: String, required: true });
       :textType="textType"
       :isTextarea="isTextarea"
       :textPlaceholder="textPlaceholder"
+      :error-messages="errorMessages"
     />
   </div>
 </template>
