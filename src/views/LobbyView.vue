@@ -1,14 +1,24 @@
 <script setup lang="ts">
 import UserListElement from "@/components/UserListElement.vue";
-import { users } from "@/assets/data/users";
-import { computed, ref } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import { Game } from "@/models/Game";
 import NavigationBtns from "@/components/NavigationBtns.vue";
+import { useSignalRStore } from "@/stores/signalRStore";
+import { useRouter } from "vue-router";
+import { ROUTE_PATH } from "@/router/routeEnums";
 
+const router = useRouter();
+const signalRStore = useSignalRStore();
 const isZoom = ref<boolean>(false);
 
-const game = ref(new Game("PIESEK1"));
-game.value.users = users;
+const game = ref(new Game(signalRStore.gameCode ?? ""));
+const joinedPlayers = toRef(signalRStore, "joinedPlayers");
+game.value.setUsers(signalRStore.joinedPlayers);
+
+const leaveRoom = async () => {
+  await signalRStore.leaveRoom();
+  router.push(ROUTE_PATH.MENU);
+};
 
 const customCodeLabel = computed(() => {
   return isZoom.value ? game.value.code : `Kod dostępu: ${game.value.code}`;
@@ -17,6 +27,14 @@ const customCodeLabel = computed(() => {
 const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
 });
+
+watch(
+  joinedPlayers,
+  (newPlayers) => {
+    game.value.setUsers([...newPlayers]);
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -59,6 +77,7 @@ const isMinimalViewMode = computed(() => {
     <NavigationBtns
       btn="closeGame"
       btn2="start"
+      :btnCustomAction="leaveRoom"
       :btn2Disabled="game.areUsersUnready"
       btn2TooltipText="tooltip.startNewGame"
     />

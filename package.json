@@ -12,6 +12,7 @@
     "format": "prettier --write \"src/**/*.vue\""
   },
   "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "@vuepic/vue-datepicker": "^8.3.1",
     "apexcharts": "^3.47.0",
     "axios": "^1.9.0",

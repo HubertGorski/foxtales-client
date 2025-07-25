@@ -21,7 +21,7 @@ export class Game {
     password: string | null = null,
     usePublicQuestions = true,
     usePrivateQuestions = true,
-    isQuestionsFromAnotherGamesAllowed = false,
+    isQuestionsFromAnotherGamesAllowed = false
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -31,7 +31,8 @@ export class Game {
     this.password = password;
     this.usePublicQuestions = usePublicQuestions;
     this.usePrivateQuestions = usePrivateQuestions;
-    this.isQuestionsFromAnotherGamesAllowed = isQuestionsFromAnotherGamesAllowed;
+    this.isQuestionsFromAnotherGamesAllowed =
+      isQuestionsFromAnotherGamesAllowed;
   }
 
   get usersCount(): number {
@@ -52,5 +53,9 @@ export class Game {
 
   get name(): string {
     return `Gra użytkownika ${this.owner.username}`;
+  }
+
+  setUsers(users: User[]): void {
+    this.users = users;
   }
 }

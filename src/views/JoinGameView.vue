@@ -10,7 +10,11 @@ import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import WhiteCard from "@/components/WhiteCard.vue";
 import { ICON } from "@/enums/iconsEnum";
 import NavigationBtns from "@/components/NavigationBtns.vue";
+import { useSignalRStore } from "@/stores/signalRStore";
+import { useUserStore } from "@/stores/userStore";
 
+const userStore = useUserStore();
+const signalRStore = useSignalRStore();
 const router = useRouter();
 
 const actualGames: Game[] = games.filter((game) => game.isPublic);
@@ -24,7 +28,7 @@ const acceptCodeBtn = computed(() => {
     text: "join",
     isOrange: true,
     disabled: customCode.value.length === 0,
-    action: () => router.push(ROUTE_PATH.LOBBY),
+    action: () => goToLobby(),
   };
 });
 
@@ -33,17 +37,23 @@ const acceptPasswordBtn = computed(() => {
     text: "join",
     isOrange: true,
     disabled: password.value.length === 0,
-    action: () => router.push(ROUTE_PATH.LOBBY),
+    action: () => goToLobby(),
   };
 });
 
-const goToLobby = () => {
+const goToLobby = async () => {
+  await joinRoom();
   router.push(ROUTE_PATH.LOBBY);
 };
 
 const openPasswordPopup = () => {
   password.value = "";
   isPasswordPopupOpen.value = true;
+};
+
+const joinRoom = async () => {
+  await signalRStore.connect();
+  await signalRStore.joinRoom(customCode.value, userStore.user);
 };
 </script>
 
