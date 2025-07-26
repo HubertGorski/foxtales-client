@@ -120,6 +120,7 @@
     "passwordIsTooShort": "Hasło jest zbyt krótkie",
     "passwordsAreNotIdentical": "Hasła nie są identyczne",
     "invalidEmailOrPassword": "Niepoprawny email lub hasło",
+    "invalidPassword": "Niepoprawne hasło",
     "unexpectedError": "Nieoczekiwany błąd. Spróbuj ponownie później.",
     "loginTitle": "Logowanie",
     "logIn": "Zaloguj",

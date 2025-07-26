@@ -171,6 +171,7 @@ const isTooltip2Visible = !!selectedBtn2 && !props.btn2Disabled;
 
   &_btn {
     padding: 8px 12px;
+    margin: 0 auto;
   }
 
   &.isColumnDirection {

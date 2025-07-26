@@ -24,7 +24,6 @@ const btns = [
 <template>
   <div class="homeView">
     <p class="homeView_title">FOX TALES</p>
-    <img src="@/assets/imgs/foxes.png" alt="Lisek" class="homeView_img" />
     <div class="homeView_btns">
       <HubBtn
         :action="btns[0].action"
@@ -37,6 +36,7 @@ const btns = [
         :isOrange="btns[1].isOrange"
       />
     </div>
+    <img src="@/assets/imgs/foxes.png" alt="Lisek" class="homeView_img" />
   </div>
 </template>
 
@@ -46,6 +46,9 @@ const btns = [
 .homeView {
   height: 100vh;
   background: $mainBackground;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &_title {
     font-size: 42px;
@@ -70,11 +73,7 @@ const btns = [
   }
 
   &_img {
-    position: absolute;
-    max-width: 100%;
-    height: auto;
-    bottom: 0;
-    left: 0;
+    width: 100%;
   }
 }
 </style>

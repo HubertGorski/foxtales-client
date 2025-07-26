@@ -8,7 +8,9 @@ import { plainToInstance } from "class-transformer";
 interface SignalRState {
   connection: signalR.HubConnection | null;
   game: Game | null;
-  error: string | null;
+  publicGames: Game[];
+  errorPassword: string | null;
+  errorCode: string | null;
 }
 
 export const useSignalRStore = defineStore({
@@ -16,7 +18,9 @@ export const useSignalRStore = defineStore({
   state: (): SignalRState => ({
     connection: null,
     game: null,
-    error: null,
+    publicGames: [],
+    errorCode: null,
+    errorPassword: null,
   }),
 
   getters: {},
@@ -71,14 +75,27 @@ export const useSignalRStore = defineStore({
         this.game = plainToInstance(Game, game);
       });
 
-      this.connection.on("ReceiveError", (errorMessage) => {
-        this.error = errorMessage;
+      this.connection.on("ReceiveError", (error) => {
+        if (error.fieldId === "code") {
+          this.errorCode = error.message;
+        } else {
+          this.errorPassword = error.message;
+        }
+      });
+
+      this.connection.on("GetPublicRooms", (games: Game[]) => {
+        this.publicGames = plainToInstance(Game, games);
       });
 
       await this.connection.start();
     },
 
-    async joinRoom(gameCode: string, player: User) {
+    async joinRoom(
+      gameCode: string,
+      player: User,
+      password: string,
+      ownerId: number | null = null
+    ) {
       if (!this.connection) {
         return;
       }
@@ -87,10 +104,13 @@ export const useSignalRStore = defineStore({
         await this.leaveRoom(player.userId);
       }
 
-      await this.connection.invoke("JoinRoom", gameCode, player);
-      if (this.error) {
-        return;
-      }
+      await this.connection.invoke(
+        "JoinRoom",
+        gameCode,
+        player,
+        password,
+        ownerId
+      );
     },
 
     async createRoom(game: Game) {
@@ -100,6 +120,14 @@ export const useSignalRStore = defineStore({
 
       this.game = game;
       await this.connection.invoke("CreateRoom", game);
+    },
+
+    async goToJoinGameView() {
+      if (!this.connection) {
+        return;
+      }
+
+      await this.connection.invoke("GoToJoinGameView");
     },
 
     async editRoom(game: Game) {

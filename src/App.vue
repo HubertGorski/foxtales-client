@@ -3,7 +3,11 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <RouterView />
+  <div class="foxTalesBackground">
+    <div class="foxTales">  
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <style>
@@ -18,5 +22,16 @@ body {
 #app {
   height: 100%;
   overflow: hidden;
+}
+.foxTalesBackground {
+  height: 100%;
+  background-color: #c9b6b4;
+}
+
+.foxTales {
+  margin: 0 auto;
+  max-width: 380px;
+  height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 </style>

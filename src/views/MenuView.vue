@@ -14,7 +14,9 @@ const userStore = useUserStore();
 const router = useRouter();
 const signalRStore = useSignalRStore();
 
-const navigateToJoinGame = () => {
+const navigateToJoinGame = async () => {
+  await signalRStore.connect();
+  await signalRStore.goToJoinGameView();
   router.push(ROUTE_PATH.JOIN_GAME);
 };
 

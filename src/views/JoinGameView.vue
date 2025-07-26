@@ -18,16 +18,20 @@ const signalRStore = useSignalRStore();
 const router = useRouter();
 const { t } = useI18n();
 
-const actualGames: Game[] = [];
-// const actualGames: Game[] = games.filter((game) => game.isPublic);
-const error = toRef(signalRStore, "error");
+const errorCode = toRef(signalRStore, "errorCode");
+const errorPassword = toRef(signalRStore, "errorPassword");
+const actualGames = toRef(signalRStore, "publicGames");
 
 const customCode = ref<string>("");
 const password = ref<string>("");
+const selectedGamesOwnerId = ref<number>(0);
 const isPasswordPopupOpen = ref<boolean>(false);
 
-const errorMessage = computed(() => {
-  return error.value ? t(`auth.${error.value}`) : undefined;
+const errorCodeMessage = computed(() => {
+  return errorCode.value ? t(`auth.${errorCode.value}`) : undefined;
+});
+const errorPasswordMessage = computed(() => {
+  return errorPassword.value ? t(`auth.${errorPassword.value}`) : undefined;
 });
 
 const acceptCodeBtn = computed(() => {
@@ -44,17 +48,29 @@ const acceptPasswordBtn = computed(() => {
     text: "join",
     isOrange: true,
     disabled: password.value.length === 0,
-    action: () => goToLobby(),
+    action: () => goToLobby(selectedGamesOwnerId.value),
   };
 });
 
-const goToLobby = async () => {
-  await joinRoom();
-  if (errorMessage.value) {
+const goToLobby = async (selectedGamesOwnerId: number | null = null) => {
+  await joinRoom(selectedGamesOwnerId);
+  if (errorCodeMessage.value || errorPasswordMessage.value) {
     return;
   }
 
   router.push(ROUTE_PATH.LOBBY);
+};
+
+const selectGameFromList = (game: Game) => {
+  signalRStore.errorPassword = null;
+  signalRStore.errorCode = null;
+  customCode.value = "";
+  password.value = "";
+  selectedGamesOwnerId.value = 0;
+  selectedGamesOwnerId.value = game.owner.userId;
+  game.isPasswordSet
+    ? openPasswordPopup()
+    : goToLobby(selectedGamesOwnerId.value);
 };
 
 const openPasswordPopup = () => {
@@ -62,21 +78,37 @@ const openPasswordPopup = () => {
   isPasswordPopupOpen.value = true;
 };
 
-const joinRoom = async () => {
-  if (errorMessage.value) {
+const joinRoom = async (selectedGamesOwnerId: number | null) => {
+  if (errorCodeMessage.value || errorPasswordMessage.value) {
     return;
   }
 
   await signalRStore.connect();
-  await signalRStore.joinRoom(customCode.value, userStore.user);
+  await signalRStore.joinRoom(
+    customCode.value,
+    userStore.user,
+    password.value,
+    selectedGamesOwnerId
+  );
 };
 
 watch(customCode, (newVal) => {
   customCode.value = newVal.toUpperCase();
+  errorPassword.value = null;
   if (newVal) {
-    error.value = null;
+    errorCode.value = null;
   }
 });
+
+watch(password, (newVal) => {
+  if (newVal) {
+    errorPassword.value = null;
+  }
+});
+
+if (!signalRStore.connection) {
+  router.push(ROUTE_PATH.MENU);
+}
 </script>
 
 <template>
@@ -91,6 +123,7 @@ watch(customCode, (newVal) => {
         :btnIsOrange="acceptPasswordBtn.isOrange"
         textPlaceholder="password"
         textType="password"
+        :error-messages="errorPasswordMessage"
       />
     </HubPopup>
     <HubInputBox
@@ -100,7 +133,7 @@ watch(customCode, (newVal) => {
       :btnAction="acceptCodeBtn.action"
       :btnText="acceptCodeBtn.text"
       :btnIsOrange="acceptCodeBtn.isOrange"
-      :error-messages="errorMessage"
+      :error-messages="errorCodeMessage"
     />
     <HubDivider />
     <div class="joinGameView_chooseRoom creamCard">
@@ -112,14 +145,14 @@ watch(customCode, (newVal) => {
       <div v-else class="gamesList">
         <WhiteCard
           :header="game.name"
-          @click="game.isPasswordSet ? openPasswordPopup() : goToLobby()"
+          @click="selectGameFromList(game)"
           v-for="(game, index) in actualGames"
           :key="index"
         >
           <div class="details">
             <div>
-              <v-icon>{{ game.foxGame.icon }}</v-icon>
-              <span>{{ $t(game.foxGame.name) }}</span>
+              <!-- <v-icon>{{ game.foxGame.icon }}</v-icon> -->
+              <!-- <span>{{ $t(game.foxGame.name) }}</span> -->
             </div>
             <div v-if="game.password">
               <v-icon>{{ ICON.LOCK }}</v-icon>
