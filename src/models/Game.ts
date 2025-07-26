@@ -1,23 +1,42 @@
+import { Type } from "class-transformer";
 import { FoxGame } from "./FoxGame";
 import { User } from "./User";
 
 export class Game {
-  code: string;
+
+  @Type(() => String)
+  code: string | null;
+  
+  @Type(() => FoxGame)
   foxGame: FoxGame;
+  
+  @Type(() => User)
   owner: User;
+  
+  @Type(() => Boolean)
   isPublic: boolean;
+  
+  @Type(() => User)
   users: User[];
+  
+  @Type(() => String)
   password: string | null;
+  
+  @Type(() => Boolean)
   usePublicQuestions: boolean;
+  
+  @Type(() => Boolean)
   usePrivateQuestions: boolean;
+  
+  @Type(() => Boolean)
   isQuestionsFromAnotherGamesAllowed: boolean;
 
   constructor(
-    code: string,
-    foxGame = new FoxGame(),
-    isPublic: boolean = false,
     owner: User = new User(),
     users: User[] = [],
+    code: string | null = null,
+    foxGame = new FoxGame(),
+    isPublic: boolean = false,
     password: string | null = null,
     usePublicQuestions = true,
     usePrivateQuestions = true,

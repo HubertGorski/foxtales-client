@@ -8,6 +8,7 @@ import NavigationBtns from "@/components/NavigationBtns.vue";
 import { userService } from "@/api/services/UserService";
 import { User } from "@/models/User";
 import { useSignalRStore } from "@/stores/signalRStore";
+import { Game } from "@/models/Game";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -19,7 +20,7 @@ const navigateToJoinGame = () => {
 
 const navigateToCreateGame = async () => {
   await signalRStore.connect();
-  await signalRStore.generateAndBookCode();
+  await signalRStore.createRoom(new Game(userStore.user));
   router.push(ROUTE_PATH.CREATE_GAME);
 };
 

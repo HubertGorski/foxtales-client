@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Game } from "@/models/Game";
 import HubSwitch from "@/components/hubComponents/HubSwitch.vue";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { useSignalRStore } from "@/stores/signalRStore";
+import router from "@/router";
+import { ROUTE_PATH } from "@/router/routeEnums";
+import { Game } from "@/models/Game";
 
 const signalRStore = useSignalRStore();
 
-const newGame = ref(new Game(signalRStore.gameCode ?? ""));
+const newGame = ref(signalRStore.game || new Game());
+if (!newGame.value.code) {
+  router.push(ROUTE_PATH.MENU);
+}
+
+const removeRoom = async () => {
+  await signalRStore.removeRoom();
+  router.push(ROUTE_PATH.MENU);
+};
 </script>
 
 <template>
@@ -57,7 +67,7 @@ const newGame = ref(new Game(signalRStore.gameCode ?? ""));
           />
           <span class="publicSection_info">{{ $t("info.passwordRoom") }}</span>
         </div>
-        <NavigationBtns btn="back" btn2="next" />
+        <NavigationBtns btn="back" btn2="next" :btnCustomAction="removeRoom" />
       </div>
     </div>
     <img src="@/assets/imgs/fox5.png" alt="Lisek" class="fox" />

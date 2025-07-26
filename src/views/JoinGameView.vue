@@ -3,7 +3,6 @@ import { useRouter } from "vue-router";
 import { computed, ref, toRef, watch } from "vue";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
-import { games } from "@/assets/data/games";
 import HubDivider from "@/components/hubComponents/HubDivider.vue";
 import HubInputBox from "@/components/hubComponents/HubInputBox.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
@@ -19,7 +18,8 @@ const signalRStore = useSignalRStore();
 const router = useRouter();
 const { t } = useI18n();
 
-const actualGames: Game[] = games.filter((game) => game.isPublic);
+const actualGames: Game[] = [];
+// const actualGames: Game[] = games.filter((game) => game.isPublic);
 const error = toRef(signalRStore, "error");
 
 const customCode = ref<string>("");
@@ -72,8 +72,9 @@ const joinRoom = async () => {
 };
 
 watch(customCode, (newVal) => {
+  customCode.value = newVal.toUpperCase();
   if (newVal) {
-    setTimeout(() => error.value = null, 500);
+    error.value = null;
   }
 });
 </script>
@@ -112,8 +113,8 @@ watch(customCode, (newVal) => {
         <WhiteCard
           :header="game.name"
           @click="game.isPasswordSet ? openPasswordPopup() : goToLobby()"
-          v-for="game in actualGames"
-          :key="game.code"
+          v-for="(game, index) in actualGames"
+          :key="index"
         >
           <div class="details">
             <div>

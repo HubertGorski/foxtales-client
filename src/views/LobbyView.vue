@@ -1,28 +1,26 @@
 <script setup lang="ts">
 import UserListElement from "@/components/UserListElement.vue";
 import { computed, ref, toRef, watch } from "vue";
-import { Game } from "@/models/Game";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { useSignalRStore } from "@/stores/signalRStore";
 import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
+import { Game } from "@/models/Game";
+import { useUserStore } from "@/stores/userStore";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
+const userStore = useUserStore();
 const isZoom = ref<boolean>(false);
 
-const game = ref(new Game(signalRStore.gameCode ?? ""));
-const joinedPlayers = toRef(signalRStore, "joinedPlayers");
-game.value.setUsers(signalRStore.joinedPlayers);
-
 const leaveRoom = async () => {
-  await signalRStore.leaveRoom();
+  await signalRStore.leaveRoom(userStore.user.userId);
   router.push(ROUTE_PATH.MENU);
 };
 
-if (!game.value.users.length) {
-  router.push(ROUTE_PATH.JOIN_GAME);
-}
+const game = computed<Game>(
+  () => toRef(signalRStore, "game").value ?? new Game()
+);
 
 const customCodeLabel = computed(() => {
   return isZoom.value ? game.value.code : `Kod dostępu: ${game.value.code}`;
@@ -32,13 +30,15 @@ const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
 });
 
-watch(
-  joinedPlayers,
-  (newPlayers) => {
-    game.value.setUsers([...newPlayers]);
-  },
-  { deep: true }
-);
+if (!game.value.users.length) {
+  router.push(ROUTE_PATH.JOIN_GAME);
+}
+
+watch(game.value, (game: Game | null) => {
+  if (game == null) {
+    router.push(ROUTE_PATH.JOIN_GAME);
+  }
+});
 </script>
 
 <template>

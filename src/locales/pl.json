@@ -126,7 +126,8 @@
     "email": "Email",
     "password": "Hasło",
     "repeatPassword": "Powtórz hasło",
-    "username": "Nazwa użytkownika"
+    "username": "Nazwa użytkownika",
+    "roomDoesntExist": "Podany kod jest nieprawidłowy."
   },
   "foxGame": {
     "psych": {
