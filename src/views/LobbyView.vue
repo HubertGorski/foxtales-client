@@ -96,18 +96,18 @@ watch(game, (game: Game | null) => {
     </div>
     <div
       @click="isZoom = !isZoom"
-      :class="{ mask: isZoom && !game.isPublic }"
+      :class="{ mask: isZoom }"
     ></div>
     <div
       @click="isZoom = !isZoom"
-      :class="{ zoomCustomCodeSection: isZoom && !game.isPublic }"
+      :class="{ zoomCustomCodeSection: isZoom }"
     >
-      <span v-if="!isZoom && !game.isPublic" class="icon">!</span>
-      <span v-if="!game.isPublic" class="customCodeSection">{{
+      <span v-if="!isZoom" class="icon">!</span>
+      <span class="customCodeSection">{{
         customCodeLabel
       }}</span>
     </div>
-    <span v-if="isZoom && !game.isPublic" class="isZoom"></span>
+    <span v-if="isZoom" class="isZoom"></span>
     <NavigationBtns
       :btn="optionBtn.text"
       :btnIsOrange="optionBtn.isOrange"
