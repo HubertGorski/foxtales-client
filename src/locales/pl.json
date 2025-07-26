@@ -54,6 +54,7 @@
   "chooseGameType": "Wybierz typ gry",
   "emptyData": "Brak danych",
   "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",
+  "gameClosed": "Właściciel gry zamknął swój pokój.",
   "chooseCatalogSize": "Wybierz wielkość katalogu",
   "title": "Tytuł",
   "description": "Opis",

@@ -1,8 +1,23 @@
 <script setup lang="ts">
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+
 const reason = useRoute().query.reason;
+const { t } = useI18n();
+
+const alert = computed(() => {
+  switch (reason) {
+    case NO_ACCESS_REASON.ADMIN_ONLY:
+      return t("requiredAdminRole");
+    case NO_ACCESS_REASON.GAME_CLOSED:
+      return t("gameClosed");
+    default:
+      return t("auth.tryLoginAgain")
+  }
+});
 </script>
 
 <template>
@@ -10,15 +25,14 @@ const reason = useRoute().query.reason;
     <div class="noAccessView_content">
       <img src="@/assets/imgs/fox6.png" alt="Lisek" />
       <p class="info">
-        {{
-          reason === NO_ACCESS_REASON.ADMIN_ONLY
-            ? $t("requiredAdminRole")
-            : $t("auth.tryLoginAgain")
-        }}
+        {{ alert }}
       </p>
     </div>
     <NavigationBtns
-      v-if="reason === NO_ACCESS_REASON.ADMIN_ONLY"
+      v-if="
+        reason === NO_ACCESS_REASON.ADMIN_ONLY ||
+        reason === NO_ACCESS_REASON.GAME_CLOSED
+      "
       btn="back2"
       btn2="logout"
     />

@@ -18,6 +18,11 @@ const removeRoom = async () => {
   await signalRStore.removeRoom();
   router.push(ROUTE_PATH.MENU);
 };
+
+const editRoom = async () => {
+  await signalRStore.editRoom(newGame.value);
+  router.push(ROUTE_PATH.LOBBY);
+};
 </script>
 
 <template>
@@ -67,7 +72,13 @@ const removeRoom = async () => {
           />
           <span class="publicSection_info">{{ $t("info.passwordRoom") }}</span>
         </div>
-        <NavigationBtns btn="back" btn2="next" :btnCustomAction="removeRoom" />
+        <NavigationBtns
+          btn="closeGame"
+          btn2="accept"
+          :btnCustomAction="removeRoom"
+          :btn2CustomAction="editRoom"
+          btn2isOrange
+        />
       </div>
     </div>
     <img src="@/assets/imgs/fox5.png" alt="Lisek" class="fox" />
@@ -86,7 +97,7 @@ const removeRoom = async () => {
   align-items: center;
 
   .creamCard {
-    padding: 24px;
+    padding: 14px;
   }
 
   &_card {

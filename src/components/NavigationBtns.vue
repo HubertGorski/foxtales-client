@@ -26,6 +26,14 @@ const props = defineProps({
     type: String,
     required: false,
   },
+  btnIsOrange: {
+    type: Boolean,
+    default: null,
+  },
+  btn2isOrange: {
+    type: Boolean,
+    default: null,
+  },
   btnDisabled: {
     type: Boolean,
     default: false,
@@ -90,10 +98,15 @@ const allBtns = [
     isOrange: false,
     action: () => router.push(ROUTE_PATH.MENU),
   },
+  {
+    text: "accept",
+    isOrange: false,
+    action: () => router.push(ROUTE_PATH.LOBBY),
+  },
 ];
 
 const selectedBtn = allBtns.find((btn) => btn.text === props.btn)!;
-if (typeof props.btnCustomAction === 'function') {
+if (typeof props.btnCustomAction === "function") {
   selectedBtn.action = () => props.btnCustomAction!();
 }
 
@@ -101,8 +114,16 @@ const selectedBtn2 = props.btn2
   ? allBtns.find((btn) => btn.text === props.btn2)!
   : null;
 
-if (selectedBtn2 && typeof props.btn2CustomAction === 'function') {
+if (selectedBtn2 && typeof props.btn2CustomAction === "function") {
   selectedBtn2.action = () => props.btn2CustomAction!();
+}
+
+if (props.btnIsOrange != null) {
+  selectedBtn.isOrange = props.btnIsOrange;
+}
+
+if (props.btn2isOrange != null && selectedBtn2) {
+  selectedBtn2.isOrange = props.btn2isOrange;
 }
 
 const isTooltip2Visible = !!selectedBtn2 && !props.btn2Disabled;

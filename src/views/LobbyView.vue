@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
 import { useUserStore } from "@/stores/userStore";
+import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
@@ -18,9 +19,27 @@ const leaveRoom = async () => {
   router.push(ROUTE_PATH.MENU);
 };
 
+const goToSettings = async () => {
+  router.push(ROUTE_PATH.CREATE_GAME_PSYCH);
+};
+
+const optionBtnAction = async () => {
+  if (signalRStore.game?.owner.userId === userStore.user.userId) {
+    goToSettings();
+  } else {
+    await leaveRoom();
+  }
+};
+
 const game = computed<Game>(
   () => toRef(signalRStore, "game").value ?? new Game()
 );
+
+const optionBtnText = computed(() => {
+  return signalRStore.game?.owner.userId === userStore.user.userId
+    ? "settings"
+    : "back";
+});
 
 const customCodeLabel = computed(() => {
   return isZoom.value ? game.value.code : `Kod dostępu: ${game.value.code}`;
@@ -30,13 +49,24 @@ const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
 });
 
+const optionBtn = computed(() => {
+  return {
+    text: optionBtnText.value,
+    isOrange: false,
+    action: optionBtnAction,
+  };
+});
+
 if (!game.value.users.length) {
   router.push(ROUTE_PATH.JOIN_GAME);
 }
 
-watch(game.value, (game: Game | null) => {
-  if (game == null) {
-    router.push(ROUTE_PATH.JOIN_GAME);
+watch(game, (game: Game | null) => {
+  if (game == null || game.code == null) {
+    router.push({
+      path: ROUTE_PATH.NO_ACCESS,
+      query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
+    });
   }
 });
 </script>
@@ -79,9 +109,10 @@ watch(game.value, (game: Game | null) => {
     </div>
     <span v-if="isZoom && !game.isPublic" class="isZoom"></span>
     <NavigationBtns
-      btn="closeGame"
+      :btn="optionBtn.text"
+      :btnIsOrange="optionBtn.isOrange"
+      :btnCustomAction="optionBtn.action"
       btn2="start"
-      :btnCustomAction="leaveRoom"
       :btn2Disabled="game.areUsersUnready"
       btn2TooltipText="tooltip.startNewGame"
     />
