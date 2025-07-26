@@ -7,15 +7,19 @@ import HubAccordionElement from "@/components/hubComponents/HubAccordionElement.
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { userService } from "@/api/services/UserService";
 import { User } from "@/models/User";
+import { useSignalRStore } from "@/stores/signalRStore";
 
 const userStore = useUserStore();
 const router = useRouter();
+const signalRStore = useSignalRStore();
 
 const navigateToJoinGame = () => {
   router.push(ROUTE_PATH.JOIN_GAME);
 };
 
-const navigateToCreateGame = () => {
+const navigateToCreateGame = async () => {
+  await signalRStore.connect();
+  await signalRStore.generateAndBookCode();
   router.push(ROUTE_PATH.CREATE_GAME);
 };
 

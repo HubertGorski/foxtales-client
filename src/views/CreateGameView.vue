@@ -3,8 +3,11 @@ import { ref } from "vue";
 import { Game } from "@/models/Game";
 import HubSwitch from "@/components/hubComponents/HubSwitch.vue";
 import NavigationBtns from "@/components/NavigationBtns.vue";
+import { useSignalRStore } from "@/stores/signalRStore";
 
-const newGame = ref(new Game("PIESEK1"));
+const signalRStore = useSignalRStore();
+
+const newGame = ref(new Game(signalRStore.gameCode ?? ""));
 </script>
 
 <template>

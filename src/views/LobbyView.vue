@@ -20,6 +20,10 @@ const leaveRoom = async () => {
   router.push(ROUTE_PATH.MENU);
 };
 
+if (!game.value.users.length) {
+  router.push(ROUTE_PATH.JOIN_GAME);
+}
+
 const customCodeLabel = computed(() => {
   return isZoom.value ? game.value.code : `Kod dostępu: ${game.value.code}`;
 });

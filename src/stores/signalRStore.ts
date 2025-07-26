@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import type { User } from "@/models/User";
 import { BASE_URL_PSYCH } from "@/api/Client";
 import * as signalR from "@microsoft/signalr";
+import type { Game } from "@/models/Game";
 
 interface SignalRState {
   connection: signalR.HubConnection | null;
@@ -29,6 +30,11 @@ export const useSignalRStore = defineStore({
       this.joinedPlayers = [];
       this.gameCode = null;
       this.player = null;
+    },
+
+    initStore(gameCode: string, player: User) {
+      this.gameCode = gameCode;
+      this.player = player;
     },
 
     async connect() {
@@ -72,8 +78,29 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      this.gameCode = gameCode;
-      this.player = player;
+      this.initStore(gameCode, player);
+    },
+
+    async generateAndBookCode() {
+      if (!this.connection) {
+        return;
+      }
+
+      const code = await this.connection.invoke("GenerateAndBookCode");
+      this.gameCode = code;
+    },
+
+    async createRoom(game: Game) {
+      if (!this.connection) {
+        return;
+      }
+
+      await this.connection.invoke("CreateRoom", game);
+      if (this.error) {
+        return;
+      }
+
+      this.initStore(game.code, game.owner);
     },
 
     async leaveRoom() {
@@ -86,6 +113,7 @@ export const useSignalRStore = defineStore({
         this.gameCode,
         this.player.userId
       );
+
       this.clearStore();
     },
   },
