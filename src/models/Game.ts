@@ -63,7 +63,7 @@ export class Game {
   }
 
   get areUsersUnready(): boolean {
-    return this.users.length === 0 || this.users.some((user) => !user.isReady);
+    return this.users.length === 0 || this.users.filter((user) => user.userId !== this.owner.userId).some((user) => !user.isReady);
   }
 
   get isPasswordSet(): boolean {

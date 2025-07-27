@@ -23,23 +23,35 @@ const goToSettings = async () => {
   router.push(ROUTE_PATH.CREATE_GAME_PSYCH);
 };
 
+const goToGame = async () => {
+  await signalRStore.removeRoom(); // TODO: usuanc jak zaczne robic gre
+  router.push(ROUTE_PATH.GAME_PSYCH);
+};
+
+const setReady = async () => {
+  userStore.user.isReady = !userStore.user.isReady;
+  await signalRStore.setStatus(userStore.user.userId, userStore.user.isReady);
+};
+
 const optionBtnAction = async () => {
-  if (signalRStore.game?.owner.userId === userStore.user.userId) {
+  if (isOwner.value) {
     goToSettings();
   } else {
     await leaveRoom();
   }
 };
 
+const startBtnAction = async () => {
+  if (isOwner.value) {
+    goToGame();
+  } else {
+    setReady();
+  }
+};
+
 const game = computed<Game>(
   () => toRef(signalRStore, "game").value ?? new Game()
 );
-
-const optionBtnText = computed(() => {
-  return signalRStore.game?.owner.userId === userStore.user.userId
-    ? "settings"
-    : "back";
-});
 
 const customCodeLabel = computed(() => {
   return isZoom.value ? game.value.code : `Kod dostępu: ${game.value.code}`;
@@ -49,11 +61,26 @@ const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
 });
 
+const isOwner = computed(() => {
+  return game.value.owner.userId === userStore.user.userId;
+});
+
 const optionBtn = computed(() => {
   return {
-    text: optionBtnText.value,
+    text: isOwner.value ? "settings" : "back",
     isOrange: false,
     action: optionBtnAction,
+  };
+});
+
+const startBtn = computed(() => {
+  return {
+    text: isOwner.value ? "start" : "ready",
+    action: startBtnAction,
+    tooltipText: isOwner.value ? "tooltip.startNewGame" : "",
+    disabled:
+      game.value.areUsersUnready &&
+      game.value.owner.userId === userStore.user.userId,
   };
 });
 
@@ -94,27 +121,21 @@ watch(game, (game: Game | null) => {
         <user-list-element :user="user" />
       </div>
     </div>
-    <div
-      @click="isZoom = !isZoom"
-      :class="{ mask: isZoom }"
-    ></div>
-    <div
-      @click="isZoom = !isZoom"
-      :class="{ zoomCustomCodeSection: isZoom }"
-    >
+    <div @click="isZoom = !isZoom" :class="{ mask: isZoom }"></div>
+    <div @click="isZoom = !isZoom" :class="{ zoomCustomCodeSection: isZoom }">
       <span v-if="!isZoom" class="icon">!</span>
-      <span class="customCodeSection">{{
-        customCodeLabel
-      }}</span>
+      <span class="customCodeSection">{{ customCodeLabel }}</span>
     </div>
     <span v-if="isZoom" class="isZoom"></span>
     <NavigationBtns
       :btn="optionBtn.text"
       :btnIsOrange="optionBtn.isOrange"
       :btnCustomAction="optionBtn.action"
-      btn2="start"
-      :btn2Disabled="game.areUsersUnready"
-      btn2TooltipText="tooltip.startNewGame"
+      :btn2="startBtn.text"
+      :btn2Disabled="startBtn.disabled"
+      :btn2TooltipText="startBtn.tooltipText"
+      :btn2CustomAction="startBtn.action"
+      :btn2isSwitch="!isOwner"
     />
   </div>
 </template>

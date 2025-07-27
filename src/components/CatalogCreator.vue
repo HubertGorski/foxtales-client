@@ -138,6 +138,7 @@ watch(catalog, () => {
       .filter((q) => q != null);
   }
 });
+//TODO: dodac usuwanie katalogów.
 </script>
 
 <template>
@@ -165,7 +166,7 @@ watch(catalog, () => {
         v-for="type in availableTypes"
         :key="type.catalogTypeId"
       >
-        <p class="catalogName">{{ $t(type.name) }}</p>
+        <p class="catalogName">{{ $t(type.name.toLocaleLowerCase()) }}</p>
         <p class="catalogSize">{{ `${$t("size")}: ${type.size}` }}</p>
       </div>
     </div>

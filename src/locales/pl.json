@@ -17,6 +17,7 @@
   "join": "Dołącz",
   "or": "lub",
   "add": "Dodaj",
+  "ready": "Gotowy",
   "password": "Hasło",
   "accept": "Zatwierdź",
   "confirmChanges": "Zatwierdź zmiany",
@@ -64,7 +65,7 @@
   "positive": "Pozytywna",
   "negative": "Negatywna",
   "tooltip": {
-    "startNewGame": "By rozpocząć grę wszyscy gracze muszą potwierdzić udział",
+    "startNewGame": "By rozpocząć grę wszyscy goście w pokoju muszą potwierdzić udział",
     "privateQuestionsDescription": "Opis prywatnych pytań",
     "publicQuestionsDescription": "Opis publicznych pytań",
     "roomOnListDescription": "Opis widoczności pokoju na liście"

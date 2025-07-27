@@ -50,6 +50,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  btn2isSwitch: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const allBtns = [
@@ -100,6 +104,11 @@ const allBtns = [
   },
   {
     text: "accept",
+    isOrange: false,
+    action: () => router.push(ROUTE_PATH.LOBBY),
+  },
+  {
+    text: "ready",
     isOrange: false,
     action: () => router.push(ROUTE_PATH.LOBBY),
   },
@@ -156,6 +165,7 @@ const isTooltip2Visible = !!selectedBtn2 && !props.btn2Disabled;
         :text="selectedBtn2.text"
         :isOrange="selectedBtn2.isOrange"
         :disabled="btn2Disabled"
+        :isSwitch="btn2isSwitch"
       />
     </HubTooltip>
   </div>

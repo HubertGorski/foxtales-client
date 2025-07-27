@@ -14,7 +14,7 @@ const avatar: Avatar = props.user.avatar;
 </script>
 
 <template>
-  <div class="userListElement" @click="user.isReady = !user.isReady">
+  <div class="userListElement">
     <img
       :src="avatar.source"
       alt="Lisek"

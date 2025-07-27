@@ -139,6 +139,14 @@ export const useSignalRStore = defineStore({
       await this.connection.invoke("EditRoom", game);
     },
 
+    async setStatus(playerId: number, status: boolean) {
+      if (!this.connection || !this.game) {
+        return;
+      }
+
+      await this.connection.invoke("SetStatus", this.game.code, playerId, status);
+    },
+
     async leaveRoom(playerId: number) {
       if (!this.connection || !this.game) {
         return;

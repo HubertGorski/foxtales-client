@@ -16,6 +16,7 @@ export enum ROUTE_NAME {
   LIBRARY_PSYCH = "library" + PERMISSION_GAME.PSYCH,
   CHOOSE_GAME = "chooseGame",
   NO_ACCESS = "noAccess",
+  GAME_PSYCH = "gamePsych",
 }
 
 export enum ROUTE_PATH {
@@ -34,4 +35,5 @@ export enum ROUTE_PATH {
   LIBRARY_DYLEMATY = "/library-" + PERMISSION_GAME.DYLEMATY,
   CHOOSE_GAME = "/choose-game",
   NO_ACCESS = "/no-access",
+  GAME_PSYCH = "/game-psych",
 }

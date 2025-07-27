@@ -17,6 +17,7 @@ import DylematyLibraryViewVue from "@/views/dylematy/DylematyLibraryView.vue";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 import { PERMISSION_GAME } from "@/enums/permissions";
+import PsychGameView from "@/views/PsychGameView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +67,11 @@ function getRoutesWithAuth() {
       path: ROUTE_PATH.LOBBY,
       name: ROUTE_NAME.LOBBY,
       component: LobbyViewVue,
+    },
+    {
+      path: ROUTE_PATH.GAME_PSYCH,
+      name: ROUTE_NAME.GAME_PSYCH,
+      component: PsychGameView,
     },
     {
       path: ROUTE_PATH.CREATE_GAME,
@@ -137,12 +143,13 @@ function getRoutesWithAuth() {
 }
 
 router.beforeEach((to, from, next) => {
-  const isGameSelected =
-    sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
-  if (to.meta.requiredGameSelected && !isGameSelected) {
-    sessionStorage.setItem(SESSION_STORAGE.URL_SELECTED_GAME, to.fullPath);
-    next(ROUTE_PATH.CHOOSE_GAME);
-  } else if (to.meta.requiresAdmin && !isAdmin()) {
+  // const isGameSelected = TODO: dodac tworzenie roznych typow gier
+    // sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
+  // if (to.meta.requiredGameSelected && !isGameSelected) {
+    // sessionStorage.setItem(SESSION_STORAGE.URL_SELECTED_GAME, to.fullPath);
+    // next(ROUTE_PATH.CHOOSE_GAME);
+  // } else 
+    if (to.meta.requiresAdmin && !isAdmin()) {
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.ADMIN_ONLY },
@@ -159,7 +166,7 @@ router.beforeEach((to, from, next) => {
       query: { reason: NO_ACCESS_REASON.NO_PERMISSION_GAME },
     });
   } else {
-    sessionStorage.removeItem(SESSION_STORAGE.IS_GAME_SELECTED);
+    // sessionStorage.removeItem(SESSION_STORAGE.IS_GAME_SELECTED);
     next();
   }
 });

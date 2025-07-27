@@ -151,7 +151,7 @@ if (!signalRStore.connection) {
         >
           <div class="details">
             <div>
-              <!-- <v-icon>{{ game.foxGame.icon }}</v-icon> -->
+              <!-- <v-icon>{{ game.foxGame.icon }}</v-icon> TODO: dodac tworzenie roznych typow gier -->  
               <!-- <span>{{ $t(game.foxGame.name) }}</span> -->
             </div>
             <div v-if="game.password">
