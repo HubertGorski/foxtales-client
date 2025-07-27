@@ -5,6 +5,7 @@
   "register": "Załóż konto",
   "registerTitle": "Rejestracja",
   "settings": "Ustawienia",
+  "userSettings": "Ustawienia gracza",
   "menu": "Menu",
   "logout": "Wyloguj",
   "back": "Powrót",
@@ -82,7 +83,9 @@
     "inviteOtherPlayers": "Zaproś pozostałych podając kod:",
     "entryPassword": "Hasło wstępu",
     "allQuestions": "Wszystkie pytania",
-    "selectedCatalog": "Wybrany katalog"
+    "selectedCatalog": "Wybrany katalog",
+    "waitingForPlayers": "Oczekiwanie na graczy",
+    "accessCode": "Kod dostępu:"
   },
   "languages": {
     "polish": "Polski",

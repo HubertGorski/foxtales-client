@@ -8,11 +8,19 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
 import { useUserStore } from "@/stores/userStore";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
+import SelectQuestionsPanel from "@/components/SelectQuestionsPanel.vue";
+import HubPopup from "@/components/hubComponents/HubPopup.vue";
+import { ICON } from "@/enums/iconsEnum";
+import HubBtn from "@/components/hubComponents/HubBtn.vue";
+import { useI18n } from "vue-i18n";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
 const userStore = useUserStore();
-const isZoom = ref<boolean>(false);
+const { t } = useI18n();
+
+const usePrivateQuestions = ref<boolean>(false);
+const showSettingsPanel = ref<boolean>(false);
 
 const leaveRoom = async () => {
   await signalRStore.leaveRoom(userStore.user.userId);
@@ -52,10 +60,6 @@ const startBtnAction = async () => {
 const game = computed<Game>(
   () => toRef(signalRStore, "game").value ?? new Game()
 );
-
-const customCodeLabel = computed(() => {
-  return isZoom.value ? game.value.code : `Kod dostępu: ${game.value.code}`;
-});
 
 const isMinimalViewMode = computed(() => {
   return game.value.users.length > 4;
@@ -100,43 +104,61 @@ watch(game, (game: Game | null) => {
 
 <template>
   <div class="lobbyView">
-    <div class="lobbyView_header">
-      <p class="title">Oczekiwanie na graczy</p>
-      <p class="counter">
+    <div class="header">
+      <p class="header_title">{{ $t("lobby.waitingForPlayers") }}</p>
+      <p class="header_counter">
         ({{ game.readyUsersCount }} / {{ game.usersCount }})
       </p>
     </div>
-    <img
-      v-if="game.users.length === 0"
-      src="@/assets/imgs/fox3.png"
-      alt="Lisek"
-      class="lobbyView_emptyUserList"
-    />
     <div
-      v-else
-      :class="{ isMinimalViewMode: isMinimalViewMode }"
       class="lobbyView_userList"
+      :class="{ isMinimalViewMode: isMinimalViewMode }"
     >
-      <div v-for="user in game.users" :key="user.userId">
-        <user-list-element :user="user" />
+      <user-list-element
+        v-for="user in game.users"
+        :key="user.userId"
+        :user="user"
+      />
+    </div>
+    <div class="buttons">
+      <div class="buttons_settingsBtnWithCode">
+        <div>
+          <span class="icon">!</span>
+          <span class="code"
+            >{{ t("lobby.accessCode") }} {{ game.code }}</span
+          >
+        </div>
+        <HubBtn
+          v-if="game.owner.userId !== userStore.user.userId"
+          class="settingsBtn"
+          :action="() => (showSettingsPanel = true)"
+          :icon="ICON.ADD_TO_COLLECTION"
+        />
       </div>
+      <NavigationBtns
+        :btn="optionBtn.text"
+        :btnIsOrange="optionBtn.isOrange"
+        :btnCustomAction="optionBtn.action"
+        :btn2="startBtn.text"
+        :btn2Disabled="startBtn.disabled"
+        :btn2TooltipText="startBtn.tooltipText"
+        :btn2CustomAction="startBtn.action"
+        :btn2isSwitch="!isOwner"
+      />
     </div>
-    <div @click="isZoom = !isZoom" :class="{ mask: isZoom }"></div>
-    <div @click="isZoom = !isZoom" :class="{ zoomCustomCodeSection: isZoom }">
-      <span v-if="!isZoom" class="icon">!</span>
-      <span class="customCodeSection">{{ customCodeLabel }}</span>
-    </div>
-    <span v-if="isZoom" class="isZoom"></span>
-    <NavigationBtns
-      :btn="optionBtn.text"
-      :btnIsOrange="optionBtn.isOrange"
-      :btnCustomAction="optionBtn.action"
-      :btn2="startBtn.text"
-      :btn2Disabled="startBtn.disabled"
-      :btn2TooltipText="startBtn.tooltipText"
-      :btn2CustomAction="startBtn.action"
-      :btn2isSwitch="!isOwner"
-    />
+    <HubPopup v-model="showSettingsPanel">
+      <div class="settings creamCard">
+        <span class="settings_title">{{ $t("userSettings") }}</span>
+        <SelectQuestionsPanel
+          v-model:usePrivateQuestions="usePrivateQuestions"
+        />
+        <HubBtn
+          class="settings_btn"
+          text="accept"
+          :action="() => (showSettingsPanel = true)"
+        />
+      </div>
+    </HubPopup>
   </div>
 </template>
 
@@ -151,67 +173,36 @@ watch(game, (game: Game | null) => {
   align-items: center;
   padding: 16px;
 
-  .zoomCustomCodeSection {
-    transform: translate(5px, -276px) scale(3);
-    z-index: 3;
-    transition: all 0.4s;
-  }
-  .isZoom {
-    height: 24px;
-  }
-  .mask {
-    content: "";
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.6);
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 2;
-    transition: all 0.4s;
-  }
-
-  .icon {
-    position: relative;
-    top: 4px;
-    right: 4px;
-    font-size: 32px;
-    font-weight: 900;
-    color: $mainBrownColor;
-  }
-
-  .customCodeSection {
-    background-color: $background;
-    color: $mainBrownColor;
-    font-size: 24;
-    font-weight: 600;
-    text-align: center;
-    padding: 8px 20px;
-    border-radius: 12px;
-    border: 2px solid $mainBrownColor;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 10px auto;
-    width: fit-content;
-  }
-
-  &_header {
+  .header {
     display: flex;
     flex-direction: column;
     align-items: center;
     color: $mainBrownColor;
     font-weight: 600;
+    width: 100%;
 
-    .title {
+    &_title {
       font-size: 24px;
     }
 
-    .counter {
+    &_counter {
       font-size: 18px;
     }
   }
 
-  &_emptyUserList {
-    height: 450px;
+  .settings {
+    padding: 12px;
+
+    &_title {
+      font-weight: 600;
+      font-size: 24px;
+      color: $grayColor;
+    }
+
+    &_btn {
+      padding: 8px;
+      font-size: 16px;
+    }
   }
 
   &_userList {
@@ -223,6 +214,47 @@ watch(game, (game: Game | null) => {
     &.isMinimalViewMode {
       justify-content: space-between;
       overflow-y: scroll;
+    }
+  }
+
+  .buttons {
+    width: 100%;
+
+    &_settingsBtnWithCode {
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      width: 100%;
+      padding: 12px 0;
+
+      .icon {
+        position: relative;
+        top: 4px;
+        right: 4px;
+        font-size: 32px;
+        font-weight: 900;
+        color: $mainBrownColor;
+      }
+
+      .code {
+        background-color: $background;
+        color: $mainBrownColor;
+        font-size: 24;
+        font-weight: 600;
+        text-align: center;
+        padding: 8px 20px;
+        border-radius: 12px;
+        border: 2px solid $mainBrownColor;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 10px auto;
+        width: fit-content;
+      }
+
+      .settingsBtn {
+        margin: 0 8px;
+        padding: 4px;
+        width: 52px;
+      }
     }
   }
 }

@@ -20,7 +20,7 @@ const isVisible = defineModel({ type: Boolean, required: true });
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 4;
 
   &_mask {
     width: 100vw;
