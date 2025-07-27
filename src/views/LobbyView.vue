@@ -143,7 +143,7 @@ watch(game, (game: Game | null) => {
           <span class="code">{{ t("lobby.accessCode") }} {{ game.code }}</span>
         </div>
         <HubBtn
-          v-if="game.owner.userId !== userStore.user.userId"
+          v-if="game.owner.userId !== userStore.user.userId && game.isQuestionsFromAnotherGamesAllowed"
           class="settingsBtn"
           :action="() => (showSettingsPanel = true)"
           :icon="ICON.ADD_TO_COLLECTION"

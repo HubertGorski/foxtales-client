@@ -186,6 +186,7 @@ const addQuestionBtn = {
   isOrange: true,
   action: addQuestion,
 };
+//TODO: jak jest jedno pytanie zaznaczone to dac mozliwosc wypisywania go z katalogu.
 </script>
 
 <template>

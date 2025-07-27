@@ -36,6 +36,8 @@ const editRoom = async () => {
 const setCurrentQuestions = async (questions: Question[]) => {
   currentQuestions.value = questions;
 };
+// TODO: dodac opisy tlumaczenia co to robi
+//TODO: jak sie wraca do ustawien to pamieta zly stan ktore pytania sa zaznaczone
 </script>
 
 <template>
