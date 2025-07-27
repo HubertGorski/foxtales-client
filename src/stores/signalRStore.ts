@@ -145,7 +145,12 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke("SetStatus", this.game.code, playerId, status);
+      await this.connection.invoke(
+        "SetStatus",
+        this.game.code,
+        playerId,
+        status
+      );
     },
 
     async leaveRoom(playerId: number) {
@@ -167,13 +172,17 @@ export const useSignalRStore = defineStore({
       this.clearStore();
     },
 
-    async addQuestionsToGame(questions: Question[]) {
+    async addQuestionsToGame(playerId: number, questions: Question[]) {
       if (!this.connection || !this.game) {
         return;
       }
 
-      await this.connection.invoke("AddQuestionsToGame", this.game.code, questions);
-      this.clearStore();
+      await this.connection.invoke(
+        "AddQuestionsToGame",
+        this.game.code,
+        playerId,
+        questions
+      );
     },
   },
 });

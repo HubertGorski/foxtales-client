@@ -13,6 +13,7 @@ import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import { ICON } from "@/enums/iconsEnum";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useI18n } from "vue-i18n";
+import type { Question } from "@/models/Question";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
@@ -21,6 +22,7 @@ const { t } = useI18n();
 
 const usePrivateQuestions = ref<boolean>(false);
 const showSettingsPanel = ref<boolean>(false);
+const currentQuestions = ref<Question[]>([]);
 
 const leaveRoom = async () => {
   await signalRStore.leaveRoom(userStore.user.userId);
@@ -55,6 +57,18 @@ const startBtnAction = async () => {
   } else {
     setReady();
   }
+};
+
+const setCurrentQuestions = async (questions: Question[]) => {
+  currentQuestions.value = questions;
+};
+
+const addQuestionsToGame = async () => {
+  await signalRStore.addQuestionsToGame(
+    userStore.user.userId,
+    currentQuestions.value
+  );
+  showSettingsPanel.value = false;
 };
 
 const game = computed<Game>(
@@ -110,6 +124,8 @@ watch(game, (game: Game | null) => {
         ({{ game.readyUsersCount }} / {{ game.usersCount }})
       </p>
     </div>
+    <!-- TODO: do testow, usunac normalnie -->
+    {{ game.questions.map(q => q.id) }}
     <div
       class="lobbyView_userList"
       :class="{ isMinimalViewMode: isMinimalViewMode }"
@@ -124,9 +140,7 @@ watch(game, (game: Game | null) => {
       <div class="buttons_settingsBtnWithCode">
         <div>
           <span class="icon">!</span>
-          <span class="code"
-            >{{ t("lobby.accessCode") }} {{ game.code }}</span
-          >
+          <span class="code">{{ t("lobby.accessCode") }} {{ game.code }}</span>
         </div>
         <HubBtn
           v-if="game.owner.userId !== userStore.user.userId"
@@ -151,11 +165,12 @@ watch(game, (game: Game | null) => {
         <span class="settings_title">{{ $t("userSettings") }}</span>
         <SelectQuestionsPanel
           v-model:usePrivateQuestions="usePrivateQuestions"
+          @setQuestions="setCurrentQuestions"
         />
         <HubBtn
           class="settings_btn"
           text="accept"
-          :action="() => (showSettingsPanel = true)"
+          :action="addQuestionsToGame"
         />
       </div>
     </HubPopup>

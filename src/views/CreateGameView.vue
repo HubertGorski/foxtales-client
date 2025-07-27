@@ -7,9 +7,13 @@ import router from "@/router";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
 import SelectQuestionsPanel from "@/components/SelectQuestionsPanel.vue";
+import type { Question } from "@/models/Question";
+import { useUserStore } from "@/stores/userStore";
 
 const signalRStore = useSignalRStore();
+const userStore = useUserStore();
 
+const currentQuestions = ref<Question[]>([]);
 const newGame = ref(signalRStore.game || new Game());
 if (!newGame.value.code) {
   router.push(ROUTE_PATH.MENU);
@@ -22,7 +26,15 @@ const removeRoom = async () => {
 
 const editRoom = async () => {
   await signalRStore.editRoom(newGame.value);
+  await signalRStore.addQuestionsToGame(
+    userStore.user.userId,
+    currentQuestions.value
+  );
   router.push(ROUTE_PATH.LOBBY);
+};
+
+const setCurrentQuestions = async (questions: Question[]) => {
+  currentQuestions.value = questions;
 };
 </script>
 
@@ -39,7 +51,10 @@ const editRoom = async () => {
             tooltipText="tooltip.publicQuestionsDescription"
             withIcon
           />
-          <SelectQuestionsPanel v-model:usePrivateQuestions="newGame.usePrivateQuestions" />
+          <SelectQuestionsPanel
+            v-model:usePrivateQuestions="newGame.usePrivateQuestions"
+            @setQuestions="setCurrentQuestions"
+          />
           <HubSwitch
             v-model="newGame.isQuestionsFromAnotherGamesAllowed"
             label="lobby.isQuestionsFromAnotherGamesAllowed"

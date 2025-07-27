@@ -4,13 +4,18 @@ import HubSwitchBtns, {
   type HubSwitchBtnsItem,
 } from "./hubComponents/HubSwitchBtns.vue";
 import WhiteSelectList from "./selectLists/WhiteSelectList.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import {
   convertCatalogsToListElement,
   type ListElement,
 } from "./selectLists/ListElement";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/stores/userStore";
+import type { Question } from "@/models/Question";
+
+const emit = defineEmits<{
+  (e: "setQuestions", questions: Question[]): void;
+}>();
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -57,6 +62,10 @@ const questions = computed(() => {
 
   return [];
 });
+
+watch(questions, () => {
+  emit("setQuestions", questions.value);
+});
 </script>
 
 <template>
@@ -91,7 +100,7 @@ const questions = computed(() => {
 @import "@/assets/styles/variables";
 .selectQuestionsPanel {
   min-width: 284px;
-  
+
   &_selectOptions {
     display: flex;
     flex-direction: column;
