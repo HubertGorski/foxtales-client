@@ -11,7 +11,11 @@ export interface HubSwitchBtnsItem {
 const props = defineProps({
   items: {
     type: Array as PropType<Array<HubSwitchBtnsItem>>,
-  }
+  },
+  fontSize: {
+    type: Number,
+    default: 24,
+  },
 });
 
 const selectedItem = defineModel<HubSwitchBtnsItem | null>({
@@ -20,7 +24,7 @@ const selectedItem = defineModel<HubSwitchBtnsItem | null>({
 
 const isSelected = (item: HubSwitchBtnsItem) => {
   return isEqual(item, selectedItem.value);
-}
+};
 </script>
 
 <template>
@@ -32,8 +36,12 @@ const isSelected = (item: HubSwitchBtnsItem) => {
       class="hubSwitchBtns_option"
       :class="{ isSelected: isSelected(item) }"
     >
-      <p class="title">{{ $t(item.title) }}</p>
-      <p v-if="item.subtitle" class="subtitle">{{ `${$t("size")}: ${item.subtitle}` }}</p>
+      <p class="title" :style="{ fontSize: fontSize + 'px' }">
+        {{ $t(item.title) }}
+      </p>
+      <p v-if="item.subtitle" class="subtitle">
+        {{ `${$t("size")}: ${item.subtitle}` }}
+      </p>
     </div>
   </div>
 </template>
@@ -56,15 +64,18 @@ const isSelected = (item: HubSwitchBtnsItem) => {
     padding: 8px 12px;
     flex-grow: 1;
 
-
     &.isSelected {
-      font-weight: 600;
       transform: scale(1.1);
       box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 6px;
       transition: all 0.2s;
+
+      .title {
+        font-weight: 600;
+      }
     }
 
     .title {
+      font-weight: 500;
       text-align: center;
     }
 

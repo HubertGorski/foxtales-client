@@ -122,6 +122,15 @@ export const useSignalRStore = defineStore({
       await this.connection.invoke("CreateRoom", game);
     },
 
+    async startGame(game: Game) {
+      if (!this.connection) {
+        return;
+      }
+
+      this.game = game;
+      await this.connection.invoke("StartGame", game);
+    },
+
     async goToJoinGameView() {
       if (!this.connection) {
         return;

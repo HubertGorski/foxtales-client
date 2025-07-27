@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ICON } from "@/enums/iconsEnum";
-import { computed, ref, type PropType } from "vue";
+import { computed, ref, watch, type PropType } from "vue";
 import HubTooltip from "../hubComponents/HubTooltip.vue";
 import HubBtn from "../hubComponents/HubBtn.vue";
 import type { ListElement } from "./ListElement";
@@ -40,7 +40,11 @@ const props = defineProps({
   },
   emptyDataText: {
     type: String,
-    default: 'emptyData',
+    default: "emptyData",
+  },
+  selectVisibleItems: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -103,11 +107,33 @@ const selectItem = (item: ListElement) => {
     item.isSelected = true;
   }
 };
+watch(visibleItems, () => {
+  if (!props.selectVisibleItems) {
+    return;
+  }
+
+  items.value.forEach((item) => {
+    item.isSelected = false;
+  });
+
+  visibleItems.value.forEach((item) => {
+    item.isSelected = true;
+  });
+});
+
+if (props.selectVisibleItems) {
+  visibleItems.value.forEach((item) => {
+    item.isSelected = true;
+  });
+}
 </script>
 
 <template>
   <div class="whiteSelectList">
-    <div v-if="showSelectedCount && visibleItems.length > 0" class="whiteSelectList_selectedCount">
+    <div
+      v-if="showSelectedCount && visibleItems.length > 0"
+      class="whiteSelectList_selectedCount"
+    >
       {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} /
       {{ items.length }})
     </div>
@@ -260,7 +286,7 @@ const selectItem = (item: ListElement) => {
         margin: 8px;
         font-size: 20px;
       }
-      
+
       &_actionIcon {
         font-size: 20px;
         margin: 8px;

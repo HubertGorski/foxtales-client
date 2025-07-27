@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { FoxGame } from "./FoxGame";
 import { User } from "./User";
+import { Question } from "./Question";
 
 export class Game {
 
@@ -30,6 +31,9 @@ export class Game {
   
   @Type(() => Boolean)
   isQuestionsFromAnotherGamesAllowed: boolean;
+  
+  @Type(() => Question)
+  questions: Question[];
 
   constructor(
     owner: User = new User(),
@@ -39,8 +43,9 @@ export class Game {
     isPublic: boolean = false,
     password: string | null = null,
     usePublicQuestions = true,
-    usePrivateQuestions = true,
-    isQuestionsFromAnotherGamesAllowed = false
+    usePrivateQuestions = false,
+    isQuestionsFromAnotherGamesAllowed = false,
+    questions = []
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -51,7 +56,8 @@ export class Game {
     this.usePublicQuestions = usePublicQuestions;
     this.usePrivateQuestions = usePrivateQuestions;
     this.isQuestionsFromAnotherGamesAllowed =
-      isQuestionsFromAnotherGamesAllowed;
+    isQuestionsFromAnotherGamesAllowed;
+    this.questions = questions;
   }
 
   get usersCount(): number {

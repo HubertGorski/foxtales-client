@@ -51,7 +51,7 @@ export class User {
 
   @Type(() => Catalog)
   catalogs: Catalog[] = [];
-  
+
   @Type(() => Question)
   questions: Question[] = [];
 
@@ -63,7 +63,7 @@ export class User {
 
   @Type(() => DylematyCard)
   dylematyCards: DylematyCard[] = [];
-  
+
   answersInDylematyCount: number = 0;
   correctAnswersInDylematyCount: number = 0;
 
@@ -73,12 +73,15 @@ export class User {
   round: number = 1;
 
   // In Psych Game
+  @Type(() => Question)
+  chosenQuestions: Question[] = [];
+
   @Type(() => User)
   chosenPlayerAnswer: User | null = null;
-  
+
   @Type(() => User)
   votersForHisAnswer: User[] = [];
-  
+
   votersAndVoteCounts: { voterId: number; voteCount: number }[] = [];
   responseTime: number = 0;
   averageResponseTimeInCurrentGame: number = 0;

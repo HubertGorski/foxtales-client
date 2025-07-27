@@ -80,7 +80,9 @@
     "isQuestionsFromAnotherGamesAllowed": "Zezwól na dodawanie swoich pytań innym graczom",
     "createGame": "Utwórz grę",
     "inviteOtherPlayers": "Zaproś pozostałych podając kod:",
-    "entryPassword": "Hasło wstępu"
+    "entryPassword": "Hasło wstępu",
+    "allQuestions": "Wszystkie pytania",
+    "selectedCatalog": "Wybrany katalog"
   },
   "languages": {
     "polish": "Polski",
