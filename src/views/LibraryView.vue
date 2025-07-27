@@ -60,18 +60,22 @@ const addQuestion = async (catalogs: Catalog[]) => {
 
   isQuestionCreatorOpen.value = false;
   newQuestion.value = "";
-  actualQuestions.value = userStore.user.questions.map(
-    convertQuestionToListElement
-  );
+  refreshQuestionsList();
 };
 
-const deleteQuestions = (questions: ListElement[]) => {
+const deleteQuestions = async (questions: ListElement[]) => {
   const questionsIds = questions.map((question) => question.id);
+  const response = await userService.removeQuestions(questionsIds);
+  if (!response) {
+    return;
+  }
+
   questionsIds.forEach((questionId) => {
-    userService.removeQuestion(questionId); // TODO: zrobic zeby nie szly requesty w pętli. i dodac await
     userStore.removeQuestion(questionId);
-    refreshCatalogList();
   });
+  refreshCatalogList();
+  refreshQuestionsList();
+  
 };
 
 const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
@@ -153,6 +157,12 @@ const closePopup = (refresh: boolean = false) => {
 const refreshCatalogList = () => {
   actualCatalogs.value = userStore.user.catalogs.map(
     convertCatalogsToListElement
+  );
+};
+
+const refreshQuestionsList = () => {
+  actualQuestions.value = userStore.user.questions.map(
+    convertQuestionToListElement
   );
 };
 

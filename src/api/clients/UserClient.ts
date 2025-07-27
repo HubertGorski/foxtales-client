@@ -56,6 +56,10 @@ export const UserClient = {
     return apiClient.post("/user/removeQuestion", { questionId });
   },
 
+  removeQuestions(questionsIds: number[]): Promise<boolean> {
+    return apiClient.post("/user/removeQuestions", { questionsIds });
+  },
+
   addCatalog(newCatalog: Catalog): Promise<{ data: number }> {
     const catalog = instanceToPlain(newCatalog);
     return apiClient.post("/user/addCatalog", { catalog });

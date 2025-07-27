@@ -56,7 +56,6 @@ const deleteItems = () => {
     "deleteItems",
     items.value.filter((item) => item.isSelected)
   );
-  items.value = items.value.filter((item) => !item.isSelected);
   isDeletePopupOpen.value = false;
 };
 </script>

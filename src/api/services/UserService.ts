@@ -101,6 +101,10 @@ export const userService = {
     return await UserClient.removeQuestion(questionId);
   },
 
+  async removeQuestions(questionsIds: number[]): Promise<boolean> {
+    return await UserClient.removeQuestions(questionsIds);
+  },
+
   async addCatalog(catalog: Catalog): Promise<number> {
     return (await UserClient.addCatalog(catalog)).data;
   },
