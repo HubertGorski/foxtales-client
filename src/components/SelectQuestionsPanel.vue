@@ -12,9 +12,16 @@ import {
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/stores/userStore";
 import type { Question } from "@/models/Question";
+import { QUESTION_SOURCE } from "@/enums/questionSource";
+
+export interface SelectedQuestions {
+  source: QUESTION_SOURCE;
+  questions: Question[];
+  chosenCatalogId: number | undefined;
+}
 
 const emit = defineEmits<{
-  (e: "setQuestions", questions: Question[]): void;
+  (e: "setQuestions", questions: SelectedQuestions): void;
 }>();
 
 const { t } = useI18n();
@@ -29,12 +36,14 @@ const catalogs = ref<ListElement[]>(
 );
 
 const privateQuestionsSelectedOptions: HubSwitchBtnsItem[] = [
-  { id: 1, title: t("lobby.allQuestions") },
-  { id: 2, title: t("lobby.selectedCatalog") },
+  { id: QUESTION_SOURCE.ALL_QUESTIONS, title: t("lobby.allQuestions") },
+  { id: QUESTION_SOURCE.SELECTED_CATALOG, title: t("lobby.selectedCatalog") },
 ];
 
 const selectedPrivateQuestionsSelectedOption = ref<HubSwitchBtnsItem>(
-  privateQuestionsSelectedOptions[0]
+  privateQuestionsSelectedOptions.find(
+    (q) => q.id === userStore.user.chosenQuestionsSource
+  ) ?? privateQuestionsSelectedOptions[0]
 );
 
 const questions = computed(() => {
@@ -44,7 +53,7 @@ const questions = computed(() => {
 
   if (
     selectedPrivateQuestionsSelectedOption.value?.id ===
-    privateQuestionsSelectedOptions[0].id
+    QUESTION_SOURCE.ALL_QUESTIONS
   ) {
     return userStore.user.questions;
   }
@@ -64,7 +73,11 @@ const questions = computed(() => {
 });
 
 watch(questions, () => {
-  emit("setQuestions", questions.value);
+  emit("setQuestions", {
+    source: selectedPrivateQuestionsSelectedOption.value?.id,
+    questions: questions.value,
+    chosenCatalogId: catalogs.value.find((c) => c.isSelected)?.id,
+  });
 });
 </script>
 
@@ -85,12 +98,14 @@ watch(questions, () => {
       <WhiteSelectList
         v-if="
           selectedPrivateQuestionsSelectedOption.id ==
-          privateQuestionsSelectedOptions[1].id
+          QUESTION_SOURCE.SELECTED_CATALOG
         "
         v-model="catalogs"
         :itemsPerPage="1"
+        :selectItemId="userStore.user.chosenCatalogId"
         showPagination
         selectVisibleItems
+        moveToSelectedItem
       />
     </div>
   </div>

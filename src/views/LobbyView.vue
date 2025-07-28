@@ -8,7 +8,7 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
 import { useUserStore } from "@/stores/userStore";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
-import SelectQuestionsPanel from "@/components/SelectQuestionsPanel.vue";
+import SelectQuestionsPanel, { type SelectedQuestions } from "@/components/SelectQuestionsPanel.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import { ICON } from "@/enums/iconsEnum";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
@@ -59,8 +59,10 @@ const startBtnAction = async () => {
   }
 };
 
-const setCurrentQuestions = async (questions: Question[]) => {
-  currentQuestions.value = questions;
+const setCurrentQuestions = async (questions: SelectedQuestions) => {
+  currentQuestions.value = questions.questions;
+  userStore.user.chosenQuestionsSource = questions.source;
+  userStore.user.chosenCatalogId = questions.chosenCatalogId;
 };
 
 const addQuestionsToGame = async () => {

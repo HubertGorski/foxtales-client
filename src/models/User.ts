@@ -11,6 +11,7 @@ import { DylematyCard } from "./DylematyCard";
 import { Deck } from "./Deck";
 import { UserLimit } from "./UserLimit";
 import { Type } from "class-transformer";
+import type { QUESTION_SOURCE } from "@/enums/questionSource";
 
 export class User {
   // Basic info
@@ -74,6 +75,8 @@ export class User {
 
   // In Psych Game
   @Type(() => Question)
+  chosenQuestionsSource: QUESTION_SOURCE | null = null;
+  chosenCatalogId: number | undefined;
   chosenQuestions: Question[] = [];
 
   @Type(() => User)

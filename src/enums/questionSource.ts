@@ -1,0 +1,4 @@
+export enum QUESTION_SOURCE {
+  ALL_QUESTIONS = 1,
+  SELECTED_CATALOG = 2,
+}

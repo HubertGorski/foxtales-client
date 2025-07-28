@@ -6,7 +6,9 @@ import { useSignalRStore } from "@/stores/signalRStore";
 import router from "@/router";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
-import SelectQuestionsPanel from "@/components/SelectQuestionsPanel.vue";
+import SelectQuestionsPanel, {
+  type SelectedQuestions,
+} from "@/components/SelectQuestionsPanel.vue";
 import type { Question } from "@/models/Question";
 import { useUserStore } from "@/stores/userStore";
 
@@ -33,11 +35,12 @@ const editRoom = async () => {
   router.push(ROUTE_PATH.LOBBY);
 };
 
-const setCurrentQuestions = async (questions: Question[]) => {
-  currentQuestions.value = questions;
+const setCurrentQuestions = async (questions: SelectedQuestions) => {
+  currentQuestions.value = questions.questions;
+  userStore.user.chosenQuestionsSource = questions.source;
+  userStore.user.chosenCatalogId = questions.chosenCatalogId;
 };
 // TODO: dodac opisy tlumaczenia co to robi
-//TODO: jak sie wraca do ustawien to pamieta zly stan ktore pytania sa zaznaczone
 </script>
 
 <template>

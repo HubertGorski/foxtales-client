@@ -46,6 +46,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  moveToSelectedItem: {
+    type: Boolean,
+    default: false,
+  },
+  selectItemId: {
+    type: Number,
+    required: false,
+  },
 });
 
 const emit = defineEmits<{
@@ -57,6 +65,20 @@ const items = defineModel({
   required: true,
 });
 const currentPage = ref<number>(1);
+
+if (props.selectItemId) {
+  const selectItem = items.value.find((i) => i.id === props.selectItemId);
+  if (selectItem) {
+    selectItem.isSelected = true;
+  }
+}
+
+if (props.moveToSelectedItem) {
+  const firstSelectedIndex = items.value.findIndex((i) => i.isSelected);
+  if (firstSelectedIndex !== -1) {
+    currentPage.value = Math.floor(firstSelectedIndex / props.itemsPerPage) + 1;
+  }
+}
 
 const visibleItems = computed(() => {
   const startIndex =
