@@ -40,7 +40,6 @@ const setCurrentQuestions = async (questions: SelectedQuestions) => {
   userStore.user.chosenQuestionsSource = questions.source;
   userStore.user.chosenCatalogId = questions.chosenCatalogId;
 };
-// TODO: dodac opisy tlumaczenia co to robi
 </script>
 
 <template>

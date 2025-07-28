@@ -67,9 +67,9 @@
   "negative": "Negatywna",
   "tooltip": {
     "startNewGame": "By rozpocząć grę wszyscy goście w pokoju muszą potwierdzić udział",
-    "privateQuestionsDescription": "Opis prywatnych pytań",
-    "publicQuestionsDescription": "Opis publicznych pytań",
-    "roomOnListDescription": "Opis widoczności pokoju na liście"
+    "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań.",
+    "publicQuestionsDescription": "Korzysytaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację.",
+    "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu."
   },
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju."
