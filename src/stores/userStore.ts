@@ -176,11 +176,6 @@ export const useUserStore = defineStore({
     },
 
     removeCatalog(catalogId: number) {
-      const catalog = this.user.catalogs.find((c) => c.catalogId === catalogId);
-      if (catalog == null) {
-        return;
-      }
-
       this.unassignCatalogFromAllQuestions(catalogId);
       this.user.catalogs = this.user.catalogs.filter(
         (catalog) => catalog.catalogId !== catalogId

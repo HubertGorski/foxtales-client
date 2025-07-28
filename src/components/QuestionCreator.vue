@@ -37,9 +37,13 @@ const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
 );
 
-watch(userStore.user.catalogs, (newCatalogs) => {
-  actualCatalogs.value = newCatalogs.map(convertCatalogsToListElement);
-});
+watch(
+  () => userStore.user.catalogs,
+  (newCatalogs) => {
+    actualCatalogs.value = newCatalogs.map(convertCatalogsToListElement);
+  },
+  { deep: true }
+);
 
 watch(
   () => props.isQuestionCreatorOpen,
@@ -47,7 +51,11 @@ watch(
     if (!isOpen) {
       actualCatalogs.value.forEach((catalog) => (catalog.isSelected = false));
     } else {
-      actualCatalogs.value.forEach((catalog) => (catalog.isSelected = props.selectedCatalogsIds?.includes(catalog.id) ?? false));
+      actualCatalogs.value.forEach(
+        (catalog) =>
+          (catalog.isSelected =
+            props.selectedCatalogsIds?.includes(catalog.id) ?? false)
+      );
     }
   }
 );
@@ -59,8 +67,10 @@ const addQuestion = () => {
       .map((c) => c.id)
   );
 
-  const selectedUserCatalogs = userStore.user.catalogs.filter((catalog) =>
-    catalog.catalogId != null && selectedActualCatalogIds.has(catalog.catalogId)
+  const selectedUserCatalogs = userStore.user.catalogs.filter(
+    (catalog) =>
+      catalog.catalogId != null &&
+      selectedActualCatalogIds.has(catalog.catalogId)
   );
 
   actualCatalogs.value = userStore.user.catalogs.map(
