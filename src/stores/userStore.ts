@@ -152,6 +152,14 @@ export const useUserStore = defineStore({
       });
     },
 
+    unassignCatalogFromAllQuestions(catalogId: number) {
+      this.user.questions.forEach((question) => {
+        question.catalogIds = question.catalogIds.filter(
+          (id) => id !== catalogId
+        );
+      });
+    },
+
     removeQuestion(questionId: number) {
       const question = this.user.questions.find((q) => q.id === questionId);
       if (question == null) {
@@ -164,6 +172,18 @@ export const useUserStore = defineStore({
 
       this.user.questions = this.user.questions.filter(
         (question) => question.id !== questionId
+      );
+    },
+
+    removeCatalog(catalogId: number) {
+      const catalog = this.user.catalogs.find((c) => c.catalogId === catalogId);
+      if (catalog == null) {
+        return;
+      }
+
+      this.unassignCatalogFromAllQuestions(catalogId);
+      this.user.catalogs = this.user.catalogs.filter(
+        (catalog) => catalog.catalogId !== catalogId
       );
     },
   },

@@ -1,5 +1,6 @@
 {
   "confirmDeleteItemsTextPopup": "Czy na pewno chcesz usunąć wybrane elementy?",
+  "confirmDeleteCatalogTextPopup": "Czy na pewno chcesz usunąć wybrany katalog?",
   "delete": "Usuń",
   "login": "Zaloguj się",
   "register": "Załóż konto",
@@ -8,6 +9,7 @@
   "userSettings": "Ustawienia gracza",
   "menu": "Menu",
   "logout": "Wyloguj",
+  "reject": "Odrzuć",
   "back": "Powrót",
   "back2": "Wstecz",
   "next": "Dalej",

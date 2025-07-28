@@ -16,7 +16,7 @@ const props = defineProps({
 const isPopupOpen = defineModel({ type: Boolean, required: true });
 
 const backBtn = {
-    text: "back",
+    text: "reject",
     isOrange: false,
     action: () => isPopupOpen.value = false
 };

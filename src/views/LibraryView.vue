@@ -19,6 +19,7 @@ import {
 import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
 import { Question } from "@/models/Question";
 import { userService } from "@/api/services/UserService";
+import HubDialogPopup from "@/components/hubComponents/HubDialogPopup.vue";
 
 const userStore = useUserStore();
 
@@ -75,7 +76,6 @@ const deleteQuestions = async (questions: ListElement[]) => {
   });
   refreshCatalogList();
   refreshQuestionsList();
-  
 };
 
 const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
@@ -166,6 +166,29 @@ const refreshQuestionsList = () => {
   );
 };
 
+const showDeleteCatalogPopup = (catalogId: number) => {
+  isCatalogCreatorOpen.value = false;
+  isDeletePopupOpen.value = true;
+  catalogIdToRemove = catalogId;
+};
+
+const deleteCatalog = async () => {
+  if (!catalogIdToRemove) {
+    return;
+  }
+  
+  isDeletePopupOpen.value = false;
+  const response = await userService.removeCatalog(catalogIdToRemove);
+  if (!response) {
+    return;
+  }
+
+  userStore.removeCatalog(catalogIdToRemove);
+  refreshCatalogList();
+};
+
+let catalogIdToRemove: number | null = null;
+const isDeletePopupOpen = ref<boolean>(false);
 const isCatalogCreatorOpen = ref<boolean>(false);
 const isQuestionCreatorOpen = ref<boolean>(false);
 const setOpenTab = ref<string>("addQuestion");
@@ -205,6 +228,7 @@ const addQuestionBtn = {
         v-model="currentCatalog"
         :editMode="editCatalogMode"
         @closePopup="closePopup"
+        @showDeleteCatalogPopup="showDeleteCatalogPopup"
       />
     </HubPopup>
     <HubAccordionElement
@@ -262,6 +286,11 @@ const addQuestionBtn = {
       />
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
+    <HubDialogPopup
+      v-model="isDeletePopupOpen"
+      :textPopup="$t('confirmDeleteCatalogTextPopup')"
+      :confirmAction="() => deleteCatalog()"
+    />
   </div>
 </template>
 

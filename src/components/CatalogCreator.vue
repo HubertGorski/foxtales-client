@@ -21,6 +21,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: "closePopup", refresh: boolean): void;
+  (e: "showDeleteCatalogPopup", catalogId: number): void;
 }>();
 
 const catalog = defineModel({ type: Catalog, required: true });
@@ -82,6 +83,14 @@ const closePopup = (refresh: boolean = true) => {
   emit("closePopup", refresh);
 };
 
+const showDeleteCatalogPopup = (catalogId: number | null) => {
+  if (!catalogId) {
+    return;
+  }
+
+  emit("showDeleteCatalogPopup", catalogId);
+};
+
 const clearPopup = () => {
   actualQuestions.value = getActualQuestions();
   catalog.value = new Catalog();
@@ -138,7 +147,6 @@ watch(catalog, () => {
       .filter((q) => q != null);
   }
 });
-//TODO: dodac usuwanie katalogów.
 </script>
 
 <template>
@@ -146,7 +154,10 @@ watch(catalog, () => {
     <div class="catalogCreator_title">
       <div v-if="editMode">{{ $t("editCatalog") }}</div>
       <div v-else>{{ $t("createCatalog") }}</div>
-      <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
+      <div class="catalogCreator_controlBtns">
+        <v-icon @click="showDeleteCatalogPopup(catalog.catalogId)">{{ ICON.DELETE }}</v-icon>
+        <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
+      </div>
     </div>
     <v-text-field v-model="catalog.title" :label="$t('title')" hide-details />
     <v-textarea
@@ -204,6 +215,11 @@ watch(catalog, () => {
     font-weight: 600;
     display: flex;
     justify-content: space-between;
+  }
+
+  &_controlBtns {
+    display: flex;
+    gap: 8px;
   }
 
   &_subtitle {

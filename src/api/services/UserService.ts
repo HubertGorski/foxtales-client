@@ -113,6 +113,10 @@ export const userService = {
     return await UserClient.editCatalog(catalog);
   },
 
+  async removeCatalog(catalogId: number): Promise<boolean> {
+    return await UserClient.removeCatalog(catalogId);
+  },
+
   async getUserCatalogs(): Promise<Catalog[]> {
     return (await UserClient.getUserCatalogs()).data;
   },
