@@ -155,7 +155,7 @@ watch(catalog, () => {
       <div v-if="editMode">{{ $t("editCatalog") }}</div>
       <div v-else>{{ $t("createCatalog") }}</div>
       <div class="catalogCreator_controlBtns">
-        <v-icon @click="showDeleteCatalogPopup(catalog.catalogId)">{{ ICON.DELETE }}</v-icon>
+        <v-icon v-if="editMode" @click="showDeleteCatalogPopup(catalog.catalogId)">{{ ICON.DELETE }}</v-icon>
         <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
       </div>
     </div>

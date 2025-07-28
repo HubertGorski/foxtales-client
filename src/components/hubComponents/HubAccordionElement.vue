@@ -32,7 +32,6 @@ const props = defineProps({
 const containerRef = ref<HTMLElement | null>(null);
 const currentHeight = ref<string>('0px');
 
-//TODO: naprawic aktualizacje wysokosci
 const setHeight = async () => {
   await nextTick();
   if (containerRef.value) {

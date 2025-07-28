@@ -149,7 +149,6 @@ const closePopup = (refresh: boolean = false) => {
   isCatalogCreatorOpen.value = false;
 
   if (refresh) {
-    setOpenTab.value = "yourCatalogs";
     refreshCatalogList();
   }
 };
@@ -158,12 +157,14 @@ const refreshCatalogList = () => {
   actualCatalogs.value = userStore.user.catalogs.map(
     convertCatalogsToListElement
   );
+  setOpenTab.value = "addQuestion";
 };
 
 const refreshQuestionsList = () => {
   actualQuestions.value = userStore.user.questions.map(
     convertQuestionToListElement
   );
+  setOpenTab.value = "addQuestion";
 };
 
 const showDeleteCatalogPopup = (catalogId: number) => {
@@ -176,7 +177,7 @@ const deleteCatalog = async () => {
   if (!catalogIdToRemove) {
     return;
   }
-  
+
   isDeletePopupOpen.value = false;
   const response = await userService.removeCatalog(catalogIdToRemove);
   if (!response) {
