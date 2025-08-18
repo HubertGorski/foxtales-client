@@ -1,46 +1,58 @@
 <script setup lang="ts">
-import { Answer } from "@/models/Answer";
-import { computed, ref, toRef } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import UserListElement from "../UserListElement.vue";
 import LevelBar from "../LevelBar.vue";
 import HubBtn from "../hubComponents/HubBtn.vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import { Game } from "@/models/Game";
 import { useSignalRStore } from "@/stores/signalRStore";
+import { useI18n } from "vue-i18n";
+import { useUserStore } from "@/stores/userStore";
 
+const { t } = useI18n();
 const signalRStore = useSignalRStore();
+const userStore = useUserStore();
 
 const game = computed<Game>(
   () => toRef(signalRStore, "game").value ?? new Game()
 );
-const users = game.value.users;
+const users = ref(game.value.users);
 const timer = ref<number>(90);
-const selectedAnswer = ref<Answer | null>(null);
+const selectedAnswerUserId = ref<number | null>(null);
 const isUserReady = ref<boolean>(false);
 const currentStep = ref<number>(0);
 
 const confirmSelectedAnswer = () => {
-  if (!selectedAnswer.value?.id) {
+  if (!selectedAnswerUserId.value) {
     return;
   }
 
+  signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserId.value);
   isUserReady.value = true;
 };
 
-const selectAnswer = (answer: Answer | null) => {
-  if (isUserReady.value || !answer) {
+const selectAnswer = (userId: number | null) => {
+  if (isUserReady.value || !userId) {
     return;
   }
-  
-  selectedAnswer.value = answer;
+
+  selectedAnswerUserId.value = userId;
 };
+
+const chooseAnswerText = computed(() => {
+  if (currentStep.value === 0) {
+    return isUserReady.value ? t("waitForVotes") : t("chooseAnswer");
+  }
+
+  return t("voteResults");
+});
 
 const confirmBtn = computed(() => {
   return {
     text: isUserReady.value ? "accepted" : "accept",
     isOrange: true,
     action: confirmSelectedAnswer,
-    disabled: !selectedAnswer.value?.id || isUserReady.value,
+    disabled: !selectedAnswerUserId.value || isUserReady.value,
   };
 });
 
@@ -52,21 +64,34 @@ const nextPageBtn = computed(() => {
     disabled: false,
   };
 });
+
+watch(game, (game: Game | null) => {
+  if (game?.readyUsersCount == game?.usersCount) {
+    signalRStore.markAllUsersUnready();
+    currentStep.value = 1;
+  }
+});
 </script>
 
 <template>
   <div class="stepVoting">
-    <HubDivider :text="$t('chooseAnswer')" />
+    <HubDivider :text="chooseAnswerText" />
     <div class="answers">
       <UserListElement
         v-for="user in users"
-        :key="user.answer?.id"
-        :text="user.answer?.answer ?? 'brak odp'"
-        :label="currentStep ? `Ilość głosów: ${user.answer?.votersCount}` : ''"
-        :isSelected="selectedAnswer?.id === user.answer?.id"
-        :imgSource="currentStep ? user.avatar.source : 'src/assets/imgs/defaultAvatars/idk.png'"
+        :key="user.userId"
+        :text="user.answer?.answer ?? ''"
+        :label="
+          currentStep ? `${$t('votersCount')} ${user.answer?.votersCount}` : ''
+        "
+        :isSelected="selectedAnswerUserId === user.userId"
+        :imgSource="
+          currentStep
+            ? user.avatar.source
+            : 'src/assets/imgs/defaultAvatars/idk.png'
+        "
         isSelectedBold
-        @click="selectAnswer(user.answer)"
+        @click="selectAnswer(user.userId)"
       />
     </div>
     <div v-if="!currentStep" class="acceptPanel">

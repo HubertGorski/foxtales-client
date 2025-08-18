@@ -8,10 +8,15 @@ import StepResults from "@/components/psychGame/StepResults.vue";
 import StepVoting from "@/components/psychGame/StepVoting.vue";
 import { ref } from "vue";
 import { Game } from "@/models/Game";
+import { ROUTE_PATH } from "@/router/routeEnums";
 
 const router = useRouter();
 const game = useSignalRStore().game ?? new Game();
 const userStore = useUserStore();
+
+if (game == null || !game.code) {
+  router.push(ROUTE_PATH.MENU);
+}
 
 const currentStep = ref<number>(0);
 </script>

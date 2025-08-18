@@ -60,6 +60,7 @@ const fox = computed(() => {
 });
 watch(game, (game: Game | null) => {
   if (game?.readyUsersCount == game?.usersCount) {
+    signalRStore.markAllUsersUnready();
     emit("nextStep");
   }
 });
