@@ -184,5 +184,13 @@ export const useSignalRStore = defineStore({
         questions
       );
     },
+
+    async startGame() {
+      if (!this.connection || !this.game) {
+        return;
+      }
+
+      await this.connection.invoke("StartGame", this.game.code);
+    },
   },
 });

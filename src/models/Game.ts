@@ -40,6 +40,9 @@ export class Game {
   
   @Type(() => Question)
   currentQuestion: Question | null;
+  
+  @Type(() => Boolean)
+  isGameStarted: boolean;
 
   constructor(
     owner: User = new User(),
@@ -53,7 +56,8 @@ export class Game {
     isQuestionsFromAnotherGamesAllowed = false,
     questions = [],
     round = 0,
-    currentQuestion = null
+    currentQuestion = null,
+    isGameStarted = false,
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -68,6 +72,7 @@ export class Game {
     this.questions = questions;
     this.round = round;
     this.currentQuestion = currentQuestion;
+    this.isGameStarted = isGameStarted;
   }
 
   get usersCount(): number {

@@ -37,8 +37,7 @@ const goToSettings = async () => {
 };
 
 const goToGame = async () => {
-  // await signalRStore.removeRoom(); // TODO: usuanc jak zaczne robic gre  
-  router.push(ROUTE_PATH.GAME_PSYCH);
+  await signalRStore.startGame();
 };
 
 const setReady = async () => {
@@ -117,6 +116,10 @@ watch(game, (game: Game | null) => {
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
     });
+  }
+
+  if (game?.isGameStarted) {
+    router.push(ROUTE_PATH.GAME_PSYCH);
   }
 });
 </script>
