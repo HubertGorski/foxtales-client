@@ -13,14 +13,14 @@ const router = useRouter();
 const game = useSignalRStore().game ?? new Game();
 const userStore = useUserStore();
 
-const currentStep = ref<number>(1);
+const currentStep = ref<number>(0);
 </script>
 
 <template>
   <div class="psychGameView">
     <div class="psychGameView_header">
       <NavigationBtns btn="leaveGame" />
-      <span class="roundInfo">{{ game.round }}</span>
+      <span class="roundInfo">{{ $t('round') }} {{ game.round }}</span>
     </div>
     <StepQuestion v-if="currentStep === 0" :game="game" />
     <StepVoting v-if="currentStep === 1" :game="game" />

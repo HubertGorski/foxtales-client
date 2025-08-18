@@ -37,6 +37,9 @@ export class Game {
   
   @Type(() => Number)
   round: number;
+  
+  @Type(() => Question)
+  currentQuestion: Question | null;
 
   constructor(
     owner: User = new User(),
@@ -49,7 +52,8 @@ export class Game {
     usePrivateQuestions = false,
     isQuestionsFromAnotherGamesAllowed = false,
     questions = [],
-    round = 0
+    round = 0,
+    currentQuestion = null
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -63,6 +67,7 @@ export class Game {
     isQuestionsFromAnotherGamesAllowed;
     this.questions = questions;
     this.round = round;
+    this.currentQuestion = currentQuestion;
   }
 
   get usersCount(): number {

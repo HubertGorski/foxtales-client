@@ -1,4 +1,4 @@
-import { DEFAULT_AVATAR_SOURCE, GENDER } from "@/enums/userEnum";
+import { DEFAULT_AVATAR_SOURCE, DEFAULT_FOX_NAME, GENDER } from "@/enums/userEnum";
 import { ROLE } from "@/enums/rolesEnum";
 import { PERMISSION } from "@/enums/permissions";
 import { Catalog } from "./Catalog";
@@ -25,7 +25,7 @@ export class User {
   registerDate: Date = new Date();
   accessToken: string = "";
 
-  username: string = "Fox Gamer";
+  username: string = DEFAULT_FOX_NAME;
 
   @Type(() => Avatar)
   avatar: Avatar = new Avatar(1, DEFAULT_AVATAR_SOURCE);

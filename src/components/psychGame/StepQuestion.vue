@@ -6,6 +6,7 @@ import { useI18n } from "vue-i18n";
 import WhiteCard from "../WhiteCard.vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import { Game } from "@/models/Game";
+import { DEFAULT_FOX_NAME, DEFAULT_FOX_SOURCE } from "@/enums/userEnum";
 
 const { t } = useI18n();
 
@@ -31,12 +32,11 @@ const addAnswerBtn = computed(() => ({
 }));
 
 const waitingInfo = computed(
-  () => `${t("lobby.waitingForPlayers")} ( ${1} / ${4} )`
+  () =>
+    `${t("lobby.waitingForPlayers")} ( ${props.game.readyUsersCount} / ${props.game.usersCount} )`
 );
-const dividerText = computed(() => (isUserReady.value ? t("waitForAnswers") : t("writeAnswer")));
-
-const currentQuestion = ref<string>(
-  "Gdyby Adam był pielgrzymem to dokąd by podążał?"
+const dividerText = computed(() =>
+  isUserReady.value ? t("waitForAnswers") : t("writeAnswer")
 );
 
 const currentUser = ref<string>("Adam");
@@ -48,10 +48,12 @@ const currentUser = ref<string>("Adam");
     <div class="stepQuestion_gameSection">
       <transition name="fade" mode="out-in" appear>
         <div v-if="!isUserReady" key="stepAnswer" class="stepAnswer">
-          <img src="@/assets/imgs/1.png" alt="Lisek" class="fox" />
-          <WhiteCard :header="currentUser">
+          <img :src="game.currentQuestion?.currentUser.avatar.source ?? DEFAULT_FOX_SOURCE" alt="Lisek" class="fox" />
+          <WhiteCard
+            :header="game.currentQuestion?.currentUser.username ?? DEFAULT_FOX_NAME"
+          >
             <div class="question">
-              {{ currentQuestion }}
+              {{ game.currentQuestion?.text }}
             </div>
           </WhiteCard>
           <HubInputWithBtn

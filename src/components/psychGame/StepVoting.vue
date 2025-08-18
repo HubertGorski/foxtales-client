@@ -17,8 +17,8 @@ const props = defineProps({
 const users = props.game.users;
 const timer = ref<number>(90);
 const selectedAnswer = ref<Answer | null>(null);
-const isUserReady = ref<boolean>(true);
-const currentStep = ref<number>(1);
+const isUserReady = ref<boolean>(false);
+const currentStep = ref<number>(0);
 
 const confirmSelectedAnswer = () => {
   if (!selectedAnswer.value?.id) {

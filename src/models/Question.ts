@@ -1,5 +1,6 @@
 import { GENDER } from "@/enums/userEnum";
 import { LANG } from "@/enums/languagesEnum";
+import { User } from "./User";
 
 export class Question {
   id: number | null;
@@ -12,6 +13,7 @@ export class Question {
   publicDate: Date | null;
   createdDate: Date;
   catalogIds: number[] = [];
+  currentUser: User = new User()
 
   constructor(
     id: number | null = null,
