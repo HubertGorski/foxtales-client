@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import type { User } from "@/models/User";
+import { User } from "@/models/User";
 import { BASE_URL_PSYCH } from "@/api/Client";
 import * as signalR from "@microsoft/signalr";
 import { Game } from "@/models/Game";
-import { plainToInstance } from "class-transformer";
+import { instanceToPlain, plainToInstance } from "class-transformer";
 import type { Question } from "@/models/Question";
 
 interface SignalRState {
@@ -57,7 +57,7 @@ export const useSignalRStore = defineStore({
           return;
         }
 
-        this.game.users = joinedPlayers;
+        this.game.users = plainToInstance(User, joinedPlayers);
       });
 
       this.connection.on("GetGameCode", (code: string) => {
@@ -108,7 +108,7 @@ export const useSignalRStore = defineStore({
       await this.connection.invoke(
         "JoinRoom",
         gameCode,
-        player,
+        instanceToPlain(player),
         password,
         ownerId
       );
@@ -120,7 +120,7 @@ export const useSignalRStore = defineStore({
       }
 
       this.game = game;
-      await this.connection.invoke("CreateRoom", game);
+      await this.connection.invoke("CreateRoom", instanceToPlain(this.game));
     },
 
     async goToJoinGameView() {
@@ -137,7 +137,7 @@ export const useSignalRStore = defineStore({
       }
 
       this.game = game;
-      await this.connection.invoke("EditRoom", game);
+      await this.connection.invoke("EditRoom", instanceToPlain(game));
     },
 
     async setStatus(playerId: number, status: boolean) {
@@ -181,7 +181,7 @@ export const useSignalRStore = defineStore({
         "AddQuestionsToGame",
         this.game.code,
         playerId,
-        questions
+        instanceToPlain(questions)
       );
     },
 

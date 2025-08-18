@@ -6,7 +6,7 @@ import { useI18n } from "vue-i18n";
 import WhiteCard from "../WhiteCard.vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import { Game } from "@/models/Game";
-import { DEFAULT_FOX_NAME, DEFAULT_FOX_SOURCE } from "@/enums/userEnum";
+import { DEFAULT_FOX_NAME } from "@/enums/userEnum";
 
 const { t } = useI18n();
 
@@ -39,7 +39,11 @@ const dividerText = computed(() =>
   isUserReady.value ? t("waitForAnswers") : t("writeAnswer")
 );
 
-const currentUser = ref<string>("Adam");
+const fox = computed(() => {
+  return new URL(`/src/assets/imgs/${props.game.currentQuestion?.currentUser.avatar.id}.png`, import.meta.url)
+    .href;
+});
+
 </script>
 
 <template>
@@ -48,7 +52,7 @@ const currentUser = ref<string>("Adam");
     <div class="stepQuestion_gameSection">
       <transition name="fade" mode="out-in" appear>
         <div v-if="!isUserReady" key="stepAnswer" class="stepAnswer">
-          <img :src="game.currentQuestion?.currentUser.avatar.source ?? DEFAULT_FOX_SOURCE" alt="Lisek" class="fox" />
+          <img :src="fox" alt="Lisek" class="fox" />
           <WhiteCard
             :header="game.currentQuestion?.currentUser.username ?? DEFAULT_FOX_NAME"
           >
