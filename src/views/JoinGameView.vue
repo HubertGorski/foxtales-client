@@ -144,7 +144,7 @@ if (!signalRStore.connection) {
       </div>
       <div v-else class="gamesList">
         <WhiteCard
-          :header="game.name"
+          :header=" `${t('usersGame')} ${game.owner.username}`"
           @click="selectGameFromList(game)"
           v-for="(game, index) in actualGames"
           :key="index"

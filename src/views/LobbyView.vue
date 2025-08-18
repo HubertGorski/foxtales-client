@@ -37,7 +37,7 @@ const goToSettings = async () => {
 };
 
 const goToGame = async () => {
-  await signalRStore.removeRoom(); // TODO: usuanc jak zaczne robic gre
+  // await signalRStore.removeRoom(); // TODO: usuanc jak zaczne robic gre  
   router.push(ROUTE_PATH.GAME_PSYCH);
 };
 

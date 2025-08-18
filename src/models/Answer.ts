@@ -3,6 +3,7 @@ export class Answer {
   questionId: number;
   ownerId: number;
   answer: string;
+  votersCount: number = 0;
 
   constructor(
     id = 0,

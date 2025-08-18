@@ -12,6 +12,7 @@ import { Deck } from "./Deck";
 import { UserLimit } from "./UserLimit";
 import { Type } from "class-transformer";
 import type { QUESTION_SOURCE } from "@/enums/questionSource";
+import { Answer } from "./Answer";
 
 export class User {
   // Basic info
@@ -81,6 +82,9 @@ export class User {
 
   @Type(() => User)
   chosenPlayerAnswer: User | null = null;
+
+  @Type(() => Answer)
+  answer: Answer | null = null;
 
   @Type(() => User)
   votersForHisAnswer: User[] = [];

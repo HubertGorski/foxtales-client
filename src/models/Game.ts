@@ -34,6 +34,9 @@ export class Game {
   
   @Type(() => Question)
   questions: Question[];
+  
+  @Type(() => Number)
+  round: number;
 
   constructor(
     owner: User = new User(),
@@ -45,7 +48,8 @@ export class Game {
     usePublicQuestions = true,
     usePrivateQuestions = false,
     isQuestionsFromAnotherGamesAllowed = false,
-    questions = []
+    questions = [],
+    round = 0
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -58,6 +62,7 @@ export class Game {
     this.isQuestionsFromAnotherGamesAllowed =
     isQuestionsFromAnotherGamesAllowed;
     this.questions = questions;
+    this.round = round;
   }
 
   get usersCount(): number {
@@ -74,10 +79,6 @@ export class Game {
 
   get isPasswordSet(): boolean {
     return !!this.password;
-  }
-
-  get name(): string {
-    return `Gra użytkownika ${this.owner.username}`;
   }
 
   setUsers(users: User[]): void {
