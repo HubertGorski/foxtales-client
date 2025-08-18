@@ -135,7 +135,7 @@ if (!signalRStore.connection) {
       :btnIsOrange="acceptCodeBtn.isOrange"
       :error-messages="errorCodeMessage"
     />
-    <HubDivider />
+    <HubDivider :text="$t('or')"/>
     <div class="joinGameView_chooseRoom creamCard">
       <p class="subtitle">{{ $t("joinGame.chooseRoomFromList") }}</p>
       <div v-if="actualGames.length === 0" class="emptyGamesList">

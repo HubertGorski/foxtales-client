@@ -112,6 +112,11 @@ const allBtns = [
     isOrange: false,
     action: () => router.push(ROUTE_PATH.LOBBY),
   },
+  {
+    text: "leaveGame",
+    isOrange: false,
+    action: () => router.push(ROUTE_PATH.LOBBY),
+  },
 ];
 
 const selectedBtn = allBtns.find((btn) => btn.text === props.btn)!;

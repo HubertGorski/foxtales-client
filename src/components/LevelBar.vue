@@ -4,7 +4,6 @@ import { computed } from "vue";
 const props = defineProps({
   level: {
     type: Number,
-    required: true,
   },
   points: {
     type: Number,
@@ -13,6 +12,10 @@ const props = defineProps({
   requiredPointsToNextLevel: {
     type: Number,
     required: true,
+  },
+  showPointInfo: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -24,13 +27,16 @@ const getPointsInPercentages = computed(
 <template>
   <div class="levelBar">
     <div class="levelBar_header">
-      <div class="level">{{ $t("level") }} {{ level }}</div>
-      <div class="points">
+      <div v-if="level" class="level">{{ $t("level") }} {{ level }}</div>
+      <div v-if="showPointInfo" class="points">
         {{ $t("exp") }} {{ points }} / {{ requiredPointsToNextLevel }}
       </div>
     </div>
     <div class="levelBar_bar">
-      <div class="currentExp" :style="{ width: getPointsInPercentages + '%' }"></div>
+      <div
+        class="currentExp"
+        :style="{ width: getPointsInPercentages + '%' }"
+      ></div>
     </div>
   </div>
 </template>
@@ -47,11 +53,8 @@ const getPointsInPercentages = computed(
   &_header {
     display: flex;
     justify-content: space-between;
-
-    .level {
-      // font-weight: 600;
-    }
   }
+
   &_bar {
     width: 100%;
     height: 4px;

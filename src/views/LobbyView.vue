@@ -8,12 +8,15 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { Game } from "@/models/Game";
 import { useUserStore } from "@/stores/userStore";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
-import SelectQuestionsPanel, { type SelectedQuestions } from "@/components/SelectQuestionsPanel.vue";
+import SelectQuestionsPanel, {
+  type SelectedQuestions,
+} from "@/components/SelectQuestionsPanel.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import { ICON } from "@/enums/iconsEnum";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useI18n } from "vue-i18n";
 import type { Question } from "@/models/Question";
+import HubCounterWithTitle from "@/components/hubComponents/HubCounterWithTitle.vue";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
@@ -120,22 +123,21 @@ watch(game, (game: Game | null) => {
 
 <template>
   <div class="lobbyView">
-    <div class="header">
-      <p class="header_title">{{ $t("lobby.waitingForPlayers") }}</p>
-      <p class="header_counter">
-        ({{ game.readyUsersCount }} / {{ game.usersCount }})
-      </p>
-    </div>
-    <!-- TODO: do testow, usunac normalnie -->
-    {{ game.questions.map(q => q.id) }}
+    <HubCounterWithTitle
+      :value="game.readyUsersCount"
+      :maxValue="game.usersCount"
+      :title="$t('lobby.waitingForPlayers')"
+    />
     <div
       class="lobbyView_userList"
       :class="{ isMinimalViewMode: isMinimalViewMode }"
     >
-      <user-list-element
+      <UserListElement
         v-for="user in game.users"
         :key="user.userId"
-        :user="user"
+        :imgSource="user.avatar.source"
+        :isSelected="user.isReady"
+        :text="user.username"
       />
     </div>
     <div class="buttons">
@@ -145,7 +147,10 @@ watch(game, (game: Game | null) => {
           <span class="code">{{ t("lobby.accessCode") }} {{ game.code }}</span>
         </div>
         <HubBtn
-          v-if="game.owner.userId !== userStore.user.userId && game.isQuestionsFromAnotherGamesAllowed"
+          v-if="
+            game.owner.userId !== userStore.user.userId &&
+            game.isQuestionsFromAnotherGamesAllowed
+          "
           class="settingsBtn"
           :action="() => (showSettingsPanel = true)"
           :icon="ICON.ADD_TO_COLLECTION"
@@ -189,23 +194,6 @@ watch(game, (game: Game | null) => {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-
-  .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: $mainBrownColor;
-    font-weight: 600;
-    width: 100%;
-
-    &_title {
-      font-size: 24px;
-    }
-
-    &_counter {
-      font-size: 18px;
-    }
-  }
 
   .settings {
     padding: 12px;

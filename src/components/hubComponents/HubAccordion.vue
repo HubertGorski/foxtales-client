@@ -42,7 +42,7 @@ const showDivider = (index: number) => {
         <slot :name="slotName"></slot>
       </template>
     </HubAccordionElement>
-    <HubDivider v-if="showDivider(index)" />
+    <HubDivider v-if="showDivider(index)" :text="$t('or')" />
   </div>
 </template>
 

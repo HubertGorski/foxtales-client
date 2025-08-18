@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HubImageWithText from "@/components/hubComponents/HubImageWithText.vue";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 import { computed } from "vue";
@@ -15,19 +16,18 @@ const alert = computed(() => {
     case NO_ACCESS_REASON.GAME_CLOSED:
       return t("gameClosed");
     default:
-      return t("auth.tryLoginAgain")
+      return t("auth.tryLoginAgain");
   }
 });
 </script>
 
 <template>
   <div class="noAccessView">
-    <div class="noAccessView_content">
-      <img src="@/assets/imgs/fox6.png" alt="Lisek" />
-      <p class="info">
-        {{ alert }}
-      </p>
-    </div>
+    <HubImageWithText
+      :text="alert"
+      imageSrc="src/assets/imgs/fox6.png"
+      alt="Lisek"
+    />
     <NavigationBtns
       v-if="
         reason === NO_ACCESS_REASON.ADMIN_ONLY ||

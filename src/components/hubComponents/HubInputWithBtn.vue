@@ -41,6 +41,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  textareaRows: {
+    type: Number,
+    default: 2,
+  },
   dictsDisabled: {
     type: Boolean,
     default: false,
@@ -81,7 +85,7 @@ const handleEnter = (e: KeyboardEvent) => {
       v-model="text"
       @keydown.enter="handleEnter"
       :auto-grow="false"
-      rows="2"
+      :rows="textareaRows"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
     />
@@ -125,6 +129,7 @@ const handleEnter = (e: KeyboardEvent) => {
 
   &_controls {
     display: flex;
+    justify-content: center;
     gap: 4px;
 
     .btn {

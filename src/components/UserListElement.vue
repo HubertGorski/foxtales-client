@@ -1,29 +1,38 @@
 <script setup lang="ts">
-import { DEFAULT_AVATAR_SOURCE } from "@/enums/userEnum";
-import type { Avatar } from "@/models/Avatar";
-import { User } from "@/models/User";
-
 const props = defineProps({
-  user: {
-    type: User,
+  imgSource: {
+    type: String,
+    required: true,
+  },
+  isSelected: {
+    type: Boolean,
+    default: false,
+  },
+  isSelectedBold: {
+    type: Boolean,
+    default: false,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  label: {
+    type: String,
     required: true,
   },
 });
-
-const avatar: Avatar = props.user.avatar;
 </script>
 
 <template>
-  <div class="userListElement">
-    <img
-      :src="avatar.source"
-      alt="Lisek"
-      :class="{ isUserReady: user.isReady }"
-      class="userListElement_avatar"
-    />
-    <div class="userListElement_username">
-      {{ user.username }}
+  <div
+    class="userListElement"
+    :class="{ isSelected: isSelected, isSelectedBold: isSelectedBold }"
+  >
+    <img :src="imgSource" alt="Lisek" class="userListElement_avatar" />
+    <div class="userListElement_text">
+      {{ text }}
     </div>
+    <div v-if="label" class="whiteCard label">{{ label }}</div>
   </div>
 </template>
 
@@ -35,18 +44,44 @@ const avatar: Avatar = props.user.avatar;
   gap: 12px;
   position: relative;
   padding: 12px;
+  transition: all 0.4s;
 
-  &_username {
+  &.isSelected {
+    transform: scale(1.06);
+    transition: all 0.4s;
+
+    .userListElement_avatar {
+      transform: scale(1.1);
+      border: 2px solid $mainBrownColor;
+    }
+  }
+
+  &.isSelected.isSelectedBold .userListElement_avatar {
+    transform: scale(1.1);
+    border: 4px solid $mainBrownColor;
+  }
+
+  &_text {
     font-size: 18px;
     color: $mainBrownColor;
     background-color: $background;
     padding: 12px 32px 12px 64px;
     border-radius: 12px;
-    width: 254px;
+    width: 100%;
     z-index: 1;
     text-align: center;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+
+  .label {
+    display: flex;
+    position: absolute;
+    bottom: -8px;
+    right: 16px;
+    z-index: 2;
+    justify-content: space-between;
+    padding: 0 18px;
   }
 
   &_avatar {
@@ -60,11 +95,6 @@ const avatar: Avatar = props.user.avatar;
     left: 8px;
     top: 4px;
     z-index: 2;
-
-    &.isUserReady {
-      border: 2px solid $mainBrownColor;
-      transform: scale(1.1);
-    }
   }
 }
 </style>
