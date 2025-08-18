@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Game } from '@/models/Game';
+import { useSignalRStore } from '@/stores/signalRStore';
+import { computed, toRef } from 'vue';
 
-const props = defineProps({
-  game: {
-    type: Game,
-    required: true,
-  },
-});
+const signalRStore = useSignalRStore();
 
+const game = computed<Game>(
+  () => toRef(signalRStore, "game").value ?? new Game()
+);
 </script>
 
 <template>

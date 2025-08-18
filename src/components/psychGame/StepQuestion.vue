@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import HubInputWithBtn from "../hubComponents/HubInputWithBtn.vue";
 import HubImageWithText from "../hubComponents/HubImageWithText.vue";
 import { useI18n } from "vue-i18n";
@@ -7,21 +7,34 @@ import WhiteCard from "../WhiteCard.vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import { Game } from "@/models/Game";
 import { DEFAULT_FOX_NAME } from "@/enums/userEnum";
+import { useSignalRStore } from "@/stores/signalRStore";
+import { useUserStore } from "@/stores/userStore";
+import { Answer } from "@/models/Answer";
 
 const { t } = useI18n();
+const signalRStore = useSignalRStore();
+const userStore = useUserStore();
 
-const props = defineProps({
-  game: {
-    type: Game,
-    required: true,
-  },
-});
+const emit = defineEmits<{
+  (e: "nextStep"): void;
+}>();
 
-const answer = ref<string>("");
+const game = computed<Game>(
+  () => toRef(signalRStore, "game").value ?? new Game()
+);
+
+const answerText = ref<string>("");
 const isUserReady = ref<boolean>(false);
 
-const addAnswer = () => {
+const addAnswer = async () => {
   event.preventDefault();
+  const answer = new Answer(
+    0,
+    game.value.currentQuestion?.id ?? 0,
+    userStore.user.userId,
+    answerText.value
+  );
+  await signalRStore.addAnswer(answer);
   isUserReady.value = true;
 };
 
@@ -33,17 +46,23 @@ const addAnswerBtn = computed(() => ({
 
 const waitingInfo = computed(
   () =>
-    `${t("lobby.waitingForPlayers")} ( ${props.game.readyUsersCount} / ${props.game.usersCount} )`
+    `${t("lobby.waitingForPlayers")} ( ${game.value.readyUsersCount} / ${game.value.usersCount} )`
 );
 const dividerText = computed(() =>
   isUserReady.value ? t("waitForAnswers") : t("writeAnswer")
 );
 
 const fox = computed(() => {
-  return new URL(`/src/assets/imgs/${props.game.currentQuestion?.currentUser.avatar.id}.png`, import.meta.url)
-    .href;
+  return new URL(
+    `/src/assets/imgs/${game.value.currentQuestion?.currentUser.avatar.id}.png`,
+    import.meta.url
+  ).href;
 });
-
+watch(game, (game: Game | null) => {
+  if (game?.readyUsersCount == game?.usersCount) {
+    emit("nextStep");
+  }
+});
 </script>
 
 <template>
@@ -54,14 +73,16 @@ const fox = computed(() => {
         <div v-if="!isUserReady" key="stepAnswer" class="stepAnswer">
           <img :src="fox" alt="Lisek" class="fox" />
           <WhiteCard
-            :header="game.currentQuestion?.currentUser.username ?? DEFAULT_FOX_NAME"
+            :header="
+              game.currentQuestion?.currentUser.username ?? DEFAULT_FOX_NAME
+            "
           >
             <div class="question">
               {{ game.currentQuestion?.text }}
             </div>
           </WhiteCard>
           <HubInputWithBtn
-            v-model="answer"
+            v-model="answerText"
             class="whiteCard input"
             :btnAction="addAnswerBtn.action"
             :btnText="addAnswerBtn.text"

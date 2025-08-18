@@ -20,11 +20,11 @@ const currentStep = ref<number>(0);
   <div class="psychGameView">
     <div class="psychGameView_header">
       <NavigationBtns btn="leaveGame" />
-      <span class="roundInfo">{{ $t('round') }} {{ game.round }}</span>
+      <span class="roundInfo">{{ $t("round") }} {{ game.round }}</span>
     </div>
-    <StepQuestion v-if="currentStep === 0" :game="game" />
-    <StepVoting v-if="currentStep === 1" :game="game" />
-    <StepResults v-if="currentStep === 2" :game="game" />
+    <StepQuestion v-if="currentStep === 0" @nextStep="currentStep = 1" />
+    <StepVoting v-if="currentStep === 1" />
+    <StepResults v-if="currentStep === 2" />
   </div>
 </template>
 
@@ -42,7 +42,7 @@ const currentStep = ref<number>(0);
     display: flex;
     gap: 8px;
     align-items: center;
-    
+
     .navigationBtns_btn.hubBtn {
       padding: 4px;
     }

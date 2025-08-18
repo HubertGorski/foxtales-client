@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { Answer } from "@/models/Answer";
-import { computed, ref } from "vue";
+import { computed, ref, toRef } from "vue";
 import UserListElement from "../UserListElement.vue";
 import LevelBar from "../LevelBar.vue";
 import HubBtn from "../hubComponents/HubBtn.vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import { Game } from "@/models/Game";
+import { useSignalRStore } from "@/stores/signalRStore";
 
-const props = defineProps({
-  game: {
-    type: Game,
-    required: true,
-  },
-});
+const signalRStore = useSignalRStore();
 
-const users = props.game.users;
+const game = computed<Game>(
+  () => toRef(signalRStore, "game").value ?? new Game()
+);
+const users = game.value.users;
 const timer = ref<number>(90);
 const selectedAnswer = ref<Answer | null>(null);
 const isUserReady = ref<boolean>(false);

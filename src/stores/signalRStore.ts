@@ -5,6 +5,7 @@ import * as signalR from "@microsoft/signalr";
 import { Game } from "@/models/Game";
 import { instanceToPlain, plainToInstance } from "class-transformer";
 import type { Question } from "@/models/Question";
+import type { Answer } from "@/models/Answer";
 
 interface SignalRState {
   connection: signalR.HubConnection | null;
@@ -73,7 +74,7 @@ export const useSignalRStore = defineStore({
       });
 
       this.connection.on("LoadRoom", (game: Game) => {
-        this.game = plainToInstance(Game, game);
+        this.game = plainToInstance(Game, game);        
       });
 
       this.connection.on("ReceiveError", (error) => {
@@ -192,5 +193,14 @@ export const useSignalRStore = defineStore({
 
       await this.connection.invoke("StartGame", this.game.code);
     },
+
+    async addAnswer(answer: Answer) {
+      if (!this.connection || !this.game) {
+        return;
+      }
+      
+      await this.connection.invoke("AddAnswer", this.game.code, instanceToPlain(answer));
+    }
+
   },
 });

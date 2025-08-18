@@ -1,4 +1,7 @@
+import { Expose } from "class-transformer";
+
 export class Answer {
+  @Expose({ name: "answerId" })
   id: number;
   questionId: number;
   ownerId: number;

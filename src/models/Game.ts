@@ -49,7 +49,7 @@ export class Game {
     users: User[] = [],
     code: string | null = null,
     foxGame = new FoxGame(),
-    isPublic: boolean = false,
+    isPublic: boolean = true,
     password: string | null = null,
     usePublicQuestions = true,
     usePrivateQuestions = false,
