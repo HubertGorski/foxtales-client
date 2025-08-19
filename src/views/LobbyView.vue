@@ -23,6 +23,8 @@ const signalRStore = useSignalRStore();
 const userStore = useUserStore();
 const { t } = useI18n();
 
+userStore.user.isReady = false;
+
 const usePrivateQuestions = ref<boolean>(false);
 const showSettingsPanel = ref<boolean>(false);
 const currentQuestions = ref<Question[]>([]);

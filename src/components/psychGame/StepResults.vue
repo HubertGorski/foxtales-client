@@ -65,8 +65,8 @@ const startNextRound = () => {};
       <div class="votersForHisAnswer">
         <img src="@/assets/imgs/fox13.png" alt="Lisek" />
         <div class="whiteCard voters">
-          <div class="title">{{ $t("yourAnswerWasChosen") }}</div>
-          <div class="yourAnswerWasChosen">{{ votersForHisAnswerString }}</div>
+          <div class="title">{{ votersForHisAnswerString ? $t("yourAnswerWasChosen") : $t("nobodyChoseYourAnswer") }}</div>
+          <div v-if="votersForHisAnswerString" class="yourAnswerWasChosen">{{ votersForHisAnswerString }}</div>
         </div>
         <HubDivider />
       </div>
@@ -105,6 +105,7 @@ const startNextRound = () => {};
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+        justify-content: center;
         max-height: 84px;
         overflow-y: scroll;
         padding: 6px;
