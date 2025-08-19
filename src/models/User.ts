@@ -75,27 +75,22 @@ export class User {
   round: number = 1;
 
   // In Psych Game
+  // ==== Lobby ====
   @Type(() => Question)
   chosenQuestionsSource: QUESTION_SOURCE | null = null;
   chosenCatalogId: number | undefined;
   chosenQuestions: Question[] = [];
-
-  @Type(() => User)
-  chosenPlayerAnswer: User | null = null;
-
+  
+  // ==== Game ====
   @Type(() => Answer)
   answer: Answer | null = null;
 
   @Type(() => User)
-  votersForHisAnswer: User[] = [];
+  votersIdsForHisAnswer: number[] = [];
 
-  votersAndVoteCounts: { voterId: number; voteCount: number }[] = [];
+  votersAndVoteCounts: { voterId: number; voteCount: number }[] = []; // TODO: statystyka kto najczesciej zaznaczal Twoja odpwoiedz a kto najmniej
   responseTime: number = 0;
   averageResponseTimeInCurrentGame: number = 0;
-
-  // In Dylematy Game
-  @Type(() => User)
-  playersWithCorrectAnswer: User[] = [];
 
   //Statistics
   gameHistory: {

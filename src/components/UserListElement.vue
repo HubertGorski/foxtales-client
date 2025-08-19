@@ -20,6 +20,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  avatarLabel: {
+    type: String,
+    default: "",
+  },
 });
 </script>
 
@@ -29,10 +33,19 @@ const props = defineProps({
     :class="{ isSelected: isSelected, isSelectedBold: isSelectedBold }"
   >
     <img :src="imgSource" alt="Lisek" class="userListElement_avatar" />
-    <div class="userListElement_text">
-      {{ text }}
+    <div class="userListElement_content">
+      <div class="userListElement_text">
+        {{ text }}
+      </div>
+      <div class="userListElement_labels">
+        <div>
+          <div v-if="avatarLabel" class="whiteCard label">
+            {{ avatarLabel }}
+          </div>
+        </div>
+        <div v-if="label" class="whiteCard label">{{ label }}</div>
+      </div>
     </div>
-    <div v-if="label" class="whiteCard label">{{ label }}</div>
   </div>
 </template>
 
@@ -61,6 +74,10 @@ const props = defineProps({
     border: 4px solid $mainBrownColor;
   }
 
+  &_content {
+    width: 100%;
+  }
+
   &_text {
     font-size: 18px;
     color: $mainBrownColor;
@@ -74,14 +91,23 @@ const props = defineProps({
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
 
-  .label {
+  &_labels {
     display: flex;
-    position: absolute;
-    bottom: -8px;
-    right: 16px;
-    z-index: 2;
     justify-content: space-between;
-    padding: 0 18px;
+
+    .label {
+      padding: 0 8px;
+      margin: 4px 0;
+      white-space: nowrap;
+      min-width: 58px;
+      max-width: 212px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 14px;
+      font-style: italic;
+      color: $lightGrayColor;
+      text-align: center;
+    }
   }
 
   &_avatar {

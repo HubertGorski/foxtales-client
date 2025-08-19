@@ -13,7 +13,7 @@ const props = defineProps({
 <template>
   <div class="hubDivider">
     <v-divider />
-    <span class="hubDivider_text">{{ props.text }}</span>
+    <span v-if="props.text" class="hubDivider_text">{{ props.text }}</span>
     <v-divider />
   </div>
 </template>

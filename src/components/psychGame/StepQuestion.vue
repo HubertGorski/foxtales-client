@@ -54,14 +54,15 @@ const dividerText = computed(() =>
 
 const fox = computed(() => {
   return new URL(
-    `/src/assets/imgs/${game.value.currentQuestion?.currentUser.avatar.id}.png`,
+    `/src/assets/imgs/${game.value.currentQuestion?.currentUser?.avatar.id}.png`,
     import.meta.url
   ).href;
 });
+
 watch(game, (game: Game | null) => {
   if (game?.readyUsersCount == game?.usersCount) {
-    signalRStore.markAllUsersUnready();
     emit("nextStep");
+    signalRStore.markAllUsersUnready();
   }
 });
 </script>
@@ -75,7 +76,7 @@ watch(game, (game: Game | null) => {
           <img :src="fox" alt="Lisek" class="fox" />
           <WhiteCard
             :header="
-              game.currentQuestion?.currentUser.username ?? DEFAULT_FOX_NAME
+              game.currentQuestion?.currentUser?.username ?? DEFAULT_FOX_NAME
             "
           >
             <div class="question">

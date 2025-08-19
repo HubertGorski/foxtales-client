@@ -13,10 +13,14 @@ const { t } = useI18n();
 const signalRStore = useSignalRStore();
 const userStore = useUserStore();
 
+const emit = defineEmits<{
+  (e: "nextStep"): void;
+}>();
+
 const game = computed<Game>(
   () => toRef(signalRStore, "game").value ?? new Game()
 );
-const users = ref(game.value.users);
+
 const timer = ref<number>(90);
 const selectedAnswerUserId = ref<number | null>(null);
 const isUserReady = ref<boolean>(false);
@@ -60,7 +64,9 @@ const nextPageBtn = computed(() => {
   return {
     text: "next",
     isOrange: true,
-    action: confirmSelectedAnswer,
+    action: () => {
+      emit("nextStep");
+    },
     disabled: false,
   };
 });
@@ -78,9 +84,10 @@ watch(game, (game: Game | null) => {
     <HubDivider :text="chooseAnswerText" />
     <div class="answers">
       <UserListElement
-        v-for="user in users"
+        v-for="user in game.users"
         :key="user.userId"
         :text="user.answer?.answer ?? ''"
+        :avatarLabel="currentStep ? user.username : ''"
         :label="
           currentStep ? `${$t('votersCount')} ${user.answer?.votersCount}` : ''
         "
@@ -148,6 +155,7 @@ watch(game, (game: Game | null) => {
       margin: 4px auto 0;
     }
   }
+  
   .nextPageBtn {
     width: 100%;
     padding-top: 8px;

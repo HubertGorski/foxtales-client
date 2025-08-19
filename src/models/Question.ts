@@ -16,7 +16,7 @@ export class Question {
   catalogIds: number[] = [];
   
   @Type(() => User)
-  currentUser: User = new User()
+  currentUser: User | null = null
 
   constructor(
     id: number | null = null,
