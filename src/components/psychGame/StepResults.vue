@@ -32,7 +32,7 @@ const votersForHisAnswerString = computed<string>(() => {
 
 const nextPageBtn = computed(() => {
   return {
-    text: "next",
+    text: "ready",
     isOrange: true,
     action: startNextRound,
     disabled: false,
