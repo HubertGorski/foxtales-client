@@ -29,14 +29,14 @@ const getCurrentStep = computed(() => {
     case 2:
       return StepResults;
     default:
+      currentStep.value = 0;
+      signalRStore.setNewRound();
       return StepQuestion;
   }
 });
 
 const handleNextStep = () => {
-  if (currentStep.value < 2) {
-    currentStep.value++;
-  }
+  currentStep.value++;
 };
 
 const leaveRoom = async () => {
@@ -54,6 +54,16 @@ watch(game, (game: Game | null) => {
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
     });
+  }
+
+  if (game?.readyUsersCount !== game?.usersCount) {
+    return;
+  }
+
+  signalRStore.markAllUsersUnready();
+
+  if (currentStep.value == 2) {
+    handleNextStep();
   }
 });
 </script>

@@ -198,25 +198,41 @@ export const useSignalRStore = defineStore({
       if (!this.connection || !this.game) {
         return;
       }
-      
-      await this.connection.invoke("AddAnswer", this.game.code, instanceToPlain(answer));
+
+      await this.connection.invoke(
+        "AddAnswer",
+        this.game.code,
+        instanceToPlain(answer)
+      );
     },
 
     async markAllUsersUnready() {
       if (!this.connection || !this.game) {
         return;
       }
-      
+
       await this.connection.invoke("MarkAllUsersUnready", this.game.code);
+    },
+
+    async setNewRound() {
+      if (!this.connection || !this.game) {
+        return;
+      }
+
+      await this.connection.invoke("SetNewRound", this.game.code);
     },
 
     async chooseAnswer(playerId: number, selectedAnswerUserId: number) {
       if (!this.connection || !this.game) {
         return;
       }
-      
-      await this.connection.invoke("ChooseAnswer", this.game.code, playerId, selectedAnswerUserId);
-    }
 
+      await this.connection.invoke(
+        "ChooseAnswer",
+        this.game.code,
+        playerId,
+        selectedAnswerUserId
+      );
+    },
   },
 });

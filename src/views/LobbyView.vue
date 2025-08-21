@@ -42,6 +42,7 @@ const goToGame = async () => {
   await signalRStore.startGame();
 };
 
+//TODO: nie da sie wystartowac jak sie wyjdzie i wejdzie
 const setReady = async () => {
   userStore.user.isReady = !userStore.user.isReady;
   await signalRStore.setStatus(userStore.user.userId, userStore.user.isReady);

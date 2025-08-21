@@ -73,7 +73,6 @@ const nextPageBtn = computed(() => {
 
 watch(game, (game: Game | null) => {
   if (game?.readyUsersCount == game?.usersCount) {
-    signalRStore.markAllUsersUnready();
     currentStep.value = 1;
   }
 });

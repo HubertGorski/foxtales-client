@@ -6,7 +6,6 @@ import { computed, toRef } from "vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import HubBtn from "../hubComponents/HubBtn.vue";
 import UserListElement from "../UserListElement.vue";
-import HubCounterWithTitle from "../hubComponents/HubCounterWithTitle.vue";
 
 const signalRStore = useSignalRStore();
 const userStore = useUserStore();
@@ -40,17 +39,14 @@ const nextPageBtn = computed(() => {
   };
 });
 
-const startNextRound = () => {};
+const startNextRound = () => {
+  signalRStore.setStatus(userStore.user.userId, true);
+};
 </script>
 
 <template>
   <div class="stepResults">
-    <HubDivider />
-    <HubCounterWithTitle
-      :value="game.readyUsersCount"
-      :maxValue="game.usersCount"
-      :title="$t('lobby.waitingForPlayers')"
-    />
+    <HubDivider :text="$t('summary')" />
     <div class="content">
       <div class="summary">
         <UserListElement
