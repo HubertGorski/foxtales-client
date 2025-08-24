@@ -63,6 +63,7 @@ export const UserClient = {
 
   addCatalog(newCatalog: Catalog): Promise<{ data: number }> {
     const catalog = instanceToPlain(newCatalog);
+    catalog.questions = [];
     return apiClient.post("/user/addCatalog", { catalog });
   },
 
