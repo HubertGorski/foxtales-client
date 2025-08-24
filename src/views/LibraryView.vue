@@ -39,17 +39,17 @@ const addQuestion = async (catalogs: Catalog[]) => {
     userStore.user.userId
   );
 
-  const response = await userService.addQuestion(questionToStore);
-  if (!response) {
-    return;
-  }
-
   let catalogIds: number[] = [];
   if (catalogs && catalogs.length > 0) {
     catalogIds = catalogs
       .map((catalog) => catalog.catalogId)
       .filter((id): id is number => id !== null);
     questionToStore.addCatalogs(catalogIds);
+  }
+
+  const response = await userService.addQuestion(questionToStore);
+  if (!response) {
+    return;
   }
 
   questionToStore.id = response;

@@ -48,7 +48,8 @@ export const UserClient = {
     return apiClient.post("/user/setUsername", { username });
   },
 
-  addQuestion(question: Question): Promise<{ data: number }> {
+  addQuestion(newQuestion: Question): Promise<{ data: number }> {
+    const question = instanceToPlain(newQuestion);    
     return apiClient.post("/user/addQuestion", { question });
   },
 

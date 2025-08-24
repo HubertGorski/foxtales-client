@@ -13,10 +13,10 @@ export class Question {
   usedCount: number;
   publicDate: Date | null;
   createdDate: Date;
-  catalogIds: number[] = [];
+  catalogIds: number[];
   
   @Type(() => User)
-  currentUser: User | null = null
+  currentUser: User | null = null;
 
   constructor(
     id: number | null = null,
@@ -27,7 +27,8 @@ export class Question {
     isPublic: boolean = false,
     usedCount: number = 0,
     publicDate: Date | null = null,
-    createdDate: Date = new Date()
+    createdDate: Date = new Date(),
+    catalogIds = []
   ) {
     this.id = id;
     this.text = text;
@@ -38,6 +39,7 @@ export class Question {
     this.usedCount = usedCount;
     this.publicDate = publicDate;
     this.createdDate = createdDate;
+    this.catalogIds = catalogIds;
   }
 
   addCatalogs(catalogIds: number[]): void {
