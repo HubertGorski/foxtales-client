@@ -10,6 +10,7 @@ import { Game } from "@/models/Game";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 import { useUserStore } from "@/stores/userStore";
+import StepEnd from "@/components/psychGame/StepEnd.vue";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
@@ -75,7 +76,9 @@ watch(game, (game: Game | null) => {
       <span class="roundInfo">{{ $t("round") }} {{ game.round }}</span>
     </div>
     <transition name="fade" mode="out-in">
+      <StepEnd v-if="game.hasGameEnded" />
       <component
+        v-else
         :is="getCurrentStep"
         :key="currentStep"
         @nextStep="handleNextStep"
