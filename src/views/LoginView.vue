@@ -50,6 +50,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     userStore.setUserSession(response.user);
     userStore.setAvatars(response.avatars);
+    userStore.setPublicQuestions(response.publicQuestions);
     userStore.setAvailableCatalogTypes(response.availableCatalogTypes);
   } catch (err: any) {
     errorLogin.value = err?.response?.data

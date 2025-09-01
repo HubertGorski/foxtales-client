@@ -5,7 +5,7 @@ import { USER_LIMIT } from "@/enums/userLimitEnum";
 import { Permission } from "@/models/Permission";
 import { FoxGame } from "@/models/FoxGame";
 import { Avatar } from "@/models/Avatar";
-import type { Question } from "@/models/Question";
+import { Question } from "@/models/Question";
 import type { Catalog } from "@/models/Catalog";
 import { CatalogType } from "@/models/CatalogType";
 
@@ -21,6 +21,7 @@ export const userService = {
     user: User;
     avatars: Avatar[];
     availableCatalogTypes: CatalogType[];
+    publicQuestions: Question[];
   }> {
     const response = await UserClient.login(email, password);
     const user = plainToInstance(User, response.data.user);
@@ -45,6 +46,11 @@ export const userService = {
     const avatars: Avatar[] = [];
     const availableCatalogTypes: CatalogType[] = [];
     const foxGames: FoxGame[] = [];
+    const publicQuestions: Question[] = [];
+
+    response.data.publicQuestions.forEach((question) => {
+      publicQuestions.push(plainToInstance(Question, question));
+    });
 
     response.data.avatars.forEach((avatar) => {
       avatars.push(plainToInstance(Avatar, avatar));
@@ -68,7 +74,7 @@ export const userService = {
       }
     });
 
-    return { user, avatars, availableCatalogTypes };
+    return { user, avatars, availableCatalogTypes, publicQuestions };
   },
 
   async register(

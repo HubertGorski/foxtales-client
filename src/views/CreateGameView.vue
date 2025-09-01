@@ -15,8 +15,9 @@ import { useUserStore } from "@/stores/userStore";
 const signalRStore = useSignalRStore();
 const userStore = useUserStore();
 
-const currentQuestions = ref<Question[]>([]);
 const newGame = ref(signalRStore.game || new Game());
+const currentQuestions = ref<Question[]>(signalRStore.game?.questions ?? []);
+
 if (!newGame.value.code) {
   router.push(ROUTE_PATH.MENU);
 }
@@ -36,9 +37,23 @@ const editRoom = async () => {
 };
 
 const setCurrentQuestions = async (questions: SelectedQuestions) => {
-  currentQuestions.value = questions.questions;
+  currentQuestions.value = currentQuestions.value.filter(
+    (question) => question.isPublic
+  );
+
+  currentQuestions.value.push(...questions.questions);
   userStore.user.chosenQuestionsSource = questions.source;
   userStore.user.chosenCatalogId = questions.chosenCatalogId;
+};
+
+const onSwitchChange = (usePublicQuestions: boolean | null): void => {
+  if (usePublicQuestions) {
+    currentQuestions.value.push(...userStore.publicQuestions);
+  } else {
+    currentQuestions.value = currentQuestions.value.filter(
+      (question) => !question.isPublic
+    );
+  }
 };
 </script>
 
@@ -54,6 +69,7 @@ const setCurrentQuestions = async (questions: SelectedQuestions) => {
             label="lobby.usePublicQuestions"
             tooltipText="tooltip.publicQuestionsDescription"
             withIcon
+            @onSwitchChange="onSwitchChange"
           />
           <SelectQuestionsPanel
             v-model:usePrivateQuestions="newGame.usePrivateQuestions"

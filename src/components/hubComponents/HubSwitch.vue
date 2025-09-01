@@ -18,6 +18,14 @@ const props = defineProps({
 });
 
 const value = defineModel({ type: Boolean, required: true });
+
+const emit = defineEmits<{
+  (e: "onSwitchChange", newValue: boolean | null): void;
+}>();
+
+const onSwitchChange = (newValue: boolean | null) => {
+  emit("onSwitchChange", newValue);
+};
 </script>
 
 <template>
@@ -28,7 +36,13 @@ const value = defineModel({ type: Boolean, required: true });
         <v-icon v-if="withIcon">{{ ICON.INFO }}</v-icon>
       </div>
     </HubTooltip>
-    <v-switch v-model="value" inset hide-details color="orange" />
+    <v-switch
+      v-model="value"
+      inset
+      hide-details
+      color="orange"
+      @update:model-value="onSwitchChange"
+    />
   </div>
 </template>
 

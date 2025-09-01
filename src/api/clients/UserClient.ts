@@ -21,6 +21,7 @@ export const UserClient = {
       avatars: Avatar[];
       foxGames: FoxGame[];
       availableCatalogTypes: CatalogType[];
+      publicQuestions: Question[];
     };
   }> {
     return apiClient.post("/user/login", { email, password });
@@ -49,7 +50,7 @@ export const UserClient = {
   },
 
   addQuestion(newQuestion: Question): Promise<{ data: number }> {
-    const question = instanceToPlain(newQuestion);    
+    const question = instanceToPlain(newQuestion);
     return apiClient.post("/user/addQuestion", { question });
   },
 

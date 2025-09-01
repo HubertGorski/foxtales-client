@@ -66,7 +66,6 @@ const props = defineProps({
 .userListElement {
   display: flex;
   align-items: center;
-  gap: 12px;
   position: relative;
   padding: 12px;
   transition: all 0.4s;
