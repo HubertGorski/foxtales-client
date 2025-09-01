@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import HubTooltip from "./hubComponents/HubTooltip.vue";
+
 const props = defineProps({
   imgSource: {
     type: String,
@@ -14,7 +16,7 @@ const props = defineProps({
   },
   text: {
     type: String,
-    required: true,
+    default: "",
   },
   label: {
     type: String,
@@ -24,22 +26,32 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  tooltipText: {
+    type: String,
+    default: "",
+  },
 });
 </script>
 
 <template>
   <div
     class="userListElement"
-    :class="{ isSelected: isSelected, isSelectedBold: isSelectedBold }"
+    :class="{ isSelected: isSelected, isSelectedBold: isSelectedBold, isTextNotAvailable: !text.length }"
   >
-    <img :src="imgSource" alt="Lisek" class="userListElement_avatar" />
+    <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
+      <img :src="imgSource" alt="Lisek" class="userListElement_avatar" />
+    </HubTooltip>
     <div class="userListElement_content">
-      <div class="userListElement_text">
+      <div v-if="text" class="userListElement_text">
         {{ text }}
       </div>
       <div class="userListElement_labels">
         <div>
-          <div v-if="avatarLabel" class="whiteCard label">
+          <div
+            v-if="avatarLabel"
+            class="whiteCard label"
+            :class="{ avatarLabel: !text.length }"
+          >
             {{ avatarLabel }}
           </div>
         </div>
@@ -58,6 +70,11 @@ const props = defineProps({
   position: relative;
   padding: 12px;
   transition: all 0.4s;
+
+  &.isTextNotAvailable {
+    height: 92px;
+    width: 92px;
+  }
 
   &.isSelected {
     transform: scale(1.06);
@@ -107,6 +124,12 @@ const props = defineProps({
       font-style: italic;
       color: $lightGrayColor;
       text-align: center;
+    }
+
+    .avatarLabel {
+      position: absolute;
+      top: 64px;
+      left: 0;
     }
   }
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
@@ -30,13 +29,6 @@ const goToLibrary = () => {
   router.push(ROUTE_PATH.LIBRARY);
 };
 
-const currentUser = userStore.user;
-
-const selectedFox = computed(() => {
-  return new URL(`../assets/imgs/${currentUser.avatar.id}.png`, import.meta.url)
-    .href;
-});
-
 const logout = async () => {
   await userService.logout();
   router.push(ROUTE_PATH.HOME);
@@ -49,7 +41,7 @@ const logout = async () => {
     <div class="menu">
       <div class="welcomeMessage">
         <span class="welcomeMessage_greeting">{{ $t("hi") }}</span>
-        <span class="welcomeMessage_name">{{ currentUser.username }}!</span>
+        <span class="welcomeMessage_name">{{ userStore.user.username }}!</span>
         <p class="welcomeMessage_text">{{ $t("haveFunAndEnjoyGame") }}</p>
       </div>
       <HubAccordionElement
@@ -62,7 +54,7 @@ const logout = async () => {
         <HubAccordionElement title="manageLibrary" isTitleCenter />
       </div>
     </div>
-    <img :src="selectedFox" alt="Lisek" class="mainFox" />
+    <img :src="userStore.getFox()" alt="Lisek" class="mainFox" />
     <NavigationBtns
       class="navigationBtns"
       btn="settings"

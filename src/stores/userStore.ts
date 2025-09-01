@@ -46,6 +46,13 @@ export const useUserStore = defineStore({
     getAvailableCatalogTypes: (state) => () => {
       return state.availableCatalogType;
     },
+
+    getFox: (state) => () => {
+      return new URL(
+        `../assets/imgs/${state.user.avatar.id}.png`,
+        import.meta.url
+      ).href;
+    },
   },
 
   actions: {

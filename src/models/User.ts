@@ -88,7 +88,8 @@ export class User {
   @Type(() => User)
   votersIdsForHisAnswer: number[] = [];
 
-  votersAndVoteCounts: { voterId: number; voteCount: number }[] = []; // TODO: statystyka kto najczesciej zaznaczal Twoja odpwoiedz a kto najmniej
+  VotesReceived: { voterId: number; voteCount: number }[] = [];
+  VotesGiven: { voterId: number; voteCount: number }[] = [];
   responseTime: number = 0;
   averageResponseTimeInCurrentGame: number = 0;
 

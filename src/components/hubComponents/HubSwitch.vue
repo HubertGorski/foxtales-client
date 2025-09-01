@@ -22,7 +22,7 @@ const value = defineModel({ type: Boolean, required: true });
 
 <template>
   <div class="hubSwitch">
-    <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText" leftIcon>
+    <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
       <div class="hubSwitch_content">
         <span v-if="label">{{ $t(label) }}</span>
         <v-icon v-if="withIcon">{{ ICON.INFO }}</v-icon>

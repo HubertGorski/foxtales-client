@@ -21,3 +21,15 @@
   margin: 8px 0;
   padding: 8px;
 }
+.whiteCardContent {
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: $lightGrayColor;
+  letter-spacing: 0.5px;
+  height: 100%;
+  overflow-y: scroll;
+}
+.isBold {
+  font-weight: 600;
+}

@@ -1,0 +1,106 @@
+<script setup lang="ts">
+import type { User } from "@/models/User";
+import { type PropType } from "vue";
+import FoxWithName from "./FoxWithName.vue";
+
+const props = defineProps({
+  users: {
+    type: Array as PropType<User[]>,
+    required: true,
+  },
+});
+
+const getAvatar = (id: number) => `/src/assets/imgs/${id}.png`;
+
+const podiumPositions = [
+  {
+    winnerClass: "podium_winner--first",
+    pointsClass: "podium_points--first",
+  },
+  {
+    winnerClass: "podium_winner--second",
+    pointsClass: "podium_points--second",
+  },
+  {
+    winnerClass: "podium_winner--third",
+    pointsClass: "podium_points--third",
+  },
+];
+</script>
+
+<template>
+  <div class="podium">
+    <img
+      class="podium_img"
+      src="@/assets/imgs/psych/winners.png"
+      alt="winners"
+    />
+    <template v-for="(user, index) in users.slice(0, 3)" :key="user.userId">
+      <div class="podium_winner" :class="podiumPositions[index].winnerClass">
+        <FoxWithName :text="user.username" :src="getAvatar(user.avatar.id)" />
+      </div>
+      <div class="podium_points" :class="podiumPositions[index].pointsClass">
+        {{ user.pointsInGame }} {{ $t("exp") }}
+      </div>
+    </template>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/variables";
+
+.podium {
+  position: relative;
+  margin-bottom: 32px;
+  &_img {
+    width: 356px;
+    padding-top: 148px;
+  }
+
+  &_winner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    &--first {
+      align-items: center;
+      bottom: 116px;
+    }
+
+    &--second {
+      align-items: start;
+      bottom: 80px;
+    }
+
+    &--third {
+      align-items: end;
+      bottom: 62px;
+    }
+  }
+
+  &_points {
+    position: absolute;
+    bottom: -20px;
+    background-color: $whiteColor;
+    border-radius: 8px;
+    text-align: center;
+    width: 110px;
+    border: 1px solid $mainBrownColor;
+    color: $mainBrownColor;
+    font-weight: 600;
+
+    &--first {
+      left: 124px;
+    }
+
+    &--second {
+      left: 0;
+    }
+
+    &--third {
+      right: 0;
+    }
+  }
+}
+</style>

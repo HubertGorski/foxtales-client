@@ -71,12 +71,12 @@ watch(game, (game: Game | null) => {
 
 <template>
   <div class="psychGameView">
-    <div class="psychGameView_header">
+    <div v-if="!game.hasGameEnded" class="psychGameView_header">
       <NavigationBtns btn="leaveGame" :btnCustomAction="leaveRoom" />
       <span class="roundInfo">{{ $t("round") }} {{ game.round }}</span>
     </div>
     <transition name="fade" mode="out-in">
-      <StepEnd v-if="game.hasGameEnded" />
+      <StepEnd v-if="game.hasGameEnded" @leaveRoom="leaveRoom"/>
       <component
         v-else
         :is="getCurrentStep"
