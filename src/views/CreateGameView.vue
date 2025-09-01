@@ -38,7 +38,8 @@ const editRoom = async () => {
 
 const setCurrentQuestions = async (questions: SelectedQuestions) => {
   currentQuestions.value = currentQuestions.value.filter(
-    (question) => question.isPublic
+    (question) =>
+      question.isPublic || question.ownerId !== userStore.user.userId
   );
 
   currentQuestions.value.push(...questions.questions);

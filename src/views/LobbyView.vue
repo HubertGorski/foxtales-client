@@ -98,14 +98,26 @@ const optionBtn = computed(() => {
   };
 });
 
+const tooltipText = computed(() => {
+  if (!game.value.questions.length && isOwner.value) {
+    return "tooltip.toStartGameChooseQuestions";
+  }
+
+  if (game.value.areUsersUnready && isOwner.value) {
+    return "tooltip.startNewGame";
+  }
+
+  return "";
+});
+
 const startBtn = computed(() => {
   return {
     text: isOwner.value ? "start" : "ready",
     action: startBtnAction,
-    tooltipText: isOwner.value ? "tooltip.startNewGame" : "",
+    tooltipText: tooltipText.value,
     disabled:
-      game.value.areUsersUnready &&
-      game.value.owner.userId === userStore.user.userId,
+      (game.value.areUsersUnready && isOwner.value) ||
+      (!game.value.questions.length && isOwner.value),
   };
 });
 

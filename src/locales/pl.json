@@ -86,6 +86,7 @@
   "positive": "Pozytywna",
   "negative": "Negatywna",
   "tooltip": {
+    "toStartGameChooseQuestions": "By rozpocząć grę należy wybrać do niej zestaw pytań.",
     "startNewGame": "By rozpocząć grę wszyscy goście w pokoju muszą potwierdzić udział",
     "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań.",
     "publicQuestionsDescription": "Korzysytaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację.",
