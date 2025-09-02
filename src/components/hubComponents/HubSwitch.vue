@@ -54,6 +54,7 @@ const onSwitchChange = (newValue: boolean | null) => {
   align-items: center;
   justify-content: space-between;
   color: $grayColor;
+  max-height: 50px;
 
   &_content {
     position: relative;

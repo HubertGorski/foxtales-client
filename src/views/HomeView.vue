@@ -2,21 +2,33 @@
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
+import { useFullscreen } from "@/useFullscreen";
+
+const { enter } = useFullscreen();
 
 const router = useRouter();
 
+const goToLogin = () => {
+  enter();
+  router.push(ROUTE_PATH.LOGIN);
+};
+
+const goToRegister = () => {
+  enter();
+  router.push(ROUTE_PATH.REGISTER);
+};
 const btns = [
   {
     id: 1,
     text: "login",
     isOrange: false,
-    action: () => router.push(ROUTE_PATH.LOGIN),
+    action: goToLogin,
   },
   {
     id: 2,
     text: "register",
     isOrange: true,
-    action: () => router.push(ROUTE_PATH.REGISTER),
+    action: goToRegister,
   },
 ];
 </script>

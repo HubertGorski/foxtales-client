@@ -56,7 +56,7 @@ const text = defineModel({ type: String, required: true });
     <img
       v-if="withFoxImg"
       class="hubInputBox_fox"
-      src="@/assets/imgs/fox7.png"
+      src="@/assets/imgs/fox7.webp"
       alt="Lisek"
     />
     <p class="hubInputBox_subtitle">{{ $t(title) }}</p>

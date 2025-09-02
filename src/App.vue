@@ -4,13 +4,18 @@ import { RouterView } from "vue-router";
 
 <template>
   <div class="foxTalesBackground">
-    <div class="foxTales">  
+    <div class="foxTales">
       <RouterView />
     </div>
   </div>
 </template>
 
 <style>
+* {
+  user-select: none;
+  scrollbar-width: thin;
+}
+
 html,
 body {
   height: 100%;

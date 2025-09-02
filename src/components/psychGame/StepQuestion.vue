@@ -25,6 +25,7 @@ const game = computed<Game>(
 
 const answerText = ref<string>("");
 const isUserReady = ref<boolean>(false);
+const isFoxVisible = ref<boolean>(true);
 
 const addAnswer = async () => {
   event.preventDefault();
@@ -67,7 +68,7 @@ watch(game, (game: Game | null) => {
 </script>
 
 <template>
-  <div class="stepQuestion">
+  <div class="stepQuestion" :class="{ isHovered: !isFoxVisible }">
     <HubDivider :text="dividerText" />
     <div class="stepQuestion_gameSection">
       <transition name="fade" mode="out-in" appear>
@@ -90,12 +91,14 @@ watch(game, (game: Game | null) => {
             :btnIsOrange="addAnswerBtn.isOrange"
             :textareaRows="5"
             isTextarea
+            @focus="() => (isFoxVisible = false)"
+            @blur="() => (isFoxVisible = true)"
           />
         </div>
         <div v-else key="stepWaiting" class="stepWaiting">
           <HubImageWithText
             :text="waitingInfo"
-            imageSrc="src/assets/imgs/fox3.png"
+            imageSrc="src/assets/imgs/fox3.webp"
             alt="Lisek"
           />
         </div>
@@ -112,12 +115,17 @@ watch(game, (game: Game | null) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+
   &_gameSection {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 12px;
+
+    .whiteCard {
+      width: 100%;
+    }
 
     .stepAnswer {
       display: flex;
@@ -136,12 +144,23 @@ watch(game, (game: Game | null) => {
       }
 
       .fox {
-        max-height: 200px;
+        height: 200px;
+        transition: all 0.2s;
       }
     }
 
     .stepWaiting img {
       max-width: 100%;
+    }
+  }
+
+  &.isHovered {
+    .fox {
+      height: 0;
+    }
+
+    .stepQuestion_gameSection {
+      justify-content: start;
     }
   }
 }

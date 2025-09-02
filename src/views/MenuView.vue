@@ -8,7 +8,9 @@ import { userService } from "@/api/services/UserService";
 import { User } from "@/models/User";
 import { useSignalRStore } from "@/stores/signalRStore";
 import { Game } from "@/models/Game";
+import { useFullscreen } from "@/useFullscreen";
 
+const { exit } = useFullscreen();
 const userStore = useUserStore();
 const router = useRouter();
 const signalRStore = useSignalRStore();
@@ -30,9 +32,10 @@ const goToLibrary = () => {
 };
 
 const logout = async () => {
-  await userService.logout();
+  exit();
   router.push(ROUTE_PATH.HOME);
   userStore.setUserSession(new User());
+  await userService.logout();
 };
 </script>
 
@@ -85,6 +88,7 @@ const logout = async () => {
     .welcomeMessage {
       font-weight: 600;
       margin-bottom: 36px;
+      white-space: nowrap;
 
       &_greeting {
         font-size: 56px;
@@ -96,11 +100,10 @@ const logout = async () => {
         display: block;
         width: 100%;
         font-size: 3em;
-        max-height: 2.8em;
+        max-height: 148px;
         line-height: 64px;
         color: $mainOrangeColor;
         overflow-x: scroll;
-        overflow-y: scroll;
       }
 
       &_text {
@@ -127,14 +130,13 @@ const logout = async () => {
 
   .mainFox {
     position: absolute;
-    max-width: 210px;
     bottom: 0;
-    margin-left: -16px;
     z-index: 2;
+    max-height: 152px;
   }
 
   .navigationBtns {
-    width: 50%;
+    padding-left: 160px;
     position: absolute;
     bottom: 8px;
     right: 12px;

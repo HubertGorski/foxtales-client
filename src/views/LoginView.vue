@@ -8,6 +8,9 @@ import { userService } from "@/api/services/UserService";
 import { useUserStore } from "@/stores/userStore";
 import { useI18n } from "vue-i18n";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
+import { useFullscreen } from "@/useFullscreen";
+
+const { enter } = useFullscreen();
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -31,6 +34,7 @@ email.value = "hub@wp.pl"
 password.value = "12345678"
 
 const navigateBack = () => {
+  enter();
   router.push(ROUTE_PATH.HOME);
 };
 

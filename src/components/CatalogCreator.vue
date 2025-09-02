@@ -163,7 +163,7 @@ watch(catalog, () => {
     <v-textarea
       v-model="catalog.description"
       :label="$t('description')"
-      :rows="3"
+      :rows="2"
       hide-details
     />
     <div class="catalogCreator_subtitle">{{ $t("chooseCatalogSize") }}</div>

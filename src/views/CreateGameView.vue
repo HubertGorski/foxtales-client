@@ -61,32 +61,30 @@ const onSwitchChange = (usePublicQuestions: boolean | null): void => {
 <template>
   <div class="createGameView">
     <div class="createGameView_card">
-      <img src="@/assets/imgs/fox7.png" alt="Lisek" class="fox" />
+      <img src="@/assets/imgs/fox7.webp" alt="Lisek" class="fox" />
       <div class="creamCard">
         <p class="title">{{ $t("lobby.createGame") }}</p>
-        <div class="settings">
-          <HubSwitch
-            v-model="newGame.usePublicQuestions"
-            label="lobby.usePublicQuestions"
-            tooltipText="tooltip.publicQuestionsDescription"
-            withIcon
-            @onSwitchChange="onSwitchChange"
-          />
-          <SelectQuestionsPanel
-            v-model:usePrivateQuestions="newGame.usePrivateQuestions"
-            @setQuestions="setCurrentQuestions"
-          />
-          <HubSwitch
-            v-model="newGame.isQuestionsFromAnotherGamesAllowed"
-            label="lobby.isQuestionsFromAnotherGamesAllowed"
-          />
-          <HubSwitch
-            v-model="newGame.isPublic"
-            label="lobby.gameVisibleOnList"
-            tooltipText="tooltip.roomOnListDescription"
-            withIcon
-          />
-        </div>
+        <HubSwitch
+          v-model="newGame.usePublicQuestions"
+          label="lobby.usePublicQuestions"
+          tooltipText="tooltip.publicQuestionsDescription"
+          withIcon
+          @onSwitchChange="onSwitchChange"
+        />
+        <SelectQuestionsPanel
+          v-model:usePrivateQuestions="newGame.usePrivateQuestions"
+          @setQuestions="setCurrentQuestions"
+        />
+        <HubSwitch
+          v-model="newGame.isQuestionsFromAnotherGamesAllowed"
+          label="lobby.isQuestionsFromAnotherGamesAllowed"
+        />
+        <HubSwitch
+          v-model="newGame.isPublic"
+          label="lobby.gameVisibleOnList"
+          tooltipText="tooltip.roomOnListDescription"
+          withIcon
+        />
         <div v-if="!newGame.isPublic" class="customCodeSection">
           <p class="customCodeSection_description">
             {{ $t("lobby.inviteOtherPlayers") }}
@@ -133,10 +131,10 @@ const onSwitchChange = (usePublicQuestions: boolean | null): void => {
   }
 
   &_card {
-    padding: 24px 24px 0 24px;
+    padding: 12px 24px;
     width: 100%;
     position: relative;
-    margin: 46px;
+    margin: 38px;
 
     .fox {
       position: absolute;
@@ -150,12 +148,8 @@ const onSwitchChange = (usePublicQuestions: boolean | null): void => {
       font-size: 24px;
       font-weight: 600;
     }
-    .settings {
-      padding-bottom: 12px;
-
-      .hubSwitch_content {
-        max-width: 210px;
-      }
+    .hubSwitch_content {
+      max-width: 210px;
     }
 
     .customCodeSection {

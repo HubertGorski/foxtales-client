@@ -57,6 +57,19 @@ const props = defineProps({
 const { t } = useI18n();
 const text = defineModel({ type: String, required: true });
 
+const emit = defineEmits<{
+  (e: "focus"): void;
+  (e: "blur"): void;
+}>();
+
+const handleFocus = () => {
+  emit("focus");
+};
+
+const handleBlur = () => {
+  emit("blur");
+};
+
 const btnIsDisabled = computed(() => {
   return text.value.length === 0 || props.btnIsDisabled;
 });
@@ -84,6 +97,8 @@ const handleEnter = (e: KeyboardEvent) => {
       v-if="isTextarea"
       v-model="text"
       @keydown.enter="handleEnter"
+      @focus="handleFocus"
+      @blur="handleBlur"
       :auto-grow="false"
       :rows="textareaRows"
       :error-messages="errorMessages"
@@ -93,6 +108,8 @@ const handleEnter = (e: KeyboardEvent) => {
       v-else
       v-model="text"
       @keydown.enter="handleEnter"
+      @focus="handleFocus"
+      @blur="handleBlur"
       :placeholder="actualTextPlaceholder"
       :type="textType"
       :error-messages="errorMessages"

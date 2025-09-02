@@ -25,7 +25,7 @@ const alert = computed(() => {
   <div class="noAccessView">
     <HubImageWithText
       :text="alert"
-      imageSrc="src/assets/imgs/fox6.png"
+      imageSrc="src/assets/imgs/fox6.webp"
       alt="Lisek"
     />
     <NavigationBtns

@@ -8,6 +8,8 @@ import { Game } from "@/models/Game";
 import { useSignalRStore } from "@/stores/signalRStore";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/stores/userStore";
+import { shuffleArray } from "@/utils/mathUtils";
+import type { User } from "@/models/User";
 
 const { t } = useI18n();
 const signalRStore = useSignalRStore();
@@ -25,6 +27,7 @@ const timer = ref<number>(90);
 const selectedAnswerUserId = ref<number | null>(null);
 const isUserReady = ref<boolean>(false);
 const currentStep = ref<number>(0);
+const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
 
 const confirmSelectedAnswer = () => {
   if (!selectedAnswerUserId.value) {
@@ -72,8 +75,13 @@ const nextPageBtn = computed(() => {
 });
 
 watch(game, (game: Game | null) => {
-  if (game?.readyUsersCount == game?.usersCount) {
+  if (game && game.readyUsersCount == game.usersCount) {
     currentStep.value = 1;
+
+    shuffledUsers.value = shuffledUsers.value.map((user) => {
+      const freshUser = game.users.find((u) => u.userId === user.userId);
+      return freshUser ? { ...user, ...freshUser } : user;
+    });
   }
 });
 </script>
@@ -83,7 +91,7 @@ watch(game, (game: Game | null) => {
     <HubDivider :text="chooseAnswerText" />
     <div class="answers">
       <UserListElement
-        v-for="user in game.users"
+        v-for="user in shuffledUsers"
         :key="user.userId"
         :text="user.answer?.answer ?? ''"
         :avatarLabel="currentStep ? user.username : ''"
@@ -154,7 +162,7 @@ watch(game, (game: Game | null) => {
       margin: 4px auto 0;
     }
   }
-  
+
   .nextPageBtn {
     width: 100%;
     padding-top: 8px;

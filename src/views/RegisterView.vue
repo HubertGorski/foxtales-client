@@ -6,7 +6,9 @@ import { userService } from "@/api/services/UserService";
 import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
+import { useFullscreen } from "@/useFullscreen";
 
+const { enter } = useFullscreen();
 const { t } = useI18n();
 const router = useRouter();
 
@@ -50,6 +52,7 @@ const onSubmit = handleSubmit(async (values) => {
 });
 
 const navigateBack = () => {
+  enter();
   router.push(ROUTE_PATH.HOME);
 };
 </script>

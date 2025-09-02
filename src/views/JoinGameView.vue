@@ -135,7 +135,7 @@ if (!signalRStore.connection) {
       :btnIsOrange="acceptCodeBtn.isOrange"
       :error-messages="errorCodeMessage"
     />
-    <HubDivider :text="$t('or')"/>
+    <HubDivider :text="$t('or')" />
     <div class="joinGameView_chooseRoom creamCard">
       <p class="subtitle">{{ $t("joinGame.chooseRoomFromList") }}</p>
       <div v-if="actualGames.length === 0" class="emptyGamesList">
@@ -144,14 +144,14 @@ if (!signalRStore.connection) {
       </div>
       <div v-else class="gamesList">
         <WhiteCard
-          :header=" `${t('usersGame')} ${game.owner.username}`"
+          :header="`${t('usersGame')} ${game.owner.username}`"
           @click="selectGameFromList(game)"
           v-for="(game, index) in actualGames"
           :key="index"
         >
           <div class="details">
             <div>
-              <!-- <v-icon>{{ game.foxGame.icon }}</v-icon> TODO: dodac tworzenie roznych typow gier -->  
+              <!-- <v-icon>{{ game.foxGame.icon }}</v-icon> TODO: dodac tworzenie roznych typow gier -->
               <!-- <span>{{ $t(game.foxGame.name) }}</span> -->
             </div>
             <div v-if="game.password">
@@ -195,22 +195,25 @@ if (!signalRStore.connection) {
 
     .emptyGamesList {
       padding-top: 18px;
-
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
+      
       img {
         opacity: 0.2;
-        width: 100%;
+        height: 142px;
       }
       p {
         color: $mainBrownColor;
         font-weight: 600;
-        text-align: center;
-        width: 100%;
       }
     }
 
     .gamesList {
       overflow-y: scroll;
-      height: 284px;
+      max-height: 284px;
 
       .details {
         font-size: 14px;
