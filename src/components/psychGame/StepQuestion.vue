@@ -39,6 +39,14 @@ const addAnswer = async () => {
   isUserReady.value = true;
 };
 
+const focusHandler = () => {
+  isFoxVisible.value = false;
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
 const addAnswerBtn = computed(() => ({
   text: "add",
   isOrange: true,
@@ -74,6 +82,11 @@ watch(game, (game: Game | null) => {
       <transition name="fade" mode="out-in" appear>
         <div v-if="!isUserReady" key="stepAnswer" class="stepAnswer">
           <img :src="fox" alt="Lisek" class="fox" />
+          <img
+            :src="game.currentQuestion?.currentUser?.avatar.source"
+            alt="Lisek"
+            class="foxAvatar"
+          />
           <WhiteCard
             :header="
               game.currentQuestion?.currentUser?.username ?? DEFAULT_FOX_NAME
@@ -91,7 +104,7 @@ watch(game, (game: Game | null) => {
             :btnIsOrange="addAnswerBtn.isOrange"
             :textareaRows="5"
             isTextarea
-            @focus="() => (isFoxVisible = false)"
+            @focus="focusHandler"
             @blur="() => (isFoxVisible = true)"
           />
         </div>
@@ -107,7 +120,7 @@ watch(game, (game: Game | null) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/assets/styles/variables";
 @import "@/assets/styles/hubAnimations";
 
@@ -131,6 +144,22 @@ watch(game, (game: Game | null) => {
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+
+      .foxAvatar {
+        transform: scale(0);
+        border: 2px solid $mainBrownColor;
+        background-color: white;
+        height: 52px;
+        width: 52px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        border-radius: 50%;
+        padding: 2px;
+        position: absolute;
+        left: -12px;
+        top: -12px;
+        z-index: 2;
+      }
 
       .question {
         font-size: 14px;
@@ -157,6 +186,16 @@ watch(game, (game: Game | null) => {
   &.isHovered {
     .fox {
       height: 0;
+    }
+
+    .foxAvatar {
+      transform: scale(1);
+      transition: all 0.4s ease-out;
+    }
+
+    .header {
+      margin-left: 34px;
+      transition: all 0.4s;
     }
 
     .stepQuestion_gameSection {
