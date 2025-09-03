@@ -17,6 +17,7 @@ export enum ROUTE_NAME {
   CHOOSE_GAME = "chooseGame",
   NO_ACCESS = "noAccess",
   GAME_PSYCH = "gamePsych",
+  WELCOME = "welcome",
 }
 
 export enum ROUTE_PATH {
@@ -36,4 +37,5 @@ export enum ROUTE_PATH {
   CHOOSE_GAME = "/choose-game",
   NO_ACCESS = "/no-access",
   GAME_PSYCH = "/game-psych",
+  WELCOME = "/welcome",
 }

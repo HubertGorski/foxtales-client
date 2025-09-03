@@ -40,7 +40,7 @@ const onSubmit = handleSubmit(async (values) => {
       values.password,
       values.confirmpassword
     );
-    router.push(ROUTE_PATH.LOGIN);
+    router.push(ROUTE_PATH.WELCOME);
   } catch (err: any) {
     const data = err?.response?.data;
 

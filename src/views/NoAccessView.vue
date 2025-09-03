@@ -50,25 +50,6 @@ const alert = computed(() => {
   display: flex;
   flex-direction: column;
 
-  &_content {
-    font-size: 16px;
-    font-weight: 600;
-    color: $grayColor;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    flex-grow: 1;
-
-    .info {
-      text-align: center;
-      background-color: $infoBackgroundColor;
-      border-radius: 8px;
-      padding: 12px 8px;
-    }
-  }
-
   .hubBtn.navigationBtns_btn {
     max-width: 100% !important;
     font-size: 16px;

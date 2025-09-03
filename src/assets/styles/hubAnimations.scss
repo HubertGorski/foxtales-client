@@ -15,3 +15,17 @@
   opacity: 0;
   transform: scale(0.9);
 }
+
+.bigger-enter-active,
+.bigger-leave-active {
+  transition: all 1s ease;
+}
+.bigger-enter-from {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.bigger-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}

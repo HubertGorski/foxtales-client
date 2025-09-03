@@ -35,7 +35,10 @@ const btns = [
 
 <template>
   <div class="homeView">
-    <p class="homeView_title">FOX TALES</p>
+    <div>
+      <p class="homeView_title">FOX TALES</p>
+      <p class="homeView_subtitle">Be as sly as a fox!</p>
+    </div>
     <div class="homeView_btns">
       <HubBtn
         :action="btns[0].action"
@@ -63,25 +66,33 @@ const btns = [
   justify-content: space-between;
 
   &_title {
-    font-size: 42px;
-    font-weight: 800;
-    font-family: "Poppins", sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(45deg, #ff8c00, #ffca28);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    padding-top: 32px;
+    font-size: 64px;
+    font-weight: 600;
+    color: $mainOrangeColor;
+    text-shadow:
+      2px 2px 0px #ffdb58,
+      4px 4px 0px $mainBrownColor;
     text-align: center;
+    padding-top: 32px;
+    line-height: 1;
   }
+
+  &_subtitle {
+    text-align: end;
+    padding: 0 12px;
+    color: $mainBrownColor;
+    font-size: 24px;
+    font-weight: 600;
+    font-family: "Story Script", sans-serif;
+    letter-spacing: 1px;
+  }
+
   &_btns {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
     width: 100%;
-    padding-top: 64px;
   }
 
   &_img {

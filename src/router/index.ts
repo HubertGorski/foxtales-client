@@ -18,6 +18,7 @@ import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 import { PERMISSION_GAME } from "@/enums/permissions";
 import PsychGameView from "@/views/PsychGameView.vue";
+import WelcomeViewVue from "@/views/WelcomeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,7 @@ function getRoutesWithAuth() {
   const publicRoutes = [
     ROUTE_NAME.LOGIN,
     ROUTE_NAME.REGISTER,
+    ROUTE_NAME.WELCOME,
     ROUTE_NAME.NO_ACCESS,
     ROUTE_NAME.HOME,
   ];
@@ -47,6 +49,11 @@ function getRoutesWithAuth() {
       path: ROUTE_PATH.HOME,
       name: ROUTE_NAME.HOME,
       component: HomeViewVue,
+    },
+    {
+      path: ROUTE_PATH.WELCOME,
+      name: ROUTE_NAME.WELCOME,
+      component: WelcomeViewVue,
     },
     {
       path: ROUTE_PATH.MENU,

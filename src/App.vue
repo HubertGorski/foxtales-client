@@ -11,6 +11,8 @@ import { RouterView } from "vue-router";
 </template>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Story+Script&display=swap');
+
 * {
   user-select: none;
   scrollbar-width: thin;
@@ -22,7 +24,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #c9b6b4;
+  background-color: #d3b39d;
 }
 
 #app {
@@ -31,7 +33,7 @@ body {
 }
 .foxTalesBackground {
   height: 100%;
-  background-color: #c9b6b4;
+  background-color: #d3b39d;
 }
 
 .foxTales {
