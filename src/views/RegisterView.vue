@@ -12,6 +12,7 @@ const { enter } = useFullscreen();
 const { t } = useI18n();
 const router = useRouter();
 
+const isFocused = ref(false);
 const errorLogin = ref("");
 
 const schema = yup.object({
@@ -26,13 +27,19 @@ const schema = yup.object({
 
 const { handleSubmit, setFieldError } = useForm({ validationSchema: schema });
 const { value: email, errorMessage: emailError } = useField("email");
-const { value: confirmpassword, errorMessage: confirmpasswordError } = useField("confirmpassword");
+const { value: confirmpassword, errorMessage: confirmpasswordError } =
+  useField("confirmpassword");
 const { value: password, errorMessage: passwordError } = useField("password");
 const { value: username, errorMessage: usernameError } = useField("username");
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await userService.register(values.email, values.username, values.password, values.confirmpassword);
+    await userService.register(
+      values.email,
+      values.username,
+      values.password,
+      values.confirmpassword
+    );
     router.push(ROUTE_PATH.LOGIN);
   } catch (err: any) {
     const data = err?.response?.data;
@@ -46,7 +53,9 @@ const onSubmit = handleSubmit(async (values) => {
         }
       );
     } else {
-      errorLogin.value = data?.title ? t(`auth.${data.title}`) : t("auth.unexpectedError");
+      errorLogin.value = data?.title
+        ? t(`auth.${data.title}`)
+        : t("auth.unexpectedError");
     }
   }
 });
@@ -58,7 +67,7 @@ const navigateBack = () => {
 </script>
 
 <template>
-  <div class="registerView">
+  <div class="registerView" :class="{ isFocused: isFocused }">
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="registerView_title">{{ $t("registerTitle") }}</h1>
       <v-text-field
@@ -68,6 +77,7 @@ const navigateBack = () => {
         dense
         class="registerView_input"
         :error-messages="usernameError"
+        @focus="isFocused = true"
       />
       <v-text-field
         v-model="email"
@@ -76,6 +86,7 @@ const navigateBack = () => {
         dense
         class="registerView_input"
         :error-messages="emailError"
+        @focus="isFocused = true"
       />
       <v-text-field
         v-model="password"
@@ -85,6 +96,7 @@ const navigateBack = () => {
         dense
         class="registerView_input"
         :error-messages="passwordError"
+        @focus="isFocused = true"
       />
       <v-text-field
         v-model="confirmpassword"
@@ -94,6 +106,7 @@ const navigateBack = () => {
         dense
         class="registerView_input"
         :error-messages="confirmpasswordError"
+        @focus="isFocused = true"
       />
       <div class="registerView_actions">
         <button
@@ -126,6 +139,21 @@ const navigateBack = () => {
   background: $mainBackground;
   padding: 80px 16px;
 
+  &.isFocused {
+    padding: 8px 16px;
+    transition: all 0.4s;
+
+    .registerView_title {
+      transition: all 0.4s;
+      font-size: 0;
+      margin: 0;
+    }
+
+    .creamCard {
+      padding: 16px;
+    }
+  }
+
   .creamCard {
     padding: 24px;
   }
@@ -146,7 +174,7 @@ const navigateBack = () => {
 
   &_input {
     width: 100%;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
   }
 
   &_actions {

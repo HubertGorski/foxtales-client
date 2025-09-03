@@ -121,10 +121,10 @@ const onSubmit = handleSubmit(async (values) => {
   padding: 0 16px;
 
   &.isFocused {
-    padding: 12px;
+    padding-top: 48px;
 
     .loginView_fox {
-      transition: all 0.4s;
+      transition: all 0.4s ease-in-out;
       height: 0;
       top: -4px;
     }

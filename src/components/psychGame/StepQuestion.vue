@@ -105,7 +105,6 @@ watch(game, (game: Game | null) => {
             :textareaRows="5"
             isTextarea
             @focus="focusHandler"
-            @blur="() => (isFoxVisible = true)"
           />
         </div>
         <div v-else key="stepWaiting" class="stepWaiting">
