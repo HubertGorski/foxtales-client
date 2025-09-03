@@ -16,6 +16,7 @@ const { t } = useI18n();
 const userStore = useUserStore();
 const router = useRouter();
 const errorLogin = ref("");
+const isFocused = ref(false);
 
 const schema = yup.object({
   email: yup
@@ -30,8 +31,8 @@ const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
 // TESTS
-email.value = "hub@wp.pl"
-password.value = "12345678"
+email.value = "hub@wp.pl";
+password.value = "12345678";
 
 const navigateBack = () => {
   enter();
@@ -62,10 +63,11 @@ const onSubmit = handleSubmit(async (values) => {
       : t("auth.unexpectedError");
   }
 });
+
 </script>
 
 <template>
-  <div class="loginView">
+  <div class="loginView" :class="{isFocused: isFocused}">
     <img src="@/assets/imgs/4.png" alt="Lisek" class="loginView_fox" />
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="loginView_title">{{ $t("auth.loginTitle") }}</h1>
@@ -76,6 +78,7 @@ const onSubmit = handleSubmit(async (values) => {
         dense
         class="loginView_input"
         :error-messages="emailError"
+        @focus="isFocused = true"
       />
       <v-text-field
         v-model="password"
@@ -85,6 +88,7 @@ const onSubmit = handleSubmit(async (values) => {
         dense
         class="loginView_input"
         :error-messages="passwordError"
+        @focus="isFocused = true"
       />
       <div class="loginView_actions">
         <button
@@ -116,6 +120,16 @@ const onSubmit = handleSubmit(async (values) => {
   background: $mainBackground;
   padding: 0 16px;
 
+  &.isFocused {
+    padding: 12px;
+
+    .loginView_fox {
+      transition: all 0.4s;
+      height: 0;
+      top: -4px;
+    }
+  }
+
   .error {
     width: 100%;
     text-align: center;
@@ -130,6 +144,7 @@ const onSubmit = handleSubmit(async (values) => {
   &_fox {
     position: relative;
     top: 8px;
+    height: 285px;
   }
 
   &_title {

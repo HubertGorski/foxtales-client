@@ -115,7 +115,7 @@ const deleteItems = () => {
     opacity: 0.9;
     img {
       padding: 16px 64px;
-      width: 100%;
+      max-height: 164px;
     }
     p {
       color: $mainBrownColor;
