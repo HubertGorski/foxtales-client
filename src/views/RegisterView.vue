@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { userService } from "@/api/services/UserService";
@@ -7,12 +7,13 @@ import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
 import { useFullscreen } from "@/useFullscreen";
+import { delay } from "lodash";
 
 const { enter } = useFullscreen();
 const { t } = useI18n();
 const router = useRouter();
 
-const isFocused = ref(false);
+const step = ref(0);
 const errorLogin = ref("");
 
 const schema = yup.object({
@@ -61,53 +62,71 @@ const onSubmit = handleSubmit(async (values) => {
 });
 
 const navigateBack = () => {
+  if (step.value === 2) {
+    step.value = 1;
+    return;
+  }
   enter();
   router.push(ROUTE_PATH.HOME);
 };
+
+const areErrorExist = computed(() => {
+  return (
+    usernameError.value ||
+    emailError.value ||
+    passwordError.value ||
+    confirmpasswordError.value ||
+    errorLogin.value
+  );
+});
 </script>
 
 <template>
-  <div class="registerView" :class="{ isFocused: isFocused }">
+  <div class="registerView" :class="{ isFocused: step }">
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="registerView_title">{{ $t("registerTitle") }}</h1>
-      <v-text-field
-        v-model="username"
-        :label="$t('auth.username')"
-        outlined
-        dense
-        class="registerView_input"
-        :error-messages="usernameError"
-        @focus="isFocused = true"
-      />
-      <v-text-field
-        v-model="email"
-        :label="$t('auth.email')"
-        outlined
-        dense
-        class="registerView_input"
-        :error-messages="emailError"
-        @focus="isFocused = true"
-      />
-      <v-text-field
-        v-model="password"
-        :label="$t('auth.password')"
-        type="password"
-        outlined
-        dense
-        class="registerView_input"
-        :error-messages="passwordError"
-        @focus="isFocused = true"
-      />
-      <v-text-field
-        v-model="confirmpassword"
-        :label="$t('auth.repeatPassword')"
-        type="password"
-        outlined
-        dense
-        class="registerView_input"
-        :error-messages="confirmpasswordError"
-        @focus="isFocused = true"
-      />
+      <div v-if="step === 1 || step === 0">
+        <v-text-field
+          v-model="username"
+          :label="$t('auth.username')"
+          outlined
+          dense
+          class="registerView_input"
+          :error-messages="usernameError"
+          @focus="step = 1"
+        />
+        <v-text-field
+          v-model="email"
+          :label="$t('auth.email')"
+          outlined
+          dense
+          class="registerView_input"
+          :error-messages="emailError"
+          @focus="step = 1"
+        />
+      </div>
+      <div v-if="step === 2 || step === 0">
+        <v-text-field
+          v-model="password"
+          :label="$t('auth.password')"
+          type="password"
+          outlined
+          dense
+          class="registerView_input"
+          :error-messages="passwordError"
+          @focus="step = 2"
+        />
+        <v-text-field
+          v-model="confirmpassword"
+          :label="$t('auth.repeatPassword')"
+          type="password"
+          outlined
+          dense
+          class="registerView_input"
+          :error-messages="confirmpasswordError"
+          @focus="step = 2"
+        />
+      </div>
       <div class="registerView_actions">
         <button
           type="button"
@@ -116,7 +135,19 @@ const navigateBack = () => {
         >
           {{ $t("back2") }}
         </button>
-        <button type="submit" class="registerView_btn registerView_btn--submit">
+        <button
+          v-if="step === 1"
+          @click="step = 2"
+          class="registerView_btn registerView_btn--submit"
+        >
+          {{ $t("next") }}
+        </button>
+        <button
+          v-if="step === 2 || step === 0"
+          @click="delay(() => (areErrorExist ? (step = 0) : null), 500)"
+          type="submit"
+          class="registerView_btn registerView_btn--submit"
+        >
           {{ $t("create") }}
         </button>
       </div>
