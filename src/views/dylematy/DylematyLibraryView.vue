@@ -24,7 +24,7 @@ import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
 const userStore = useUserStore();
 
 const addCard = (decks: Deck[]) => {
-  event.preventDefault();
+  event?.preventDefault();
   if (addManyCardsToDecks.value) {
     return assignedCardsToDecks(decks);
   }

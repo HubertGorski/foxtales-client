@@ -75,7 +75,7 @@ export class Catalog {
   }
 
   @Expose()
-  get questionsIds(): number[] {
+  get questionsIds(): (number | null)[] {
     return this.questions
       .map((question: Question) => question.id)
       .filter((id) => id != null);

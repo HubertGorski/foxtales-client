@@ -116,7 +116,7 @@ export const useUserStore = defineStore({
       }
     },
 
-    assignedQuestionsToCatalogs(questionIds: number[], catalogIds: number[]) {
+    assignedQuestionsToCatalogs(questionIds: number[], catalogIds: (number | null)[]) {
       const questionsToAssign = this.user.questions.filter(
         (q) => q.id != null && questionIds.includes(q.id)
       );
@@ -152,7 +152,10 @@ export const useUserStore = defineStore({
       }
     },
 
-    unassignCatalogFromQuestions(questionsIds: number[], catalogId: number) {
+    unassignCatalogFromQuestions(
+      questionsIds: (number | null)[],
+      catalogId: number
+    ) {
       questionsIds.forEach((questionId) => {
         const question = this.user.questions.find((q) => q.id === questionId);
         if (question == null) {

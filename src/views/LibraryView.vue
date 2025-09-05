@@ -24,7 +24,7 @@ import HubDialogPopup from "@/components/hubComponents/HubDialogPopup.vue";
 const userStore = useUserStore();
 
 const addQuestion = async (catalogs: Catalog[]) => {
-  event.preventDefault();
+  event?.preventDefault();
   if (addManyQuestonsToCatalogs.value && catalogs != null && catalogs.length) {
     return assignedQuestionsToCatalogs(catalogs);
   }

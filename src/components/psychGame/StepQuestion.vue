@@ -28,7 +28,7 @@ const isUserReady = ref<boolean>(false);
 const isFoxVisible = ref<boolean>(true);
 
 const addAnswer = async () => {
-  event.preventDefault();
+  event?.preventDefault();
   const answer = new Answer(
     0,
     game.value.currentQuestion?.id ?? 0,

@@ -83,7 +83,7 @@ export const UserClient = {
 
   assignedQuestionsToCatalogs(
     questionsIds: number[],
-    catalogsIds: number[]
+    catalogsIds: (number | null)[]
   ): Promise<{ data: boolean }> {
     return apiClient.post("/user/assignedQuestionsToCatalogs", {
       questionsIds,

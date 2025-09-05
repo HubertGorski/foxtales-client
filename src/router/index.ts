@@ -141,7 +141,7 @@ function getRoutesWithAuth() {
   ].map((route) => {
     if (!publicRoutes.includes(route.name)) {
       route.meta = {
-        ...(route.meta || {}),
+        ...(route.meta as any || {}),
         requiresAuth: true,
       };
     }

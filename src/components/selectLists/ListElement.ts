@@ -11,7 +11,7 @@ export class ListElement {
   elementsCount?: number;
   size?: number;
   cards?: DylematyCard[];
-  type?: DYLEMATY_CARD_TYPE;
+  type?: DYLEMATY_CARD_TYPE | null;
   isPublic?: boolean;
 
   constructor(args: Partial<ListElement> = {}) {
@@ -26,7 +26,7 @@ export class ListElement {
 
 export function convertQuestionToListElement(question: Question): ListElement {
   return new ListElement({
-    id: question.id,
+    id: question.id ?? 0,
     title: question.text,
     description: question.text,
     isSelected: false,
@@ -47,7 +47,7 @@ export function convertListElementToDylematyCard(item: ListElement): DylematyCar
 
 export function convertCatalogsToListElement(catalog: Catalog): ListElement {
   return new ListElement({
-    id: catalog.catalogId,
+    id: catalog.catalogId ?? 0,
     title: catalog.title,
     description: catalog.description,
     isSelected: false,

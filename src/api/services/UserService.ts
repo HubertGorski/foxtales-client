@@ -127,7 +127,7 @@ export const userService = {
     return (await UserClient.getUserCatalogs()).data;
   },
 
-  async assignedQuestionsToCatalogs(questionsIds: number[], catalogsIds: number[]): Promise<boolean> {
+  async assignedQuestionsToCatalogs(questionsIds: number[], catalogsIds: (number | null)[]): Promise<boolean> {
     return (await UserClient.assignedQuestionsToCatalogs(questionsIds, catalogsIds)).data;
   },
 };
