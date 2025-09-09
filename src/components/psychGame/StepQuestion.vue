@@ -47,6 +47,14 @@ const focusHandler = () => {
   });
 };
 
+const getAvatar = (source: string | undefined): string => {
+  if (!source) {
+    return "";
+  }
+
+  return new URL(`${source}`, import.meta.url).href;
+};
+
 const addAnswerBtn = computed(() => ({
   text: "add",
   isOrange: true,
@@ -83,7 +91,7 @@ watch(game, (game: Game | null) => {
         <div v-if="!isUserReady" key="stepAnswer" class="stepAnswer">
           <img :src="fox" alt="Lisek" class="fox" />
           <img
-            :src="game.currentQuestion?.currentUser?.avatar.source"
+            :src="getAvatar(game.currentQuestion?.currentUser?.avatar.source)"
             alt="Lisek"
             class="foxAvatar"
           />

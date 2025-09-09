@@ -31,15 +31,27 @@ const props = defineProps({
     default: "",
   },
 });
+
+const getAvatar = (source: string): string => {
+  return new URL(`${source}`, import.meta.url).href;
+};
 </script>
 
 <template>
   <div
     class="userListElement"
-    :class="{ isSelected: isSelected, isSelectedBold: isSelectedBold, isTextNotAvailable: !text.length }"
+    :class="{
+      isSelected: isSelected,
+      isSelectedBold: isSelectedBold,
+      isTextNotAvailable: !text.length,
+    }"
   >
     <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
-      <img :src="imgSource" alt="Lisek" class="userListElement_avatar" />
+      <img
+        :src="getAvatar(imgSource)"
+        alt="Lisek"
+        class="userListElement_avatar"
+      />
     </HubTooltip>
     <div class="userListElement_content">
       <div v-if="text" class="userListElement_text">
