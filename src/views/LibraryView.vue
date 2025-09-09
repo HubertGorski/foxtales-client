@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
 import HubPopup from "@/components/hubComponents/HubPopup.vue";
 import QuestionCreator from "@/components/QuestionCreator.vue";
@@ -27,10 +27,6 @@ const addQuestion = async (catalogs: Catalog[]) => {
   event?.preventDefault();
   if (addManyQuestonsToCatalogs.value && catalogs != null && catalogs.length) {
     return assignedQuestionsToCatalogs(catalogs);
-  }
-
-  if (!newQuestion.value) {
-    return;
   }
 
   const questionToStore = new Question(
@@ -205,11 +201,16 @@ const catalogsIdsFromSelectedQuestion = ref<number[]>([]);
 const actualCatalogs = ref<ListElement[]>(
   userStore.user.catalogs.map(convertCatalogsToListElement)
 );
-const addQuestionBtn = {
-  text: "add",
-  isOrange: true,
-  action: addQuestion,
-};
+
+const addQuestionBtn = computed(() => {
+  return {
+    text: "add",
+    isOrange: true,
+    action: addQuestion,
+    disabled: !newQuestion.value.trim(),
+  };
+});
+
 //TODO: jak jest jedno pytanie zaznaczone to dac mozliwosc wypisywania go z katalogu.
 </script>
 
@@ -262,6 +263,7 @@ const addQuestionBtn = {
           v-model="newQuestion"
           class="addQuestionToLibrary"
           :btnAction="addQuestionBtn.action"
+          :btnIsDisabled="addQuestionBtn.disabled"
           :btnText="addQuestionBtn.text"
           :extraBtnIcon="ICON.ADD_TO_COLLECTION"
           :extraBtnAction="showCatalogsList"

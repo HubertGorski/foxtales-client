@@ -30,12 +30,14 @@ const props = defineProps({
 });
 
 const containerRef = ref<HTMLElement | null>(null);
-const currentHeight = ref<string>('0px');
+const currentHeight = ref<string>("0px");
 
 const setHeight = async () => {
   await nextTick();
   if (containerRef.value) {
-    currentHeight.value = props.centerContent ? "100%" : `${containerRef.value.scrollHeight}px`;
+    currentHeight.value = props.centerContent
+      ? "100%"
+      : `${containerRef.value.scrollHeight}px`;
   }
 };
 
@@ -43,7 +45,7 @@ watchEffect(() => {
   if (props.isOpen) {
     setHeight();
   } else {
-    currentHeight.value = '0px';
+    currentHeight.value = "0px";
   }
 });
 
@@ -63,7 +65,7 @@ const toggleAccordion = () => {
       class="hubAccordionElement_title"
       :class="{ isSmallerTitle: isSmallerTitle, isOpen: isOpen }"
     >
-      <p :class="{isTitleCenter: isTitleCenter}">
+      <p :class="{ isTitleCenter: isTitleCenter }">
         {{ $t(title) }}
       </p>
       <v-icon v-if="withStatusIcon">{{ ICON.CHEVRON_UP }}</v-icon>
@@ -71,7 +73,7 @@ const toggleAccordion = () => {
     <div
       ref="containerRef"
       class="hubAccordionElement_container"
-      :class="{centerContent: centerContent}"
+      :class="{ centerContent: centerContent }"
       :style="{
         height: isOpen ? currentHeight : '0px',
       }"
@@ -97,18 +99,19 @@ const toggleAccordion = () => {
     font-weight: 600;
     padding: 24px;
     transition:
-    background-color,
-    padding 0.4s;
-    
+      background-color,
+      padding 0.4s;
+
     .isTitleCenter {
       text-align: center;
       width: 100%;
     }
-    
+
     .v-icon {
       transition: transform 0.4s;
+      transform: rotate(-180deg);
     }
-    
+
     &.isSmallerTitle {
       font-size: 18px;
       padding: 16px;
@@ -124,7 +127,7 @@ const toggleAccordion = () => {
       border-radius: 4px;
 
       .v-icon {
-        transform: rotate(180deg);
+        transform: rotate(0deg);
         transition: transform 0.4s;
       }
     }

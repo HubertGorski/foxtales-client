@@ -37,7 +37,7 @@ const formBtn = computed(() => {
     text: props.editMode ? "accept" : "add",
     isOrange: true,
     action: props.editMode ? editCatalog : addCatalog,
-    disabled: catalog.value.title.length < 3 || !catalog.value.catalogType.size,
+    disabled: catalog.value.title.length < 3 || !catalog.value.catalogType.size || !catalog.value.title.trim(),
   };
 });
 
