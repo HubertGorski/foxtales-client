@@ -1,5 +1,5 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
-
+// TODO: dodac przycisk w przegladarce
 export function useFullscreen() {
   const isFullscreen = ref<boolean>(false);
 

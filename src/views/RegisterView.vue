@@ -66,7 +66,6 @@ const navigateBack = () => {
     step.value = 1;
     return;
   }
-  enter();
   router.push(ROUTE_PATH.HOME);
 };
 

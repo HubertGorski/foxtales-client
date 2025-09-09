@@ -13,8 +13,8 @@ export default defineConfig({
         short_name: "Fox Tales",
         start_url: ".",
         display: "fullscreen",
-        background_color: "#ff0000ff",
-        theme_color: "#ff0000ff",
+        background_color: "#d3b39d",
+        theme_color: "#d3b39d",
         icons: [
           {
             src: "192.png",

@@ -35,7 +35,6 @@ email.value = "hub@wp.pl";
 password.value = "12345678";
 
 const navigateBack = () => {
-  enter();
   router.push(ROUTE_PATH.HOME);
 };
 

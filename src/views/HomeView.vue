@@ -9,12 +9,10 @@ const { enter } = useFullscreen();
 const router = useRouter();
 
 const goToLogin = () => {
-  enter();
   router.push(ROUTE_PATH.LOGIN);
 };
 
 const goToRegister = () => {
-  enter();
   router.push(ROUTE_PATH.REGISTER);
 };
 const btns = [
