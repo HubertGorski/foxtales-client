@@ -5,14 +5,10 @@ export class Avatar {
   id: number;
 
   @Expose()
-  source: string;
-
-  @Expose()
   isPremium: boolean;
 
-  constructor(id = 0, source: string = "", isPremium: boolean = false) {
+  constructor(id = 0, isPremium: boolean = false) {
     this.id = id;
-    this.source = source;
     this.isPremium = isPremium;
   }
 

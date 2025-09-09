@@ -10,6 +10,7 @@ import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/stores/userStore";
 import { shuffleArray } from "@/utils/mathUtils";
 import type { User } from "@/models/User";
+import { getAvatar, getUnknownAvatar } from "@/utils/imgUtils";
 
 const { t } = useI18n();
 const signalRStore = useSignalRStore();
@@ -101,8 +102,8 @@ watch(game, (game: Game | null) => {
         :isSelected="selectedAnswerUserId === user.userId"
         :imgSource="
           currentStep
-            ? user.avatar.source
-            : 'src/assets/imgs/defaultAvatars/idk.webp'
+            ? getAvatar(user.avatar.id)
+            : getUnknownAvatar()
         "
         isSelectedBold
         @click="selectAnswer(user.userId)"

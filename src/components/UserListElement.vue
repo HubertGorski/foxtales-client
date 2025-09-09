@@ -32,9 +32,6 @@ const props = defineProps({
   },
 });
 
-const getAvatar = (source: string): string => {
-  return new URL(`${source}`, import.meta.url).href;
-};
 </script>
 
 <template>
@@ -48,7 +45,7 @@ const getAvatar = (source: string): string => {
   >
     <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
       <img
-        :src="getAvatar(imgSource)"
+        :src="imgSource"
         alt="Lisek"
         class="userListElement_avatar"
       />

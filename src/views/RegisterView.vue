@@ -6,10 +6,8 @@ import { userService } from "@/api/services/UserService";
 import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
-import { useFullscreen } from "@/useFullscreen";
 import { delay } from "lodash";
 
-const { enter } = useFullscreen();
 const { t } = useI18n();
 const router = useRouter();
 

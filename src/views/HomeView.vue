@@ -2,9 +2,6 @@
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useRouter } from "vue-router";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
-import { useFullscreen } from "@/useFullscreen";
-
-const { enter } = useFullscreen();
 
 const router = useRouter();
 

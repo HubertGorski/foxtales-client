@@ -1,4 +1,4 @@
-import { DEFAULT_AVATAR_SOURCE, DEFAULT_FOX_NAME, GENDER } from "@/enums/userEnum";
+import { DEFAULT_FOX_NAME, GENDER } from "@/enums/userEnum";
 import { ROLE } from "@/enums/rolesEnum";
 import { PERMISSION } from "@/enums/permissions";
 import { Catalog } from "./Catalog";
@@ -28,7 +28,7 @@ export class User {
   username: string = DEFAULT_FOX_NAME;
 
   @Type(() => Avatar)
-  avatar: Avatar = new Avatar(1, DEFAULT_AVATAR_SOURCE);
+  avatar: Avatar = new Avatar(1);
 
   level: number = 0;
   accountPoints: number = 0;

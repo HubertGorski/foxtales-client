@@ -10,6 +10,7 @@ import { DEFAULT_FOX_NAME } from "@/enums/userEnum";
 import { useSignalRStore } from "@/stores/signalRStore";
 import { useUserStore } from "@/stores/userStore";
 import { Answer } from "@/models/Answer";
+import { getAvatar } from "@/utils/imgUtils";
 
 const { t } = useI18n();
 const signalRStore = useSignalRStore();
@@ -45,17 +46,6 @@ const focusHandler = () => {
     top: 0,
     behavior: "smooth",
   });
-};
-
-const getAvatar = (id: number | undefined): string => {
-  if (!id) {
-    return "";
-  }
-
-  return new URL(
-    `/src/assets/imgs/defaultAvatars/${id}.webp`,
-    import.meta.url
-  ).href;
 };
 
 const addAnswerBtn = computed(() => ({

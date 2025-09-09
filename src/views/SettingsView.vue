@@ -16,6 +16,7 @@ import { userService } from "@/api/services/UserService";
 import { isEqual } from "lodash";
 import { useField, useForm } from "vee-validate";
 import * as yup from "yup";
+import { getAvatar } from "@/utils/imgUtils";
 
 const userStore = useUserStore();
 const { t } = useI18n();
@@ -201,7 +202,7 @@ const acceptLanguageBtn = computed(() => {
             >
               <img
                 @click="changeAvatar(avatar)"
-                :src="avatar.source"
+                :src="getAvatar(avatar.id)"
                 alt="Lisek"
                 :class="{
                   isUserReady: avatar.isSelected(currentUser.avatar),

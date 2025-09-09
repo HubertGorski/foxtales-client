@@ -6,6 +6,7 @@ import { computed, toRef } from "vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import HubBtn from "../hubComponents/HubBtn.vue";
 import UserListElement from "../UserListElement.vue";
+import { getAvatar } from "@/utils/imgUtils";
 
 const signalRStore = useSignalRStore();
 const userStore = useUserStore();
@@ -52,7 +53,7 @@ const startNextRound = () => {
         <UserListElement
           v-for="user in game.users"
           :key="user.userId"
-          :imgSource="user.avatar.source"
+          :imgSource="getAvatar(user.avatar.id)"
           :text="user.username"
           :label="`${user.pointsInGame} ${$t('points')}`"
           :isSelected="user.isReady"

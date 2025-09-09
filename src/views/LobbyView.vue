@@ -17,6 +17,7 @@ import HubBtn from "@/components/hubComponents/HubBtn.vue";
 import { useI18n } from "vue-i18n";
 import type { Question } from "@/models/Question";
 import HubCounterWithTitle from "@/components/hubComponents/HubCounterWithTitle.vue";
+import { getAvatar } from "@/utils/imgUtils";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
@@ -153,7 +154,7 @@ watch(game, (game: Game | null) => {
       <UserListElement
         v-for="user in game.users"
         :key="user.userId"
-        :imgSource="user.avatar.source"
+        :imgSource="getAvatar(user.avatar.id)"
         :isSelected="user.isReady"
         :text="user.username"
       />
