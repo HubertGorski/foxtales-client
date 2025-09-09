@@ -47,12 +47,15 @@ const focusHandler = () => {
   });
 };
 
-const getAvatar = (source: string | undefined): string => {
-  if (!source) {
+const getAvatar = (id: number | undefined): string => {
+  if (!id) {
     return "";
   }
 
-  return new URL(source, import.meta.url).href;
+  return new URL(
+    `/src/assets/imgs/defaultAvatars/${id}.webp`,
+    import.meta.url
+  ).href;
 };
 
 const addAnswerBtn = computed(() => ({
@@ -91,7 +94,7 @@ watch(game, (game: Game | null) => {
         <div v-if="!isUserReady" key="stepAnswer" class="stepAnswer">
           <img :src="fox" alt="Lisek" class="fox" />
           <img
-            :src="getAvatar(game.currentQuestion?.currentUser?.avatar.source)"
+            :src="getAvatar(game.currentQuestion?.currentUser?.avatar.id)"
             alt="Lisek"
             class="foxAvatar"
           />
