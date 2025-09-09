@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
 import { delay } from "lodash";
+import HubBtn from "@/components/hubComponents/HubBtn.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -68,7 +69,7 @@ const navigateBack = () => {
 };
 
 const areErrorExist = computed(() => {
-  return (
+  return !!(
     usernameError.value ||
     emailError.value ||
     passwordError.value ||
@@ -132,13 +133,14 @@ const areErrorExist = computed(() => {
         >
           {{ $t("back2") }}
         </button>
-        <button
+        <HubBtn
           v-if="step === 1"
-          @click="step = 2"
+          :text="$t('next')"
+          :action="() => (step = 2)"
           class="registerView_btn registerView_btn--submit"
+          :disabled="!username || !email || areErrorExist"
         >
-          {{ $t("next") }}
-        </button>
+        </HubBtn>
         <button
           v-if="step === 2 || step === 0"
           @click="delay(() => (areErrorExist ? (step = 0) : null), 500)"
