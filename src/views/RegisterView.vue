@@ -154,7 +154,7 @@ const areErrorExist = computed(() => {
         {{ errorLogin }}
       </div>
     </form>
-    <img src="@/assets/imgs/fox10.png" alt="Lisek" class="registerView_fox" />
+    <img src="@/assets/imgs/fox10.webp" alt="Lisek" class="registerView_fox" />
   </div>
 </template>
 

@@ -49,7 +49,7 @@ const btns = [
         :isOrange="btns[1].isOrange"
       />
     </div>
-    <img src="@/assets/imgs/foxes.png" alt="Lisek" class="homeView_img" />
+    <img src="@/assets/imgs/foxes.webp" alt="Lisek" class="homeView_img" />
   </div>
 </template>
 

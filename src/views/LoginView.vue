@@ -67,7 +67,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div class="loginView" :class="{isFocused: isFocused}">
-    <img src="@/assets/imgs/4.png" alt="Lisek" class="loginView_fox" />
+    <img src="@/assets/imgs/4.webp" alt="Lisek" class="loginView_fox" />
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="loginView_title">{{ $t("auth.loginTitle") }}</h1>
       <v-text-field

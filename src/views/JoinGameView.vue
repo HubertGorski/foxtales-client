@@ -139,7 +139,7 @@ if (!signalRStore.connection) {
     <div class="joinGameView_chooseRoom creamCard">
       <p class="subtitle">{{ $t("joinGame.chooseRoomFromList") }}</p>
       <div v-if="actualGames.length === 0" class="emptyGamesList">
-        <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
+        <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
         <p>{{ $t("joinGame.noPublicRooms") }}</p>
       </div>
       <div v-else class="gamesList">

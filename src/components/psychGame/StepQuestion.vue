@@ -63,7 +63,7 @@ const dividerText = computed(() =>
 
 const fox = computed(() => {
   return new URL(
-    `/src/assets/imgs/${game.value.currentQuestion?.currentUser?.avatar.id}.png`,
+    `/src/assets/imgs/${game.value.currentQuestion?.currentUser?.avatar.id}.webp`,
     import.meta.url
   ).href;
 });

@@ -52,7 +52,7 @@ const logout = async () => {
       />
       <HubAccordionElement @click="navigateToJoinGame" title="joinTheGame" />
       <div @click="goToLibrary" class="menu_elementWithFox">
-        <img class="fox" src="@/assets/imgs/7.png" alt="Lisek" />
+        <img class="fox" src="@/assets/imgs/7.webp" alt="Lisek" />
         <HubAccordionElement title="manageLibrary" isTitleCenter />
       </div>
     </div>

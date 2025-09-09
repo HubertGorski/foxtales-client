@@ -59,7 +59,7 @@ const startNextRound = () => {
         />
       </div>
       <div class="votersForHisAnswer">
-        <img src="@/assets/imgs/fox13.png" alt="Lisek" />
+        <img src="@/assets/imgs/fox13.webp" alt="Lisek" />
         <div class="whiteCard voters">
           <div class="title">{{ votersForHisAnswerString ? $t("yourAnswerWasChosen") : $t("nobodyChoseYourAnswer") }}</div>
           <div v-if="votersForHisAnswerString" class="yourAnswerWasChosen">{{ votersForHisAnswerString }}</div>

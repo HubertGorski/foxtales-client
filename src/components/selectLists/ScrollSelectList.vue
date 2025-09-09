@@ -64,7 +64,7 @@ const deleteItems = () => {
   <div class="scrollSelectList">
     <div class="items" :class="{ isPaddingBottom: isControlPanelVisible }">
       <div v-if="items.length === 0" class="noData">
-        <img src="@/assets/imgs/fox-icon.png" alt="Lisek" />
+        <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
         <p>{{ $t(emptyDataText) }}</p>
       </div>
       <div

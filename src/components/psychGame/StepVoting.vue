@@ -102,7 +102,7 @@ watch(game, (game: Game | null) => {
         :imgSource="
           currentStep
             ? user.avatar.source
-            : 'src/assets/imgs/defaultAvatars/idk.png'
+            : 'src/assets/imgs/defaultAvatars/idk.webp'
         "
         isSelectedBold
         @click="selectAnswer(user.userId)"

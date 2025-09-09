@@ -10,7 +10,7 @@ const props = defineProps({
   },
 });
 
-const getAvatar = (id: number) => `/src/assets/imgs/${id}.png`;
+const getAvatar = (id: number) => `/src/assets/imgs/${id}.webp`;
 
 const podiumPositions = [
   {

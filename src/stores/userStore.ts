@@ -51,7 +51,7 @@ export const useUserStore = defineStore({
 
     getFox: (state) => () => {
       return new URL(
-        `../assets/imgs/${state.user.avatar.id}.png`,
+        `../assets/imgs/${state.user.avatar.id}.webp`,
         import.meta.url
       ).href;
     },

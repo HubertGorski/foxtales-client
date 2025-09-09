@@ -77,7 +77,7 @@ const leaveRoom = () => {
           <br />
           <span> Wybrano Twoje odpowiedzi 10 razy. </span>
         </div>
-        <img src="@/assets/imgs/fox11.png" alt="Lisek" />
+        <img src="@/assets/imgs/fox11.webp" alt="Lisek" />
       </div>
     </div>
     <NavigationBtns
