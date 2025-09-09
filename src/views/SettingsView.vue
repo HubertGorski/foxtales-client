@@ -21,7 +21,6 @@ import { getAvatar } from "@/utils/imgUtils";
 const userStore = useUserStore();
 const { t } = useI18n();
 
-const actualAvatars = ref<Avatar[]>(userStore.avatars);
 const currentUser = userStore.user;
 const languages = ref<ListElement[]>([
   new ListElement({
@@ -98,6 +97,18 @@ const changeUsername = handleSubmit(async (values) => {
       );
     }
   }
+});
+
+const sortedAvatars = computed(() => {
+  const lockedAvatars = userStore.avatars.filter((avatar) =>
+    avatar.isDisabled(currentUser.avatarsIds)
+  );
+
+  const unlockedAvatars = userStore.avatars.filter(
+    (avatar) => !avatar.isDisabled(currentUser.avatarsIds)
+  );
+
+  return [...unlockedAvatars, ...lockedAvatars];
 });
 
 const selectedLanguage = computed(
@@ -196,7 +207,7 @@ const acceptLanguageBtn = computed(() => {
         <template #chooseFox>
           <div class="avatars">
             <div
-              v-for="avatar in actualAvatars"
+              v-for="avatar in sortedAvatars"
               :key="avatar.id"
               class="avatar"
             >
@@ -205,7 +216,7 @@ const acceptLanguageBtn = computed(() => {
                 :src="getAvatar(avatar.id)"
                 alt="Lisek"
                 :class="{
-                  isUserReady: avatar.isSelected(currentUser.avatar),
+                  isSelected: avatar.isSelected(currentUser.avatar),
                   isDisabled: avatar.isDisabled(currentUser.avatarsIds),
                 }"
                 class="avatar_img"
@@ -309,7 +320,7 @@ const acceptLanguageBtn = computed(() => {
         border-radius: 50%;
         padding: 2px;
 
-        &.isUserReady {
+        &.isSelected {
           border: 2px solid $mainBrownColor;
           transform: scale(1.1);
         }
