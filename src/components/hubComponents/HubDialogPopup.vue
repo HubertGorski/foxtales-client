@@ -30,7 +30,7 @@ const confirmBtn = {
 <template>
     <HubPopup v-model="isPopupOpen">
         <div class="creamCard">
-            <img class="fox" src="@/assets/imgs/fox6.webp" alt="Lisek" />
+            <img class="fox" src="/imgs/fox6.webp" alt="Lisek" />
             <p>{{ textPopup }}</p>
             <div class="btns">
                 <HubBtn :action="backBtn.action" :text="backBtn.text" :isOrange="backBtn.isOrange"/>
