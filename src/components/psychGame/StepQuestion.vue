@@ -52,7 +52,7 @@ const getAvatar = (source: string | undefined): string => {
     return "";
   }
 
-  return new URL(`${source}`, import.meta.url).href;
+  return new URL(source, import.meta.url).href;
 };
 
 const addAnswerBtn = computed(() => ({
