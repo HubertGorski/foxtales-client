@@ -53,14 +53,6 @@ export const useSignalRStore = defineStore({
         );
       });
 
-      this.connection.on("GetPlayers", (joinedPlayers: User[]) => {
-        if (!this.game) {
-          return;
-        }
-
-        this.game.users = plainToInstance(User, joinedPlayers);
-      });
-
       this.connection.on("GetGameCode", (code: string) => {
         if (!this.game) {
           return;
@@ -161,15 +153,6 @@ export const useSignalRStore = defineStore({
 
       await this.connection.invoke("LeaveRoom", this.game.code, playerId);
 
-      this.clearStore();
-    },
-
-    async removeRoom() {
-      if (!this.connection || !this.game) {
-        return;
-      }
-
-      await this.connection.invoke("RemoveRoom", this.game.code);
       this.clearStore();
     },
 

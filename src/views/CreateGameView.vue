@@ -22,8 +22,8 @@ if (!newGame.value.code) {
   router.push(ROUTE_PATH.MENU);
 }
 
-const removeRoom = async () => {
-  await signalRStore.removeRoom();
+const leaveRoom = async () => {
+  await signalRStore.leaveRoom(userStore.user.userId);
   router.push(ROUTE_PATH.MENU);
 };
 
@@ -33,6 +33,7 @@ const editRoom = async () => {
     userStore.user.userId,
     currentQuestions.value
   );
+  
   router.push(ROUTE_PATH.LOBBY);
 };
 
@@ -106,7 +107,7 @@ const onSwitchChange = (usePublicQuestions: boolean | null): void => {
         <NavigationBtns
           btn="closeGame"
           btn2="accept"
-          :btnCustomAction="removeRoom"
+          :btnCustomAction="leaveRoom"
           :btn2CustomAction="editRoom"
           btn2isOrange
         />
