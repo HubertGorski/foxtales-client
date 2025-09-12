@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { userService } from "@/api/services/UserService";
@@ -82,6 +82,12 @@ const areErrorExist = computed(() => {
     errorRegister.value
   );
 });
+
+watch(areErrorExist, () => {
+  if (areErrorExist.value && step.value == 2) {
+    step.value = 0;
+  }
+});
 </script>
 
 <template>
@@ -123,10 +129,7 @@ const areErrorExist = computed(() => {
         />
       </div>
       <div class="registerView_actions">
-        <HubBtn
-          :text="$t('back2')"
-          :action="navigateBack"
-        />
+        <HubBtn :text="$t('back2')" :action="navigateBack" />
         <HubBtn
           v-if="step === 1"
           :text="$t('next')"
