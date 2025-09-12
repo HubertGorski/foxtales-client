@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import HubSwitch from "@/components/hubComponents/HubSwitch.vue";
 import NavigationBtns from "@/components/NavigationBtns.vue";
 import { useSignalRStore } from "@/stores/signalRStore";
@@ -16,6 +16,10 @@ const signalRStore = useSignalRStore();
 const userStore = useUserStore();
 
 const newGame = ref(signalRStore.game || new Game());
+const currentGame = computed<Game>(
+  () => toRef(signalRStore, "game").value ?? new Game()
+);
+
 const currentQuestions = ref<Question[]>(signalRStore.game?.questions ?? []);
 
 if (!newGame.value.code) {
@@ -33,7 +37,7 @@ const editRoom = async () => {
     userStore.user.userId,
     currentQuestions.value
   );
-  
+
   router.push(ROUTE_PATH.LOBBY);
 };
 
@@ -57,6 +61,13 @@ const onSwitchChange = (usePublicQuestions: boolean | null): void => {
     );
   }
 };
+
+watch(currentGame, (game: Game | null) => {
+  if (game) {
+    newGame.value.users = game.users;
+    newGame.value.questions = game.questions;
+  }
+});
 </script>
 
 <template>

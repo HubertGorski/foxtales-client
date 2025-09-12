@@ -53,20 +53,12 @@ export const useSignalRStore = defineStore({
         );
       });
 
-      this.connection.on("GetGameCode", (code: string) => {
-        if (!this.game) {
-          return;
-        }
-
-        this.game.code = code;
-      });
-
       this.connection.on("RoomClosed", () => {
         this.clearStore();
       });
 
       this.connection.on("LoadRoom", (game: Game) => {
-        this.game = plainToInstance(Game, game);        
+        this.game = plainToInstance(Game, game);     
       });
 
       this.connection.on("ReceiveError", (error) => {
