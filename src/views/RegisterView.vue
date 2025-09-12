@@ -13,7 +13,6 @@ const router = useRouter();
 
 const step = ref(0);
 const errorRegister = ref("");
-const errorRegister = ref("");
 
 const schema = yup.object({
   email: yup
@@ -43,7 +42,6 @@ const onSubmit = handleSubmit(async (values) => {
     router.push(ROUTE_PATH.WELCOME);
   } catch (err: any) {
     step.value = 0;
-    step.value = 0;
     const data = err?.response?.data;
     if (data?.errors) {
       Object.entries(data.errors).forEach(
@@ -54,7 +52,6 @@ const onSubmit = handleSubmit(async (values) => {
         }
       );
     } else {
-      errorRegister.value = data?.title
       errorRegister.value = data?.title
         ? t(`auth.${data.title}`)
         : t("auth.unexpectedError");
@@ -78,19 +75,8 @@ const areErrorExistInPart2 = computed(() => {
   return !!(passwordError.value || confirmpasswordError.value);
 });
 
-const areErrorExistInPart1 = computed(() => {
-  return !!(usernameError.value || emailError.value);
-});
-
-const areErrorExistInPart2 = computed(() => {
-  return !!(passwordError.value || confirmpasswordError.value);
-});
-
 const areErrorExist = computed(() => {
   return !!(
-    areErrorExistInPart1.value ||
-    areErrorExistInPart2.value ||
-    errorRegister.value
     areErrorExistInPart1.value ||
     areErrorExistInPart2.value ||
     errorRegister.value
@@ -156,9 +142,7 @@ const areErrorExist = computed(() => {
           isOrange
         />
       </div>
-      {{ areErrorExist }}
       <div class="error">
-        {{ errorRegister }}
         {{ errorRegister }}
       </div>
     </form>
