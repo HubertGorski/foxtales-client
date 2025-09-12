@@ -6,14 +6,13 @@ import { userService } from "@/api/services/UserService";
 import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
-import { delay } from "lodash";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
 
 const { t } = useI18n();
 const router = useRouter();
 
 const step = ref(0);
-const errorLogin = ref("");
+const errorRegister = ref("");
 
 const schema = yup.object({
   email: yup
@@ -42,8 +41,8 @@ const onSubmit = handleSubmit(async (values) => {
     );
     router.push(ROUTE_PATH.WELCOME);
   } catch (err: any) {
+    step.value = 0;
     const data = err?.response?.data;
-
     if (data?.errors) {
       Object.entries(data.errors).forEach(
         ([field, messages]: [string, any]) => {
@@ -53,7 +52,7 @@ const onSubmit = handleSubmit(async (values) => {
         }
       );
     } else {
-      errorLogin.value = data?.title
+      errorRegister.value = data?.title
         ? t(`auth.${data.title}`)
         : t("auth.unexpectedError");
     }
@@ -68,13 +67,19 @@ const navigateBack = () => {
   router.push(ROUTE_PATH.HOME);
 };
 
+const areErrorExistInPart1 = computed(() => {
+  return !!(usernameError.value || emailError.value);
+});
+
+const areErrorExistInPart2 = computed(() => {
+  return !!(passwordError.value || confirmpasswordError.value);
+});
+
 const areErrorExist = computed(() => {
   return !!(
-    usernameError.value ||
-    emailError.value ||
-    passwordError.value ||
-    confirmpasswordError.value ||
-    errorLogin.value
+    areErrorExistInPart1.value ||
+    areErrorExistInPart2.value ||
+    errorRegister.value
   );
 });
 </script>
@@ -87,8 +92,6 @@ const areErrorExist = computed(() => {
         <v-text-field
           v-model="username"
           :label="$t('auth.username')"
-          outlined
-          dense
           class="registerView_input"
           :error-messages="usernameError"
           @focus="step = 1"
@@ -96,8 +99,6 @@ const areErrorExist = computed(() => {
         <v-text-field
           v-model="email"
           :label="$t('auth.email')"
-          outlined
-          dense
           class="registerView_input"
           :error-messages="emailError"
           @focus="step = 1"
@@ -108,8 +109,6 @@ const areErrorExist = computed(() => {
           v-model="password"
           :label="$t('auth.password')"
           type="password"
-          outlined
-          dense
           class="registerView_input"
           :error-messages="passwordError"
           @focus="step = 2"
@@ -118,40 +117,33 @@ const areErrorExist = computed(() => {
           v-model="confirmpassword"
           :label="$t('auth.repeatPassword')"
           type="password"
-          outlined
-          dense
           class="registerView_input"
           :error-messages="confirmpasswordError"
           @focus="step = 2"
         />
       </div>
       <div class="registerView_actions">
-        <button
-          type="button"
-          @click="navigateBack"
-          class="registerView_btn registerView_btn--back"
-        >
-          {{ $t("back2") }}
-        </button>
+        <HubBtn
+          :text="$t('back2')"
+          :action="navigateBack"
+        />
         <HubBtn
           v-if="step === 1"
           :text="$t('next')"
           :action="() => (step = 2)"
-          class="registerView_btn registerView_btn--submit"
-          :disabled="!username || !email || areErrorExist"
-        >
-        </HubBtn>
-        <button
+          :disabled="!username || !email || areErrorExistInPart1"
+          isOrange
+        />
+        <HubBtn
           v-if="step === 2 || step === 0"
-          @click="delay(() => (areErrorExist ? (step = 0) : null), 500)"
-          type="submit"
-          class="registerView_btn registerView_btn--submit"
-        >
-          {{ $t("create") }}
-        </button>
+          :text="$t('create')"
+          :action="onSubmit"
+          :disabled="!password || !confirmpassword || areErrorExist"
+          isOrange
+        />
       </div>
       <div class="error">
-        {{ errorLogin }}
+        {{ errorRegister }}
       </div>
     </form>
     <img src="@/assets/imgs/fox10.webp" alt="Lisek" class="registerView_fox" />
@@ -168,21 +160,6 @@ const areErrorExist = computed(() => {
   height: 100vh;
   background: $mainBackground;
   padding: 80px 16px;
-
-  &.isFocused {
-    padding: 8px 16px;
-    transition: all 0.4s;
-
-    .registerView_title {
-      transition: all 0.4s;
-      font-size: 0;
-      margin: 0;
-    }
-
-    .creamCard {
-      padding: 16px;
-    }
-  }
 
   .creamCard {
     padding: 24px;
@@ -213,26 +190,30 @@ const areErrorExist = computed(() => {
     gap: 10px;
   }
 
-  &_btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 12px 20px;
+  .hubBtn {
+    padding: 12px;
     font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 8px;
-    cursor: pointer;
-    border: none;
-    color: white;
+  }
 
-    &--back {
-      background-color: $mainBrownColor;
+  .error {
+    width: 100%;
+    text-align: center;
+    padding-top: 12px;
+    color: $errorColor;
+  }
+
+  &.isFocused {
+    padding: 8px 16px;
+    transition: all 0.4s;
+
+    .registerView_title {
+      transition: all 0.4s;
+      font-size: 0;
+      margin: 0;
     }
 
-    &--submit {
-      background-color: $mainOrangeColor;
+    .creamCard {
+      padding: 16px;
     }
   }
 }
