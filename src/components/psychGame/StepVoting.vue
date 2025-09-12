@@ -125,7 +125,7 @@ watch(game, (game: Game | null) => {
         :showPointInfo="false"
       />
       <HubTooltip
-        :tooltipText="$t('selectFavAnswer')"
+        :tooltipText=" isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
         :tooltipDisabled="!confirmBtn.disabled"
       >
         <HubBtn

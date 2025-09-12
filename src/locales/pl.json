@@ -76,6 +76,7 @@
   "selectedQuestionsToCatalog": "Wybrane pytania do katalogu",
   "size": "Rozmiar",
   "selectFavAnswer": "By kontynuować wybierz odpowiedź z listy",
+  "isAnswerPicked": "Odpowiedź została wybrana. Oczekiwanie na innych graczy",
   "chooseGameType": "Wybierz typ gry",
   "emptyData": "Brak danych",
   "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",

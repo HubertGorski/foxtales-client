@@ -27,6 +27,7 @@ const isUserReady = ref<boolean>(false);
 const isFoxVisible = ref<boolean>(true);
 
 const addAnswer = async () => {
+  isFoxVisible.value = true;
   event?.preventDefault();
   const answer = new Answer(
     0,
