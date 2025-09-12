@@ -11,6 +11,8 @@ import { useUserStore } from "@/stores/userStore";
 import { shuffleArray } from "@/utils/mathUtils";
 import type { User } from "@/models/User";
 import { getAvatar, getUnknownAvatar } from "@/utils/imgUtils";
+import CurrentQuestion from "../CurrentQuestion.vue";
+import HubTooltip from "../hubComponents/HubTooltip.vue";
 
 const { t } = useI18n();
 const signalRStore = useSignalRStore();
@@ -89,7 +91,15 @@ watch(game, (game: Game | null) => {
 
 <template>
   <div class="stepVoting">
-    <HubDivider :text="chooseAnswerText" />
+    <div class="header">
+      <HubDivider :text="chooseAnswerText" />
+      <CurrentQuestion
+        :isFoxVisible="false"
+        :question="game.currentQuestion?.text ?? ''"
+        :avatarId="game.currentQuestion?.currentUser?.avatar.id ?? 0"
+        :username="game.currentQuestion?.currentUser?.username ?? ''"
+      />
+    </div>
     <div class="answers">
       <UserListElement
         v-for="user in shuffledUsers"
@@ -101,9 +111,7 @@ watch(game, (game: Game | null) => {
         "
         :isSelected="selectedAnswerUserId === user.userId"
         :imgSource="
-          currentStep
-            ? getAvatar(user.avatar.id)
-            : getUnknownAvatar()
+          currentStep ? getAvatar(user.avatar.id) : getUnknownAvatar()
         "
         isSelectedBold
         @click="selectAnswer(user.userId)"
@@ -116,12 +124,17 @@ watch(game, (game: Game | null) => {
         :requiredPointsToNextLevel="timer"
         :showPointInfo="false"
       />
-      <HubBtn
-        :action="confirmBtn.action"
-        :text="confirmBtn.text"
-        :isOrange="confirmBtn.isOrange"
-        :disabled="confirmBtn.disabled"
-      />
+      <HubTooltip
+        :tooltipText="$t('selectFavAnswer')"
+        :tooltipDisabled="!confirmBtn.disabled"
+      >
+        <HubBtn
+          :action="confirmBtn.action"
+          :text="confirmBtn.text"
+          :isOrange="confirmBtn.isOrange"
+          :disabled="confirmBtn.disabled"
+        />
+      </HubTooltip>
     </div>
     <div v-else class="nextPageBtn">
       <HubBtn
@@ -144,6 +157,14 @@ watch(game, (game: Game | null) => {
   height: 100%;
   justify-content: space-between;
   align-items: center;
+
+  .header {
+    width: 100%;
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
   .answers {
     overflow-y: scroll;

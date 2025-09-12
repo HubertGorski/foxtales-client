@@ -116,7 +116,10 @@ export const useUserStore = defineStore({
       }
     },
 
-    assignedQuestionsToCatalogs(questionIds: number[], catalogIds: (number | null)[]) {
+    assignedQuestionsToCatalogs(
+      questionIds: number[],
+      catalogIds: (number | null)[]
+    ) {
       const questionsToAssign = this.user.questions.filter(
         (q) => q.id != null && questionIds.includes(q.id)
       );

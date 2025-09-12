@@ -3,14 +3,12 @@ import { computed, ref, toRef, watch } from "vue";
 import HubInputWithBtn from "../hubComponents/HubInputWithBtn.vue";
 import HubImageWithText from "../hubComponents/HubImageWithText.vue";
 import { useI18n } from "vue-i18n";
-import WhiteCard from "../WhiteCard.vue";
 import HubDivider from "../hubComponents/HubDivider.vue";
 import { Game } from "@/models/Game";
-import { DEFAULT_FOX_NAME } from "@/enums/userEnum";
 import { useSignalRStore } from "@/stores/signalRStore";
 import { useUserStore } from "@/stores/userStore";
 import { Answer } from "@/models/Answer";
-import { getAvatar } from "@/utils/imgUtils";
+import CurrentQuestion from "../CurrentQuestion.vue";
 
 const { t } = useI18n();
 const signalRStore = useSignalRStore();
@@ -62,13 +60,6 @@ const dividerText = computed(() =>
   isUserReady.value ? t("waitForAnswers") : t("writeAnswer")
 );
 
-const fox = computed(() => {
-  return new URL(
-    `/src/assets/imgs/${game.value.currentQuestion?.currentUser?.avatar.id}.webp`,
-    import.meta.url
-  ).href;
-});
-
 watch(game, (game: Game | null) => {
   if (game?.readyUsersCount == game?.usersCount) {
     emit("nextStep");
@@ -77,26 +68,17 @@ watch(game, (game: Game | null) => {
 </script>
 
 <template>
-  <div class="stepQuestion" :class="{ isHovered: !isFoxVisible }">
+  <div class="stepQuestion">
     <HubDivider :text="dividerText" />
-    <div class="stepQuestion_gameSection">
+    <div class="stepQuestion_gameSection" :class="{ isHovered: !isFoxVisible }">
       <transition name="fade" mode="out-in" appear>
-        <div v-if="!isUserReady" key="stepAnswer" class="stepAnswer">
-          <img :src="fox" alt="Lisek" class="fox" />
-          <img
-            :src="getAvatar(game.currentQuestion?.currentUser?.avatar.id)"
-            alt="Lisek"
-            class="foxAvatar"
+        <div v-if="!isUserReady" key="stepAnswer">
+          <CurrentQuestion
+            :isFoxVisible="isFoxVisible"
+            :question="game.currentQuestion?.text ?? ''"
+            :avatarId="game.currentQuestion?.currentUser?.avatar.id ?? 0"
+            :username="game.currentQuestion?.currentUser?.username ?? ''"
           />
-          <WhiteCard
-            :header="
-              game.currentQuestion?.currentUser?.username ?? DEFAULT_FOX_NAME
-            "
-          >
-            <div class="question">
-              {{ game.currentQuestion?.text }}
-            </div>
-          </WhiteCard>
           <HubInputWithBtn
             v-model="answerText"
             class="whiteCard input"
@@ -111,7 +93,7 @@ watch(game, (game: Game | null) => {
         <div v-else key="stepWaiting" class="stepWaiting">
           <HubImageWithText
             :text="waitingInfo"
-            imageSrc="src/assets/imgs/fox3.webp"
+            imageSrc="/imgs/fox3.webp"
             alt="Lisek"
           />
         </div>
@@ -120,7 +102,7 @@ watch(game, (game: Game | null) => {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/styles/variables";
 @import "@/assets/styles/hubAnimations";
 
@@ -136,70 +118,12 @@ watch(game, (game: Game | null) => {
     justify-content: center;
     padding: 12px;
 
-    .whiteCard {
-      width: 100%;
-    }
-
-    .stepAnswer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-
-      .foxAvatar {
-        transform: scale(0);
-        border: 2px solid $mainBrownColor;
-        background-color: white;
-        height: 52px;
-        width: 52px;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        border-radius: 50%;
-        padding: 2px;
-        position: absolute;
-        left: -12px;
-        top: -12px;
-        z-index: 2;
-      }
-
-      .question {
-        font-size: 14px;
-        font-style: italic;
-        color: $lightGrayColor;
-        letter-spacing: 0.5px;
-      }
-
-      .input {
-        width: 100%;
-      }
-
-      .fox {
-        height: 200px;
-        transition: all 0.2s;
-      }
+    &.isHovered {
+      justify-content: start;
     }
 
     .stepWaiting img {
       max-width: 100%;
-    }
-  }
-
-  &.isHovered {
-    .fox {
-      height: 0;
-    }
-
-    .foxAvatar {
-      transform: scale(1);
-      transition: all 0.4s ease-out;
-    }
-
-    .header {
-      margin-left: 34px;
-      transition: all 0.4s;
-    }
-
-    .stepQuestion_gameSection {
-      justify-content: start;
     }
   }
 }

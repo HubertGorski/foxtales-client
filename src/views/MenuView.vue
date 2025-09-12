@@ -33,8 +33,8 @@ const goToLibrary = () => {
 
 const logout = async () => {
   router.push(ROUTE_PATH.HOME);
-  userStore.setUserSession(new User());
   await userService.logout();
+  userStore.setUserSession(new User());  
 };
 </script>
 

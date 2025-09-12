@@ -75,6 +75,7 @@
   "selectedCatalogs": "Wybrane katalogi",
   "selectedQuestionsToCatalog": "Wybrane pytania do katalogu",
   "size": "Rozmiar",
+  "selectFavAnswer": "By kontynuować wybierz odpowiedź z listy",
   "chooseGameType": "Wybierz typ gry",
   "emptyData": "Brak danych",
   "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",
@@ -137,6 +138,7 @@
     "selectedDecks": "Wybrane talie"
   },
   "auth": {
+    "fillFormCorrectly": "By kontynuować należy prawidłowo uzupełnić formularz rejestracyjny",
     "youAreAlreadyAuthenticated": "Niespodziewany błąd. Konto już jest zalogowane.",
     "emailIsRequired": "Email jest wymagany",
     "emailCannotBeEmpty": "Email nie może być pusty",

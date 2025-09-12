@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
 import HubBtn from "@/components/hubComponents/HubBtn.vue";
+import HubTooltip from "@/components/hubComponents/HubTooltip.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -83,6 +84,20 @@ const areErrorExist = computed(() => {
   );
 });
 
+const isCreateBtnDisabled = computed(() => {
+  return !!(!password.value || !confirmpassword.value || areErrorExist.value);
+});
+
+const isTooltipDisabled = computed(() => {
+  return !!(
+    username.value &&
+    email.value &&
+    password.value &&
+    confirmpassword.value &&
+    !areErrorExist.value
+  );
+});
+
 watch(areErrorExist, () => {
   if (areErrorExist.value && step.value == 2) {
     step.value = 0;
@@ -130,20 +145,30 @@ watch(areErrorExist, () => {
       </div>
       <div class="registerView_actions">
         <HubBtn :text="$t('back2')" :action="navigateBack" />
-        <HubBtn
+        <HubTooltip
           v-if="step === 1"
-          :text="$t('next')"
-          :action="() => (step = 2)"
-          :disabled="!username || !email || areErrorExistInPart1"
-          isOrange
-        />
-        <HubBtn
+          :tooltipText="$t('auth.fillFormCorrectly')"
+          :tooltipDisabled="!(!username || !email || areErrorExistInPart1)"
+        >
+          <HubBtn
+            :text="$t('next')"
+            :action="() => (step = 2)"
+            :disabled="!username || !email || areErrorExistInPart1"
+            isOrange
+          />
+        </HubTooltip>
+        <HubTooltip
           v-if="step === 2 || step === 0"
-          :text="$t('create')"
-          :action="onSubmit"
-          :disabled="!password || !confirmpassword || areErrorExist"
-          isOrange
-        />
+          :tooltipText="$t('auth.fillFormCorrectly')"
+          :tooltipDisabled="isTooltipDisabled"
+        >
+          <HubBtn
+            :text="$t('create')"
+            :action="onSubmit"
+            :disabled="isCreateBtnDisabled"
+            isOrange
+          />
+        </HubTooltip>
       </div>
       <div class="error">
         {{ errorRegister }}
@@ -188,8 +213,9 @@ watch(areErrorExist, () => {
   }
 
   &_actions {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
     gap: 10px;
   }
 
