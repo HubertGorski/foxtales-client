@@ -34,7 +34,8 @@ const goToLibrary = () => {
 const logout = async () => {
   router.push(ROUTE_PATH.HOME);
   await userService.logout();
-  userStore.setUserSession(new User());  
+  userStore.setUserSession(new User());
+  sessionStorage.removeItem("accessToken");
 };
 </script>
 

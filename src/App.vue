@@ -1,5 +1,23 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import { onBeforeUnmount, onMounted } from "vue";
+import { useUserStore } from "./stores/userStore";
+
+const userStore = useUserStore();
+
+onMounted(() => {
+  window.addEventListener("beforeunload", handleBeforeUnload);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("beforeunload", handleBeforeUnload);
+});
+
+function handleBeforeUnload(event: BeforeUnloadEvent) { 
+  sessionStorage.setItem("accessToken", userStore.user.accessToken);
+  event.preventDefault();
+  event.returnValue = "";
+}
 </script>
 
 <template>
@@ -11,7 +29,7 @@ import { RouterView } from "vue-router";
 </template>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Story+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Story+Script&display=swap");
 
 * {
   user-select: none;

@@ -19,6 +19,7 @@ import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 import { PERMISSION_GAME } from "@/enums/permissions";
 import PsychGameView from "@/views/PsychGameView.vue";
 import WelcomeViewVue from "@/views/WelcomeView.vue";
+import Client from "@/api/Client";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -141,7 +142,7 @@ function getRoutesWithAuth() {
   ].map((route) => {
     if (!publicRoutes.includes(route.name)) {
       route.meta = {
-        ...(route.meta as any || {}),
+        ...((route.meta as any) || {}),
         requiresAuth: true,
       };
     }
@@ -151,23 +152,27 @@ function getRoutesWithAuth() {
 
 router.beforeEach((to, from, next) => {
   // const isGameSelected = TODO: dodac tworzenie roznych typow gier
-    // sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
+  // sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
   // if (to.meta.requiredGameSelected && !isGameSelected) {
-    // sessionStorage.setItem(SESSION_STORAGE.URL_SELECTED_GAME, to.fullPath);
-    // next(ROUTE_PATH.CHOOSE_GAME);
-  // } else 
-    if (to.meta.requiresAdmin && !isAdmin()) {
+  // sessionStorage.setItem(SESSION_STORAGE.URL_SELECTED_GAME, to.fullPath);
+  // next(ROUTE_PATH.CHOOSE_GAME);
+  // } else
+  if (to.meta.requiresAdmin && !isAdmin()) {
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.ADMIN_ONLY },
     });
   } else if (to.meta.requiresAuth && !isAuthenticated()) {
+    logout();
     sessionStorage.setItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN, to.fullPath);
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
     });
-  } else if (to.meta.permission && !hasAccessToGame(to.meta.permission as PERMISSION_GAME)) {
+  } else if (
+    to.meta.permission &&
+    !hasAccessToGame(to.meta.permission as PERMISSION_GAME)
+  ) {
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.NO_PERMISSION_GAME },
@@ -182,12 +187,26 @@ function isAdmin(): boolean {
   return useUserStore().user.role === ROLE.ADMIN;
 }
 
-function hasAccessToGame(permission: PERMISSION_GAME): boolean {  
+function hasAccessToGame(permission: PERMISSION_GAME): boolean {
   return useUserStore().getPermissionByName(permission).isGameUnlocked;
 }
 
 function isAuthenticated(): boolean {
   return !!useUserStore().user.accessToken;
+}
+
+async function logout(): Promise<void> {
+  if (!useUserStore().user.accessToken) {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) {
+      return;
+    }
+
+    useUserStore().setAccessToken(token);
+    await Client.post("/user/logout");
+    sessionStorage.removeItem("accessToken");
+    useUserStore().setAccessToken("");
+  }
 }
 
 export default router;
