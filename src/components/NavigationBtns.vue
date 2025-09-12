@@ -80,7 +80,7 @@ const allBtns = [
   {
     text: "logout",
     isOrange: false,
-    action: () => router.push(ROUTE_PATH.HOME),
+    action: () => router.push(ROUTE_PATH.HOME), // TODO: naprawic revoke tokenu
   },
   {
     text: "goToLogin",

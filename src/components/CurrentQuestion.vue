@@ -81,7 +81,6 @@ const fox = computed(() => {
 
   &.isFoxVisible {
     .fox {
-      transform: translateX(-172px);
       height: 0;
     }
 
