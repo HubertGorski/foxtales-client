@@ -58,7 +58,7 @@ export const useSignalRStore = defineStore({
       });
 
       this.connection.on("LoadRoom", (game: Game) => {
-        this.game = plainToInstance(Game, game);     
+        this.game = plainToInstance(Game, game);
       });
 
       this.connection.on("ReceiveError", (error) => {
@@ -189,8 +189,12 @@ export const useSignalRStore = defineStore({
       await this.connection.invoke("MarkAllUsersUnready", this.game.code);
     },
 
-    async setNewRound() {
-      if (!this.connection || !this.game) {
+    async setNewRound(playerId: number) {
+      if (
+        !this.connection ||
+        !this.game ||
+        this.game.owner.userId !== playerId
+      ) {
         return;
       }
 

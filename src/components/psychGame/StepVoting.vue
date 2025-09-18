@@ -77,16 +77,20 @@ const nextPageBtn = computed(() => {
   };
 });
 
-watch(game, (game: Game | null) => {
-  if (game && game.readyUsersCount == game.usersCount) {
-    currentStep.value = 1;
+watch(
+  game,
+  (game: Game | null) => {
+    if (game && game.readyUsersCount == game.usersCount) {
+      currentStep.value = 1;
 
-    shuffledUsers.value = shuffledUsers.value.map((user) => {
-      const freshUser = game.users.find((u) => u.userId === user.userId);
-      return freshUser ? { ...user, ...freshUser } : user;
-    });
-  }
-});
+      shuffledUsers.value = shuffledUsers.value.map((user) => {
+        const freshUser = game.users.find((u) => u.userId === user.userId);
+        return freshUser ? { ...user, ...freshUser } : user;
+      });
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -125,7 +129,9 @@ watch(game, (game: Game | null) => {
         :showPointInfo="false"
       />
       <HubTooltip
-        :tooltipText=" isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
+        :tooltipText="
+          isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')
+        "
         :tooltipDisabled="!confirmBtn.disabled"
       >
         <HubBtn

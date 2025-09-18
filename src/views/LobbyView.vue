@@ -126,18 +126,22 @@ if (!game.value.users.length) {
   router.push(ROUTE_PATH.JOIN_GAME);
 }
 
-watch(game, (game: Game | null) => {
-  if (game == null || game.code == null) {
-    router.push({
-      path: ROUTE_PATH.NO_ACCESS,
-      query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
-    });
-  }
+watch(
+  game,
+  (game: Game | null) => {
+    if (game == null || game.code == null) {
+      router.push({
+        path: ROUTE_PATH.NO_ACCESS,
+        query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
+      });
+    }
 
-  if (game?.isGameStarted) {
-    router.push(ROUTE_PATH.GAME_PSYCH);
-  }
-});
+    if (game?.isGameStarted) {
+      router.push(ROUTE_PATH.GAME_PSYCH);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

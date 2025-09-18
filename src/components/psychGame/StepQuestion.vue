@@ -23,7 +23,6 @@ const game = computed<Game>(
 );
 
 const answerText = ref<string>("");
-const isUserReady = ref<boolean>(false);
 const isFoxVisible = ref<boolean>(true);
 
 const addAnswer = async () => {
@@ -36,7 +35,7 @@ const addAnswer = async () => {
     answerText.value
   );
   await signalRStore.addAnswer(answer);
-  isUserReady.value = true;
+  userStore.user.isReady = true;
 };
 
 const focusHandler = () => {
@@ -58,14 +57,18 @@ const waitingInfo = computed(
     `${t("lobby.waitingForPlayers")} ( ${game.value.readyUsersCount} / ${game.value.usersCount} )`
 );
 const dividerText = computed(() =>
-  isUserReady.value ? t("waitForAnswers") : t("writeAnswer")
+  userStore.user.isReady ? t("waitForAnswers") : t("writeAnswer")
 );
 
-watch(game, (game: Game | null) => {
-  if (game?.readyUsersCount == game?.usersCount) {
-    emit("nextStep");
-  }
-});
+watch(
+  game,
+  (game: Game | null) => {
+    if (game?.readyUsersCount == game?.usersCount) {
+      emit("nextStep");
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -73,7 +76,7 @@ watch(game, (game: Game | null) => {
     <HubDivider :text="dividerText" />
     <div class="stepQuestion_gameSection" :class="{ isHovered: !isFoxVisible }">
       <transition name="fade" mode="out-in" appear>
-        <div v-if="!isUserReady" key="stepAnswer">
+        <div v-if="!userStore.user.isReady" key="stepAnswer">
           <CurrentQuestion
             :isFoxVisible="isFoxVisible"
             :question="game.currentQuestion?.text ?? ''"

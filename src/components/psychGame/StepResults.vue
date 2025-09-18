@@ -36,11 +36,12 @@ const nextPageBtn = computed(() => {
     text: "ready",
     isOrange: true,
     action: startNextRound,
-    disabled: false,
+    disabled: userStore.user.isReady,
   };
 });
 
 const startNextRound = () => {
+  userStore.user.isReady = true;
   signalRStore.setStatus(userStore.user.userId, true);
 };
 </script>
@@ -62,8 +63,16 @@ const startNextRound = () => {
       <div class="votersForHisAnswer">
         <img src="@/assets/imgs/fox13.webp" alt="Lisek" />
         <div class="whiteCard voters">
-          <div class="title">{{ votersForHisAnswerString ? $t("yourAnswerWasChosen") : $t("nobodyChoseYourAnswer") }}</div>
-          <div v-if="votersForHisAnswerString" class="yourAnswerWasChosen">{{ votersForHisAnswerString }}</div>
+          <div class="title">
+            {{
+              votersForHisAnswerString
+                ? $t("yourAnswerWasChosen")
+                : $t("nobodyChoseYourAnswer")
+            }}
+          </div>
+          <div v-if="votersForHisAnswerString" class="yourAnswerWasChosen">
+            {{ votersForHisAnswerString }}
+          </div>
         </div>
         <HubDivider />
       </div>

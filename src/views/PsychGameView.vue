@@ -31,7 +31,7 @@ const getCurrentStep = computed(() => {
       return StepResults;
     default:
       currentStep.value = 0;
-      signalRStore.setNewRound();
+      signalRStore.setNewRound(userStore.user.userId);
       return StepQuestion;
   }
 });
@@ -49,24 +49,36 @@ if (game == null || !game.value.code) {
   router.push(ROUTE_PATH.MENU);
 }
 
-watch(game, (game: Game | null) => {
-  if (game == null || game.code == null) {
-    router.push({
-      path: ROUTE_PATH.NO_ACCESS,
-      query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
-    });
-  }
+watch(
+  game,
+  (game: Game | null) => {
+    if (game == null || game.code == null) {
+      router.push({
+        path: ROUTE_PATH.NO_ACCESS,
+        query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
+      });
 
-  if (game?.readyUsersCount !== game?.usersCount) {
-    return;
-  }
+      return;
+    }
 
-  signalRStore.markAllUsersUnready();
+    userStore.user.isReady = game.users.find(
+      (user) => user.userId === userStore.user.userId
+    )!.isReady;
 
-  if (currentStep.value == 2) {
-    handleNextStep();
-  }
-});
+    if (game?.readyUsersCount !== game?.usersCount) {
+      return;
+    }
+
+    if (game?.owner.userId === userStore.user.userId) {
+      signalRStore.markAllUsersUnready();
+    }
+
+    if (currentStep.value == 2) {
+      handleNextStep();
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -76,7 +88,7 @@ watch(game, (game: Game | null) => {
       <span class="roundInfo">{{ $t("round") }} {{ game.round }}</span>
     </div>
     <transition name="fade" mode="out-in">
-      <StepEnd v-if="game.hasGameEnded" @leaveRoom="leaveRoom"/>
+      <StepEnd v-if="game.hasGameEnded" @leaveRoom="leaveRoom" />
       <component
         v-else
         :is="getCurrentStep"
