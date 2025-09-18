@@ -52,8 +52,11 @@ const podiumPositions = [
 .podium {
   position: relative;
   margin-bottom: 32px;
+  display: flex;
+  justify-content: center;
+
   &_img {
-    width: 356px;
+    max-width: 340px;
     padding-top: 148px;
   }
 
@@ -65,17 +68,17 @@ const podiumPositions = [
 
     &--first {
       align-items: center;
-      bottom: 116px;
+      bottom: 106px;
     }
 
     &--second {
       align-items: start;
-      bottom: 80px;
+      bottom: 70px;
     }
 
     &--third {
       align-items: end;
-      bottom: 62px;
+      bottom: 52px;
     }
   }
 
@@ -91,7 +94,7 @@ const podiumPositions = [
     font-weight: 600;
 
     &--first {
-      left: 124px;
+      margin: 0 auto;
     }
 
     &--second {

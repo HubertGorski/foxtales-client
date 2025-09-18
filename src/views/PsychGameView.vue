@@ -11,6 +11,7 @@ import { ROUTE_PATH } from "@/router/routeEnums";
 import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
 import { useUserStore } from "@/stores/userStore";
 import StepEnd from "@/components/psychGame/StepEnd.vue";
+import HubBtn from "@/components/hubComponents/HubBtn.vue";
 
 const router = useRouter();
 const signalRStore = useSignalRStore();
@@ -45,9 +46,27 @@ const leaveRoom = async () => {
   router.push(ROUTE_PATH.MENU);
 };
 
+// TODO: zrobic konczenie gry
+const finishGame = async () => {
+  game.value.hasGameEnded = true;
+};
+
 if (game == null || !game.value.code) {
   router.push(ROUTE_PATH.MENU);
 }
+
+const finishGameBtn = computed(() => {
+  return {
+    text:
+      userStore.user.userId === game.value.owner.userId
+        ? "finishGame"
+        : "leave",
+    action:
+      userStore.user.userId === game.value.owner.userId
+        ? finishGame
+        : leaveRoom,
+  };
+});
 
 watch(
   game,
@@ -84,7 +103,7 @@ watch(
 <template>
   <div class="psychGameView">
     <div v-if="!game.hasGameEnded" class="psychGameView_header">
-      <NavigationBtns btn="leaveGame" :btnCustomAction="leaveRoom" />
+      <HubBtn :action="finishGameBtn.action" :text="finishGameBtn.text" />
       <span class="roundInfo">{{ $t("round") }} {{ game.round }}</span>
     </div>
     <transition name="fade" mode="out-in">
@@ -116,7 +135,8 @@ watch(
     gap: 8px;
     align-items: center;
 
-    .navigationBtns_btn.hubBtn {
+    .hubBtn {
+      font-size: 16px;
       padding: 4px;
     }
 
