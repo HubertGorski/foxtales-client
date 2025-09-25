@@ -87,7 +87,7 @@ const btns = [
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    width: 100%;
+    padding: 0 32px;
   }
 
   &_img {
