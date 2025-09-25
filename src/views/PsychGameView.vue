@@ -60,7 +60,7 @@ const finishGameBtn = computed(() => {
     text:
       userStore.user.userId === game.value.owner.userId
         ? "finishGame"
-        : "leave",
+        : "leaveGame",
     action:
       userStore.user.userId === game.value.owner.userId
         ? finishGame
@@ -88,7 +88,7 @@ watch(
       return;
     }
 
-    if (game?.owner.userId === userStore.user.userId) {
+    if (game?.owner.userId === userStore.user.userId && currentStep.value != 2) {
       signalRStore.markAllUsersUnready();
     }
 

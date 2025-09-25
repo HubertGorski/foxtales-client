@@ -13,6 +13,7 @@ import { UserLimit } from "./UserLimit";
 import { Type } from "class-transformer";
 import type { QUESTION_SOURCE } from "@/enums/questionSource";
 import { Answer } from "./Answer";
+import { Vote } from "./Vote";
 
 export class User {
   // Basic info
@@ -88,8 +89,12 @@ export class User {
   @Type(() => User)
   votersIdsForHisAnswer: number[] = [];
 
-  VotesReceived: { voterId: number; voteCount: number }[] = [];
-  VotesGiven: { voterId: number; voteCount: number }[] = [];
+  @Type(() => Vote)
+  votesReceived: Vote[] = [];
+  
+  @Type(() => Vote)
+  votesGiven: Vote[] = [];
+
   responseTime: number = 0;
   averageResponseTimeInCurrentGame: number = 0;
 

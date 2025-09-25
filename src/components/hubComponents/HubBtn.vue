@@ -2,38 +2,18 @@
 import { ref } from "vue";
 
 const props = defineProps({
-  text: {
-    type: String,
-    required: false,
-  },
-  icon: {
-    type: String,
-    required: false,
-  },
-  isOrange: {
-    type: Boolean,
-    default: false,
-  },
-  isSwitch: {
-    type: Boolean,
-    default: false,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  action: {
-    type: Function,
-    required: true,
-  },
+  text: { type: String, required: false },
+  icon: { type: String, required: false },
+  isOrange: { type: Boolean, default: false },
+  isSwitch: { type: Boolean, default: false },
+  disabled: { type: Boolean, default: false },
+  action: { type: Function, required: true },
 });
 
 const isBtnClicked = ref(false);
 
 const handleAction = () => {
-  if (props.isSwitch) {
-    isBtnClicked.value = !isBtnClicked.value;
-  }
+  if (props.isSwitch) isBtnClicked.value = !isBtnClicked.value;
   props.action();
 };
 </script>
@@ -66,39 +46,53 @@ const handleAction = () => {
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 300px;
-  padding: 20px;
-  border-radius: 10px;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
+  padding: 14px 20px;
+  border-radius: 12px;
+  color: $whiteColor;
+  font-size: 16px;
+  font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.06);
   white-space: nowrap;
 
   &--brown {
-    background-color: $mainBrownColor;
+    background: linear-gradient(135deg, $mainBrownColor, $lightBrownColor);
   }
 
   &--darkBrown {
-    background-color: $lightBrownColor;
-    transform: scale(0.98);
-    box-shadow:
-      rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-      rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-      rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    background: linear-gradient(
+      135deg,
+      darken($mainBrownColor, 10%),
+      darken($lightBrownColor, 10%)
+    );
   }
 
   &--orange {
-    background-color: $mainOrangeColor;
+    background: linear-gradient(
+      135deg,
+      $mainOrangeColor,
+      lighten($mainOrangeColor, 10%)
+    );
+  }
+
+  &--darkOrange {
+    background: linear-gradient(
+      135deg,
+      darken($mainOrangeColor, 10%),
+      darken($mainOrangeColor, 20%)
+    );
   }
 
   &.disabled {
     pointer-events: none;
-    background-color: $lightGrayColor;
+    background: $lightGrayColor !important;
+    color: #aaa;
+    transform: none;
+  }
+
+  p {
+    margin: 0;
+    margin-right: 8px;
   }
 }
 </style>

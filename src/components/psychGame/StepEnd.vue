@@ -6,6 +6,7 @@ import { useSignalRStore } from "@/stores/signalRStore";
 import Podium from "../Podium.vue";
 import FoxWithName from "../FoxWithName.vue";
 import { useUserStore } from "@/stores/userStore";
+import { cloneDeep } from "lodash";
 import SummaryGame from "./SummaryGame.vue";
 import HubBtn from "../hubComponents/HubBtn.vue";
 
@@ -17,12 +18,10 @@ const emit = defineEmits<{
   (e: "leaveRoom"): void;
 }>();
 
-const game = computed<Game>(
-  () => toRef(signalRStore, "game").value ?? new Game()
-);
+const game = cloneDeep(signalRStore.game) ?? new Game();
 
 const usersSortedByPlace = computed(() =>
-  [...game.value.users].sort((a, b) => b.pointsInGame - a.pointsInGame)
+  [...game.users].sort((a, b) => b.pointsInGame - a.pointsInGame)
 );
 
 const place = computed(() => {
@@ -99,7 +98,7 @@ const navigationBtns = computed(() => {
         <HubDivider :text="$t('top3users')" />
         <Podium :users="usersSortedByPlace" />
       </div>
-      <SummaryGame v-else />
+      <SummaryGame :users="game.users" v-else />
     </transition>
     <div class="btns">
       <HubBtn
