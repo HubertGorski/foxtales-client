@@ -122,10 +122,12 @@ const navigationBtns = computed(() => {
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
+  overflow: scroll;
 
   .btns {
     display: flex;
     gap: 12px;
+    padding: 12px;
 
     .hubBtn {
       padding: 8px;
@@ -137,6 +139,7 @@ const navigationBtns = computed(() => {
     flex-direction: column;
     justify-content: space-between;
     flex-grow: 1;
+    padding-top: 8px;
 
     &_info {
       padding: 12px 0;

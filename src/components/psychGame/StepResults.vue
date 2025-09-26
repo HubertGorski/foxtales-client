@@ -96,6 +96,9 @@ const startNextRound = () => {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  padding: 12px;
+  padding-top: 0;
+
   .content {
     flex-grow: 1;
     display: flex;
@@ -105,6 +108,7 @@ const startNextRound = () => {
       display: grid;
       grid-template-columns: auto 1fr;
       grid-template-rows: auto 1fr;
+      padding: 0 8px;
 
       .voters {
         margin: 8px;
@@ -153,7 +157,6 @@ const startNextRound = () => {
 
   .nextPageBtn {
     width: 100%;
-    padding-top: 8px;
 
     .hubBtn {
       padding: 8px;

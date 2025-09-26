@@ -163,6 +163,8 @@ watch(
   height: 100%;
   justify-content: space-between;
   align-items: center;
+  padding: 12px;
+  padding-top: 0;
 
   .header {
     width: 100%;

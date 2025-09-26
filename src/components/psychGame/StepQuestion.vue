@@ -114,6 +114,7 @@ watch(
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 0 12px;
 
   &_gameSection {
     flex-grow: 1;

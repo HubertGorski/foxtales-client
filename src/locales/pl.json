@@ -122,7 +122,14 @@
     "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
     "noQuestionsHasBeenCreatedYet": "Jeszcze nie utworzono żadnych pytań.",
     "addToCatalog": "Dodaj do katalogu",
-    "createdQuestion": "Utworzone pytanie:"
+    "createdQuestion": "Utworzone pytanie:",
+    "summary": {
+      "playersYouPlayTheMost": "Najczęściej Twoje odpowiedzi wybierali:",
+      "playersWhoAmuseYouTheMost": "Najczęściej Twój głos otrzymywali:",
+      "youFoundOutAboutYourselfThings": "W grze udzielono {x} odpowiedzi na Twój temat.",
+      "yourAnswersWereChosenXTimes": "Wybrano Twoje odpowiedzi {x} razy.",
+      "inGameYourOwnAnswerWasExperiencedTimesIncludingYouTimes": "W grze zaznoczono własną odpowiedź {x} razy. W tym Ty {x2} razy."
+    }
   },
   "dylematy": {
     "addCard": "Dodaj kartę",

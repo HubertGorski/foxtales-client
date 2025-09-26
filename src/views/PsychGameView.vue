@@ -128,12 +128,12 @@ watch(
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 12px;
 
   &_header {
     display: flex;
     gap: 8px;
     align-items: center;
+    padding: 4px 12px;
 
     .hubBtn {
       font-size: 16px;

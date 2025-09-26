@@ -3,6 +3,9 @@ import type { PropType } from "vue";
 import { User } from "@/models/User";
 import { useUserStore } from "@/stores/userStore";
 import BrownCard from "../BrownCard.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps({
   users: {
@@ -35,59 +38,66 @@ const totalVotesReceived = currentUser.votesReceived.reduce(
   (s, v) => s + v.voteCount,
   0
 );
+
+const cards = [
+  { header: t("Poziom 1"), content: "15 / 64 exp" },
+  { header: t("psych.summary.playersYouPlayTheMost"), content: votesReceived },
+  { header: t("psych.summary.playersWhoAmuseYouTheMost"), content: votesGiven },
+  { header: t("Odblokowano liska Happy") },
+  { header: t("Zdobyto 82 monety") },
+  { header: t("psych.summary.youFoundOutAboutYourselfThings", { x: 12 }) },
+  {
+    header: t("psych.summary.yourAnswersWereChosenXTimes", {
+      x: totalVotesReceived,
+    }),
+  },
+  {
+    header: t(
+      "psych.summary.inGameYourOwnAnswerWasExperiencedTimesIncludingYouTimes",
+      { x: 4, x2: 2 }
+    ),
+  },
+];
 </script>
 
 <template>
-  <div class="summaryGame">
-    <div class="summaryGame_title">
-      {{ $t("summary") }}
-    </div>
-    <div class="w-100 h-100 px-1">
-      <BrownCard header="Gracze, których najbardziej bawisz:">
-        <div class="details">
-          {{ votesReceived }}
-        </div>
-      </BrownCard>
-      <BrownCard header="Gracze, którzy najbardziej bawią Ciebie:">
-        <div>
-          {{ votesGiven }}
-        </div>
-      </BrownCard>
-      <BrownCard header="Dowiedziałeś się o sobie X rzeczy." />
-      <BrownCard
-        :header="`Wybrano Twoje odpowiedzi ${totalVotesReceived} razy.`"
-      />
-    </div>
-    <img src="@/assets/imgs/fox11.webp" alt="Lisek" />
-  </div>
+  <transition-group name="slide-left" tag="div" class="summaryGame">
+    <BrownCard
+      v-for="(card, i) in cards"
+      :key="i"
+      :header="card.header"
+      :isDividerVisible="!!card.content"
+      class="card"
+      :style="{ animationDelay: `${i * 0.2}s` }"
+    >
+      <template v-if="card.content">
+        <div>{{ card.content }}</div>
+      </template>
+    </BrownCard>
+  </transition-group>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/variables";
 
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .summaryGame {
   display: flex;
   flex-direction: column;
-  align-items: end;
-  height: 100%;
-
-  &_title {
+  padding: 4px 16px;
+  overflow-y: scroll;
+  
+  .card {
     width: 100%;
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-    color: $mainBrownColor;
-    margin: 8px 0;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    line-height: 1.3;
-    background: linear-gradient(135deg, $mainBrownColor, $lightBrownColor);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  img {
-    max-width: 124px;
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideIn 0.6s ease forwards;
   }
 }
 </style>

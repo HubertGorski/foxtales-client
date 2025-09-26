@@ -4,13 +4,17 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  isDividerVisible: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
 <template>
   <div class="brownCard">
     <div class="header">{{ header }}</div>
-    <v-divider />
+    <v-divider v-if="isDividerVisible" />
     <slot></slot>
   </div>
 </template>
@@ -25,7 +29,7 @@ const props = defineProps({
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   text-align: center;
-
+  
   .header {
     color: $whiteColor;
     font-size: 16px;
@@ -33,12 +37,12 @@ const props = defineProps({
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
+  
   .v-divider {
     margin: 8px 0;
     border-color: rgba(255, 255, 255, 0.3);
   }
-
+  
   ::v-deep > *:not(.header):not(.v-divider) {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 10px 14px;
