@@ -18,8 +18,8 @@ import {
 } from "@/components/selectLists/ListElement";
 import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
 import { Question } from "@/models/Question";
-import { userService } from "@/api/services/UserService";
 import HubDialogPopup from "@/components/hubComponents/HubDialogPopup.vue";
+import { psychService } from "@/api/services/PsychService";
 
 const userStore = useUserStore();
 
@@ -43,7 +43,7 @@ const addQuestion = async (catalogs: Catalog[]) => {
     questionToStore.addCatalogs(catalogIds);
   }
 
-  const response = await userService.addQuestion(questionToStore);
+  const response = await psychService.addQuestion(questionToStore);
   if (!response) {
     return;
   }
@@ -62,7 +62,7 @@ const addQuestion = async (catalogs: Catalog[]) => {
 
 const deleteQuestions = async (questions: ListElement[]) => {
   const questionsIds = questions.map((question) => question.id);
-  const response = await userService.removeQuestions(questionsIds);
+  const response = await psychService.removeQuestions(questionsIds);
   if (!response) {
     return;
   }
@@ -82,7 +82,7 @@ const assignedQuestionsToCatalogs = async (catalogs: Catalog[]) => {
     .map((catalog) => catalog.catalogId)
     .filter((catalogId) => catalogId !== null);
 
-  const response = await userService.assignedQuestionsToCatalogs(
+  const response = await psychService.assignedQuestionsToCatalogs(
     selectedActualQuestionsIds,
     selectedActualCatalogsIds
   );
@@ -175,7 +175,7 @@ const deleteCatalog = async () => {
   }
 
   isDeletePopupOpen.value = false;
-  const response = await userService.removeCatalog(catalogIdToRemove);
+  const response = await psychService.removeCatalog(catalogIdToRemove);
   if (!response) {
     return;
   }

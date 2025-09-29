@@ -1,17 +1,16 @@
 import { User } from "@/models/User";
-import { UserClient } from "../clients/UserClient";
 import { plainToInstance } from "class-transformer";
 import { USER_LIMIT } from "@/enums/userLimitEnum";
 import { Permission } from "@/models/Permission";
 import { FoxGame } from "@/models/FoxGame";
 import { Avatar } from "@/models/Avatar";
 import { Question } from "@/models/Question";
-import type { Catalog } from "@/models/Catalog";
 import { CatalogType } from "@/models/CatalogType";
+import { userClient } from "../clients/UserClient";
 
 export const userService = {
   async logout(): Promise<void> {
-    await UserClient.logout();
+    await userClient.logout();
   },
 
   async login(
@@ -23,7 +22,7 @@ export const userService = {
     availableCatalogTypes: CatalogType[];
     publicQuestions: Question[];
   }> {
-    const response = await UserClient.login(email, password);
+    const response = await userClient.login(email, password);
     const user = plainToInstance(User, response.data.user);
 
     for (const limit of user.userLimits) {
@@ -83,7 +82,7 @@ export const userService = {
     password: string,
     confirmPassword: string
   ) {
-    return await UserClient.register(
+    return await userClient.register(
       email,
       username,
       password,
@@ -92,42 +91,10 @@ export const userService = {
   },
 
   async setAvatar(avatarId: number): Promise<boolean> {
-    return await UserClient.setAvatar(avatarId);
+    return await userClient.setAvatar(avatarId);
   },
 
   async setUsername(username: string): Promise<boolean> {
-    return await UserClient.setUsername(username);
-  },
-
-  async addQuestion(question: Question): Promise<number> {
-    return (await UserClient.addQuestion(question)).data;
-  },
-
-  async removeQuestion(questionId: number): Promise<boolean> {
-    return await UserClient.removeQuestion(questionId);
-  },
-
-  async removeQuestions(questionsIds: number[]): Promise<boolean> {
-    return await UserClient.removeQuestions(questionsIds);
-  },
-
-  async addCatalog(catalog: Catalog): Promise<number> {
-    return (await UserClient.addCatalog(catalog)).data;
-  },
-
-  async editCatalog(catalog: Catalog): Promise<number> {
-    return await UserClient.editCatalog(catalog);
-  },
-
-  async removeCatalog(catalogId: number): Promise<boolean> {
-    return await UserClient.removeCatalog(catalogId);
-  },
-
-  async getUserCatalogs(): Promise<Catalog[]> {
-    return (await UserClient.getUserCatalogs()).data;
-  },
-
-  async assignedQuestionsToCatalogs(questionsIds: number[], catalogsIds: (number | null)[]): Promise<boolean> {
-    return (await UserClient.assignedQuestionsToCatalogs(questionsIds, catalogsIds)).data;
+    return await userClient.setUsername(username);
   },
 };

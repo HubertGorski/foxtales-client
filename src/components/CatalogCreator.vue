@@ -9,8 +9,8 @@ import {
   ListElement,
 } from "./selectLists/ListElement";
 import HubBtn from "./hubComponents/HubBtn.vue";
-import { userService } from "@/api/services/UserService";
 import type { CatalogType } from "@/models/CatalogType";
+import { psychService } from "@/api/services/PsychService";
 
 const props = defineProps({
   editMode: {
@@ -44,7 +44,7 @@ const formBtn = computed(() => {
 const addCatalog = async () => {
   addSelectedQuestionsToCatalog();
   catalog.value.availableTypes = availableTypes;
-  const newCatalogId = await userService.addCatalog(catalog.value);
+  const newCatalogId = await psychService.addCatalog(catalog.value);
   if (!newCatalogId) {
     return;
   }
@@ -69,7 +69,7 @@ const addCatalog = async () => {
 
 const editCatalog = async () => {
   addSelectedQuestionsToCatalog();
-  const response = await userService.editCatalog(catalog.value);
+  const response = await psychService.editCatalog(catalog.value);
   if (!response) {
     return;
   }
