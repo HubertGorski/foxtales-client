@@ -71,6 +71,10 @@ const handleBlur = () => {
 };
 
 const btnIsDisabled = computed(() => {
+  if (!text.value) {
+    return true;
+  }
+  
   return text.value.length === 0 || props.btnIsDisabled;
 });
 

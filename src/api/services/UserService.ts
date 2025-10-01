@@ -6,25 +6,16 @@ import { FoxGame } from "@/models/FoxGame";
 import { Avatar } from "@/models/Avatar";
 import { Question } from "@/models/Question";
 import { CatalogType } from "@/models/CatalogType";
-import { userClient } from "../clients/UserClient";
+import { userClient, type IUserLoginResponse } from "../clients/UserClient";
+import { useUserStore } from "@/stores/userStore";
 
 export const userService = {
   async logout(): Promise<void> {
     await userClient.logout();
   },
 
-  async login(
-    email: string,
-    password: string
-  ): Promise<{
-    user: User;
-    avatars: Avatar[];
-    availableCatalogTypes: CatalogType[];
-    publicQuestions: Question[];
-  }> {
-    const response = await userClient.login(email, password);
-    const user = plainToInstance(User, response.data.user);
-
+  setUserSession(data: IUserLoginResponse) {
+    const user = plainToInstance(User, data.user);
     for (const limit of user.userLimits) {
       switch (limit.type) {
         case USER_LIMIT.PERMISSION_GAME:
@@ -47,19 +38,19 @@ export const userService = {
     const foxGames: FoxGame[] = [];
     const publicQuestions: Question[] = [];
 
-    response.data.publicQuestions.forEach((question) => {
+    data.publicQuestions.forEach((question) => {
       publicQuestions.push(plainToInstance(Question, question));
     });
 
-    response.data.avatars.forEach((avatar) => {
+    data.avatars.forEach((avatar) => {
       avatars.push(plainToInstance(Avatar, avatar));
     });
 
-    response.data.availableCatalogTypes.forEach((catalogType) => {
+    data.availableCatalogTypes.forEach((catalogType) => {
       availableCatalogTypes.push(plainToInstance(CatalogType, catalogType));
     });
 
-    response.data.foxGames.forEach((game) => {
+    data.foxGames.forEach((game) => {
       foxGames.push(plainToInstance(FoxGame, game));
     });
 
@@ -73,7 +64,21 @@ export const userService = {
       }
     });
 
-    return { user, avatars, availableCatalogTypes, publicQuestions };
+    const userStore = useUserStore();
+    userStore.setUserSession(user);
+    userStore.setAvatars(avatars);
+    userStore.setPublicQuestions(publicQuestions);
+    userStore.setAvailableCatalogTypes(availableCatalogTypes);
+  },
+
+  async login(email: string, password: string): Promise<void> {
+    const response = await userClient.login(email, password);
+    this.setUserSession(response.data);
+  },
+
+  async registerTmpUser(username: string): Promise<void> {
+    const response = await userClient.registerTmpUser(username);
+    this.setUserSession(response.data);
   },
 
   async register(

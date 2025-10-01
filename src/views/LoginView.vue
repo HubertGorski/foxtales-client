@@ -28,8 +28,8 @@ const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
 // TESTS
-email.value = "hub@wp.pl";
-password.value = "#12345678";
+// email.value = "hub@wp.pl";
+// password.value = "#12345678";
 
 const navigateBack = () => {
   router.push(ROUTE_PATH.HOME);
@@ -37,7 +37,7 @@ const navigateBack = () => {
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const response = await userService.login(values.email, values.password);
+    await userService.login(values.email, values.password);
     const redirectUrl = sessionStorage.getItem(
       SESSION_STORAGE.REDIRECT_AFTER_LOGIN
     );
@@ -48,11 +48,6 @@ const onSubmit = handleSubmit(async (values) => {
     } else {
       router.push(ROUTE_PATH.MENU);
     }
-
-    userStore.setUserSession(response.user);
-    userStore.setAvatars(response.avatars);
-    userStore.setPublicQuestions(response.publicQuestions);
-    userStore.setAvailableCatalogTypes(response.availableCatalogTypes);
   } catch (err: any) {
     errorLogin.value = err?.response?.data
       ? t(`auth.${err.response.data}`)

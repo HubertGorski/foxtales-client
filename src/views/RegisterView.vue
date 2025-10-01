@@ -65,7 +65,7 @@ const navigateBack = () => {
     step.value = 1;
     return;
   }
-  router.push(ROUTE_PATH.HOME);
+  router.back();
 };
 
 const areErrorExistInPart1 = computed(() => {

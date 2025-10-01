@@ -5,25 +5,24 @@ import HubBtn from "@/components/hubComponents/HubBtn.vue";
 
 const router = useRouter();
 
-const goToLogin = () => {
-  router.push(ROUTE_PATH.LOGIN);
-};
-
-const goToRegister = () => {
-  router.push(ROUTE_PATH.REGISTER);
-};
 const btns = [
   {
     id: 1,
     text: "login",
     isOrange: false,
-    action: goToLogin,
+    action: () => router.push(ROUTE_PATH.LOGIN),
   },
   {
     id: 2,
+    text: "tryWithoutAccount",
+    isOrange: false,
+    action: () => router.push(ROUTE_PATH.TRY_WITHOUT_ACCOUNT),
+  },
+  {
+    id: 3,
     text: "register",
     isOrange: true,
-    action: goToRegister,
+    action: () => router.push(ROUTE_PATH.REGISTER),
   },
 ];
 </script>
@@ -36,14 +35,11 @@ const btns = [
     </div>
     <div class="homeView_btns">
       <HubBtn
-        :action="btns[0].action"
-        :text="btns[0].text"
-        :isOrange="btns[0].isOrange"
-      />
-      <HubBtn
-        :action="btns[1].action"
-        :text="btns[1].text"
-        :isOrange="btns[1].isOrange"
+        v-for="btn in btns"
+        :key="btn.id"
+        :action="btn.action"
+        :text="btn.text"
+        :isOrange="btn.isOrange"
       />
     </div>
     <img src="@/assets/imgs/foxes.webp" alt="Lisek" class="homeView_img" />
@@ -87,7 +83,7 @@ const btns = [
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 0 32px;
+    padding: 12px 32px;
   }
 
   &_img {

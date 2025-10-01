@@ -20,6 +20,7 @@ import { PERMISSION_GAME } from "@/enums/permissions";
 import PsychGameView from "@/views/PsychGameView.vue";
 import WelcomeViewVue from "@/views/WelcomeView.vue";
 import Client from "@/api/Client";
+import TryWithoutAccountView from "@/views/TryWithoutAccountView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,7 @@ function getRoutesWithAuth() {
   const publicRoutes = [
     ROUTE_NAME.LOGIN,
     ROUTE_NAME.REGISTER,
+    ROUTE_NAME.TRY_WITHOUT_ACCOUNT,
     ROUTE_NAME.WELCOME,
     ROUTE_NAME.NO_ACCESS,
     ROUTE_NAME.HOME,
@@ -45,6 +47,11 @@ function getRoutesWithAuth() {
       path: ROUTE_PATH.REGISTER,
       name: ROUTE_NAME.REGISTER,
       component: RegisterViewVue,
+    },
+    {
+      path: ROUTE_PATH.TRY_WITHOUT_ACCOUNT,
+      name: ROUTE_NAME.TRY_WITHOUT_ACCOUNT,
+      component: TryWithoutAccountView,
     },
     {
       path: ROUTE_PATH.HOME,

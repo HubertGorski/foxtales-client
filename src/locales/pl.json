@@ -3,6 +3,11 @@
   "confirmDeleteCatalogTextPopup": "Czy na pewno chcesz usunąć wybrany katalog?",
   "delete": "Usuń",
   "login": "Zaloguj się",
+  "tryWithoutAccount": "Wypróbuj bez konta",
+  "attention": "Uwaga",
+  "tryWithoutAccountView": {
+    "alert": "Dostęp tymczasowy. Wszystkie osiągnięcia i zasoby zostaną usunięte po wylogowaniu się lub przekroczeniu 24 godzin."
+  },
   "register": "Załóż konto",
   "registerTitle": "Rejestracja",
   "settings": "Ustawienia",

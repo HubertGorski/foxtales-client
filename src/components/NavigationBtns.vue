@@ -88,6 +88,11 @@ const allBtns = [
     action: () => router.push(ROUTE_PATH.LOGIN),
   },
   {
+    text: "register",
+    isOrange: true,
+    action: () => router.push(ROUTE_PATH.REGISTER),
+  },
+  {
     text: "next",
     isOrange: true,
     action: () => router.push(ROUTE_PATH.LOBBY),

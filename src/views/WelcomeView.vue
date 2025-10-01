@@ -50,8 +50,8 @@ import NavigationBtns from "@/components/NavigationBtns.vue";
 
   .hubBtn.navigationBtns_btn {
     max-width: 100% !important;
-    padding: 16px;
-    font-size: 18px;
+    padding: 8px 16px;
+    font-size: 16px;
   }
 }
 </style>

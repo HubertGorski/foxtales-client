@@ -2,15 +2,14 @@
 const props = defineProps({
   header: {
     type: String,
-    required: true,
   },
 });
 </script>
 
 <template>
   <div class="whiteCard">
-    <div class="header">{{ header }}</div>
-    <v-divider />
+    <div v-if="header" class="header">{{ header }}</div>
+    <v-divider v-if="header" />
     <slot></slot>
   </div>
 </template>

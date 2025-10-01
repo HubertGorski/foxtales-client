@@ -2,26 +2,23 @@ import type { Avatar } from "@/models/Avatar";
 import { apiClient } from "../Client";
 import type { User } from "@/models/User";
 import type { FoxGame } from "@/models/FoxGame";
-import type { Question } from "@/models/Question";
 import type { CatalogType } from "@/models/CatalogType";
+import type { Question } from "@/models/Question";
+
+export interface IUserLoginResponse {
+  user: User;
+  avatars: Avatar[];
+  foxGames: FoxGame[];
+  availableCatalogTypes: CatalogType[];
+  publicQuestions: Question[];
+}
 
 export const userClient = {
   logout(): Promise<string> {
     return apiClient.post("/user/logout");
   },
 
-  login(
-    email: string,
-    password: string
-  ): Promise<{
-    data: {
-      user: User;
-      avatars: Avatar[];
-      foxGames: FoxGame[];
-      availableCatalogTypes: CatalogType[];
-      publicQuestions: Question[];
-    };
-  }> {
+  login(email: string, password: string): Promise<{ data: IUserLoginResponse }> {
     return apiClient.post("/user/login", { email, password });
   },
 
@@ -31,12 +28,16 @@ export const userClient = {
     password: string,
     confirmPassword: string
   ) {
-    return apiClient.post("/user/register", {
+    return apiClient.post("/user/registerUser", {
       email,
       username,
       password,
       confirmPassword,
     });
+  },
+
+  registerTmpUser(username: string): Promise<{ data: IUserLoginResponse }> {
+    return apiClient.post("/user/registerTmpUser", { username });
   },
 
   setAvatar(avatarId: number): Promise<boolean> {
@@ -45,5 +46,5 @@ export const userClient = {
 
   setUsername(username: string): Promise<boolean> {
     return apiClient.post("/user/setUsername", { username });
-  }
+  },
 };

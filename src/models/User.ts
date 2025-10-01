@@ -81,7 +81,7 @@ export class User {
   chosenQuestionsSource: QUESTION_SOURCE | null = null;
   chosenCatalogId: number | undefined;
   chosenQuestions: Question[] = [];
-  
+
   // ==== Game ====
   @Type(() => Answer)
   answer: Answer | null = null;
@@ -91,7 +91,7 @@ export class User {
 
   @Type(() => Vote)
   votesReceived: Vote[] = [];
-  
+
   @Type(() => Vote)
   votesGiven: Vote[] = [];
 
