@@ -6,7 +6,7 @@
   "tryWithoutAccount": "Wypróbuj bez konta",
   "attention": "Uwaga",
   "tryWithoutAccountView": {
-    "alert": "Dostęp tymczasowy. Wszystkie osiągnięcia i zasoby zostaną usunięte po wylogowaniu się lub przekroczeniu 24 godzin."
+    "alert": "Dostęp tymczasowy. Wszystkie osiągnięcia i zasoby zostaną usunięte po wylogowaniu się."
   },
   "register": "Załóż konto",
   "registerTitle": "Rejestracja",
