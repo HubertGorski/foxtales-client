@@ -1,23 +1,8 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import { onBeforeUnmount, onMounted } from "vue";
-import { useUserStore } from "./stores/userStore";
+import { useBeforeUnload } from "./libs/useBeforeUnload";
 
-const userStore = useUserStore();
-
-onMounted(() => {
-  window.addEventListener("beforeunload", handleBeforeUnload);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("beforeunload", handleBeforeUnload);
-});
-
-function handleBeforeUnload(event: BeforeUnloadEvent) { 
-  sessionStorage.setItem("accessToken", userStore.user.accessToken);
-  event.preventDefault();
-  event.returnValue = "";
-}
+useBeforeUnload();
 </script>
 
 <template>
