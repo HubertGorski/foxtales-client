@@ -3,6 +3,7 @@ import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
 
 useBeforeUnload();
+// TODO: naprawic dynamiczne ladowanie wysokosci
 </script>
 
 <template>
