@@ -32,6 +32,7 @@ html,
 body {
   height: 100%;
   overscroll-behavior: none;
+  overflow-anchor: none;
   margin: 0;
   overflow: hidden;
   background-color: #d3b39d;
@@ -50,5 +51,6 @@ body {
   max-width: 380px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  -webkit-overflow-scrolling: touch;
 }
 </style>

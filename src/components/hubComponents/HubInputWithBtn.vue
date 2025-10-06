@@ -63,12 +63,10 @@ const emit = defineEmits<{
 }>();
 
 const handleFocus = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
   emit("focus");
 };
 
 const handleBlur = (event: FocusEvent) => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
   const related = event.relatedTarget as HTMLElement | null;
   if (related && related.closest("[data-no-blur]")) {
     return;
