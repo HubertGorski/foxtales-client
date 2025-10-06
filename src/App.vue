@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
+import { useDynamicHeight } from "./libs/useDynamicHeight";
 
 useBeforeUnload();
+useDynamicHeight("#app");
+useDynamicHeight(".foxTales");
 </script>
 
 <template>
@@ -27,26 +30,25 @@ useBeforeUnload();
 
 html,
 body {
-  height: 100dvh;
+  height: 100%;
   overscroll-behavior: none;
   margin: 0;
   overflow: hidden;
   background-color: #d3b39d;
 
-  /* iOS */
+  /* iOS safe area */
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
     env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #app {
-  height: 100dvh;
   overflow: hidden;
 }
 
 .foxTales {
   margin: 0 auto;
   max-width: 380px;
-  height: 100dvh;
+  overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 </style>

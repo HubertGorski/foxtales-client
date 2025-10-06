@@ -29,7 +29,7 @@ const { value: password, errorMessage: passwordError } = useField("password");
 
 // TEST
 // email.value = "hub@wp.pl";
-password.value = "#12345678";
+// password.value = "#12345678";
 
 const navigateBack = () => {
   router.push(ROUTE_PATH.HOME);
