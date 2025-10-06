@@ -29,8 +29,10 @@ const fox = computed(() => {
 </script>
 
 <template>
-  <div class="currentQuestion" :class="{ isFoxVisible: !isFoxVisible }">
-    <img :src="fox" alt="Lisek" class="fox" />
+  <div class="currentQuestion" :class="{ isFoxHidden: !isFoxVisible }">
+    <div class="foxWrapper">
+      <img :src="fox" alt="Lisek" class="fox" />
+    </div>
     <img :src="getAvatar(avatarId)" alt="Lisek" class="foxAvatar" />
     <WhiteCard :header="username">
       <div class="question">
@@ -57,10 +59,19 @@ const fox = computed(() => {
     transition: all 0.4s ease;
   }
 
+  .foxWrapper {
+    height: 200px;
+    overflow: hidden;
+    transition: height 0.4s ease;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
   .fox {
     height: 200px;
-    transform: scale(1) translateY(8px);
-    transition: all 0.4s ease;
+    transform: scale(1) translateY(0);
+    transition: transform 0.4s ease;
   }
 
   .foxAvatar {
@@ -85,9 +96,13 @@ const fox = computed(() => {
     letter-spacing: 0.5px;
   }
 
-  &.isFoxVisible {
+  &.isFoxHidden {
+    .foxWrapper {
+      height: 0;
+    }
+
     .fox {
-      transform: scale(0) translateY(-200px);
+      transform: scale(0.8) translateY(-20px);
     }
 
     .foxAvatar {
