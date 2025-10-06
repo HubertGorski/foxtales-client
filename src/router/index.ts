@@ -157,10 +157,33 @@ function getRoutesWithAuth() {
   });
 }
 
+let isInputFocused = false;
+
+window.addEventListener("focusin", (e) => {
+  if (
+    e.target instanceof HTMLInputElement ||
+    e.target instanceof HTMLTextAreaElement
+  ) {
+    isInputFocused = true;
+  }
+});
+
+window.addEventListener("focusout", (e) => {
+  if (
+    e.target instanceof HTMLInputElement ||
+    e.target instanceof HTMLTextAreaElement
+  ) {
+    isInputFocused = false;
+  }
+});
+
 router.afterEach(() => {
-  window.scrollTo({
-    top: 0,
-  });
+  if (!isInputFocused) {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }
 });
 
 router.beforeEach((to, from, next) => {
