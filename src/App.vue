@@ -35,6 +35,7 @@ body {
   margin: 0;
   overflow: hidden;
   background-color: red;
+  position: fixed;
 }
 
 #app {
