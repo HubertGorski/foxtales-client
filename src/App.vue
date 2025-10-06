@@ -3,14 +3,13 @@ import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
 import { useDynamicHeight } from "./libs/useDynamicHeight";
 import { disableScroll } from "./libs/disableScroll";
-import { usePreventMobileScrollOnFocus } from "./libs/usePreventMobileScrollOnFocus";
+import { useGlobalPreventScrollOnFocus } from "./libs/useGlobalPreventScrollOnFocus";
 
 useBeforeUnload();
 disableScroll();
-usePreventMobileScrollOnFocus();
+useGlobalPreventScrollOnFocus();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
-
 </script>
 
 <template>
