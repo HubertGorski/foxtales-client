@@ -38,14 +38,6 @@ const addAnswer = async () => {
   userStore.user.isReady = true;
 };
 
-const focusHandler = () => {
-  isFoxVisible.value = false;
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
-
 const addAnswerBtn = computed(() => ({
   text: "add",
   isOrange: true,
@@ -91,7 +83,8 @@ watch(
             :btnIsOrange="addAnswerBtn.isOrange"
             :textareaRows="5"
             isTextarea
-            @focus="focusHandler"
+            @focus="isFoxVisible = false;"
+            @blur="isFoxVisible = true;"
           />
         </div>
         <div v-else key="stepWaiting" class="stepWaiting">

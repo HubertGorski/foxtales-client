@@ -18,6 +18,7 @@ const isVisible = defineModel({ type: Boolean, required: true });
   justify-content: center;
   align-items: center;
   position: fixed;
+  height: 100%;
   top: 0;
   left: 0;
   z-index: 4;
