@@ -52,8 +52,14 @@ const fox = computed(() => {
     width: 100%;
   }
 
+  .header,
+  .foxAvatar {
+    transition: all 0.4s ease;
+  }
+
   .fox {
     height: 200px;
+    transform: scale(1) translateY(8px);
     transition: all 0.4s ease;
   }
 
@@ -68,7 +74,7 @@ const fox = computed(() => {
     padding: 2px;
     position: absolute;
     left: -12px;
-    top: -12px;
+    bottom: 64px;
     z-index: 2;
   }
 
@@ -81,7 +87,7 @@ const fox = computed(() => {
 
   &.isFoxVisible {
     .fox {
-      height: 0;
+      transform: scale(0) translateY(-200px);
     }
 
     .foxAvatar {
