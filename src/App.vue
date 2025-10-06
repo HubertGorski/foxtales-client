@@ -20,13 +20,29 @@ useBeforeUnload();
   scrollbar-width: thin;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
+  overscroll-behavior: none;
   margin: 0;
-  padding: 24px;
   overflow: hidden;
   background-color: #d3b39d;
+
+  /* iOS */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+@supports (height: 100dvh) {
+  body {
+    height: 100dvh;
+  }
 }
 
 #app {

@@ -73,6 +73,7 @@ const back = () => {
 @import "@/assets/styles/variables";
 
 .tryWithoutAccountView {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +92,7 @@ const back = () => {
   }
 
   .navBtns {
-    position: fixed;
+    position: absolute;
     padding: 8px;
     bottom: 0;
   }
