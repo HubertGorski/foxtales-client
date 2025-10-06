@@ -49,6 +49,19 @@ const props = defineProps({
 });
 
 const text = defineModel({ type: String, required: true });
+
+const emit = defineEmits<{
+  (e: "focus"): void;
+  (e: "blur"): void;
+}>();
+
+const handleFocus = () => {
+  emit("focus");
+};
+
+const handleBlur = () => {
+  emit("blur");
+};
 </script>
 
 <template>
@@ -72,6 +85,8 @@ const text = defineModel({ type: String, required: true });
       :isTextarea="isTextarea"
       :textPlaceholder="textPlaceholder"
       :error-messages="errorMessages"
+      @focus="handleFocus"
+      @blur="handleBlur"
     />
   </div>
 </template>

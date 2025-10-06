@@ -26,6 +26,7 @@ const customCode = ref<string>("");
 const password = ref<string>("");
 const selectedGamesOwnerId = ref<number>(0);
 const isPasswordPopupOpen = ref<boolean>(false);
+const isFocused = ref(false);
 
 const errorCodeMessage = computed(() => {
   return errorCode.value ? t(`auth.${errorCode.value}`) : undefined;
@@ -134,9 +135,14 @@ if (!signalRStore.connection) {
       :btnText="acceptCodeBtn.text"
       :btnIsOrange="acceptCodeBtn.isOrange"
       :error-messages="errorCodeMessage"
+      @focus="isFocused = true"
+      @blur="isFocused = false"
     />
     <HubDivider :text="$t('or')" />
-    <div class="joinGameView_chooseRoom creamCard">
+    <div
+      class="joinGameView_chooseRoom creamCard"
+      :class="{ isHidden: isFocused === true }"
+    >
       <p class="subtitle">{{ $t("joinGame.chooseRoomFromList") }}</p>
       <div v-if="actualGames.length === 0" class="emptyGamesList">
         <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
@@ -192,6 +198,21 @@ if (!signalRStore.connection) {
   &_chooseRoom {
     flex-grow: 1;
     padding: 24px;
+    transition: all 0.4s;
+
+    &.isHidden {
+      height: 58px;
+      flex-grow: 0;
+      overflow: hidden;
+      padding: 16px 24px;
+      transition: all 0.4s;
+
+      .emptyGamesList,
+      .gamesList {
+        transition: all 0.4s;
+        opacity: 0;
+      }
+    }
 
     .emptyGamesList {
       padding-top: 18px;
@@ -200,11 +221,12 @@ if (!signalRStore.connection) {
       align-items: center;
       flex-direction: column;
       height: 100%;
-      
+
       img {
         opacity: 0.2;
         height: 142px;
       }
+
       p {
         color: $mainBrownColor;
         font-weight: 600;
