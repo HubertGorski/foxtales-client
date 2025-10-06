@@ -157,6 +157,12 @@ function getRoutesWithAuth() {
   });
 }
 
+router.afterEach(() => {
+  window.scrollTo({
+    top: 0,
+  });
+});
+
 router.beforeEach((to, from, next) => {
   // const isGameSelected = TODO: dodac tworzenie roznych typow gier
   // sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";

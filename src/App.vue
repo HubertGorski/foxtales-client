@@ -2,10 +2,12 @@
 import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
 import { useDynamicHeight } from "./libs/useDynamicHeight";
+import { useForceTopOnScroll } from "./libs/useForceTopOnScroll";
 
 useBeforeUnload();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
+useForceTopOnScroll({ cooldownMs: 250, minDelta: 6, ignoreSelector: '.no-force-scroll' })
 </script>
 
 <template>
