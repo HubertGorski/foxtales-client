@@ -157,35 +157,6 @@ function getRoutesWithAuth() {
   });
 }
 
-let isInputFocused = false;
-
-window.addEventListener("focusin", (e) => {
-  if (
-    e.target instanceof HTMLInputElement ||
-    e.target instanceof HTMLTextAreaElement
-  ) {
-    isInputFocused = true;
-  }
-});
-
-window.addEventListener("focusout", (e) => {
-  if (
-    e.target instanceof HTMLInputElement ||
-    e.target instanceof HTMLTextAreaElement
-  ) {
-    isInputFocused = false;
-  }
-});
-
-router.afterEach(() => {
-  if (!isInputFocused) {
-    window.scrollTo({
-      top: 0,
-      behavior: "auto",
-    });
-  }
-});
-
 router.beforeEach((to, from, next) => {
   // const isGameSelected = TODO: dodac tworzenie roznych typow gier
   // sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
