@@ -106,7 +106,7 @@ watch(areErrorExist, () => {
 </script>
 
 <template>
-  <div class="registerView" :class="{ isFocused: step }">
+  <div class="registerView">
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="registerView_title">{{ $t("registerTitle") }}</h1>
       <div v-if="step === 1 || step === 0">
@@ -174,7 +174,6 @@ watch(areErrorExist, () => {
         {{ errorRegister }}
       </div>
     </form>
-    <img src="@/assets/imgs/fox10.webp" alt="Lisek" class="registerView_fox" />
   </div>
 </template>
 
@@ -185,18 +184,13 @@ watch(areErrorExist, () => {
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
   height: 100%;
   background: $mainBackground;
   padding: 80px 16px;
 
   .creamCard {
     padding: 24px;
-  }
-
-  &_fox {
-    position: relative;
-    bottom: 16px;
-    left: -32px;
   }
 
   &_title {
@@ -229,21 +223,6 @@ watch(areErrorExist, () => {
     text-align: center;
     padding-top: 12px;
     color: $errorColor;
-  }
-
-  &.isFocused {
-    padding: 8px 16px;
-    transition: all 0.4s;
-
-    .registerView_title {
-      transition: all 0.4s;
-      font-size: 0;
-      margin: 0;
-    }
-
-    .creamCard {
-      padding: 16px;
-    }
   }
 }
 </style>

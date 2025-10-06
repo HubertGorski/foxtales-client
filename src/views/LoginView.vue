@@ -5,12 +5,10 @@ import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { ref } from "vue";
 import { userService } from "@/api/services/UserService";
-import { useUserStore } from "@/stores/userStore";
 import { useI18n } from "vue-i18n";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 
 const { t } = useI18n();
-const userStore = useUserStore();
 const router = useRouter();
 const errorLogin = ref("");
 const isFocused = ref(false);
@@ -28,8 +26,8 @@ const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
 // TEST
-email.value = "hub@wp.pl";
-password.value = "#12345678";
+// email.value = "hub@wp.pl";
+// password.value = "#12345678";
 
 const navigateBack = () => {
   router.push(ROUTE_PATH.HOME);
@@ -107,13 +105,12 @@ const onSubmit = handleSubmit(async (values) => {
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
   height: 100%;
   background: $mainBackground;
   padding: 0 16px;
 
   &.isFocused {
-    padding-top: 48px;
-
     .loginView_fox {
       transition: all 0.4s ease-in-out;
       height: 0;
@@ -142,7 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     color: $mainBrownColor;
   }
 
