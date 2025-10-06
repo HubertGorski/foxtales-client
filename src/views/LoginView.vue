@@ -27,7 +27,7 @@ const { handleSubmit } = useForm({ validationSchema: schema });
 const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
-// TESTS
+// TEST
 // email.value = "hub@wp.pl";
 // password.value = "#12345678";
 
