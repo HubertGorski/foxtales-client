@@ -47,7 +47,6 @@ const fox = computed(() => {
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin-top: 182px;
   transition: all 0.4s;
 
   .whiteCard {
@@ -89,7 +88,6 @@ const fox = computed(() => {
   }
 
   &.isFoxVisible {
-    margin-top: 0;
     transition: all 0.4s;
 
     .fox {
