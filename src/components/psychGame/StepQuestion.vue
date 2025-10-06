@@ -70,7 +70,7 @@ watch(
       <transition name="fade" mode="out-in" appear>
         <div v-if="!userStore.user.isReady" key="stepAnswer">
           <CurrentQuestion
-            :isFoxVisible="isFoxVisible"
+            :isFoxVisible="false"
             :question="game.currentQuestion?.text ?? ''"
             :avatarId="game.currentQuestion?.currentUser?.avatar.id ?? 0"
             :username="game.currentQuestion?.currentUser?.username ?? ''"
@@ -113,6 +113,7 @@ watch(
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     padding: 12px;
 
     .stepWaiting img {
