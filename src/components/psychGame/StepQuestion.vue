@@ -66,7 +66,7 @@ watch(
 <template>
   <div class="stepQuestion">
     <HubDivider :text="dividerText" />
-    <div class="stepQuestion_gameSection" :class="{ isHovered: !isFoxVisible }">
+    <div class="stepQuestion_gameSection">
       <transition name="fade" mode="out-in" appear>
         <div v-if="!userStore.user.isReady" key="stepAnswer">
           <CurrentQuestion
@@ -83,8 +83,8 @@ watch(
             :btnIsOrange="addAnswerBtn.isOrange"
             :textareaRows="5"
             isTextarea
-            @focus="isFoxVisible = false;"
-            @blur="isFoxVisible = true;"
+            @focus="isFoxVisible = false"
+            @blur="isFoxVisible = true"
           />
         </div>
         <div v-else key="stepWaiting" class="stepWaiting">
@@ -115,10 +115,6 @@ watch(
     flex-direction: column;
     justify-content: center;
     padding: 12px;
-
-    &.isHovered {
-      justify-content: start;
-    }
 
     .stepWaiting img {
       max-width: 100%;

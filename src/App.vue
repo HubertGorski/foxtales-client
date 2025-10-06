@@ -36,7 +36,7 @@ body {
   overscroll-behavior: none;
   margin: 0;
   overflow: hidden;
-  background-color: orange;
+  background-color: #d3b39d;
 }
 
 #app {
