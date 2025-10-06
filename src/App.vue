@@ -39,11 +39,11 @@ body {
     env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-@supports (height: 100dvh) {
+/* @supports (height: 100dvh) {
   body {
     height: 100dvh;
   }
-}
+} */
 
 #app {
   height: 100%;
