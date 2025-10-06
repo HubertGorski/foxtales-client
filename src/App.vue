@@ -3,7 +3,6 @@ import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
 
 useBeforeUnload();
-// TODO: naprawic dynamiczne ladowanie wysokosci
 </script>
 
 <template>
@@ -28,7 +27,7 @@ useBeforeUnload();
 
 html,
 body {
-  height: 100%;
+  height: 100dvh;
   overscroll-behavior: none;
   margin: 0;
   overflow: hidden;
@@ -39,21 +38,15 @@ body {
     env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-@supports (height: 100dvh) {
-  body {
-    height: 100dvh;
-  }
-}
-
 #app {
-  height: 100%;
+  height: 100dvh;
   overflow: hidden;
 }
 
 .foxTales {
   margin: 0 auto;
   max-width: 380px;
-  height: 100%;
+  height: 100dvh;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 </style>
