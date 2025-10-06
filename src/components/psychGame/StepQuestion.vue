@@ -108,12 +108,11 @@ watch(
   flex-direction: column;
   height: 100%;
   padding: 0 12px;
-
+  
   &_gameSection {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     padding: 12px;
 
     .stepWaiting img {

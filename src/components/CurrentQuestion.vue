@@ -47,7 +47,8 @@ const fox = computed(() => {
   flex-direction: column;
   align-items: center;
   position: relative;
-  padding-top: 32px;
+  margin-top: 182px;
+  transition: all 0.4s;
 
   .whiteCard {
     width: 100%;
@@ -60,10 +61,9 @@ const fox = computed(() => {
 
   .fox {
     height: 192px;
-    transform: scale(1) translateY(48px);
     transition: all 0.4s ease;
     position: absolute;
-    top: -200px;
+    top: -182px;
   }
 
   .foxAvatar {
@@ -77,7 +77,7 @@ const fox = computed(() => {
     padding: 2px;
     position: absolute;
     left: -12px;
-    bottom: 48px;
+    top: -12px;
     z-index: 2;
   }
 
@@ -89,8 +89,12 @@ const fox = computed(() => {
   }
 
   &.isFoxVisible {
+    margin-top: 0;
+    transition: all 0.4s;
+
     .fox {
-      transform: scale(0) translateY(-200px);
+      transform: scale(0);
+      top: -92px;
     }
 
     .foxAvatar {
