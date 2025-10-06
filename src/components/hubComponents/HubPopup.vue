@@ -24,7 +24,7 @@ const isVisible = defineModel({ type: Boolean, required: true });
 
   &_mask {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     background-color: black;
     z-index: 1;
     opacity: 0.2;

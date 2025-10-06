@@ -107,7 +107,7 @@ const onSubmit = handleSubmit(async (values) => {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   background: $mainBackground;
   padding: 0 16px;
 

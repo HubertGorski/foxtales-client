@@ -78,7 +78,7 @@ const back = () => {
   justify-content: center;
   flex-direction: column;
   gap: 36px;
-  height: 100vh;
+  height: 100%;
   background: $mainBackground;
   padding: 24px;
   padding-bottom: 92px;

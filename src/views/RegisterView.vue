@@ -185,7 +185,7 @@ watch(areErrorExist, () => {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   background: $mainBackground;
   padding: 80px 16px;
 

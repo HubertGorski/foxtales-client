@@ -50,7 +50,7 @@ const btns = [
 @import "@/assets/styles/variables";
 
 .homeView {
-  height: 100vh;
+  height: 100%;
   background: $mainBackground;
   display: flex;
   flex-direction: column;

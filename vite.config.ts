@@ -12,7 +12,7 @@ export default defineConfig({
         name: "Fox Tales - Be as sly as a fox!",
         short_name: "Fox Tales",
         start_url: ".",
-        display: "fullscreen",
+        display: "standalone",
         background_color: "#d3b39d",
         theme_color: "#d3b39d",
         icons: [
