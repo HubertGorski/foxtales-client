@@ -36,20 +36,18 @@ body {
   overflow: hidden;
   background-color: #d3b39d;
 
-  /* iOS safe area */
-  padding: env(safe-area-inset-top) env(safe-area-inset-right)
-    env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #app {
   overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .foxTales {
   margin: 0 auto;
   max-width: 380px;
   overflow: auto;
-  height: 10dvh;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   -webkit-overflow-scrolling: touch;
 }
