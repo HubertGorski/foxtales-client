@@ -66,15 +66,25 @@ const handleFocus = () => {
   emit("focus");
 };
 
-const handleBlur = () => {
-  emit("blur");
+const handleBlur = (event: FocusEvent) => {
+  const related = event.relatedTarget as HTMLElement | null;
+  if (related && related.closest("[data-no-blur]")) {
+    return;
+  }
+
+  // Safari
+  setTimeout(() => {
+    const active = document.activeElement as HTMLElement | null;
+    if (active && active.closest("[data-no-blur]")) return;
+    emit("blur");
+  }, 0);
 };
 
 const btnIsDisabled = computed(() => {
   if (!text.value) {
     return true;
   }
-  
+
   return text.value.length === 0 || props.btnIsDisabled;
 });
 

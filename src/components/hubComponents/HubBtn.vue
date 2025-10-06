@@ -20,6 +20,7 @@ const handleAction = () => {
 
 <template>
   <div
+    data-no-blur
     @click="handleAction()"
     class="hubBtn"
     :class="[
