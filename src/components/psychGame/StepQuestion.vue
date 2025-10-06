@@ -110,7 +110,7 @@ watch(
   padding: 0 12px;
 
   &_gameSection {
-    flex-grow: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
