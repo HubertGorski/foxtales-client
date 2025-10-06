@@ -7,10 +7,8 @@ useBeforeUnload();
 </script>
 
 <template>
-  <div class="foxTalesBackground">
-    <div class="foxTales">
-      <RouterView />
-    </div>
+  <div class="foxTales">
+    <RouterView />
   </div>
 </template>
 
@@ -26,7 +24,7 @@ html,
 body {
   height: 100%;
   margin: 0;
-  padding: 0;
+  padding: 24px;
   overflow: hidden;
   background-color: #d3b39d;
 }
@@ -34,10 +32,6 @@ body {
 #app {
   height: 100%;
   overflow: hidden;
-}
-.foxTalesBackground {
-  height: 100%;
-  background-color: #d3b39d;
 }
 
 .foxTales {
