@@ -2,8 +2,10 @@
 import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
 import { useDynamicHeight } from "./libs/useDynamicHeight";
+import { disableScroll } from "./libs/disableScroll";
 
 useBeforeUnload();
+disableScroll();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
 </script>
@@ -34,8 +36,7 @@ body {
   overscroll-behavior: none;
   margin: 0;
   overflow: hidden;
-  background-color: red;
-  position: fixed;
+  background-color: orange;
 }
 
 #app {
