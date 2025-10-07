@@ -48,7 +48,7 @@ body {
 .foxTales {
   margin: 0 auto;
   max-width: 380px;
-  overflow: auto;
+  overflow: scroll;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   -webkit-overflow-scrolling: touch;
 }
