@@ -10,12 +10,12 @@ useBeforeUnload();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
 
-// const { isKeyboardOpen } = useKeyboardScrollControl();
+const { isKeyboardOpen } = useKeyboardScrollControl();
 const { isLandscape } = useOrientation();
 </script>
 
 <template>
-  <div class="foxTales">
+  <div class="foxTales" :class="{ keyboardOpen: isKeyboardOpen }">
     <RouterView />
   </div>
   <OrientationOverlay v-if="isLandscape" />
@@ -38,6 +38,7 @@ const { isLandscape } = useOrientation();
 
 html,
 body {
+  height: 100%;
   overscroll-behavior: none;
   margin: 0;
   overflow: hidden !important;
@@ -56,7 +57,6 @@ body {
   width: 440px;
   max-width: 440px;
   overflow: auto;
-  height: 100dvh;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
