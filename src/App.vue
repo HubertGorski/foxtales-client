@@ -2,16 +2,17 @@
 import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
 import { useDynamicHeight } from "./libs/useDynamicHeight";
-import { disableScroll } from "./libs/disableScroll";
+import { useKeyboardScrollControl } from "./libs/useKeyboardScrollControl";
 
 useBeforeUnload();
-disableScroll();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
+
+const { isKeyboardOpen } = useKeyboardScrollControl();
 </script>
 
 <template>
-  <div class="foxTales">
+  <div class="foxTales" :class="{ keyboardOpen: isKeyboardOpen }">
     <RouterView />
   </div>
 </template>
@@ -42,7 +43,6 @@ body {
 #app {
   overflow: hidden;
   overscroll-behavior: none;
-  -webkit-overflow-scrolling: touch;
 }
 
 .foxTales {
