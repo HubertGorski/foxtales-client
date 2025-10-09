@@ -2,8 +2,6 @@ import { ref, onMounted, onUnmounted } from "vue";
 
 export function useKeyboardScrollControl() {
   const isKeyboardOpen = ref(false);
-  let initialHeight = window.innerHeight;
-  const keyboardHeight = 100;
 
   let scrollListener: ((e: Event) => void) | undefined;
 
@@ -29,50 +27,43 @@ export function useKeyboardScrollControl() {
     }
   }
 
-  function handleKeyboardOpen() {
-    disableScroll();
-  }
-
-  function handleKeyboardClose() {
-    enableScroll();
-  }
-
   function onKeyboardOpen() {
     if (!isKeyboardOpen.value) {
       isKeyboardOpen.value = true;
-      handleKeyboardOpen();
+      disableScroll();
     }
   }
 
   function onKeyboardClose() {
     if (isKeyboardOpen.value) {
       isKeyboardOpen.value = false;
-      handleKeyboardClose();
+      enableScroll();
     }
   }
 
-  function checkKeyboard() {
-    const currentHeight = window.innerHeight;
-    const keyboardIsVisible = currentHeight < initialHeight - keyboardHeight;
-
-    if (keyboardIsVisible) {
+  function handleFocusIn(e: FocusEvent) {
+    const target = e.target as HTMLElement;
+    if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
       onKeyboardOpen();
-    } else {
+    }
+  }
+
+  function handleFocusOut(e: FocusEvent) {
+    const target = e.target as HTMLElement;
+    if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
       onKeyboardClose();
     }
   }
 
   onMounted(() => {
-    window.addEventListener("resize", checkKeyboard);
-    document.addEventListener("focusin", checkKeyboard);
-    document.addEventListener("focusout", onKeyboardClose);
+    document.addEventListener("focusin", handleFocusIn);
+    document.addEventListener("focusout", handleFocusOut);
   });
 
   onUnmounted(() => {
-    window.removeEventListener("resize", checkKeyboard);
-    document.removeEventListener("focusin", checkKeyboard);
-    document.removeEventListener("focusout", onKeyboardClose);
-    handleKeyboardClose();
+    document.removeEventListener("focusin", handleFocusIn);
+    document.removeEventListener("focusout", handleFocusOut);
+    enableScroll();
   });
 
   return { isKeyboardOpen };
