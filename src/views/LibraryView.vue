@@ -22,7 +22,6 @@ import HubDialogPopup from "@/components/hubComponents/HubDialogPopup.vue";
 import { psychService } from "@/api/services/PsychService";
 
 const userStore = useUserStore();
-const isFocused = ref(false);
 
 const addQuestion = async (catalogs: Catalog[]) => {
   event?.preventDefault();
@@ -270,17 +269,14 @@ const addQuestionBtn = computed(() => {
           :extraBtnAction="showCatalogsList"
           :btnIsOrange="addQuestionBtn.isOrange"
           isTextarea
-          @focus="isFocused = true"
-          @blur="isFocused = false"
         />
       </template>
     </HubAccordion>
     <HubAccordionElement
       @click="setOpenTab = ''"
       class="manageLibrary"
-      :class="{ isHidden: setOpenTab === 'addQuestion' && isFocused }"
       title="yourQuestions"
-      :isOpen="setOpenTab != 'addQuestion' || !isFocused"
+      isOpen
       isSmallerTitle
       centerContent
     >
@@ -322,10 +318,6 @@ const addQuestionBtn = computed(() => {
 
   .manageLibrary {
     flex-grow: 1;
-
-    &.isHidden {
-      flex-grow: 0;
-    }
   }
 }
 </style>
