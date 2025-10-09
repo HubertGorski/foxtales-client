@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 export function useKeyboardScrollControl() {
   const isKeyboardOpen = ref(false);
 
+  let initialArea = 0;
   let scrollListener: ((e: Event) => void) | undefined;
 
   function blockScroll(e: Event) {
@@ -27,42 +28,27 @@ export function useKeyboardScrollControl() {
     }
   }
 
-  function onKeyboardOpen() {
-    if (!isKeyboardOpen.value) {
+  function checkScreenChange() {
+    const currentArea = window.innerWidth * window.innerHeight;
+
+    if (currentArea < initialArea && !isKeyboardOpen.value) {
       isKeyboardOpen.value = true;
       disableScroll();
     }
-  }
 
-  function onKeyboardClose() {
-    if (isKeyboardOpen.value) {
+    if (currentArea >= initialArea && isKeyboardOpen.value) {
       isKeyboardOpen.value = false;
       enableScroll();
     }
   }
 
-  function handleFocusIn(e: FocusEvent) {
-    const target = e.target as HTMLElement;
-    if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
-      onKeyboardOpen();
-    }
-  }
-
-  function handleFocusOut(e: FocusEvent) {
-    const target = e.target as HTMLElement;
-    if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
-      onKeyboardClose();
-    }
-  }
-
   onMounted(() => {
-    document.addEventListener("focusin", handleFocusIn);
-    document.addEventListener("focusout", handleFocusOut);
+    initialArea = window.innerWidth * window.innerHeight;
+    window.addEventListener("resize", checkScreenChange);
   });
 
   onUnmounted(() => {
-    document.removeEventListener("focusin", handleFocusIn);
-    document.removeEventListener("focusout", handleFocusOut);
+    window.removeEventListener("resize", checkScreenChange);
     enableScroll();
   });
 
