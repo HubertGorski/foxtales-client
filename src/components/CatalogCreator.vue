@@ -244,6 +244,8 @@ watch(catalog, () => {
       color: $grayColor;
       transition: all 0.2s;
       padding: 12px;
+      cursor: pointer;
+
       &.isSelected {
         font-weight: 600;
         transform: scale(1.1);

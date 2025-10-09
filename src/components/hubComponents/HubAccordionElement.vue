@@ -89,6 +89,7 @@ const toggleAccordion = () => {
 .hubAccordionElement {
   overflow: hidden;
   min-height: 60px;
+  cursor: pointer;
 
   &_title {
     display: flex;

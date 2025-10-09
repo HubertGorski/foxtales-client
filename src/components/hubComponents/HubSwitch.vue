@@ -66,6 +66,7 @@ const onSwitchChange = (newValue: boolean | null) => {
     margin: 2px;
     font-size: 14px;
     color: $lightGrayColor;
+    cursor: help;
   }
 }
 </style>

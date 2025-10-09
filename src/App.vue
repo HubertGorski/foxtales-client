@@ -3,18 +3,22 @@ import { RouterView } from "vue-router";
 import { useBeforeUnload } from "./libs/useBeforeUnload";
 import { useDynamicHeight } from "./libs/useDynamicHeight";
 import { useKeyboardScrollControl } from "./libs/useKeyboardScrollControl";
+import { useOrientation } from "./libs/useOrientation";
+import OrientationOverlay from "./components/OrientationOverlay.vue";
 
 useBeforeUnload();
-useDynamicHeight("#app");
-useDynamicHeight(".foxTales");
+// useDynamicHeight("#app");
+// useDynamicHeight(".foxTales");
 
 const { isKeyboardOpen } = useKeyboardScrollControl();
+const { isLandscape } = useOrientation();
 </script>
 
 <template>
   <div class="foxTales" :class="{ keyboardOpen: isKeyboardOpen }">
     <RouterView />
   </div>
+  <OrientationOverlay v-if="isLandscape" />
 </template>
 
 <style>
@@ -34,23 +38,31 @@ const { isKeyboardOpen } = useKeyboardScrollControl();
 
 html,
 body {
-  height: 100%;
   overscroll-behavior: none;
   margin: 0;
-  overflow: hidden;
+  overflow: hidden !important;
   background-color: #d3b39d;
 }
 
 #app {
+  display: flex;
+  align-items: center;
   overflow: hidden;
   overscroll-behavior: none;
 }
 
 .foxTales {
   margin: 0 auto;
-  max-width: 380px;
+  width: 440px;
+  max-width: 440px;
   overflow: auto;
+  height: 100dvh;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 470px) {
+  .foxTales {
+    max-height: 95dvh;
+  }
 }
 </style>
