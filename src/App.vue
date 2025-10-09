@@ -10,7 +10,7 @@ useBeforeUnload();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
 
-const isKeyboardOpen  = false;
+const { isKeyboardOpen } = useKeyboardScrollControl();
 const { isLandscape } = useOrientation();
 </script>
 
