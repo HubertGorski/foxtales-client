@@ -5,6 +5,7 @@ export function useKeyboardScrollControl() {
 
   let initialArea = 0;
   let scrollListener: ((e: Event) => void) | undefined;
+  let observer: ResizeObserver | undefined;
 
   function blockScroll(e: Event) {
     e.preventDefault();
@@ -28,9 +29,7 @@ export function useKeyboardScrollControl() {
     }
   }
 
-  function checkScreenChange() {
-    const currentArea = window.innerWidth * window.innerHeight;
-
+  function checkAreaChange(currentArea: number) {
     if (currentArea < initialArea && !isKeyboardOpen.value) {
       isKeyboardOpen.value = true;
       disableScroll();
@@ -43,12 +42,23 @@ export function useKeyboardScrollControl() {
   }
 
   onMounted(() => {
-    initialArea = window.innerWidth * window.innerHeight;
-    window.addEventListener("resize", checkScreenChange);
+    const target = document.querySelector(".foxTales");
+    if (!target) return;
+
+    const rect = target.getBoundingClientRect();
+    initialArea = rect.width * rect.height;
+
+    observer = new ResizeObserver(() => {
+      const newRect = target.getBoundingClientRect();
+      const currentArea = newRect.width * newRect.height;
+      checkAreaChange(currentArea);
+    });
+
+    observer.observe(target);
   });
 
   onUnmounted(() => {
-    window.removeEventListener("resize", checkScreenChange);
+    if (observer) observer.disconnect();
     enableScroll();
   });
 

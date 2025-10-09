@@ -13,6 +13,7 @@ const { isKeyboardOpen } = useKeyboardScrollControl();
 
 <template>
   <div class="foxTales" :class="{ keyboardOpen: isKeyboardOpen }">
+    {{ isKeyboardOpen }}
     <RouterView />
   </div>
 </template>
