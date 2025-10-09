@@ -26,7 +26,7 @@ const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
 // TEST
-// email.value = "hub@wp.pl";
+email.value = "hub@wp.pl";
 password.value = "#12345678";
 
 const navigateBack = () => {
