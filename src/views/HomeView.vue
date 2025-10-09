@@ -55,6 +55,7 @@ const btns = [
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 
   &_title {
     font-size: 64px;
