@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   tooltipText: {
@@ -21,38 +21,47 @@ const props = defineProps({
 });
 
 const isTooltipActive = ref<boolean>(false);
-const toggleTooltip = () => {
-  if (props.tooltipDisabled || props.tooltipText.length === 0) {
-    return;
-  }
 
+const hasTooltip = computed(() => {
+  return !props.tooltipDisabled && props.tooltipText?.trim().length > 0;
+});
+
+const toggleTooltip = () => {
+  if (!hasTooltip.value) return;
   isTooltipActive.value = !isTooltipActive.value;
 };
 </script>
 
 <template>
-  <v-tooltip v-model="isTooltipActive" location="top">
-    <template v-slot:activator="{ props }">
-      <div
-        class="hubTooltip"
-        :class="{ maxWidth: maxWidth }"
-        @click="toggleTooltip"
-        v-bind="props"
-      >
-        <slot></slot>
+  <div class="hubTooltip" :class="{ maxWidth: maxWidth }">
+    <v-tooltip v-if="hasTooltip" v-model="isTooltipActive" location="top">
+      <template v-slot:activator="{ props }">
+        <div @click="toggleTooltip" v-bind="props">
+          <slot></slot>
+        </div>
+      </template>
+      <div class="hubTooltip_content" :class="{ active: isTooltipActive }">
+        <span v-if="dictsDisabled">{{ tooltipText }}</span>
+        <span v-else>{{ $t(tooltipText) }}</span>
       </div>
-    </template>
-    <div v-if="isTooltipActive">
-      <span v-if="dictsDisabled">{{ tooltipText }}</span>
-      <span v-else>{{ $t(tooltipText) }}</span>
-    </div>
-  </v-tooltip>
+    </v-tooltip>
+    <slot v-else></slot>
+  </div>
 </template>
 
 <style lang="scss">
 .hubTooltip {
   &.maxWidth {
     width: 100%;
+  }
+
+  &_content {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    &.active {
+      opacity: 1;
+    }
   }
 }
 </style>

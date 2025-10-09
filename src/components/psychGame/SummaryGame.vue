@@ -91,7 +91,7 @@ const cards = [
   display: flex;
   flex-direction: column;
   padding: 4px 16px;
-  overflow-y: scroll;
+  overflow-y: auto;
   
   .card {
     width: 100%;

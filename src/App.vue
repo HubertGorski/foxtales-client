@@ -23,6 +23,7 @@ const { isKeyboardOpen } = useKeyboardScrollControl();
 * {
   user-select: none;
   scrollbar-width: thin;
+  scrollbar-color: #654744 #f1e3d3;
 }
 
 *,
@@ -48,7 +49,7 @@ body {
 .foxTales {
   margin: 0 auto;
   max-width: 380px;
-  overflow: scroll;
+  overflow: auto;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   -webkit-overflow-scrolling: touch;
 }

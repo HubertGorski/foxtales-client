@@ -117,7 +117,7 @@ const startNextRound = () => {
         flex-direction: column;
         justify-content: center;
         max-height: 84px;
-        overflow-y: scroll;
+        overflow-y: auto;
         padding: 6px;
 
         .title {

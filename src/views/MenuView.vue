@@ -103,7 +103,7 @@ const logout = async () => {
         max-height: 148px;
         line-height: 64px;
         color: $mainOrangeColor;
-        overflow-x: scroll;
+        overflow-x: auto;
       }
 
       &_text {

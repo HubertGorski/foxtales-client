@@ -241,7 +241,7 @@ watch(
 
     &.isMinimalViewMode {
       justify-content: space-between;
-      overflow-y: scroll;
+      overflow-y: auto;
     }
   }
 

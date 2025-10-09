@@ -122,7 +122,7 @@ const navigationBtns = computed(() => {
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-  overflow: scroll;
+  overflow: auto;
 
   .btns {
     display: flex;

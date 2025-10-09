@@ -175,7 +175,7 @@ watch(
   }
 
   .answers {
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
