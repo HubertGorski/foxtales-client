@@ -117,6 +117,7 @@ const handleEnter = (e: KeyboardEvent) => {
       :rows="textareaRows"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
+      no-resize
     />
     <v-text-field
       v-else

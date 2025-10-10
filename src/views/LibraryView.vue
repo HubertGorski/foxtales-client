@@ -20,9 +20,10 @@ import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
 import { Question } from "@/models/Question";
 import HubDialogPopup from "@/components/hubComponents/HubDialogPopup.vue";
 import { psychService } from "@/api/services/PsychService";
+import { useViewStore } from "@/stores/viewStore";
 
 const userStore = useUserStore();
-const isFocused = ref(false);
+const viewStore = useViewStore();
 
 const addQuestion = async (catalogs: Catalog[]) => {
   event?.preventDefault();
@@ -270,17 +271,15 @@ const addQuestionBtn = computed(() => {
           :extraBtnAction="showCatalogsList"
           :btnIsOrange="addQuestionBtn.isOrange"
           isTextarea
-          @focus="isFocused = true"
-          @blur="isFocused = false"
         />
       </template>
     </HubAccordion>
     <HubAccordionElement
       @click="setOpenTab = ''"
       class="manageLibrary"
-      :class="{ isHidden: setOpenTab === 'addQuestion' && isFocused }"
+      :class="{ isHidden: setOpenTab === 'addQuestion' && viewStore.isKeyboardOpen }"
       title="yourQuestions"
-      :isOpen="setOpenTab != 'addQuestion' || !isFocused"
+      :isOpen="setOpenTab != 'addQuestion' || !viewStore.isKeyboardOpen"
       isSmallerTitle
       centerContent
     >

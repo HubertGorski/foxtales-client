@@ -7,11 +7,12 @@ import { ref } from "vue";
 import { userService } from "@/api/services/UserService";
 import { useI18n } from "vue-i18n";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
+import { useViewStore } from "@/stores/viewStore";
 
 const { t } = useI18n();
 const router = useRouter();
 const errorLogin = ref("");
-const isFocused = ref(false);
+const viewStore = useViewStore();
 
 const schema = yup.object({
   email: yup
@@ -56,7 +57,7 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <div class="loginView" :class="{isFocused: isFocused}">
+  <div class="loginView" :class="{isFocused: viewStore.isKeyboardOpen}">
     <img src="@/assets/imgs/4.webp" alt="Lisek" class="loginView_fox" />
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="loginView_title">{{ $t("auth.loginTitle") }}</h1>
@@ -67,7 +68,6 @@ const onSubmit = handleSubmit(async (values) => {
         dense
         class="loginView_input"
         :error-messages="emailError"
-        @focus="isFocused = true"
       />
       <v-text-field
         v-model="password"
@@ -77,7 +77,6 @@ const onSubmit = handleSubmit(async (values) => {
         dense
         class="loginView_input"
         :error-messages="passwordError"
-        @focus="isFocused = true"
       />
       <div class="loginView_actions">
         <button
