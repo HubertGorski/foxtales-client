@@ -28,7 +28,6 @@ const { isLandscape } = useOrientation();
   user-select: none;
   scrollbar-width: thin;
   scrollbar-color: #654744 #f1e3d3;
-  overflow: hidden !important;
 }
 
 *,
