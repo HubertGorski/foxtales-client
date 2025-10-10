@@ -1,8 +1,10 @@
 import { useViewStore } from "@/stores/viewStore";
 import { computed, onMounted, onUnmounted } from "vue";
+import { useDevice } from "./useDevice";
 
 export function useKeyboardScrollControl() {
   const viewStore = useViewStore();
+  const { isMobile } = useDevice();
 
   let initialArea = 0;
   let scrollListener: ((e: Event) => void) | undefined;
@@ -43,6 +45,10 @@ export function useKeyboardScrollControl() {
   }
 
   onMounted(() => {
+    if (!isMobile.value) {
+      return;
+    }
+
     const target = document.querySelector(".foxTales");
     if (!target) return;
 

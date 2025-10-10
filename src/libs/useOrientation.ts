@@ -1,16 +1,12 @@
 import { ref, onMounted, onUnmounted } from "vue";
+import { useDevice } from "./useDevice";
 
 export function useOrientation() {
+  const { isMobile } = useDevice();
   const isLandscape = ref(false);
-  const isMobile = ref(false);
 
   const checkOrientation = () => {
-    const ua = navigator.userAgent;
-    // proste wykrywanie mobile
-    isMobile.value =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-    isLandscape.value =
-      isMobile.value && window.innerWidth > window.innerHeight;
+    isLandscape.value = isMobile.value && window.innerWidth > window.innerHeight;
   };
 
   onMounted(() => {
@@ -22,5 +18,5 @@ export function useOrientation() {
     window.removeEventListener("resize", checkOrientation);
   });
 
-  return { isLandscape, isMobile };
+  return { isLandscape };
 }
