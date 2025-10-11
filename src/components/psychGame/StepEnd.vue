@@ -75,31 +75,37 @@ const navigationBtns = computed(() => {
 
 <template>
   <div class="stepEnd">
-    <transition name="fade" mode="out-in">
-      <div v-if="!isSummaryVisible" class="results">
-        <HubDivider :text="$t('endOfTheGame')" />
-        <div class="results_info">
-          <div>
-            <FoxWithName :text="$t('you')" :src="userStore.getFox()" />
-            <div class="rank">{{ place }} {{ $t("place") }}</div>
+    <div v-if="false || isSummaryVisible">
+      <transition name="fade" mode="out-in">
+        <div v-if="!isSummaryVisible" class="results">
+          <HubDivider :text="$t('endOfTheGame')" />
+          <div class="results_info">
+            <div>
+              <FoxWithName :text="$t('you')" :src="userStore.getFox()" />
+              <div class="rank">{{ place }} {{ $t("place") }}</div>
+            </div>
+            <div class="whiteCard whiteCardContent">
+              <span>Lista wyników:</span>
+              <br />
+              <span
+                :class="{ isBold: user.userId === userStore.user.userId }"
+                v-for="(user, index) in usersSortedByPlace"
+                :key="user.userId"
+                >{{ index + 1 }}. {{ user.username }} - {{ user.pointsInGame }}
+                {{ $t("exp") }}</span
+              >
+            </div>
           </div>
-          <div class="whiteCard whiteCardContent">
-            <span>Lista wyników:</span>
-            <br />
-            <span
-              :class="{ isBold: user.userId === userStore.user.userId }"
-              v-for="(user, index) in usersSortedByPlace"
-              :key="user.userId"
-              >{{ index + 1 }}. {{ user.username }} - {{ user.pointsInGame }}
-              {{ $t("exp") }}</span
-            >
-          </div>
+          <HubDivider :text="$t('top3users')" />
+          <Podium :users="usersSortedByPlace" />
         </div>
-        <HubDivider :text="$t('top3users')" />
-        <Podium :users="usersSortedByPlace" />
-      </div>
-      <SummaryGame :users="game.users" v-else />
-    </transition>
+        <SummaryGame :users="game.users" v-else />
+      </transition>
+    </div>
+    <div v-else class="tmpClass">
+      <img class="fox" src="@/assets/imgs/fox13.webp" alt="Lisek" />
+      {{ $t("pageNotExist") }}
+    </div>
     <div class="btns">
       <HubBtn
         v-for="btn in navigationBtns"
@@ -116,6 +122,22 @@ const navigationBtns = computed(() => {
 <style lang="scss" scoped>
 @import "@/assets/styles/variables";
 @import "@/assets/styles/hubAnimations";
+.tmpClass {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: $mainBrownColor;
+
+  .fox {
+    max-height: 220px;
+    border-bottom: 2px solid $mainBrownColor;
+  }
+}
 
 .stepEnd {
   display: flex;
