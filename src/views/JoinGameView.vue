@@ -12,6 +12,7 @@ import NavigationBtns from "@/components/NavigationBtns.vue";
 import { useSignalRStore } from "@/stores/signalRStore";
 import { useUserStore } from "@/stores/userStore";
 import { useI18n } from "vue-i18n";
+import { useViewStore } from "@/stores/viewStore";
 
 const userStore = useUserStore();
 const signalRStore = useSignalRStore();
@@ -26,6 +27,10 @@ const customCode = ref<string>("");
 const password = ref<string>("");
 const selectedGamesOwnerId = ref<number>(0);
 const isPasswordPopupOpen = ref<boolean>(false);
+
+const isKeyboardOpen = computed(() => {
+  return useViewStore().getIsKeyboardOpen();
+});
 
 const errorCodeMessage = computed(() => {
   return errorCode.value ? t(`auth.${errorCode.value}`) : undefined;
@@ -136,7 +141,10 @@ if (!signalRStore.connection) {
       :error-messages="errorCodeMessage"
     />
     <HubDivider :text="$t('or')" />
-    <div class="joinGameView_chooseRoom creamCard">
+    <div
+      class="joinGameView_chooseRoom creamCard"
+      :class="{ isKeyboardOpen: isKeyboardOpen }"
+    >
       <p class="subtitle">{{ $t("joinGame.chooseRoomFromList") }}</p>
       <div v-if="actualGames.length === 0" class="emptyGamesList">
         <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
@@ -174,21 +182,6 @@ if (!signalRStore.connection) {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/variables";
-
-.keyboardOpen .joinGameView_chooseRoom {
-  height: 58px;
-  flex-grow: 0;
-  overflow: hidden;
-  padding: 16px 24px;
-  transition: all 0.4s;
-
-  .emptyGamesList,
-  .gamesList {
-    transition: all 0.4s;
-    opacity: 0;
-  }
-}
-
 .joinGameView {
   background: $mainBackground;
   padding: 46px 24px 24px 24px;
@@ -208,6 +201,20 @@ if (!signalRStore.connection) {
     flex-grow: 1;
     padding: 24px;
     transition: all 0.4s;
+
+    &.isKeyboardOpen {
+      height: 58px;
+      flex-grow: 0;
+      overflow: hidden;
+      padding: 16px 24px;
+      transition: all 0.4s;
+
+      .emptyGamesList,
+      .gamesList {
+        transition: all 0.4s;
+        opacity: 0;
+      }
+    }
 
     .emptyGamesList {
       padding-top: 18px;

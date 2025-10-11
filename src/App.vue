@@ -5,17 +5,19 @@ import { useDynamicHeight } from "./libs/useDynamicHeight";
 import { useKeyboardScrollControl } from "./libs/useKeyboardScrollControl";
 import { useOrientation } from "./libs/useOrientation";
 import OrientationOverlay from "./components/OrientationOverlay.vue";
+import { useDevice } from "./libs/useDevice";
 
 useBeforeUnload();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
+useDevice();
+useKeyboardScrollControl();
 
-const { isKeyboardOpen } = useKeyboardScrollControl();
 const { isLandscape } = useOrientation();
 </script>
 
 <template>
-  <div class="foxTales" :class="{ keyboardOpen: isKeyboardOpen }">
+  <div class="foxTales">
     <RouterView />
   </div>
   <OrientationOverlay v-if="isLandscape" />

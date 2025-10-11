@@ -1,10 +1,8 @@
 import { useViewStore } from "@/stores/viewStore";
-import { computed, onMounted, onUnmounted } from "vue";
-import { useDevice } from "./useDevice";
+import { onMounted, onUnmounted } from "vue";
 
-export function useKeyboardScrollControl() {
+export function useKeyboardScrollControl(): void {
   const viewStore = useViewStore();
-  const { isMobile } = useDevice();
 
   let initialArea = 0;
   let scrollListener: ((e: Event) => void) | undefined;
@@ -33,19 +31,21 @@ export function useKeyboardScrollControl() {
   }
 
   function checkAreaChange(currentArea: number) {
-    if (currentArea < initialArea && !viewStore.isKeyboardOpen) {
+    const isKeyboardOpen = useViewStore().getIsKeyboardOpen();
+    if (currentArea < initialArea && !isKeyboardOpen) {
       viewStore.setIsKeyboardOpen(true);
       disableScroll();
     }
 
-    if (currentArea >= initialArea && viewStore.isKeyboardOpen) {
+    if (currentArea >= initialArea && isKeyboardOpen) {
       viewStore.setIsKeyboardOpen(false);
       enableScroll();
     }
   }
 
   onMounted(() => {
-    if (!isMobile.value) {
+    const isMobile = useViewStore().getIsMobile();
+    if (!isMobile) {
       return;
     }
 
@@ -68,6 +68,4 @@ export function useKeyboardScrollControl() {
     if (observer) observer.disconnect();
     enableScroll();
   });
-
-  return { isKeyboardOpen: computed(() => viewStore.isKeyboardOpen) };
 }

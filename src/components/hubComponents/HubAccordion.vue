@@ -2,10 +2,11 @@
 import { type PropType } from "vue";
 import HubAccordionElement from "./HubAccordionElement.vue";
 import HubDivider from "./HubDivider.vue";
+import IsComing from "../IsComing.vue";
 
 const props = defineProps({
   slotNames: {
-    type: Array as PropType<Array<string>>,
+    type: Array as PropType<Array<{ slotName: string; isComing: boolean }>>,
     required: true,
   },
   isSmallerTitle: {
@@ -29,17 +30,19 @@ const showDivider = (index: number) => {
 </script>
 
 <template>
-  <div v-for="(slotName, index) in slotNames" :key="index" class="hubAccordion">
+  <div v-for="(slot, index) in slotNames" :key="index" class="hubAccordion">
     <HubAccordionElement
       :key="index"
-      :title="slotName"
-      :isOpen="setOpenTab === slotName"
+      :title="slot.slotName"
+      :isOpen="setOpenTab === slot.slotName"
       :isSmallerTitle="isSmallerTitle"
       withStatusIcon
-      @toggleAccordion="toggleAccordion(slotName)"
+      @toggleAccordion="toggleAccordion(slot.slotName)"
     >
       <template #default>
-        <slot :name="slotName"></slot>
+        <IsComing :isEnabled="slot.isComing">
+          <slot :name="slot.slotName"></slot>
+        </IsComing>
       </template>
     </HubAccordionElement>
     <HubDivider v-if="showDivider(index)" :text="$t('or')" />

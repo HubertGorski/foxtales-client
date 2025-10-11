@@ -213,6 +213,10 @@ const addQuestionBtn = computed(() => {
   };
 });
 
+const isKeyboardOpen = computed(() => {
+  return useViewStore().getIsKeyboardOpen();
+});
+
 //TODO: jak jest jedno pytanie zaznaczone to dac mozliwosc wypisywania go z katalogu.
 </script>
 
@@ -277,9 +281,11 @@ const addQuestionBtn = computed(() => {
     <HubAccordionElement
       @click="setOpenTab = ''"
       class="manageLibrary"
-      :class="{ isHidden: setOpenTab === 'addQuestion' && viewStore.isKeyboardOpen }"
+      :class="{
+        isHidden: setOpenTab === 'addQuestion' && isKeyboardOpen,
+      }"
       title="yourQuestions"
-      :isOpen="setOpenTab != 'addQuestion' || !viewStore.isKeyboardOpen"
+      :isOpen="setOpenTab != 'addQuestion' || !isKeyboardOpen"
       isSmallerTitle
       centerContent
     >

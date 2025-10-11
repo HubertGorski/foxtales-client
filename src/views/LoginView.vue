@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 import { ROUTE_PATH } from "@/router/routeEnums";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { userService } from "@/api/services/UserService";
 import { useI18n } from "vue-i18n";
 import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
@@ -54,10 +54,13 @@ const onSubmit = handleSubmit(async (values) => {
   }
 });
 
+const isKeyboardOpen = computed(() => {
+  return useViewStore().getIsKeyboardOpen();
+});
 </script>
 
 <template>
-  <div class="loginView" :class="{isFocused: viewStore.isKeyboardOpen}">
+  <div class="loginView" :class="{ isFocused: isKeyboardOpen }">
     <img src="@/assets/imgs/4.webp" alt="Lisek" class="loginView_fox" />
     <form @submit.prevent="onSubmit" class="creamCard">
       <h1 class="loginView_title">{{ $t("auth.loginTitle") }}</h1>

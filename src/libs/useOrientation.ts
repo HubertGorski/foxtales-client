@@ -1,12 +1,13 @@
 import { ref, onMounted, onUnmounted } from "vue";
-import { useDevice } from "./useDevice";
+import { useViewStore } from "@/stores/viewStore";
 
 export function useOrientation() {
-  const { isMobile } = useDevice();
+  const isMobile = useViewStore().getIsMobile();
   const isLandscape = ref(false);
 
   const checkOrientation = () => {
-    isLandscape.value = isMobile.value && window.innerWidth > window.innerHeight;
+    isLandscape.value =
+      isMobile && window.innerWidth > window.innerHeight;
   };
 
   onMounted(() => {

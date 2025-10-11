@@ -139,10 +139,10 @@ const acceptLanguageBtn = computed(() => {
     <div class="settings">
       <HubAccordion
         :slotNames="[
-          'accountStats',
-          'chooseFox',
-          'changeName',
-          'changeLanguage',
+          { slotName: 'accountStats', isComing: true },
+          { slotName: 'chooseFox', isComing: false },
+          { slotName: 'changeName', isComing: false },
+          { slotName: 'changeLanguage', isComing: true },
         ]"
         setOpenTab="accountStats"
       >

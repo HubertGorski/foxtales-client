@@ -303,6 +303,7 @@ if (props.selectVisibleItems) {
       }
 
       &_icon {
+        cursor: pointer;
         border-radius: 4px;
         color: $lightGrayColor;
         margin: 8px;

@@ -1,6 +1,7 @@
 import { ref, onMounted } from "vue";
+import { useViewStore } from "@/stores/viewStore";
 
-export function useDevice() {
+export function useDevice(): void {
   const isMobile = ref(false);
   const mobileRegex =
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
@@ -10,8 +11,8 @@ export function useDevice() {
     }
 
     isMobile.value = mobileRegex.test(navigator.userAgent);
+    useViewStore().setIsMobile(isMobile.value);
   };
 
   onMounted(detectMobile);
-  return { isMobile };
 }
