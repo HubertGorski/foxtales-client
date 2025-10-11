@@ -18,7 +18,9 @@ import DeckCreator from "@/components/dylematy/DeckCreator.vue";
 import CardCreator from "@/components/dylematy/CardCreator.vue";
 import { ICON } from "@/enums/iconsEnum";
 import HubInputWithBtn from "@/components/hubComponents/HubInputWithBtn.vue";
-import HubSwitchBtns, { type HubSwitchBtnsItem } from "@/components/hubComponents/HubSwitchBtns.vue";
+import HubSwitchBtns, {
+  type HubSwitchBtnsItem,
+} from "@/components/hubComponents/HubSwitchBtns.vue";
 import ScrollSelectList from "@/components/selectLists/ScrollSelectList.vue";
 
 const userStore = useUserStore();
@@ -33,7 +35,9 @@ const addCard = (decks: Deck[]) => {
     return;
   }
 
-  console.log(`Dodano kartę: "${newCard.value.text}", która jest "${newCard.value.type}"`);
+  console.log(
+    `Dodano kartę: "${newCard.value.text}", która jest "${newCard.value.type}"`
+  );
   if (decks && decks.length > 0) {
     console.log(`Dodano do talii: "${decks.map((deck) => deck.title)}"`);
   }
@@ -43,10 +47,12 @@ const addCard = (decks: Deck[]) => {
 };
 
 const addCardBtn = computed(() => {
-  return {text: "add",
-  isOrange: true,
-  action: addCard,
-  btnIsDisabled: selectedCardType.value === null}
+  return {
+    text: "add",
+    isOrange: true,
+    action: addCard,
+    btnIsDisabled: selectedCardType.value === null,
+  };
 });
 
 const addNewDeck = () => {
@@ -60,7 +66,7 @@ const addCardsToDeck = (questions: ListElement[]) => {
   addManyCardsToDecks.value = true;
   isCardCreatorOpen.value = true;
   selectedCards.value = questions;
-}
+};
 
 const showDecksList = () => {
   addManyCardsToDecks.value = false;
@@ -68,14 +74,22 @@ const showDecksList = () => {
 };
 
 const assignedCardsToDecks = (decks: Deck[]) => {
-  const selectedActualCardsIds = selectedCards.value.map((question) => question.id);
+  const selectedActualCardsIds = selectedCards.value.map(
+    (question) => question.id
+  );
   const selectedActualDecksIds = decks.map((deck) => deck.id);
-  console.log('dodaje decki o id: ', selectedActualDecksIds, 'i karty o id: ', selectedActualCardsIds, 'do bazy relacja manyTomany');
+  console.log(
+    "dodaje decki o id: ",
+    selectedActualDecksIds,
+    "i karty o id: ",
+    selectedActualCardsIds,
+    "do bazy relacja manyTomany"
+  );
   isCardCreatorOpen.value = false;
   addManyCardsToDecks.value = false;
   selectedCards.value = [];
-  actualCards.value.forEach(card => card.isSelected = false);
-}
+  actualCards.value.forEach((card) => (card.isSelected = false));
+};
 
 const showDeckDetails = (deck: ListElement) => {
   currentDeck.value = convertListElementToDeck(
@@ -100,14 +114,16 @@ const closePopup = (refresh: boolean = false) => {
 
 const deleteCards = (cards: ListElement[]) => {
   const cardsIds = cards.map((card) => card.id);
-  console.log('usuwam carty o ids:', cardsIds);
-}
+  console.log("usuwam carty o ids:", cardsIds);
+};
 
 const isDeckCreatorOpen = ref<boolean>(false);
 const isCardCreatorOpen = ref<boolean>(false);
 const setOpenTab = ref<string>("addCard");
 const newCard = ref<DylematyCard>(new DylematyCard());
-const actualCards = ref<ListElement[]>(userStore.user.dylematyCards.map(convertDylematyCardToListElement));
+const actualCards = ref<ListElement[]>(
+  userStore.user.dylematyCards.map(convertDylematyCardToListElement)
+);
 const currentDeck = ref<Deck>(new Deck());
 const editDeckMode = ref<boolean>(true);
 const selectedCardType = ref<HubSwitchBtnsItem | null>(null);
@@ -115,18 +131,25 @@ const addManyCardsToDecks = ref<boolean>(false);
 const selectedCards = ref<ListElement[]>([]);
 const availableTypes: HubSwitchBtnsItem[] = [
   { id: 1, title: DYLEMATY_CARD_TYPE.POSITIVE },
-  { id: 2, title: DYLEMATY_CARD_TYPE.NEGATIVE }
+  { id: 2, title: DYLEMATY_CARD_TYPE.NEGATIVE },
 ];
 
 watch(selectedCardType, (newSelectedCardType) => {
-  newCard.value.type = newSelectedCardType ? newSelectedCardType.title as DYLEMATY_CARD_TYPE || null : null;
+  newCard.value.type = newSelectedCardType
+    ? (newSelectedCardType.title as DYLEMATY_CARD_TYPE) || null
+    : null;
 });
 </script>
 
 <template>
   <div class="libraryView">
     <HubPopup v-model="isCardCreatorOpen">
-      <CardCreator :newCard="newCard" @addCard="addCard" :isCardCreatorOpen=isCardCreatorOpen :addMany="addManyCardsToDecks" />
+      <CardCreator
+        :newCard="newCard"
+        @addCard="addCard"
+        :isCardCreatorOpen="isCardCreatorOpen"
+        :addMany="addManyCardsToDecks"
+      />
     </HubPopup>
     <HubPopup v-model="isDeckCreatorOpen">
       <DeckCreator
@@ -142,7 +165,10 @@ watch(selectedCardType, (newSelectedCardType) => {
     />
     <HubAccordion
       v-model="setOpenTab"
-      :slotNames="['dylematy.yourDecks', 'dylematy.addCard']"
+      :slotNames="[
+        { slotName: 'dylematy.yourDecks', isComing: false },
+        { slotName: 'dylematy.addCard', isComing: false },
+      ]"
       isSmallerTitle
     >
       <template #dylematy.yourDecks>
@@ -185,7 +211,14 @@ watch(selectedCardType, (newSelectedCardType) => {
       isSmallerTitle
       centerContent
     >
-      <ScrollSelectList v-model="actualCards" addCutomText="dylematy.addToDeck" emptyDataText="dylematy.noCardHasBeenCreatedYet" isTypeAvailable @addItems="addCardsToDeck" @deleteItems="deleteCards" />
+      <ScrollSelectList
+        v-model="actualCards"
+        addCutomText="dylematy.addToDeck"
+        emptyDataText="dylematy.noCardHasBeenCreatedYet"
+        isTypeAvailable
+        @addItems="addCardsToDeck"
+        @deleteItems="deleteCards"
+      />
     </HubAccordionElement>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>

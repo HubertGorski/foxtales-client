@@ -246,7 +246,10 @@ const isKeyboardOpen = computed(() => {
     />
     <HubAccordion
       v-model="setOpenTab"
-      :slotNames="['yourCatalogs', 'addQuestion']"
+      :slotNames="[
+        { slotName: 'yourCatalogs', isComing: false },
+        { slotName: 'addQuestion', isComing: false },
+      ]"
       isSmallerTitle
     >
       <template #yourCatalogs>
