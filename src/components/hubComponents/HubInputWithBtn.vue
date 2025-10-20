@@ -115,6 +115,7 @@ const handleEnter = (e: KeyboardEvent) => {
       @blur="handleBlur"
       :auto-grow="false"
       :rows="textareaRows"
+      :placeholder="actualTextPlaceholder"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
       no-resize
@@ -157,7 +158,6 @@ const handleEnter = (e: KeyboardEvent) => {
 .hubInputWithBtn {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 
   &_controls {
     display: flex;
@@ -166,6 +166,7 @@ const handleEnter = (e: KeyboardEvent) => {
 
     .btn {
       padding: 6px;
+      margin-top: 12px;
       width: auto;
       &.mainBtn {
         flex-grow: 1;
