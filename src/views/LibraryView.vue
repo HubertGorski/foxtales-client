@@ -277,8 +277,13 @@ const isKeyboardOpen = computed(() => {
           :extraBtnIcon="ICON.ADD_TO_COLLECTION"
           :extraBtnAction="showCatalogsList"
           :btnIsOrange="addQuestionBtn.isOrange"
+          textPlaceholder="exampleQuestion"
           isTextarea
-        />
+        >
+          <div class="addQuestionTutorial">
+            {{ $t("questionTutorial") }}
+          </div>
+        </HubInputWithBtn>
       </template>
     </HubAccordion>
     <HubAccordionElement
@@ -326,6 +331,13 @@ const isKeyboardOpen = computed(() => {
 
   .addQuestionToLibrary {
     padding: 12px;
+  }
+
+  .addQuestionTutorial {
+    font-size: 14px;
+    font-style: italic;
+    color: $lightGrayColor;
+    padding: 4px 4px 0 4px;
   }
 
   .manageLibrary {

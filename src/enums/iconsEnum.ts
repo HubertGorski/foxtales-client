@@ -23,5 +23,7 @@ export enum ICON {
   GAME_DYLEMATY = 'mdi-zodiac-libra',
   HAPPY = 'mdi-emoticon-happy-outline',
   SAD = 'mdi-emoticon-sad-outline',
-  DELETE = 'mdi-delete-outline'
+  DELETE = 'mdi-delete-outline',
+  FULLSCREEN_ON = 'mdi-fullscreen',
+  FULLSCREEN_OFF = 'mdi-fullscreen-exit'
 }

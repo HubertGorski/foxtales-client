@@ -1,3 +1,13 @@
+.fade2-enter-active,
+.fade2-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade2-enter-from,
+.fade2-leave-to {
+  opacity: 0;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease;
