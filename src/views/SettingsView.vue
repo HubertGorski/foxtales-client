@@ -19,25 +19,32 @@ import * as yup from "yup";
 import { getAvatar } from "@/utils/imgUtils";
 
 const userStore = useUserStore();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const currentUser = userStore.user;
+
+const translatedLanguages = computed(() => [
+  t("languages.polish"),
+  t("languages.english"),
+  t("languages.german"),
+]);
+
 const languages = ref<ListElement[]>([
   new ListElement({
     id: 0,
-    title: t("languages.polish"),
+    title: translatedLanguages.value[0],
     description: "",
     isSelected: currentUser.language === LANG.PL,
   }),
   new ListElement({
     id: 1,
-    title: t("languages.english"),
+    title: translatedLanguages.value[1],
     description: "",
     isSelected: currentUser.language === LANG.EN,
   }),
   new ListElement({
     id: 2,
-    title: t("languages.german"),
+    title: translatedLanguages.value[2],
     description: "",
     isSelected: currentUser.language === LANG.DE,
   }),
@@ -56,6 +63,10 @@ const showAllAchievement = () => {
 
 const changeLanguage = () => {
   userStore.setLanguage(selectedLanguage.value);
+  locale.value = selectedLanguage.value;
+  languages.value.forEach((lang, index) => {
+    lang.title = translatedLanguages.value[index];
+  });
 };
 
 const changeAvatar = async (avatar: Avatar) => {
@@ -142,7 +153,7 @@ const acceptLanguageBtn = computed(() => {
           { slotName: 'accountStats', isComing: true },
           { slotName: 'chooseFox', isComing: false },
           { slotName: 'changeName', isComing: false },
-          { slotName: 'changeLanguage', isComing: true },
+          { slotName: 'changeLanguage', isComing: false },
         ]"
         setOpenTab="accountStats"
       >
@@ -158,26 +169,30 @@ const acceptLanguageBtn = computed(() => {
             <div class="stats">
               <div class="stats_element">
                 <v-icon>{{ ICON.ANSWER }}</v-icon>
-                <span
-                  >Udzielone odpowiedzi:
+                <span>
+                  {{ $t("stats.answers") }}:
                   {{ currentUser.answersCountPsych }}</span
                 >
               </div>
               <div class="stats_element">
                 <v-icon>{{ ICON.GAME }}</v-icon>
-                <span>Rozegrane gry: {{ currentUser.totalGamesPlayed }}</span>
+                <span>
+                  {{ $t("stats.games") }}:
+                  {{ currentUser.totalGamesPlayed }}</span
+                >
               </div>
               <div class="stats_element">
                 <v-icon>{{ ICON.QUESTION }}</v-icon>
-                <span
-                  >Publiczne pytania:
+                <span>
+                  {{ $t("stats.publicQuestions") }}:
                   {{ currentUser.publicQuestionsCount }}</span
                 >
               </div>
               <div class="stats_element">
                 <v-icon>{{ ICON.ACHIEVEMENT }}</v-icon>
                 <span
-                  >Osiągnięcia: {{ unlockedAchievementsCount }} /
+                  >{{ $t("stats.achievements") }}:
+                  {{ unlockedAchievementsCount }} /
                   {{ allUserAchievements.length }}</span
                 >
               </div>

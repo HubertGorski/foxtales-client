@@ -197,5 +197,11 @@
     "chooseRoomFromList": "Wybierz pokój z listy",
     "noPublicRooms": "Brak publicznych pokoi",
     "playersInRoom": "{count} graczy w pokoju"
+  },
+  "stats": {
+    "answers": "Udzielone odpowiedzi",
+    "games": "Rozegrane gry",
+    "publicQuestions": "Publiczne pytania",
+    "achievements": "Osiągnięcia"
   }
 }

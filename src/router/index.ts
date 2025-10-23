@@ -19,7 +19,6 @@ import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 import { PERMISSION_GAME } from "@/enums/permissions";
 import PsychGameView from "@/views/PsychGameView.vue";
 import WelcomeViewVue from "@/views/WelcomeView.vue";
-import Client from "@/api/Client";
 import TryWithoutAccountView from "@/views/TryWithoutAccountView.vue";
 
 const router = createRouter({

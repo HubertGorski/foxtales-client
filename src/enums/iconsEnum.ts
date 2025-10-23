@@ -24,6 +24,7 @@ export enum ICON {
   HAPPY = 'mdi-emoticon-happy-outline',
   SAD = 'mdi-emoticon-sad-outline',
   DELETE = 'mdi-delete-outline',
+  LANGUAGE = 'mdi-web',
   FULLSCREEN_ON = 'mdi-fullscreen',
   FULLSCREEN_OFF = 'mdi-fullscreen-exit'
 }
