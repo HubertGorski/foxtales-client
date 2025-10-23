@@ -6,6 +6,7 @@ import { Game } from "@/models/Game";
 import { instanceToPlain, plainToInstance } from "class-transformer";
 import type { Question } from "@/models/Question";
 import type { Answer } from "@/models/Answer";
+import { useUserStore } from "./userStore";
 
 interface SignalRState {
   connection: signalR.HubConnection | null;
@@ -39,8 +40,11 @@ export const useSignalRStore = defineStore({
       }
 
       this.connection = new signalR.HubConnectionBuilder()
-        .withUrl(BASE_URL_PSYCH)
+        .withUrl(BASE_URL_PSYCH, {
+          accessTokenFactory: () => useUserStore().getAccessToken(),
+        })
         .withAutomaticReconnect()
+        .configureLogging(signalR.LogLevel.Warning)
         .build();
 
       this.connection.on("PlayerLeft", (playerId: number) => {
