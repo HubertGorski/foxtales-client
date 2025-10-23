@@ -122,12 +122,12 @@ watch(
       />
     </div>
     <div v-if="!currentStep" class="acceptPanel">
-      <LevelBar
+      <!-- <LevelBar
         v-if="!isUserReady"
         :points="timer - 9"
         :requiredPointsToNextLevel="timer"
         :showPointInfo="false"
-      />
+      /> TODO: dodac timer -->
       <HubTooltip
         :tooltipText="
           isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')

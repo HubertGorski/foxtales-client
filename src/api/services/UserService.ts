@@ -8,6 +8,8 @@ import { Question } from "@/models/Question";
 import { CatalogType } from "@/models/CatalogType";
 import { userClient, type IUserLoginResponse } from "../clients/UserClient";
 import { useUserStore } from "@/stores/userStore";
+import i18n from "@/configs/i18n";
+import type { LANG } from "@/enums/languagesEnum";
 
 export const userService = {
   async logout(): Promise<void> {
@@ -65,6 +67,9 @@ export const userService = {
     });
 
     const userStore = useUserStore();
+
+    const currentLocale = i18n.global.locale.value
+    user.language = currentLocale as LANG;
     userStore.setUserSession(user);
     userStore.setAvatars(avatars);
     userStore.setPublicQuestions(publicQuestions);

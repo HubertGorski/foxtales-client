@@ -161,7 +161,7 @@ watch(currentGame, (game: Game | null) => {
       font-weight: 600;
     }
     .hubSwitch_content {
-      max-width: 210px;
+      max-width: 216px;
     }
 
     .customCodeSection {

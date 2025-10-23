@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import { useBeforeUnload } from "./libs/useBeforeUnload";
 import { useDynamicHeight } from "./libs/useDynamicHeight";
 import { useKeyboardScrollControl } from "./libs/useKeyboardScrollControl";
 import { useOrientation } from "./libs/useOrientation";
 import OrientationOverlay from "./components/OrientationOverlay.vue";
 import { useDevice } from "./libs/useDevice";
 
-useBeforeUnload();
 useDynamicHeight("#app");
 useDynamicHeight(".foxTales");
 useDevice();

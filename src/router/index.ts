@@ -19,7 +19,6 @@ import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
 import { PERMISSION_GAME } from "@/enums/permissions";
 import PsychGameView from "@/views/PsychGameView.vue";
 import WelcomeViewVue from "@/views/WelcomeView.vue";
-import Client from "@/api/Client";
 import TryWithoutAccountView from "@/views/TryWithoutAccountView.vue";
 
 const router = createRouter({
@@ -170,7 +169,6 @@ router.beforeEach((to, from, next) => {
       query: { reason: NO_ACCESS_REASON.ADMIN_ONLY },
     });
   } else if (to.meta.requiresAuth && !isAuthenticated()) {
-    logout();
     sessionStorage.setItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN, to.fullPath);
     next({
       path: ROUTE_PATH.NO_ACCESS,
@@ -199,21 +197,7 @@ function hasAccessToGame(permission: PERMISSION_GAME): boolean {
 }
 
 function isAuthenticated(): boolean {
-  return !!useUserStore().user.accessToken;
-}
-
-async function logout(): Promise<void> {
-  if (!useUserStore().user.accessToken) {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) {
-      return;
-    }
-
-    useUserStore().setAccessToken(token);
-    await Client.post("/user/logout");
-    sessionStorage.removeItem("accessToken");
-    useUserStore().setAccessToken("");
-  }
+  return !!useUserStore().getAccessToken();
 }
 
 export default router;

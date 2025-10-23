@@ -236,6 +236,7 @@ watch(catalog, () => {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    gap: 8px;
 
     &_size {
       background-color: white;
@@ -245,6 +246,7 @@ watch(catalog, () => {
       transition: all 0.2s;
       padding: 12px;
       cursor: pointer;
+      flex-grow: 1;
 
       &.isSelected {
         font-weight: 600;

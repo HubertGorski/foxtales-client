@@ -1,7 +1,7 @@
 export enum LANG {
-  PL,
-  EN,
-  DE,
+  PL = 'pl',
+  EN = 'en',
+  DE = 'de',
 }
 
 export const languagesMap = [LANG.PL, LANG.EN, LANG.DE];
