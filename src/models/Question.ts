@@ -1,20 +1,36 @@
 import { GENDER } from "@/enums/userEnum";
-import { LANG } from "@/enums/languagesEnum";
+import { LANG, LangFromNumber, LangToNumber } from "@/enums/languagesEnum";
 import { User } from "./User";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 
 export class Question {
   id: number | null;
   text: string;
   ownerId: number;
+
+  @Transform(
+    ({ value }) => {
+      if (typeof value === "number") {
+        return LangFromNumber[value] ?? LANG.PL;
+      }
+
+      if (typeof value === "string") {
+        return LangToNumber[value as LANG] ?? 1;
+      }
+
+      return value;
+    },
+    { toClassOnly: false }
+  )
   language: LANG;
+
   targetGender: GENDER;
   isPublic: boolean;
   usedCount: number;
   publicDate: Date | null;
   createdDate: Date;
   catalogIds: number[];
-  
+
   @Type(() => User)
   currentUser: User | null = null;
 
