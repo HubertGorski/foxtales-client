@@ -23,7 +23,6 @@ import { psychService } from "@/api/services/PsychService";
 import { useViewStore } from "@/stores/viewStore";
 
 const userStore = useUserStore();
-const viewStore = useViewStore();
 
 const addQuestion = async (catalogs: Catalog[]) => {
   event?.preventDefault();
@@ -34,7 +33,8 @@ const addQuestion = async (catalogs: Catalog[]) => {
   const questionToStore = new Question(
     null,
     newQuestion.value,
-    userStore.user.userId
+    userStore.user.userId,
+    userStore.user.language
   );
 
   let catalogIds: number[] = [];
