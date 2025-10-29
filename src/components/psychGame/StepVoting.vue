@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { computed, ref, toRef, watch } from 'vue';
   import UserListElement from '../UserListElement.vue';
-  import LevelBar from '../LevelBar.vue';
   import HubBtn from '../hubComponents/HubBtn.vue';
   import HubDivider from '../hubComponents/HubDivider.vue';
   import { Game } from '@/models/Game';
@@ -24,7 +23,6 @@
 
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
-  const timer = ref<number>(90);
   const selectedAnswerUserId = ref<number | null>(null);
   const isUserReady = ref<boolean>(false);
   const currentStep = ref<number>(0);

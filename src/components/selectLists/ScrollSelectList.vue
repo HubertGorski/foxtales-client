@@ -5,24 +5,17 @@
   import { ICON } from '@/enums/iconsEnum';
   import { DYLEMATY_CARD_TYPE } from '@/models/DylematyCard';
 
-  const props = defineProps({
-    addCutomText: {
-      type: String,
-      required: true,
-    },
-    createdItemsText: {
-      type: String,
-      default: 'createdItems',
-    },
-    isTypeAvailable: {
-      type: Boolean,
-      default: false,
-    },
-    emptyDataText: {
-      type: String,
-      default: 'emptyData',
-    },
-  });
+  const {
+    addCutomText,
+    createdItemsText = 'createdItems',
+    isTypeAvailable = false,
+    emptyDataText = 'emptyData',
+  } = defineProps<{
+    addCutomText: string;
+    createdItemsText?: string;
+    isTypeAvailable?: boolean;
+    emptyDataText?: string;
+  }>();
 
   const emit = defineEmits<{
     (e: 'addItems', selectedItems: ListElement[]): void;
@@ -71,11 +64,11 @@
         v-for="item in items"
         :key="item.id"
         class="item"
-        @click="item.setSelected(!item.isSelected)"
         :class="{ isSelected: item.isSelected }"
+        @click="item.setSelected(!item.isSelected)"
       >
         <div class="itemContent">
-          <v-icon class="itemContent_typeIcon" v-if="isTypeAvailable">
+          <v-icon v-if="isTypeAvailable" class="itemContent_typeIcon">
             {{ item.type === DYLEMATY_CARD_TYPE.POSITIVE ? ICON.HAPPY : ICON.SAD }}
           </v-icon>
           {{ item.description || item.title }}

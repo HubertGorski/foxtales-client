@@ -59,9 +59,9 @@
 <template>
   <div class="hubAccordionElement creamCard">
     <div
-      @click="toggleAccordion()"
       class="hubAccordionElement_title"
       :class="{ isSmallerTitle: isSmallerTitle, isOpen: isOpen }"
+      @click="toggleAccordion()"
     >
       <p :class="{ isTitleCenter: isTitleCenter }">
         {{ $t(title) }}

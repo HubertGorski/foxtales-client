@@ -178,10 +178,10 @@
             {{ item.title }}
           </div>
         </HubTooltip>
-        <div v-if="showItemDetailsBtn" @click="showDetails(item)" class="item_actionIcon">
+        <div v-if="showItemDetailsBtn" class="item_actionIcon" @click="showDetails(item)">
           <v-icon>{{ ICON.EDIT_COLLECTION }}</v-icon>
         </div>
-        <div v-else @click="selectItem(item)" class="item_icon">
+        <div v-else class="item_icon" @click="selectItem(item)">
           <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>
           <v-icon v-else>{{ ICON.SELECT_OFF }}</v-icon>
         </div>

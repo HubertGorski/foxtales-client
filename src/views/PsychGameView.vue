@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import NavigationBtns from '@/components/NavigationBtns.vue';
   import { useSignalRStore } from '@/stores/signalRStore';
   import { useRouter } from 'vue-router';
   import StepQuestion from '@/components/psychGame/StepQuestion.vue';
@@ -100,7 +99,7 @@
     </div>
     <transition name="fade" mode="out-in">
       <StepEnd v-if="game.hasGameEnded" @leaveRoom="leaveRoom" />
-      <component v-else :is="getCurrentStep" :key="currentStep" @nextStep="handleNextStep" />
+      <component :is="getCurrentStep" v-else :key="currentStep" @nextStep="handleNextStep" />
     </transition>
   </div>
 </template>

@@ -4,7 +4,7 @@
 
 <template>
   <div class="hubPopup">
-    <div v-if="isVisible" @click="isVisible = false" class="hubPopup_mask" />
+    <div v-if="isVisible" class="hubPopup_mask" @click="isVisible = false" />
     <div class="hubPopup_content" :class="{ isVisible: isVisible }">
       <slot></slot>
     </div>

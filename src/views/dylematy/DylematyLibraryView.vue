@@ -140,15 +140,15 @@
     <HubPopup v-model="isCardCreatorOpen">
       <CardCreator
         :newCard="newCard"
-        @addCard="addCard"
         :isCardCreatorOpen="isCardCreatorOpen"
         :addMany="addManyCardsToDecks"
+        @addCard="addCard"
       />
     </HubPopup>
     <HubPopup v-model="isDeckCreatorOpen">
       <DeckCreator v-model="currentDeck" :editMode="editDeckMode" @closePopup="closePopup" />
     </HubPopup>
-    <HubAccordionElement @click="addNewDeck" title="dylematy.addDeck" isSmallerTitle />
+    <HubAccordionElement title="dylematy.addDeck" isSmallerTitle @click="addNewDeck" />
     <HubAccordion
       v-model="setOpenTab"
       :slotNames="[
@@ -159,8 +159,8 @@
     >
       <template #dylematy.yourDecks>
         <WhiteSelectList
-          class="yourDecks"
           v-model="actualDecks"
+          class="yourDecks"
           :height="146"
           :itemsPerPage="3"
           :fontSize="14"
@@ -190,12 +190,12 @@
       </template>
     </HubAccordion>
     <HubAccordionElement
-      @click="setOpenTab = ''"
       class="manageLibrary"
       title="dylematy.yourCards"
       isOpen
       isSmallerTitle
       centerContent
+      @click="setOpenTab = ''"
     >
       <ScrollSelectList
         v-model="actualCards"

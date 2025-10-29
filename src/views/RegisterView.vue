@@ -96,7 +96,7 @@
 
 <template>
   <div class="registerView">
-    <form @submit.prevent="onSubmit" class="creamCard">
+    <form class="creamCard" @submit.prevent="onSubmit">
       <h1 class="registerView_title">{{ $t('registerTitle') }}</h1>
       <div v-if="step === 1 || step === 0">
         <v-text-field

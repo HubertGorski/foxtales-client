@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  const props = defineProps({
-    header: {
-      type: String,
-    },
-  });
+  const { header } = defineProps<{
+    header?: string;
+  }>();
 </script>
 
 <template>

@@ -211,7 +211,6 @@
           <div class="avatars">
             <div v-for="avatar in sortedAvatars" :key="avatar.id" class="avatar">
               <img
-                @click="changeAvatar(avatar)"
                 :src="getAvatar(avatar.id)"
                 alt="Lisek"
                 :class="{
@@ -219,6 +218,7 @@
                   isDisabled: avatar.isDisabled(currentUser.avatarsIds),
                 }"
                 class="avatar_img"
+                @click="changeAvatar(avatar)"
               />
               <v-icon v-if="avatar.isDisabled(currentUser.avatarsIds)" class="avatar_lock">
                 {{ ICON.LOCK }}

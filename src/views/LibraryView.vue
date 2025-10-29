@@ -212,10 +212,10 @@
     <HubPopup v-model="isQuestionCreatorOpen">
       <QuestionCreator
         :newQuestion="newQuestion"
-        @addQuestion="addQuestion"
         :isQuestionCreatorOpen="isQuestionCreatorOpen"
         :addMany="addManyQuestonsToCatalogs"
         :selectedCatalogsIds="catalogsIdsFromSelectedQuestion"
+        @addQuestion="addQuestion"
       />
     </HubPopup>
     <HubPopup v-model="isCatalogCreatorOpen">
@@ -226,7 +226,7 @@
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
       />
     </HubPopup>
-    <HubAccordionElement @click="addNewCatalog" title="addCatalog" isSmallerTitle />
+    <HubAccordionElement title="addCatalog" isSmallerTitle @click="addNewCatalog" />
     <HubAccordion
       v-model="setOpenTab"
       :slotNames="[
@@ -237,8 +237,8 @@
     >
       <template #yourCatalogs>
         <WhiteSelectList
-          class="yourCatalogs"
           v-model="actualCatalogs"
+          class="yourCatalogs"
           :height="146"
           :itemsPerPage="3"
           :fontSize="14"
@@ -270,7 +270,6 @@
       </template>
     </HubAccordion>
     <HubAccordionElement
-      @click="setOpenTab = ''"
       class="manageLibrary"
       :class="{
         isHidden: setOpenTab === 'addQuestion' && isKeyboardOpen,
@@ -279,6 +278,7 @@
       :isOpen="setOpenTab != 'addQuestion' || !isKeyboardOpen"
       isSmallerTitle
       centerContent
+      @click="setOpenTab = ''"
     >
       <ScrollSelectList
         v-model="actualQuestions"

@@ -110,26 +110,26 @@
     <v-textarea
       v-if="isTextarea"
       v-model="text"
-      @keydown.enter="handleEnter"
-      @focus="handleFocus"
-      @blur="handleBlur"
       :auto-grow="false"
       :rows="textareaRows"
       :placeholder="actualTextPlaceholder"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
       no-resize
+      @keydown.enter="handleEnter"
+      @focus="handleFocus"
+      @blur="handleBlur"
     />
     <v-text-field
       v-else
       v-model="text"
-      @keydown.enter="handleEnter"
-      @focus="handleFocus"
-      @blur="handleBlur"
       :placeholder="actualTextPlaceholder"
       :type="textType"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
+      @keydown.enter="handleEnter"
+      @focus="handleFocus"
+      @blur="handleBlur"
     />
     <slot></slot>
     <div class="hubInputWithBtn_controls">

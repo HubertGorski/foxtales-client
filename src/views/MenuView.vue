@@ -8,9 +8,7 @@
   import { User } from '@/models/User';
   import { useSignalRStore } from '@/stores/signalRStore';
   import { Game } from '@/models/Game';
-  import { useFullscreen } from '@/useFullscreen';
 
-  const { exit } = useFullscreen();
   const userStore = useUserStore();
   const router = useRouter();
   const signalRStore = useSignalRStore();
@@ -46,9 +44,9 @@
         <span class="welcomeMessage_name">{{ userStore.user.username }}!</span>
         <p class="welcomeMessage_text">{{ $t('haveFunAndEnjoyGame') }}</p>
       </div>
-      <HubAccordionElement @click="navigateToCreateGame" title="createNewGame" />
-      <HubAccordionElement @click="navigateToJoinGame" title="joinTheGame" />
-      <div @click="goToLibrary" class="menu_elementWithFox">
+      <HubAccordionElement title="createNewGame" @click="navigateToCreateGame" />
+      <HubAccordionElement title="joinTheGame" @click="navigateToJoinGame" />
+      <div class="menu_elementWithFox" @click="goToLibrary">
         <img class="fox" src="@/assets/imgs/7.webp" alt="Lisek" />
         <HubAccordionElement title="manageLibrary" isTitleCenter />
       </div>

@@ -1,14 +1,10 @@
 <script setup lang="ts">
   import type { User } from '@/models/User';
-  import { type PropType } from 'vue';
   import FoxWithName from './FoxWithName.vue';
 
-  const props = defineProps({
-    users: {
-      type: Array as PropType<User[]>,
-      required: true,
-    },
-  });
+  const { users } = defineProps<{
+    users: User[];
+  }>();
 
   const getAvatar = (id: number) => `/src/assets/imgs/${id}.webp`;
 

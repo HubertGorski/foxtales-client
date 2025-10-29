@@ -1,14 +1,8 @@
 <script setup lang="ts">
-  const props = defineProps({
-    header: {
-      type: String,
-      required: true,
-    },
-    isDividerVisible: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const { header, isDividerVisible = false } = defineProps<{
+    header: string;
+    isDividerVisible?: boolean;
+  }>();
 </script>
 
 <template>

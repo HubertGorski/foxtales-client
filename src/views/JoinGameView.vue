@@ -73,7 +73,11 @@
     password.value = '';
     selectedGamesOwnerId.value = 0;
     selectedGamesOwnerId.value = game.owner.userId;
-    game.isPasswordSet ? openPasswordPopup() : goToLobby(selectedGamesOwnerId.value);
+    if (game.isPasswordSet) {
+      openPasswordPopup();
+    } else {
+      goToLobby(selectedGamesOwnerId.value);
+    }
   };
 
   const openPasswordPopup = () => {
@@ -147,10 +151,10 @@
       </div>
       <div v-else class="gamesList">
         <WhiteCard
-          :header="`${t('usersGame')} ${game.owner.username}`"
-          @click="selectGameFromList(game)"
           v-for="(game, index) in actualGames"
           :key="index"
+          :header="`${t('usersGame')} ${game.owner.username}`"
+          @click="selectGameFromList(game)"
         >
           <div class="details">
             <div>

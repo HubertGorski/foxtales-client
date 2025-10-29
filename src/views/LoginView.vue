@@ -12,7 +12,6 @@
   const { t } = useI18n();
   const router = useRouter();
   const errorLogin = ref('');
-  const viewStore = useViewStore();
 
   const schema = yup.object({
     email: yup.string().required(t('auth.emailIsRequired')).email(t('auth.emailFormatIsIncorrect')),
@@ -22,10 +21,6 @@
   const { handleSubmit } = useForm({ validationSchema: schema });
   const { value: email, errorMessage: emailError } = useField('email');
   const { value: password, errorMessage: passwordError } = useField('password');
-
-  // TEST
-  // email.value = "hub@wp.pl";
-  // password.value = "#12345678";
 
   const navigateBack = () => {
     router.push(ROUTE_PATH.HOME);
@@ -57,7 +52,7 @@
 <template>
   <div class="loginView" :class="{ isFocused: isKeyboardOpen }">
     <img src="@/assets/imgs/4.webp" alt="Lisek" class="loginView_fox" />
-    <form @submit.prevent="onSubmit" class="creamCard">
+    <form class="creamCard" @submit.prevent="onSubmit">
       <h1 class="loginView_title">{{ $t('auth.loginTitle') }}</h1>
       <v-text-field
         v-model="email"
@@ -77,7 +72,7 @@
         :error-messages="passwordError"
       />
       <div class="loginView_actions">
-        <button type="button" @click="navigateBack" class="loginView_btn loginView_btn--back">
+        <button type="button" class="loginView_btn loginView_btn--back" @click="navigateBack">
           {{ $t('back2') }}
         </button>
         <button type="submit" class="loginView_btn loginView_btn--submit">

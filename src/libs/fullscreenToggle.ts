@@ -1,5 +1,4 @@
 const doc = document as any;
-const docEl = document.documentElement as any;
 
 export function isFullscreen(): boolean {
   return !!(doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement);
@@ -7,10 +6,22 @@ export function isFullscreen(): boolean {
 
 export function toggleFullscreen(): void {
   if (isFullscreen()) {
-    doc.exitFullscreen?.() ?? doc.webkitExitFullscreen?.() ?? doc.msExitFullscreen?.();
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if ((document as any).webkitExitFullscreen) {
+      (document as any).webkitExitFullscreen();
+    } else if ((document as any).msExitFullscreen) {
+      (document as any).msExitFullscreen();
+    }
   } else {
-    docEl.requestFullscreen?.() ??
-      docEl.webkitRequestFullscreen?.() ??
-      docEl.msRequestFullscreen?.();
+    const el = document.documentElement;
+
+    if (el.requestFullscreen) {
+      el.requestFullscreen();
+    } else if ((el as any).webkitRequestFullscreen) {
+      (el as any).webkitRequestFullscreen();
+    } else if ((el as any).msRequestFullscreen) {
+      (el as any).msRequestFullscreen();
+    }
   }
 }

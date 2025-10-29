@@ -27,11 +27,11 @@
     <div class="chooseGame">
       <div v-for="game in foxGames" :key="game.permission">
         <div
-          @click="action(game.permission)"
           class="creamCard chooseGame_game"
           :class="{
             isLocked: !userStore.getPermissionByName(game.permission).isGameUnlocked,
           }"
+          @click="action(game.permission)"
         >
           <v-icon class="icon">{{ game.icon }}</v-icon>
           <div class="name">{{ $t(game.name) }}</div>

@@ -21,7 +21,6 @@
 <template>
   <div
     data-no-blur
-    @click="handleAction()"
     class="hubBtn"
     :class="[
       { disabled },
@@ -33,6 +32,7 @@
           ? 'hubBtn--orange'
           : 'hubBtn--brown',
     ]"
+    @click="handleAction()"
   >
     <p v-if="text">{{ $t(text) }}</p>
     <v-icon v-if="icon">{{ icon }}</v-icon>

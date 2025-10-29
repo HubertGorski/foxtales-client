@@ -36,7 +36,7 @@
   <div class="hubTooltip" :class="{ maxWidth: maxWidth }">
     <v-tooltip v-if="hasTooltip" v-model="isTooltipActive" location="top">
       <template v-slot:activator="{ props }">
-        <div @click="toggleTooltip" v-bind="props">
+        <div v-bind="props" @click="toggleTooltip">
           <slot></slot>
         </div>
       </template>

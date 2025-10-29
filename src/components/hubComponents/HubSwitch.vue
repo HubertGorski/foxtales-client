@@ -2,20 +2,15 @@
   import HubTooltip from './HubTooltip.vue';
   import { ICON } from '@/enums/iconsEnum';
 
-  const props = defineProps({
-    label: {
-      type: String,
-      required: false,
-    },
-    tooltipText: {
-      type: String,
-      default: '',
-    },
-    withIcon: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const {
+    label,
+    tooltipText = '',
+    withIcon = false,
+  } = defineProps<{
+    label?: string;
+    tooltipText?: string;
+    withIcon?: boolean;
+  }>();
 
   const value = defineModel({ type: Boolean, required: true });
 

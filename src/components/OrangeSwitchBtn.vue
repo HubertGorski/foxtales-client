@@ -29,9 +29,9 @@
 </script>
 
 <template>
-  <div class="orangeSwitchBtn" @click="handleAction" :class="{ isActive: isActive }">
+  <div class="orangeSwitchBtn" :class="{ isActive: isActive }" @click="handleAction">
     <transition name="fade2" mode="out-in">
-      <v-icon :style="{ fontSize: `${iconSize}px` }" :key="isActive ? 1 : 0">
+      <v-icon :key="isActive ? 1 : 0" :style="{ fontSize: `${iconSize}px` }">
         {{ isActive ? iconOff : iconOn }}
       </v-icon>
     </transition>

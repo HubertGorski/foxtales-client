@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { computed, type PropType } from 'vue';
   import { isEqual } from 'lodash';
 
   export interface HubSwitchBtnsItem {
@@ -8,15 +7,10 @@
     subtitle?: string;
   }
 
-  const props = defineProps({
-    items: {
-      type: Array as PropType<Array<HubSwitchBtnsItem>>,
-    },
-    fontSize: {
-      type: Number,
-      default: 24,
-    },
-  });
+  const { items, fontSize = 24 } = defineProps<{
+    items?: HubSwitchBtnsItem[];
+    fontSize?: number;
+  }>();
 
   const selectedItem = defineModel<HubSwitchBtnsItem | null>({
     required: true,
@@ -32,9 +26,9 @@
     <div
       v-for="item in items"
       :key="item.id"
-      @click="selectedItem = item"
       class="hubSwitchBtns_option"
       :class="{ isSelected: isSelected(item) }"
+      @click="selectedItem = item"
     >
       <p class="title" :style="{ fontSize: fontSize + 'px' }">
         {{ $t(item.title) }}

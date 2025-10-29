@@ -1,52 +1,33 @@
 <script setup lang="ts">
   import HubInputWithBtn from './HubInputWithBtn.vue';
 
-  const props = defineProps({
-    title: {
-      type: String,
-      required: true,
-    },
-    btnText: {
-      type: String,
-      required: true,
-    },
-    btnIsOrange: {
-      type: Boolean,
-    },
-    btnAction: {
-      type: Function,
-      required: true,
-    },
-    extraBtnIsOrange: {
-      type: Boolean,
-      required: false,
-    },
-    extraBtnAction: {
-      type: Function,
-      required: false,
-    },
-    extraBtnIcon: {
-      type: String,
-      required: false,
-    },
-    textPlaceholder: {
-      type: String,
-    },
-    textType: {
-      type: String,
-    },
-    withFoxImg: {
-      type: Boolean,
-      default: false,
-    },
-    isTextarea: {
-      type: Boolean,
-      default: false,
-    },
-    errorMessages: {
-      type: String,
-    },
-  });
+  const {
+    title,
+    btnText,
+    btnIsOrange = false,
+    btnAction,
+    extraBtnIsOrange = false,
+    extraBtnAction,
+    extraBtnIcon,
+    textPlaceholder,
+    textType,
+    withFoxImg = false,
+    isTextarea = false,
+    errorMessages,
+  } = defineProps<{
+    title: string;
+    btnText: string;
+    btnAction: () => void;
+    btnIsOrange?: boolean;
+    extraBtnIsOrange?: boolean;
+    extraBtnAction?: () => void;
+    extraBtnIcon?: string;
+    textPlaceholder?: string;
+    textType?: string;
+    withFoxImg?: boolean;
+    isTextarea?: boolean;
+    errorMessages?: string;
+  }>();
 
   const text = defineModel({ type: String, required: true });
 

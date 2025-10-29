@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref, toRef } from 'vue';
+  import { computed, ref } from 'vue';
   import HubDivider from '../hubComponents/HubDivider.vue';
   import { Game } from '@/models/Game';
   import { useSignalRStore } from '@/stores/signalRStore';
@@ -84,9 +84,9 @@
               <span>Lista wyników:</span>
               <br />
               <span
-                :class="{ isBold: user.userId === userStore.user.userId }"
                 v-for="(user, index) in usersSortedByPlace"
                 :key="user.userId"
+                :class="{ isBold: user.userId === userStore.user.userId }"
               >
                 {{ index + 1 }}. {{ user.username }} - {{ user.pointsInGame }} {{ $t('exp') }}
               </span>
@@ -95,7 +95,7 @@
           <HubDivider :text="$t('top3users')" />
           <Podium :users="usersSortedByPlace" />
         </div>
-        <SummaryGame :users="game.users" v-else />
+        <SummaryGame v-else :users="game.users" />
       </transition>
     </div>
     <div v-else class="tmpClass">

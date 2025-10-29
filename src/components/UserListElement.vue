@@ -1,36 +1,23 @@
 <script setup lang="ts">
   import HubTooltip from './hubComponents/HubTooltip.vue';
 
-  const props = defineProps({
-    imgSource: {
-      type: String,
-      required: true,
-    },
-    isSelected: {
-      type: Boolean,
-      default: false,
-    },
-    isSelectedBold: {
-      type: Boolean,
-      default: false,
-    },
-    text: {
-      type: String,
-      default: '',
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    avatarLabel: {
-      type: String,
-      default: '',
-    },
-    tooltipText: {
-      type: String,
-      default: '',
-    },
-  });
+  const {
+    imgSource,
+    isSelected = false,
+    isSelectedBold = false,
+    text = '',
+    label = '',
+    avatarLabel = '',
+    tooltipText = '',
+  } = defineProps<{
+    imgSource: string;
+    isSelected?: boolean;
+    isSelectedBold?: boolean;
+    text?: string;
+    label?: string;
+    avatarLabel?: string;
+    tooltipText?: string;
+  }>();
 </script>
 
 <template>

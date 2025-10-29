@@ -159,13 +159,13 @@
     <div class="catalogCreator_subtitle">{{ $t('chooseCatalogSize') }}</div>
     <div class="selectSize">
       <div
+        v-for="type in availableTypes"
+        :key="type.catalogTypeId"
         class="selectSize_size"
         :class="{
           isSelected: catalog.catalogType.catalogTypeId === type.catalogTypeId,
         }"
         @click="catalog.catalogType = type"
-        v-for="type in availableTypes"
-        :key="type.catalogTypeId"
       >
         <p class="catalogName">{{ $t(type.name.toLocaleLowerCase()) }}</p>
         <p class="catalogSize">{{ `${$t('size')}: ${type.size}` }}</p>

@@ -1,18 +1,9 @@
 <script setup lang="ts">
-  const props = defineProps({
-    value: {
-      type: Number,
-      required: true,
-    },
-    maxValue: {
-      type: Number,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-  });
+  const { value, maxValue, title } = defineProps<{
+    value: number;
+    maxValue: number;
+    title: string;
+  }>();
 </script>
 
 <template>

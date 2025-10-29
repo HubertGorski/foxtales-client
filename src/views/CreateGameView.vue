@@ -95,10 +95,10 @@
           </p>
           <p class="customCodeSection_code">{{ newGame.code }}</p>
         </div>
-        <div class="publicSection" v-else>
+        <div v-else class="publicSection">
           <v-text-field
-            class="publicSection_input"
             v-model="newGame.password"
+            class="publicSection_input"
             :label="$t('lobby.entryPassword')"
             type="password"
             outlined
