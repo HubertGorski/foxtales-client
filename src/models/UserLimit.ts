@@ -1,4 +1,4 @@
-import type { USER_LIMIT } from "@/enums/userLimitEnum";
+import type { USER_LIMIT } from '@/enums/userLimitEnum';
 
 export class UserLimit {
   type: USER_LIMIT | null = null;

@@ -1,21 +1,17 @@
-import { PERMISSION_GAME, type PERMISSION } from "@/enums/permissions";
-import { Expose } from "class-transformer";
+import { PERMISSION_GAME, type PERMISSION } from '@/enums/permissions';
+import { Expose } from 'class-transformer';
 
 export class Permission {
-  @Expose({ name: "limitId" })
+  @Expose({ name: 'limitId' })
   name: PERMISSION | PERMISSION_GAME;
 
-  @Expose({ name: "closestThreshold" })
+  @Expose({ name: 'closestThreshold' })
   closestLimit: number;
 
-  @Expose({ name: "currentValue" })
+  @Expose({ name: 'currentValue' })
   currentUsage: number;
 
-  constructor(
-    name: PERMISSION | PERMISSION_GAME,
-    closestLimit: number,
-    currentUsage: number = 0
-  ) {
+  constructor(name: PERMISSION | PERMISSION_GAME, closestLimit: number, currentUsage: number = 0) {
     this.name = name;
     this.closestLimit = closestLimit;
     this.currentUsage = currentUsage;

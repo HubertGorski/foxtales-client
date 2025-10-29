@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
 interface ViewState {
   isKeyboardOpen: boolean;
@@ -6,15 +6,15 @@ interface ViewState {
 }
 
 export const useViewStore = defineStore({
-  id: "viewStore",
+  id: 'viewStore',
   state: (): ViewState => ({
     isKeyboardOpen: false,
     isMobile: false,
   }),
 
   getters: {
-    getIsKeyboardOpen: (state) => () => state.isKeyboardOpen,
-    getIsMobile: (state) => () => state.isMobile,
+    getIsKeyboardOpen: state => () => state.isKeyboardOpen,
+    getIsMobile: state => () => state.isMobile,
   },
 
   actions: {

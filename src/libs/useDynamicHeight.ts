@@ -1,13 +1,11 @@
-import { onMounted, onBeforeUnmount } from "vue";
+import { onMounted, onBeforeUnmount } from 'vue';
 
 export function useDynamicHeight(selector: string) {
   let element: HTMLElement | null = null;
 
   const adjustHeight = () => {
     if (!element) return;
-    const height = window.visualViewport
-      ? window.visualViewport.height
-      : window.innerHeight;
+    const height = window.visualViewport ? window.visualViewport.height : window.innerHeight;
     element.style.height = `${height}px`;
   };
 
@@ -20,17 +18,17 @@ export function useDynamicHeight(selector: string) {
     adjustHeight();
 
     if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", onResize);
+      window.visualViewport.addEventListener('resize', onResize);
     } else {
-      window.addEventListener("resize", onResize);
+      window.addEventListener('resize', onResize);
     }
   });
 
   onBeforeUnmount(() => {
     if (window.visualViewport) {
-      window.visualViewport.removeEventListener("resize", onResize);
+      window.visualViewport.removeEventListener('resize', onResize);
     } else {
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     }
   });
 }

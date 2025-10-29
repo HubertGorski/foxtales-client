@@ -6,7 +6,7 @@ export class DylematyCard {
 
   constructor(
     id: number = 0,
-    text: string = "",
+    text: string = '',
     type: DYLEMATY_CARD_TYPE | null = null,
     decksIds: number[] = []
   ) {
@@ -26,6 +26,6 @@ export class DylematyCard {
 }
 
 export enum DYLEMATY_CARD_TYPE {
-  POSITIVE = "positive",
-  NEGATIVE = "negative",
+  POSITIVE = 'positive',
+  NEGATIVE = 'negative',
 }

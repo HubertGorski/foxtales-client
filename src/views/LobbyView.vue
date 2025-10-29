@@ -1,147 +1,142 @@
 <script setup lang="ts">
-import UserListElement from "@/components/UserListElement.vue";
-import { computed, ref, toRef, watch } from "vue";
-import NavigationBtns from "@/components/NavigationBtns.vue";
-import { useSignalRStore } from "@/stores/signalRStore";
-import { useRouter } from "vue-router";
-import { ROUTE_PATH } from "@/router/routeEnums";
-import { Game } from "@/models/Game";
-import { useUserStore } from "@/stores/userStore";
-import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
-import SelectQuestionsPanel, {
-  type SelectedQuestions,
-} from "@/components/SelectQuestionsPanel.vue";
-import HubPopup from "@/components/hubComponents/HubPopup.vue";
-import { ICON } from "@/enums/iconsEnum";
-import HubBtn from "@/components/hubComponents/HubBtn.vue";
-import { useI18n } from "vue-i18n";
-import type { Question } from "@/models/Question";
-import HubCounterWithTitle from "@/components/hubComponents/HubCounterWithTitle.vue";
-import { getAvatar } from "@/utils/imgUtils";
+  import UserListElement from '@/components/UserListElement.vue';
+  import { computed, ref, toRef, watch } from 'vue';
+  import NavigationBtns from '@/components/NavigationBtns.vue';
+  import { useSignalRStore } from '@/stores/signalRStore';
+  import { useRouter } from 'vue-router';
+  import { ROUTE_PATH } from '@/router/routeEnums';
+  import { Game } from '@/models/Game';
+  import { useUserStore } from '@/stores/userStore';
+  import { NO_ACCESS_REASON } from '@/enums/noAccessReasonEnum';
+  import SelectQuestionsPanel, {
+    type SelectedQuestions,
+  } from '@/components/SelectQuestionsPanel.vue';
+  import HubPopup from '@/components/hubComponents/HubPopup.vue';
+  import { ICON } from '@/enums/iconsEnum';
+  import HubBtn from '@/components/hubComponents/HubBtn.vue';
+  import { useI18n } from 'vue-i18n';
+  import type { Question } from '@/models/Question';
+  import HubCounterWithTitle from '@/components/hubComponents/HubCounterWithTitle.vue';
+  import { getAvatar } from '@/utils/imgUtils';
 
-const router = useRouter();
-const signalRStore = useSignalRStore();
-const userStore = useUserStore();
-const { t } = useI18n();
+  const router = useRouter();
+  const signalRStore = useSignalRStore();
+  const userStore = useUserStore();
+  const { t } = useI18n();
 
-userStore.user.isReady = false;
+  userStore.user.isReady = false;
 
-const usePrivateQuestions = ref<boolean>(false);
-const showSettingsPanel = ref<boolean>(false);
-const currentQuestions = ref<Question[]>([]);
+  const usePrivateQuestions = ref<boolean>(false);
+  const showSettingsPanel = ref<boolean>(false);
+  const currentQuestions = ref<Question[]>([]);
 
-const leaveRoom = async () => {
-  await signalRStore.leaveRoom(userStore.user.userId);
-  router.push(ROUTE_PATH.MENU);
-};
+  const leaveRoom = async () => {
+    await signalRStore.leaveRoom(userStore.user.userId);
+    router.push(ROUTE_PATH.MENU);
+  };
 
-const goToSettings = async () => {
-  router.push(ROUTE_PATH.CREATE_GAME_PSYCH);
-};
+  const goToSettings = async () => {
+    router.push(ROUTE_PATH.CREATE_GAME_PSYCH);
+  };
 
-const goToGame = async () => {
-  await signalRStore.startGame();
-};
+  const goToGame = async () => {
+    await signalRStore.startGame();
+  };
 
-//TODO: nie da sie wystartowac jak sie wyjdzie i wejdzie
-const setReady = async () => {
-  userStore.user.isReady = !userStore.user.isReady;
-  await signalRStore.setStatus(userStore.user.userId, userStore.user.isReady);
-};
+  //TODO: nie da sie wystartowac jak sie wyjdzie i wejdzie
+  const setReady = async () => {
+    userStore.user.isReady = !userStore.user.isReady;
+    await signalRStore.setStatus(userStore.user.userId, userStore.user.isReady);
+  };
 
-const optionBtnAction = async () => {
-  if (isOwner.value) {
-    goToSettings();
-  } else {
-    await leaveRoom();
+  const optionBtnAction = async () => {
+    if (isOwner.value) {
+      goToSettings();
+    } else {
+      await leaveRoom();
+    }
+  };
+
+  const startBtnAction = async () => {
+    if (isOwner.value) {
+      goToGame();
+    } else {
+      setReady();
+    }
+  };
+
+  const setCurrentQuestions = async (questions: SelectedQuestions) => {
+    currentQuestions.value = questions.questions;
+    userStore.user.chosenQuestionsSource = questions.source;
+    userStore.user.chosenCatalogId = questions.chosenCatalogId;
+  };
+
+  const addQuestionsToGame = async () => {
+    await signalRStore.addQuestionsToGame(userStore.user.userId, currentQuestions.value);
+    showSettingsPanel.value = false;
+  };
+
+  const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
+
+  const isMinimalViewMode = computed(() => {
+    return game.value.users.length > 4;
+  });
+
+  const isOwner = computed(() => {
+    return game.value.owner.userId === userStore.user.userId;
+  });
+
+  const optionBtn = computed(() => {
+    return {
+      text: isOwner.value ? 'settings' : 'back',
+      isOrange: false,
+      action: optionBtnAction,
+    };
+  });
+
+  const tooltipText = computed(() => {
+    if (!game.value.questions.length && isOwner.value) {
+      return 'tooltip.toStartGameChooseQuestions';
+    }
+
+    if (game.value.areUsersUnready && isOwner.value) {
+      return 'tooltip.startNewGame';
+    }
+
+    return '';
+  });
+
+  const startBtn = computed(() => {
+    return {
+      text: isOwner.value ? 'start' : 'ready',
+      action: startBtnAction,
+      tooltipText: tooltipText.value,
+      disabled:
+        (game.value.areUsersUnready && isOwner.value) ||
+        (!game.value.questions.length && isOwner.value),
+    };
+  });
+
+  if (!game.value.users.length) {
+    router.push(ROUTE_PATH.JOIN_GAME);
   }
-};
 
-const startBtnAction = async () => {
-  if (isOwner.value) {
-    goToGame();
-  } else {
-    setReady();
-  }
-};
+  watch(
+    game,
+    (game: Game | null) => {
+      if (game == null || game.code == null) {
+        router.push({
+          path: ROUTE_PATH.NO_ACCESS,
+          query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
+        });
+      }
 
-const setCurrentQuestions = async (questions: SelectedQuestions) => {
-  currentQuestions.value = questions.questions;
-  userStore.user.chosenQuestionsSource = questions.source;
-  userStore.user.chosenCatalogId = questions.chosenCatalogId;
-};
-
-const addQuestionsToGame = async () => {
-  await signalRStore.addQuestionsToGame(
-    userStore.user.userId,
-    currentQuestions.value
+      if (game?.isGameStarted) {
+        router.push(ROUTE_PATH.GAME_PSYCH);
+      }
+    },
+    { immediate: true }
   );
-  showSettingsPanel.value = false;
-};
-
-const game = computed<Game>(
-  () => toRef(signalRStore, "game").value ?? new Game()
-);
-
-const isMinimalViewMode = computed(() => {
-  return game.value.users.length > 4;
-});
-
-const isOwner = computed(() => {
-  return game.value.owner.userId === userStore.user.userId;
-});
-
-const optionBtn = computed(() => {
-  return {
-    text: isOwner.value ? "settings" : "back",
-    isOrange: false,
-    action: optionBtnAction,
-  };
-});
-
-const tooltipText = computed(() => {
-  if (!game.value.questions.length && isOwner.value) {
-    return "tooltip.toStartGameChooseQuestions";
-  }
-
-  if (game.value.areUsersUnready && isOwner.value) {
-    return "tooltip.startNewGame";
-  }
-
-  return "";
-});
-
-const startBtn = computed(() => {
-  return {
-    text: isOwner.value ? "start" : "ready",
-    action: startBtnAction,
-    tooltipText: tooltipText.value,
-    disabled:
-      (game.value.areUsersUnready && isOwner.value) ||
-      (!game.value.questions.length && isOwner.value),
-  };
-});
-
-if (!game.value.users.length) {
-  router.push(ROUTE_PATH.JOIN_GAME);
-}
-
-watch(
-  game,
-  (game: Game | null) => {
-    if (game == null || game.code == null) {
-      router.push({
-        path: ROUTE_PATH.NO_ACCESS,
-        query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
-      });
-    }
-
-    if (game?.isGameStarted) {
-      router.push(ROUTE_PATH.GAME_PSYCH);
-    }
-  },
-  { immediate: true }
-);
 </script>
 
 <template>
@@ -151,10 +146,7 @@ watch(
       :maxValue="game.usersCount"
       :title="$t('lobby.waitingForPlayers')"
     />
-    <div
-      class="lobbyView_userList"
-      :class="{ isMinimalViewMode: isMinimalViewMode }"
-    >
+    <div class="lobbyView_userList" :class="{ isMinimalViewMode: isMinimalViewMode }">
       <UserListElement
         v-for="user in game.users"
         :key="user.userId"
@@ -167,12 +159,11 @@ watch(
       <div class="buttons_settingsBtnWithCode">
         <div>
           <span class="icon">!</span>
-          <span class="code">{{ t("lobby.accessCode") }} {{ game.code }}</span>
+          <span class="code">{{ t('lobby.accessCode') }} {{ game.code }}</span>
         </div>
         <HubBtn
           v-if="
-            game.owner.userId !== userStore.user.userId &&
-            game.isQuestionsFromAnotherGamesAllowed
+            game.owner.userId !== userStore.user.userId && game.isQuestionsFromAnotherGamesAllowed
           "
           class="settingsBtn"
           :action="() => (showSettingsPanel = true)"
@@ -192,98 +183,94 @@ watch(
     </div>
     <HubPopup v-model="showSettingsPanel">
       <div class="settings creamCard">
-        <span class="settings_title">{{ $t("userSettings") }}</span>
+        <span class="settings_title">{{ $t('userSettings') }}</span>
         <SelectQuestionsPanel
           v-model:usePrivateQuestions="usePrivateQuestions"
           @setQuestions="setCurrentQuestions"
         />
-        <HubBtn
-          class="settings_btn"
-          text="accept"
-          :action="addQuestionsToGame"
-        />
+        <HubBtn class="settings_btn" text="accept" :action="addQuestionsToGame" />
       </div>
     </HubPopup>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
-.lobbyView {
-  background: $mainBackground;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-
-  .settings {
-    padding: 12px;
-
-    &_title {
-      font-weight: 600;
-      font-size: 24px;
-      color: $grayColor;
-    }
-
-    &_btn {
-      padding: 8px;
-      font-size: 16px;
-    }
-  }
-
-  &_userList {
+  @import '@/assets/styles/variables';
+  .lobbyView {
+    background: $mainBackground;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    height: 450px;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
 
-    &.isMinimalViewMode {
-      justify-content: space-between;
-      overflow-y: auto;
-    }
-  }
+    .settings {
+      padding: 12px;
 
-  .buttons {
-    width: 100%;
-
-    &_settingsBtnWithCode {
-      display: flex;
-      justify-content: center;
-      align-items: end;
-      width: 100%;
-      padding: 12px 0;
-
-      .icon {
-        position: relative;
-        top: 4px;
-        right: 4px;
-        font-size: 32px;
-        font-weight: 900;
-        color: $mainBrownColor;
-      }
-
-      .code {
-        background-color: $background;
-        color: $mainBrownColor;
-        font-size: 24;
+      &_title {
         font-weight: 600;
-        text-align: center;
-        padding: 8px 20px;
-        border-radius: 12px;
-        border: 2px solid $mainBrownColor;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin: 10px auto;
-        width: fit-content;
+        font-size: 24px;
+        color: $grayColor;
       }
 
-      .settingsBtn {
-        margin: 0 8px;
-        padding: 4px;
-        width: 52px;
+      &_btn {
+        padding: 8px;
+        font-size: 16px;
+      }
+    }
+
+    &_userList {
+      display: flex;
+      flex-direction: column;
+      height: 450px;
+      justify-content: center;
+
+      &.isMinimalViewMode {
+        justify-content: space-between;
+        overflow-y: auto;
+      }
+    }
+
+    .buttons {
+      width: 100%;
+
+      &_settingsBtnWithCode {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        width: 100%;
+        padding: 12px 0;
+
+        .icon {
+          position: relative;
+          top: 4px;
+          right: 4px;
+          font-size: 32px;
+          font-weight: 900;
+          color: $mainBrownColor;
+        }
+
+        .code {
+          background-color: $background;
+          color: $mainBrownColor;
+          font-size: 24;
+          font-weight: 600;
+          text-align: center;
+          padding: 8px 20px;
+          border-radius: 12px;
+          border: 2px solid $mainBrownColor;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          margin: 10px auto;
+          width: fit-content;
+        }
+
+        .settingsBtn {
+          margin: 0 8px;
+          padding: 4px;
+          width: 52px;
+        }
       }
     }
   }
-}
 </style>

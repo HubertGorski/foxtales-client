@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+  import { ref, computed } from 'vue';
 
-const props = defineProps({
-  tooltipText: {
-    type: String,
-    required: true,
-  },
-  tooltipDisabled: {
-    type: Boolean,
-    default: false,
-  },
-  maxWidth: {
-    type: Boolean,
-    default: false,
-  },
-  dictsDisabled: {
-    type: Boolean,
-    default: false,
-  },
-});
+  const props = defineProps({
+    tooltipText: {
+      type: String,
+      required: true,
+    },
+    tooltipDisabled: {
+      type: Boolean,
+      default: false,
+    },
+    maxWidth: {
+      type: Boolean,
+      default: false,
+    },
+    dictsDisabled: {
+      type: Boolean,
+      default: false,
+    },
+  });
 
-const isTooltipActive = ref<boolean>(false);
+  const isTooltipActive = ref<boolean>(false);
 
-const hasTooltip = computed(() => {
-  return !props.tooltipDisabled && props.tooltipText?.trim().length > 0;
-});
+  const hasTooltip = computed(() => {
+    return !props.tooltipDisabled && props.tooltipText?.trim().length > 0;
+  });
 
-const toggleTooltip = () => {
-  if (!hasTooltip.value) return;
-  isTooltipActive.value = !isTooltipActive.value;
-};
+  const toggleTooltip = () => {
+    if (!hasTooltip.value) return;
+    isTooltipActive.value = !isTooltipActive.value;
+  };
 </script>
 
 <template>
@@ -50,18 +50,18 @@ const toggleTooltip = () => {
 </template>
 
 <style lang="scss">
-.hubTooltip {
-  &.maxWidth {
-    width: 100%;
-  }
+  .hubTooltip {
+    &.maxWidth {
+      width: 100%;
+    }
 
-  &_content {
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    &_content {
+      opacity: 0;
+      transition: opacity 0.2s ease;
 
-    &.active {
-      opacity: 1;
+      &.active {
+        opacity: 1;
+      }
     }
   }
-}
 </style>

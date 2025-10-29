@@ -1,7 +1,7 @@
-import { GENDER } from "@/enums/userEnum";
-import { LANG, LangFromNumber, LangToNumber } from "@/enums/languagesEnum";
-import { User } from "./User";
-import { Transform, Type } from "class-transformer";
+import { GENDER } from '@/enums/userEnum';
+import { LANG, LangFromNumber, LangToNumber } from '@/enums/languagesEnum';
+import { User } from './User';
+import { Transform, Type } from 'class-transformer';
 
 export class Question {
   id: number | null;
@@ -10,11 +10,11 @@ export class Question {
 
   @Transform(
     ({ value }) => {
-      if (typeof value === "number") {
+      if (typeof value === 'number') {
         return LangFromNumber[value] ?? LANG.PL;
       }
 
-      if (typeof value === "string") {
+      if (typeof value === 'string') {
         return LangToNumber[value as LANG] ?? 1;
       }
 
@@ -36,7 +36,7 @@ export class Question {
 
   constructor(
     id: number | null = null,
-    text: string = "",
+    text: string = '',
     ownerId: number = 0,
     language: LANG = LANG.PL,
     targetGender: GENDER = GENDER.ALL,

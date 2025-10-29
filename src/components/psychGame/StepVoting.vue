@@ -1,96 +1,94 @@
 <script setup lang="ts">
-import { computed, ref, toRef, watch } from "vue";
-import UserListElement from "../UserListElement.vue";
-import LevelBar from "../LevelBar.vue";
-import HubBtn from "../hubComponents/HubBtn.vue";
-import HubDivider from "../hubComponents/HubDivider.vue";
-import { Game } from "@/models/Game";
-import { useSignalRStore } from "@/stores/signalRStore";
-import { useI18n } from "vue-i18n";
-import { useUserStore } from "@/stores/userStore";
-import { shuffleArray } from "@/utils/mathUtils";
-import type { User } from "@/models/User";
-import { getAvatar, getUnknownAvatar } from "@/utils/imgUtils";
-import CurrentQuestion from "../CurrentQuestion.vue";
-import HubTooltip from "../hubComponents/HubTooltip.vue";
+  import { computed, ref, toRef, watch } from 'vue';
+  import UserListElement from '../UserListElement.vue';
+  import LevelBar from '../LevelBar.vue';
+  import HubBtn from '../hubComponents/HubBtn.vue';
+  import HubDivider from '../hubComponents/HubDivider.vue';
+  import { Game } from '@/models/Game';
+  import { useSignalRStore } from '@/stores/signalRStore';
+  import { useI18n } from 'vue-i18n';
+  import { useUserStore } from '@/stores/userStore';
+  import { shuffleArray } from '@/utils/mathUtils';
+  import type { User } from '@/models/User';
+  import { getAvatar, getUnknownAvatar } from '@/utils/imgUtils';
+  import CurrentQuestion from '../CurrentQuestion.vue';
+  import HubTooltip from '../hubComponents/HubTooltip.vue';
 
-const { t } = useI18n();
-const signalRStore = useSignalRStore();
-const userStore = useUserStore();
+  const { t } = useI18n();
+  const signalRStore = useSignalRStore();
+  const userStore = useUserStore();
 
-const emit = defineEmits<{
-  (e: "nextStep"): void;
-}>();
+  const emit = defineEmits<{
+    (e: 'nextStep'): void;
+  }>();
 
-const game = computed<Game>(
-  () => toRef(signalRStore, "game").value ?? new Game()
-);
+  const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
-const timer = ref<number>(90);
-const selectedAnswerUserId = ref<number | null>(null);
-const isUserReady = ref<boolean>(false);
-const currentStep = ref<number>(0);
-const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
+  const timer = ref<number>(90);
+  const selectedAnswerUserId = ref<number | null>(null);
+  const isUserReady = ref<boolean>(false);
+  const currentStep = ref<number>(0);
+  const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
 
-const confirmSelectedAnswer = () => {
-  if (!selectedAnswerUserId.value) {
-    return;
-  }
-
-  signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserId.value);
-  isUserReady.value = true;
-};
-
-const selectAnswer = (userId: number | null) => {
-  if (isUserReady.value || !userId) {
-    return;
-  }
-
-  selectedAnswerUserId.value = userId;
-};
-
-const chooseAnswerText = computed(() => {
-  if (currentStep.value === 0) {
-    return isUserReady.value ? t("waitForVotes") : t("chooseAnswer");
-  }
-
-  return t("voteResults");
-});
-
-const confirmBtn = computed(() => {
-  return {
-    text: isUserReady.value ? "accepted" : "accept",
-    isOrange: true,
-    action: confirmSelectedAnswer,
-    disabled: !selectedAnswerUserId.value || isUserReady.value,
-  };
-});
-
-const nextPageBtn = computed(() => {
-  return {
-    text: "next",
-    isOrange: true,
-    action: () => {
-      emit("nextStep");
-    },
-    disabled: false,
-  };
-});
-
-watch(
-  game,
-  (game: Game | null) => {
-    if (game && game.readyUsersCount == game.usersCount) {
-      currentStep.value = 1;
-
-      shuffledUsers.value = shuffledUsers.value.map((user) => {
-        const freshUser = game.users.find((u) => u.userId === user.userId);
-        return freshUser ? { ...user, ...freshUser } : user;
-      });
+  const confirmSelectedAnswer = () => {
+    if (!selectedAnswerUserId.value) {
+      return;
     }
-  },
-  { immediate: true }
-);
+
+    signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserId.value);
+    isUserReady.value = true;
+  };
+
+  const selectAnswer = (userId: number | null) => {
+    if (isUserReady.value || !userId) {
+      return;
+    }
+
+    selectedAnswerUserId.value = userId;
+  };
+
+  const chooseAnswerText = computed(() => {
+    if (currentStep.value === 0) {
+      return isUserReady.value ? t('waitForVotes') : t('chooseAnswer');
+    }
+
+    return t('voteResults');
+  });
+
+  const confirmBtn = computed(() => {
+    return {
+      text: isUserReady.value ? 'accepted' : 'accept',
+      isOrange: true,
+      action: confirmSelectedAnswer,
+      disabled: !selectedAnswerUserId.value || isUserReady.value,
+    };
+  });
+
+  const nextPageBtn = computed(() => {
+    return {
+      text: 'next',
+      isOrange: true,
+      action: () => {
+        emit('nextStep');
+      },
+      disabled: false,
+    };
+  });
+
+  watch(
+    game,
+    (game: Game | null) => {
+      if (game && game.readyUsersCount == game.usersCount) {
+        currentStep.value = 1;
+
+        shuffledUsers.value = shuffledUsers.value.map(user => {
+          const freshUser = game.users.find(u => u.userId === user.userId);
+          return freshUser ? { ...user, ...freshUser } : user;
+        });
+      }
+    },
+    { immediate: true }
+  );
 </script>
 
 <template>
@@ -110,13 +108,9 @@ watch(
         :key="user.userId"
         :text="user.answer?.answer ?? ''"
         :avatarLabel="currentStep ? user.username : ''"
-        :label="
-          currentStep ? `${$t('votersCount')} ${user.answer?.votersCount}` : ''
-        "
+        :label="currentStep ? `${$t('votersCount')} ${user.answer?.votersCount}` : ''"
         :isSelected="selectedAnswerUserId === user.userId"
-        :imgSource="
-          currentStep ? getAvatar(user.avatar.id) : getUnknownAvatar()
-        "
+        :imgSource="currentStep ? getAvatar(user.avatar.id) : getUnknownAvatar()"
         isSelectedBold
         @click="selectAnswer(user.userId)"
       />
@@ -129,9 +123,7 @@ watch(
         :showPointInfo="false"
       /> TODO: dodac timer -->
       <HubTooltip
-        :tooltipText="
-          isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')
-        "
+        :tooltipText="isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
         :tooltipDisabled="!confirmBtn.disabled"
       >
         <HubBtn
@@ -154,53 +146,53 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
+  @import '@/assets/styles/variables';
 
-.stepVoting {
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  padding-top: 0;
-
-  .header {
-    width: 100%;
-    padding: 0 12px;
+  .stepVoting {
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-  }
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    padding-top: 0;
 
-  .answers {
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    width: 100%;
-  }
+    .header {
+      width: 100%;
+      padding: 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-  .acceptPanel {
-    padding: 8px 16px;
-    width: 100%;
-
-    .hubBtn {
+    .answers {
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
       padding: 8px;
-      margin: 4px auto 0;
+      width: 100%;
+    }
+
+    .acceptPanel {
+      padding: 8px 16px;
+      width: 100%;
+
+      .hubBtn {
+        padding: 8px;
+        margin: 4px auto 0;
+      }
+    }
+
+    .nextPageBtn {
+      width: 100%;
+      padding-top: 8px;
+
+      .hubBtn {
+        padding: 8px;
+        margin: 0 auto;
+      }
     }
   }
-
-  .nextPageBtn {
-    width: 100%;
-    padding-top: 8px;
-
-    .hubBtn {
-      padding: 8px;
-      margin: 0 auto;
-    }
-  }
-}
 </style>

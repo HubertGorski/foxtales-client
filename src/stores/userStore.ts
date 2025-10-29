@@ -1,12 +1,12 @@
-import { defineStore } from "pinia";
-import { User } from "@/models/User";
-import { Avatar } from "@/models/Avatar";
-import type { LANG } from "@/enums/languagesEnum";
-import type { Catalog } from "@/models/Catalog";
-import type { Question } from "@/models/Question";
-import type { PERMISSION, PERMISSION_GAME } from "@/enums/permissions";
-import type { Deck } from "@/models/Deck";
-import type { CatalogType } from "@/models/CatalogType";
+import { defineStore } from 'pinia';
+import { User } from '@/models/User';
+import { Avatar } from '@/models/Avatar';
+import type { LANG } from '@/enums/languagesEnum';
+import type { Catalog } from '@/models/Catalog';
+import type { Question } from '@/models/Question';
+import type { PERMISSION, PERMISSION_GAME } from '@/enums/permissions';
+import type { Deck } from '@/models/Deck';
+import type { CatalogType } from '@/models/CatalogType';
 
 interface UserState {
   user: User;
@@ -16,7 +16,7 @@ interface UserState {
 }
 
 export const useUserStore = defineStore({
-  id: "userStore",
+  id: 'userStore',
   state: (): UserState => ({
     user: new User(),
     avatars: [],
@@ -25,14 +25,12 @@ export const useUserStore = defineStore({
   }),
 
   getters: {
-    getAccessToken: (state) => () => {
+    getAccessToken: state => () => {
       return state.user.accessToken;
     },
 
-    getPermissionByName: (state) => (name: PERMISSION_GAME | PERMISSION) => {
-      const permission = state.user.permissions.find(
-        (permission) => permission.name === name
-      );
+    getPermissionByName: state => (name: PERMISSION_GAME | PERMISSION) => {
+      const permission = state.user.permissions.find(permission => permission.name === name);
 
       if (!permission) {
         throw new Error(`Invalid permission: ${name}`);
@@ -41,19 +39,16 @@ export const useUserStore = defineStore({
       return permission;
     },
 
-    getAvatar: (state) => () => {
+    getAvatar: state => () => {
       return state.user.avatar;
     },
 
-    getAvailableCatalogTypes: (state) => () => {
+    getAvailableCatalogTypes: state => () => {
       return state.availableCatalogType;
     },
 
-    getFox: (state) => () => {
-      return new URL(
-        `../assets/imgs/${state.user.avatar.id}.webp`,
-        import.meta.url
-      ).href;
+    getFox: state => () => {
+      return new URL(`../assets/imgs/${state.user.avatar.id}.webp`, import.meta.url).href;
     },
   },
 
@@ -100,7 +95,7 @@ export const useUserStore = defineStore({
 
     editCatalog(catalog: Catalog) {
       const index = this.user.catalogs.findIndex(
-        (userCatalog) => userCatalog.catalogId === catalog.catalogId
+        userCatalog => userCatalog.catalogId === catalog.catalogId
       );
       if (index !== -1) {
         this.user.catalogs[index] = catalog;
@@ -108,31 +103,21 @@ export const useUserStore = defineStore({
     },
 
     editDeck(deck: Deck) {
-      const index = this.user.decks.findIndex(
-        (userDeck) => userDeck.id === deck.id
-      );
+      const index = this.user.decks.findIndex(userDeck => userDeck.id === deck.id);
       if (index !== -1) {
         this.user.decks[index] = deck;
       }
     },
 
-    assignedQuestionsToCatalogs(
-      questionIds: number[],
-      catalogIds: (number | null)[]
-    ) {
+    assignedQuestionsToCatalogs(questionIds: number[], catalogIds: (number | null)[]) {
       const questionsToAssign = this.user.questions.filter(
-        (q) => q.id != null && questionIds.includes(q.id)
+        q => q.id != null && questionIds.includes(q.id)
       );
 
-      this.user.catalogs.forEach((catalog) => {
-        if (
-          catalog.catalogId != null &&
-          catalogIds.includes(catalog.catalogId)
-        ) {
-          questionsToAssign.forEach((question) => {
-            const alreadyExists = catalog.questions.some(
-              (q) => q.id === question.id
-            );
+      this.user.catalogs.forEach(catalog => {
+        if (catalog.catalogId != null && catalogIds.includes(catalog.catalogId)) {
+          questionsToAssign.forEach(question => {
+            const alreadyExists = catalog.questions.some(q => q.id === question.id);
             if (!alreadyExists && catalog.catalogId != null) {
               catalog.questions.push(question);
               question.catalogIds.push(catalog.catalogId);
@@ -147,58 +132,45 @@ export const useUserStore = defineStore({
     },
 
     unassignQuestionFromCatalog(questionId: number, catalogId: number) {
-      const catalog = this.user.catalogs.find((c) => c.catalogId === catalogId);
+      const catalog = this.user.catalogs.find(c => c.catalogId === catalogId);
       if (catalog) {
-        catalog.questions = catalog.questions.filter(
-          (question) => question.id !== questionId
-        );
+        catalog.questions = catalog.questions.filter(question => question.id !== questionId);
       }
     },
 
-    unassignCatalogFromQuestions(
-      questionsIds: (number | null)[],
-      catalogId: number
-    ) {
-      questionsIds.forEach((questionId) => {
-        const question = this.user.questions.find((q) => q.id === questionId);
+    unassignCatalogFromQuestions(questionsIds: (number | null)[], catalogId: number) {
+      questionsIds.forEach(questionId => {
+        const question = this.user.questions.find(q => q.id === questionId);
         if (question == null) {
           return;
         }
 
-        question.catalogIds = question.catalogIds.filter(
-          (id) => id !== catalogId
-        );
+        question.catalogIds = question.catalogIds.filter(id => id !== catalogId);
       });
     },
 
     unassignCatalogFromAllQuestions(catalogId: number) {
-      this.user.questions.forEach((question) => {
-        question.catalogIds = question.catalogIds.filter(
-          (id) => id !== catalogId
-        );
+      this.user.questions.forEach(question => {
+        question.catalogIds = question.catalogIds.filter(id => id !== catalogId);
       });
     },
 
     removeQuestion(questionId: number) {
-      const question = this.user.questions.find((q) => q.id === questionId);
+      const question = this.user.questions.find(q => q.id === questionId);
       if (question == null) {
         return;
       }
 
-      question.catalogIds.forEach((catalogId) => {
+      question.catalogIds.forEach(catalogId => {
         this.unassignQuestionFromCatalog(questionId, catalogId);
       });
 
-      this.user.questions = this.user.questions.filter(
-        (question) => question.id !== questionId
-      );
+      this.user.questions = this.user.questions.filter(question => question.id !== questionId);
     },
 
     removeCatalog(catalogId: number) {
       this.unassignCatalogFromAllQuestions(catalogId);
-      this.user.catalogs = this.user.catalogs.filter(
-        (catalog) => catalog.catalogId !== catalogId
-      );
+      this.user.catalogs = this.user.catalogs.filter(catalog => catalog.catalogId !== catalogId);
     },
   },
 });

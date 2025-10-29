@@ -1,7 +1,7 @@
 export enum LANG {
-  PL = "pl",
-  EN = "en",
-  DE = "de",
+  PL = 'pl',
+  EN = 'en',
+  DE = 'de',
 }
 
 export const LangFromNumber: Record<number, LANG> = {

@@ -14,86 +14,84 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Check formatting with Prettier
-      run: |
-        npx prettier --check "src/**/*.{vue,js,ts,json,css,scss}" || \
-        (echo "❌ Prettier check failed. Run 'npm run format' to fix issues." && exit 1)
+      - name: Check formatting
+        run: npm run format:check
 
-    - name: Run ESLint
-      run: npm run lint
+      - name: Check linting
+        run: npm run lint:check
 
-    - name: Type check
-      run: |
-        if [ -f "tsconfig.json" ]; then
-          npx vue-tsc --noEmit
-        else
-          echo "⚠️ TypeScript not configured, skipping type check"
-        fi
+      - name: Type check
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            npx vue-tsc --noEmit
+          else
+            echo "⚠️ TypeScript not configured, skipping type check"
+          fi
 
   tests:
     name: Run Tests
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run unit tests
-      run: npm run test:unit
+      - name: Run unit tests
+        run: npm run test:unit
 
-    - name: Run tests with coverage
-      run: |
-        if npm run | grep -q "test:coverage"; then
-          npm run test:coverage
-        else
-          echo "No coverage script found, running normal tests"
-          npm test
-        fi
+      - name: Run tests with coverage
+        run: |
+          if npm run | grep -q "test:coverage"; then
+            npm run test:coverage
+          else
+            echo "No coverage script found, running normal tests"
+            npm test
+          fi
 
   build:
     name: Build Application
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build application
-      run: npm run build
+      - name: Build application
+        run: npm run build
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dev-build
-        path: dist/
-        retention-days: 7
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-build
+          path: dist/
+          retention-days: 7

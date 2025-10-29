@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const props = defineProps({
-  header: {
-    type: String,
-  },
-});
+  const props = defineProps({
+    header: {
+      type: String,
+    },
+  });
 </script>
 
 <template>
@@ -15,17 +15,17 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
+  @import '@/assets/styles/variables';
 
-.header {
-  color: $grayColor;
-  font-size: 16px;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .header {
+    color: $grayColor;
+    font-size: 16px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.v-divider {
-  margin: 4px;
-}
+  .v-divider {
+    margin: 4px;
+  }
 </style>

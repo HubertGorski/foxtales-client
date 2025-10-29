@@ -1,25 +1,25 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { ROUTE_NAME, ROUTE_PATH } from "./routeEnums";
-import HomeViewVue from "@/views/HomeView.vue";
-import LoginViewVue from "@/views/LoginView.vue";
-import RegisterViewVue from "@/views/RegisterView.vue";
-import MenuViewVue from "@/views/MenuView.vue";
-import SettingsViewVue from "@/views/SettingsView.vue";
-import JoinGameViewVue from "@/views/JoinGameView.vue";
-import LobbyViewVue from "@/views/LobbyView.vue";
-import CreateGameViewVue from "@/views/CreateGameView.vue";
-import LibraryViewVue from "@/views/LibraryView.vue";
-import ChooseGameViewVue from "@/views/ChooseGameView.vue";
-import { useUserStore } from "@/stores/userStore";
-import { ROLE } from "@/enums/rolesEnum";
-import NoAccessViewVue from "@/views/NoAccessView.vue";
-import DylematyLibraryViewVue from "@/views/dylematy/DylematyLibraryView.vue";
-import { NO_ACCESS_REASON } from "@/enums/noAccessReasonEnum";
-import { SESSION_STORAGE } from "@/enums/sessionStorageEnum";
-import { PERMISSION_GAME } from "@/enums/permissions";
-import PsychGameView from "@/views/PsychGameView.vue";
-import WelcomeViewVue from "@/views/WelcomeView.vue";
-import TryWithoutAccountView from "@/views/TryWithoutAccountView.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import { ROUTE_NAME, ROUTE_PATH } from './routeEnums';
+import HomeViewVue from '@/views/HomeView.vue';
+import LoginViewVue from '@/views/LoginView.vue';
+import RegisterViewVue from '@/views/RegisterView.vue';
+import MenuViewVue from '@/views/MenuView.vue';
+import SettingsViewVue from '@/views/SettingsView.vue';
+import JoinGameViewVue from '@/views/JoinGameView.vue';
+import LobbyViewVue from '@/views/LobbyView.vue';
+import CreateGameViewVue from '@/views/CreateGameView.vue';
+import LibraryViewVue from '@/views/LibraryView.vue';
+import ChooseGameViewVue from '@/views/ChooseGameView.vue';
+import { useUserStore } from '@/stores/userStore';
+import { ROLE } from '@/enums/rolesEnum';
+import NoAccessViewVue from '@/views/NoAccessView.vue';
+import DylematyLibraryViewVue from '@/views/dylematy/DylematyLibraryView.vue';
+import { NO_ACCESS_REASON } from '@/enums/noAccessReasonEnum';
+import { SESSION_STORAGE } from '@/enums/sessionStorageEnum';
+import { PERMISSION_GAME } from '@/enums/permissions';
+import PsychGameView from '@/views/PsychGameView.vue';
+import WelcomeViewVue from '@/views/WelcomeView.vue';
+import TryWithoutAccountView from '@/views/TryWithoutAccountView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -145,7 +145,7 @@ function getRoutesWithAuth() {
       name: ROUTE_NAME.NO_ACCESS,
       component: NoAccessViewVue,
     },
-  ].map((route) => {
+  ].map(route => {
     if (!publicRoutes.includes(route.name)) {
       route.meta = {
         ...((route.meta as any) || {}),
@@ -174,10 +174,7 @@ router.beforeEach((to, from, next) => {
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
     });
-  } else if (
-    to.meta.permission &&
-    !hasAccessToGame(to.meta.permission as PERMISSION_GAME)
-  ) {
+  } else if (to.meta.permission && !hasAccessToGame(to.meta.permission as PERMISSION_GAME)) {
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.NO_PERMISSION_GAME },

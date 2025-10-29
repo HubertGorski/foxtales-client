@@ -1,19 +1,19 @@
-import { DEFAULT_FOX_NAME, GENDER } from "@/enums/userEnum";
-import { ROLE } from "@/enums/rolesEnum";
-import { PERMISSION } from "@/enums/permissions";
-import { Catalog } from "./Catalog";
-import { Avatar } from "./Avatar";
-import { Achievement } from "./Achievement";
-import { Permission } from "./Permission";
-import { LANG } from "@/enums/languagesEnum";
-import { Question } from "./Question";
-import { DylematyCard } from "./DylematyCard";
-import { Deck } from "./Deck";
-import { UserLimit } from "./UserLimit";
-import { Type } from "class-transformer";
-import type { QUESTION_SOURCE } from "@/enums/questionSource";
-import { Answer } from "./Answer";
-import { Vote } from "./Vote";
+import { DEFAULT_FOX_NAME, GENDER } from '@/enums/userEnum';
+import { ROLE } from '@/enums/rolesEnum';
+import { PERMISSION } from '@/enums/permissions';
+import { Catalog } from './Catalog';
+import { Avatar } from './Avatar';
+import { Achievement } from './Achievement';
+import { Permission } from './Permission';
+import { LANG } from '@/enums/languagesEnum';
+import { Question } from './Question';
+import { DylematyCard } from './DylematyCard';
+import { Deck } from './Deck';
+import { UserLimit } from './UserLimit';
+import { Type } from 'class-transformer';
+import type { QUESTION_SOURCE } from '@/enums/questionSource';
+import { Answer } from './Answer';
+import { Vote } from './Vote';
 
 export class User {
   // Basic info
@@ -24,7 +24,7 @@ export class User {
   invitedUsersToAppCount: number = 0;
   lastSign: Date = new Date();
   registerDate: Date = new Date();
-  accessToken: string = "";
+  accessToken: string = '';
 
   username: string = DEFAULT_FOX_NAME;
 
@@ -125,7 +125,7 @@ export class User {
   }
 
   get publicQuestionsCount(): number {
-    return this.questions.filter((question) => question.isPublic).length;
+    return this.questions.filter(question => question.isPublic).length;
   }
 
   //DYLEMATY
@@ -138,15 +138,15 @@ export class User {
   }
 
   get negativeCards(): DylematyCard[] {
-    return this.dylematyCards.filter((card) => card.isNegativeCard);
+    return this.dylematyCards.filter(card => card.isNegativeCard);
   }
 
   get positiveCards(): DylematyCard[] {
-    return this.dylematyCards.filter((card) => card.isPositiveCard);
+    return this.dylematyCards.filter(card => card.isPositiveCard);
   }
 
   getPermission(permissionName: PERMISSION): Permission | undefined {
-    return this.permissions.find((p) => p.name === permissionName);
+    return this.permissions.find(p => p.name === permissionName);
   }
 
   isPermissionLimitExceeded(permissionName: PERMISSION): boolean {

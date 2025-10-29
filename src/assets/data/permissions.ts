@@ -1,5 +1,5 @@
-import { PERMISSION, PERMISSION_GAME } from "@/enums/permissions";
-import { Permission } from "@/models/Permission";
+import { PERMISSION, PERMISSION_GAME } from '@/enums/permissions';
+import { Permission } from '@/models/Permission';
 
 export const permissions = [
   new Permission(PERMISSION.ADD_NEW_PRIVATE_QUESTION_PER_DAY, 2),
