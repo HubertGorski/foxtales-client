@@ -1,5 +1,8 @@
 # FoxTales — Be as sly as a fox!
 
+**FoxTales CI/CD build status**:  
+[![FoxTales CI/CD](https://github.com/HubertGorski/foxtales-client/actions/workflows/foxtales.yml/badge.svg)](https://github.com/HubertGorski/foxtales-client/actions/workflows/foxtales.yml)
+
 ## Table of Contents
 
 - [Overview](#-overview)
