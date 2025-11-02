@@ -89,6 +89,12 @@
           tooltipText="tooltip.roomOnListDescription"
           withIcon
         />
+        <HubSwitch
+          v-model="newGame.useDixitRules"
+          label="lobby.useDixitRules"
+          tooltipText="tooltip.useDixitRules"
+          withIcon
+        />
         <div v-if="!newGame.isPublic" class="customCodeSection">
           <p class="customCodeSection_description">
             {{ $t('lobby.inviteOtherPlayers') }}
@@ -153,7 +159,7 @@
         font-weight: 600;
       }
       .hubSwitch_content {
-        max-width: 216px;
+        max-width: 280px;
       }
 
       .customCodeSection {

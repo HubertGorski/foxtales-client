@@ -103,7 +103,8 @@
     "startNewGame": "By rozpocząć grę wszyscy goście w pokoju muszą potwierdzić udział",
     "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań.",
     "publicQuestionsDescription": "Korzysytaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację.",
-    "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu."
+    "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu.",
+    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty wybierając odpowiedź gracza o którym jest dane pytanie."
   },
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju."
@@ -113,6 +114,7 @@
     "usePublicQuestions": "Używaj publicznych pytań",
     "gameVisibleOnList": "Gra widoczna na liście",
     "isQuestionsFromAnotherGamesAllowed": "Zezwól innym graczom na dodawanie własnych pytań",
+    "useDixitRules": "Zaawansowane przyznawanie punktów",
     "createGame": "Utwórz grę",
     "inviteOtherPlayers": "Zaproś pozostałych podając kod:",
     "entryPassword": "Hasło wstępu",

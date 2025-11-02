@@ -16,6 +16,9 @@ export class Game {
   @Type(() => Boolean)
   isPublic: boolean;
 
+  @Type(() => Boolean)
+  useDixitRules: boolean;
+
   @Type(() => User)
   users: User[];
 
@@ -60,7 +63,8 @@ export class Game {
     round = 0,
     currentQuestion = null,
     isGameStarted = false,
-    hasGameEnded = false
+    hasGameEnded = false,
+    useDixitRules = false
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -76,6 +80,7 @@ export class Game {
     this.currentQuestion = currentQuestion;
     this.isGameStarted = isGameStarted;
     this.hasGameEnded = hasGameEnded;
+    this.useDixitRules = useDixitRules;
   }
 
   get usersCount(): number {

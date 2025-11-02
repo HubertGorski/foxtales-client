@@ -103,7 +103,8 @@
     "startNewGame": "Alle Gäste im Raum müssen ihre Teilnahme bestätigen, bevor das Spiel beginnt.",
     "privateQuestionsDescription": "Verwende deine eigenen erstellten Fragen im Spiel.",
     "publicQuestionsDescription": "Verwende öffentliche Fragen, die von anderen Benutzern erstellt und von der Administration genehmigt wurden.",
-    "roomOnListDescription": "Erlaube, dass dein Raum öffentlich sichtbar ist, damit andere ohne Code beitreten können."
+    "roomOnListDescription": "Erlaube, dass dein Raum öffentlich sichtbar ist, damit andere ohne Code beitreten können.",
+    "useDixitRules": "Lassen Sie nicht alle Spieler Ihre Antwort wählen. Sie erhalten Punkte, indem Sie die Antwort des Spielers auswählen, zu dem die Frage gestellt wird."
   },
   "info": {
     "passwordRoom": "* Ohne Passwort kann jeder deinem Raum beitreten."
@@ -113,6 +114,7 @@
     "usePublicQuestions": "Öffentliche Fragen verwenden",
     "gameVisibleOnList": "Spiel in der Liste sichtbar",
     "isQuestionsFromAnotherGamesAllowed": "Anderen Spielern erlauben, eigene Fragen hinzuzufügen",
+    "useDixitRules": "Erweiterte Punktevergabe",
     "createGame": "Spiel erstellen",
     "inviteOtherPlayers": "Lade andere ein, indem du ihnen den Code gibst:",
     "entryPassword": "Zugangspasswort",

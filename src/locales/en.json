@@ -103,7 +103,8 @@
     "startNewGame": "All guests in the room must confirm participation before the game can start.",
     "privateQuestionsDescription": "Use your own created questions in the game.",
     "publicQuestionsDescription": "Use public questions created by other users. These questions are approved by the administration.",
-    "roomOnListDescription": "Allow your room to appear publicly so others can join without a code."
+    "roomOnListDescription": "Allow your room to appear publicly so others can join without a code.",
+    "useDixitRules": "Don't let all players choose your answer. You earn points by selecting the answer of the player about whom the question is asked."
   },
   "info": {
     "passwordRoom": "* Without setting a password, anyone can join your room."
@@ -113,6 +114,7 @@
     "usePublicQuestions": "Use public questions",
     "gameVisibleOnList": "Game visible on the list",
     "isQuestionsFromAnotherGamesAllowed": "Allow other players to add their own questions",
+    "useDixitRules": "Advanced awarding of points",
     "createGame": "Create game",
     "inviteOtherPlayers": "Invite others by giving them the code:",
     "entryPassword": "Entry password",
