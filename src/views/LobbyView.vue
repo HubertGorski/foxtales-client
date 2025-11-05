@@ -113,7 +113,7 @@
       tooltipText: tooltipText.value,
       disabled:
         (game.value.areUsersUnready && isOwner.value) ||
-        (!game.value.questions.length && isOwner.value),
+        (!game.value.questions.length && !game.value.usePublicQuestions && isOwner.value),
     };
   });
 

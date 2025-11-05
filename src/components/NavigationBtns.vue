@@ -85,7 +85,7 @@
     {
       text: 'goToLogin',
       isOrange: false,
-      action: () => router.push(ROUTE_PATH.LOGIN),
+      action: () => router.push(ROUTE_PATH.HOME),
     },
     {
       text: 'register',

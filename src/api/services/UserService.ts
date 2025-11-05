@@ -4,7 +4,6 @@ import { USER_LIMIT } from '@/enums/userLimitEnum';
 import { Permission } from '@/models/Permission';
 import { FoxGame } from '@/models/FoxGame';
 import { Avatar } from '@/models/Avatar';
-import { Question } from '@/models/Question';
 import { CatalogType } from '@/models/CatalogType';
 import { userClient, type IUserLoginResponse } from '../clients/UserClient';
 import { useUserStore } from '@/stores/userStore';
@@ -38,11 +37,6 @@ export const userService = {
     const avatars: Avatar[] = [];
     const availableCatalogTypes: CatalogType[] = [];
     const foxGames: FoxGame[] = [];
-    const publicQuestions: Question[] = [];
-
-    data.publicQuestions.forEach(question => {
-      publicQuestions.push(plainToInstance(Question, question));
-    });
 
     data.avatars.forEach(avatar => {
       avatars.push(plainToInstance(Avatar, avatar));
@@ -70,7 +64,6 @@ export const userService = {
     user.language = currentLocale as LANG;
     userStore.setUserSession(user);
     userStore.setAvatars(avatars);
-    userStore.setPublicQuestions(publicQuestions);
     userStore.setAvailableCatalogTypes(availableCatalogTypes);
   },
 

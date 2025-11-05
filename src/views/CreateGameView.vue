@@ -46,14 +46,6 @@
     userStore.user.chosenCatalogId = questions.chosenCatalogId;
   };
 
-  const onSwitchChange = (usePublicQuestions: boolean | null): void => {
-    if (usePublicQuestions) {
-      currentQuestions.value.push(...userStore.publicQuestions);
-    } else {
-      currentQuestions.value = currentQuestions.value.filter(question => !question.isPublic);
-    }
-  };
-
   watch(currentGame, (game: Game | null) => {
     if (game) {
       newGame.value.users = game.users;
@@ -73,7 +65,6 @@
           label="lobby.usePublicQuestions"
           tooltipText="tooltip.publicQuestionsDescription"
           withIcon
-          @onSwitchChange="onSwitchChange"
         />
         <SelectQuestionsPanel
           v-model:usePrivateQuestions="newGame.usePrivateQuestions"
