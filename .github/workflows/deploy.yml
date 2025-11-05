@@ -1,0 +1,100 @@
+name: Deploy to Main
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DEPLOY to confirm'
+        required: true
+        type: string
+
+env:
+  FROM_BRANCH: dev
+  TO_BRANCH: main
+
+permissions:
+  contents: write
+
+jobs:
+  check-ci-status:
+    name: Validate CI on Dev
+    runs-on: self-hosted
+    timeout-minutes: 5
+
+    steps:
+      - name: Ensure confirmation
+        if: ${{ inputs.confirm != 'DEPLOY' }}
+        run: |
+          echo "❌ You must type DEPLOY to trigger deployment"
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify latest workflow on Dev is green
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const branch = process.env.FROM_BRANCH;
+
+            const workflows = await github.rest.actions.listRepoWorkflows({
+              owner,
+              repo,
+            });
+
+            const ciWorkflow = workflows.data.workflows.find(
+              w => w.path === '.github/workflows/foxtales.yml'
+            );
+
+            if (!ciWorkflow) core.setFailed('❌ CI workflow not found');
+
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner,
+              repo,
+              workflow_id: ciWorkflow.id,
+              branch,
+              per_page: 1,
+            });
+
+            const latest = runs.data.workflow_runs[0];
+
+            if (!latest)
+              core.setFailed(`❌ No CI runs found on ${branch}`);
+
+            if (latest.status !== 'completed')
+              core.setFailed(`❌ CI still running (status: ${latest.status})`);
+
+            if (latest.conclusion !== 'success')
+              core.setFailed(`❌ CI failed (conclusion: ${latest.conclusion})`);
+
+            core.info(`✅ CI on ${branch} is green ✔`);
+
+  merge:
+    name: Merge Dev → Main
+    needs: check-ci-status
+    runs-on: self-hosted
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Target Branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TO_BRANCH }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge branch
+        run: |
+          git fetch origin ${{ env.FROM_BRANCH }}
+          git merge --no-ff origin/${{ env.FROM_BRANCH }} -m "Merge ${{ env.FROM_BRANCH }} into ${{ env.TO_BRANCH }}"
+          git push origin ${{ env.TO_BRANCH }}
+
+      - name: Deployment triggered
+        run: echo "✅ Merged ${{ env.FROM_BRANCH }} → ${{ env.TO_BRANCH }}"

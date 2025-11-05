@@ -1,63 +1,56 @@
 <script setup lang="ts">
-import { computed, ref, type PropType } from "vue";
-import type { ListElement } from "./ListElement";
-import HubDialogPopup from "../hubComponents/HubDialogPopup.vue";
-import { ICON } from "@/enums/iconsEnum";
-import { DYLEMATY_CARD_TYPE } from "@/models/DylematyCard";
+  import { computed, ref, type PropType } from 'vue';
+  import type { ListElement } from './ListElement';
+  import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
+  import { ICON } from '@/enums/iconsEnum';
+  import { DYLEMATY_CARD_TYPE } from '@/models/DylematyCard';
 
-const props = defineProps({
-  addCutomText: {
-    type: String,
+  const {
+    addCutomText,
+    createdItemsText = 'createdItems',
+    isTypeAvailable = false,
+    emptyDataText = 'emptyData',
+  } = defineProps<{
+    addCutomText: string;
+    createdItemsText?: string;
+    isTypeAvailable?: boolean;
+    emptyDataText?: string;
+  }>();
+
+  const emit = defineEmits<{
+    (e: 'addItems', selectedItems: ListElement[]): void;
+    (e: 'deleteItems', selectedItems: ListElement[]): void;
+  }>();
+
+  const items = defineModel({
+    type: Array as PropType<Array<ListElement>>,
     required: true,
-  },
-  createdItemsText: {
-    type: String,
-    default: "createdItems",
-  },
-  isTypeAvailable: {
-    type: Boolean,
-    default: false,
-  },
-  emptyDataText: {
-    type: String,
-    default: "emptyData",
-  },
-});
+  });
 
-const emit = defineEmits<{
-  (e: "addItems", selectedItems: ListElement[]): void;
-  (e: "deleteItems", selectedItems: ListElement[]): void;
-}>();
+  const isDeletePopupOpen = ref<boolean>(false);
 
-const items = defineModel({
-  type: Array as PropType<Array<ListElement>>,
-  required: true,
-});
+  const isControlPanelVisible = computed(() => {
+    return !!items.value.filter(item => item.isSelected).length;
+  });
 
-const isDeletePopupOpen = ref<boolean>(false);
+  const deleteSelectedItems = () => {
+    isDeletePopupOpen.value = true;
+  };
 
-const isControlPanelVisible = computed(() => {
-  return !!items.value.filter((item) => item.isSelected).length;
-});
+  const addItems = () => {
+    emit(
+      'addItems',
+      items.value.filter(item => item.isSelected)
+    );
+  };
 
-const deleteSelectedItems = () => {
-  isDeletePopupOpen.value = true;
-};
-
-const addItems = () => {
-  emit(
-    "addItems",
-    items.value.filter((item) => item.isSelected)
-  );
-};
-
-const deleteItems = () => {
-  emit(
-    "deleteItems",
-    items.value.filter((item) => item.isSelected)
-  );
-  isDeletePopupOpen.value = false;
-};
+  const deleteItems = () => {
+    emit(
+      'deleteItems',
+      items.value.filter(item => item.isSelected)
+    );
+    isDeletePopupOpen.value = false;
+  };
 </script>
 
 <template>
@@ -71,13 +64,13 @@ const deleteItems = () => {
         v-for="item in items"
         :key="item.id"
         class="item"
-        @click="item.setSelected(!item.isSelected)"
         :class="{ isSelected: item.isSelected }"
+        @click="item.setSelected(!item.isSelected)"
       >
         <div class="itemContent">
-          <v-icon class="itemContent_typeIcon" v-if="isTypeAvailable">{{
-            item.type === DYLEMATY_CARD_TYPE.POSITIVE ? ICON.HAPPY : ICON.SAD
-          }}</v-icon>
+          <v-icon v-if="isTypeAvailable" class="itemContent_typeIcon">
+            {{ item.type === DYLEMATY_CARD_TYPE.POSITIVE ? ICON.HAPPY : ICON.SAD }}
+          </v-icon>
           {{ item.description || item.title }}
         </div>
         <v-divider v-if="!item.isSelected" />
@@ -86,7 +79,7 @@ const deleteItems = () => {
     <div class="infoPanel">{{ $t(createdItemsText) }}: {{ items.length }}</div>
     <div class="controlPanel" :class="{ isVisible: isControlPanelVisible }">
       <div @click="deleteSelectedItems">
-        {{ $t("delete") }}
+        {{ $t('delete') }}
       </div>
       <div @click="addItems">
         {{ $t(addCutomText) }}
@@ -101,90 +94,90 @@ const deleteItems = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
+  @import '@/assets/styles/variables';
 
-.scrollSelectList {
-  position: relative;
-  height: 100%;
-  width: 100%;
-
-  .noData {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    opacity: 0.9;
-    img {
-      padding: 16px 64px;
-      max-height: 164px;
-    }
-    p {
-      color: $mainBrownColor;
-      font-weight: 600;
-      font-style: italic;
-      font-size: 14px;
-    }
-  }
-
-  .items {
+  .scrollSelectList {
+    position: relative;
     height: 100%;
-    overflow-y: auto;
+    width: 100%;
 
-    &.isPaddingBottom {
-      padding-bottom: 46px;
+    .noData {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      opacity: 0.9;
+      img {
+        padding: 16px 64px;
+        max-height: 164px;
+      }
+      p {
+        color: $mainBrownColor;
+        font-weight: 600;
+        font-style: italic;
+        font-size: 14px;
+      }
     }
 
-    .item {
-      font-size: 14px;
-      padding: 4px 8px;
-      color: $grayColor;
-      transition: all 0.3s;
+    .items {
+      height: 100%;
+      overflow-y: auto;
 
-      .itemContent {
-        display: flex;
+      &.isPaddingBottom {
+        padding-bottom: 46px;
+      }
 
-        &_typeIcon {
-          font-size: 24px;
-          padding: 8px 16px;
+      .item {
+        font-size: 14px;
+        padding: 4px 8px;
+        color: $grayColor;
+        transition: all 0.3s;
+
+        .itemContent {
+          display: flex;
+
+          &_typeIcon {
+            font-size: 24px;
+            padding: 8px 16px;
+          }
+        }
+
+        &.isSelected {
+          background-color: $whiteColor;
+          margin: 4px;
+          border-radius: 8px;
+          box-shadow:
+            rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+            rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
         }
       }
+    }
 
-      &.isSelected {
-        background-color: $whiteColor;
-        margin: 4px;
-        border-radius: 8px;
-        box-shadow:
-          rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-          rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    .infoPanel {
+      background-color: $lightBrownColor;
+      color: $whiteColor;
+      padding: 4px 8px;
+      font-size: 14px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    .controlPanel {
+      height: 0;
+      position: absolute;
+      bottom: 0;
+      background-color: $lightBrownColor;
+      width: 100%;
+      padding: 0;
+      color: $whiteColor;
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden;
+      transition: all 0.4s;
+
+      &.isVisible {
+        height: 40px;
+        padding: 8px 48px;
       }
     }
   }
-
-  .infoPanel {
-    background-color: $lightBrownColor;
-    color: $whiteColor;
-    padding: 4px 8px;
-    font-size: 14px;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-  .controlPanel {
-    height: 0;
-    position: absolute;
-    bottom: 0;
-    background-color: $lightBrownColor;
-    width: 100%;
-    padding: 0;
-    color: $whiteColor;
-    display: flex;
-    justify-content: space-between;
-    overflow: hidden;
-    transition: all 0.4s;
-
-    &.isVisible {
-      height: 40px;
-      padding: 8px 48px;
-    }
-  }
-}
 </style>

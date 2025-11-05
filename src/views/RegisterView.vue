@@ -1,114 +1,103 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { useRouter } from "vue-router";
-import { ROUTE_PATH } from "@/router/routeEnums";
-import { userService } from "@/api/services/UserService";
-import * as yup from "yup";
-import { useField, useForm } from "vee-validate";
-import { useI18n } from "vue-i18n";
-import HubBtn from "@/components/hubComponents/HubBtn.vue";
-import HubTooltip from "@/components/hubComponents/HubTooltip.vue";
+  import { computed, ref, watch } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { ROUTE_PATH } from '@/router/routeEnums';
+  import { userService } from '@/api/services/UserService';
+  import * as yup from 'yup';
+  import { useField, useForm } from 'vee-validate';
+  import { useI18n } from 'vue-i18n';
+  import HubBtn from '@/components/hubComponents/HubBtn.vue';
+  import HubTooltip from '@/components/hubComponents/HubTooltip.vue';
 
-const { t } = useI18n();
-const router = useRouter();
+  const { t } = useI18n();
+  const router = useRouter();
 
-const step = ref(0);
-const errorRegister = ref("");
+  const step = ref(0);
+  const errorRegister = ref('');
 
-const schema = yup.object({
-  email: yup
-    .string()
-    .required(t("auth.emailIsRequired"))
-    .email(t("auth.emailFormatIsIncorrect")),
-  password: yup.string().required(t("auth.passwordIsRequired")),
-  confirmpassword: yup.string().required(t("auth.passwordIsRequired")),
-  username: yup.string().required(t("auth.usernameCannotBeEmpty")),
-});
+  const schema = yup.object({
+    email: yup.string().required(t('auth.emailIsRequired')).email(t('auth.emailFormatIsIncorrect')),
+    password: yup.string().required(t('auth.passwordIsRequired')),
+    confirmpassword: yup.string().required(t('auth.passwordIsRequired')),
+    username: yup.string().required(t('auth.usernameCannotBeEmpty')),
+  });
 
-const { handleSubmit, setFieldError } = useForm({ validationSchema: schema });
-const { value: email, errorMessage: emailError } = useField("email");
-const { value: confirmpassword, errorMessage: confirmpasswordError } =
-  useField("confirmpassword");
-const { value: password, errorMessage: passwordError } = useField("password");
-const { value: username, errorMessage: usernameError } = useField("username");
+  const { handleSubmit, setFieldError } = useForm({ validationSchema: schema });
+  const { value: email, errorMessage: emailError } = useField('email');
+  const { value: confirmpassword, errorMessage: confirmpasswordError } =
+    useField('confirmpassword');
+  const { value: password, errorMessage: passwordError } = useField('password');
+  const { value: username, errorMessage: usernameError } = useField('username');
 
-const onSubmit = handleSubmit(async (values) => {
-  try {
-    await userService.register(
-      values.email,
-      values.username,
-      values.password,
-      values.confirmpassword
-    );
-    router.push(ROUTE_PATH.WELCOME);
-  } catch (err: any) {
-    step.value = 0;
-    const data = err?.response?.data;
-    if (data?.errors) {
-      Object.entries(data.errors).forEach(
-        ([field, messages]: [string, any]) => {
+  const onSubmit = handleSubmit(async values => {
+    try {
+      await userService.register(
+        values.email,
+        values.username,
+        values.password,
+        values.confirmpassword
+      );
+      router.push(ROUTE_PATH.WELCOME);
+    } catch (err: any) {
+      step.value = 0;
+      const data = err?.response?.data;
+      if (data?.errors) {
+        Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
           if (Array.isArray(messages)) {
             setFieldError(field.toLowerCase(), t(`auth.${messages[0]}`));
           }
-        }
-      );
-    } else {
-      errorRegister.value = data?.title
-        ? t(`auth.${data.title}`)
-        : t("auth.unexpectedError");
+        });
+      } else {
+        errorRegister.value = data?.title ? t(`auth.${data.title}`) : t('auth.unexpectedError');
+      }
     }
-  }
-});
+  });
 
-const navigateBack = () => {
-  if (step.value === 2) {
-    step.value = 1;
-    return;
-  }
-  router.back();
-};
+  const navigateBack = () => {
+    if (step.value === 2) {
+      step.value = 1;
+      return;
+    }
+    router.back();
+  };
 
-const areErrorExistInPart1 = computed(() => {
-  return !!(usernameError.value || emailError.value);
-});
+  const areErrorExistInPart1 = computed(() => {
+    return !!(usernameError.value || emailError.value);
+  });
 
-const areErrorExistInPart2 = computed(() => {
-  return !!(passwordError.value || confirmpasswordError.value);
-});
+  const areErrorExistInPart2 = computed(() => {
+    return !!(passwordError.value || confirmpasswordError.value);
+  });
 
-const areErrorExist = computed(() => {
-  return !!(
-    areErrorExistInPart1.value ||
-    areErrorExistInPart2.value ||
-    errorRegister.value
-  );
-});
+  const areErrorExist = computed(() => {
+    return !!(areErrorExistInPart1.value || areErrorExistInPart2.value || errorRegister.value);
+  });
 
-const isCreateBtnDisabled = computed(() => {
-  return !!(!password.value || !confirmpassword.value || areErrorExist.value);
-});
+  const isCreateBtnDisabled = computed(() => {
+    return !!(!password.value || !confirmpassword.value || areErrorExist.value);
+  });
 
-const isTooltipDisabled = computed(() => {
-  return !!(
-    username.value &&
-    email.value &&
-    password.value &&
-    confirmpassword.value &&
-    !areErrorExist.value
-  );
-});
+  const isTooltipDisabled = computed(() => {
+    return !!(
+      username.value &&
+      email.value &&
+      password.value &&
+      confirmpassword.value &&
+      !areErrorExist.value
+    );
+  });
 
-watch(areErrorExist, () => {
-  if (areErrorExist.value && step.value == 2) {
-    step.value = 0;
-  }
-});
+  watch(areErrorExist, () => {
+    if (areErrorExist.value && step.value == 2) {
+      step.value = 0;
+    }
+  });
 </script>
 
 <template>
   <div class="registerView">
-    <form @submit.prevent="onSubmit" class="creamCard">
-      <h1 class="registerView_title">{{ $t("registerTitle") }}</h1>
+    <form class="creamCard" @submit.prevent="onSubmit">
+      <h1 class="registerView_title">{{ $t('registerTitle') }}</h1>
       <div v-if="step === 1 || step === 0">
         <v-text-field
           v-model="username"
@@ -178,51 +167,51 @@ watch(areErrorExist, () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
+  @import '@/assets/styles/variables';
 
-.registerView {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  background: $mainBackground;
-  padding: 80px 16px;
+  .registerView {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    background: $mainBackground;
+    padding: 80px 16px;
 
-  .creamCard {
-    padding: 24px;
+    .creamCard {
+      padding: 24px;
+    }
+
+    &_title {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      color: $mainBrownColor;
+    }
+
+    &_input {
+      width: 100%;
+      padding-bottom: 8px;
+    }
+
+    &_actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      gap: 10px;
+    }
+
+    .hubBtn {
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    .error {
+      width: 100%;
+      text-align: center;
+      padding-top: 12px;
+      color: $errorColor;
+    }
   }
-
-  &_title {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-    color: $mainBrownColor;
-  }
-
-  &_input {
-    width: 100%;
-    padding-bottom: 8px;
-  }
-
-  &_actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 10px;
-  }
-
-  .hubBtn {
-    padding: 12px;
-    font-size: 16px;
-  }
-
-  .error {
-    width: 100%;
-    text-align: center;
-    padding-top: 12px;
-    color: $errorColor;
-  }
-}
 </style>

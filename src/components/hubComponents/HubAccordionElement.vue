@@ -1,69 +1,67 @@
 <script setup lang="ts">
-import { ICON } from "@/enums/iconsEnum";
-import { nextTick, ref, watchEffect } from "vue";
+  import { ICON } from '@/enums/iconsEnum';
+  import { nextTick, ref, watchEffect } from 'vue';
 
-const props = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
-  isSmallerTitle: {
-    type: Boolean,
-    default: false,
-  },
-  withStatusIcon: {
-    type: Boolean,
-    default: false,
-  },
-  isTitleCenter: {
-    type: Boolean,
-    default: false,
-  },
-  centerContent: {
-    type: Boolean,
-    default: false,
-  },
-});
+  const props = defineProps({
+    title: {
+      type: String,
+      required: true,
+    },
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+    isSmallerTitle: {
+      type: Boolean,
+      default: false,
+    },
+    withStatusIcon: {
+      type: Boolean,
+      default: false,
+    },
+    isTitleCenter: {
+      type: Boolean,
+      default: false,
+    },
+    centerContent: {
+      type: Boolean,
+      default: false,
+    },
+  });
 
-const containerRef = ref<HTMLElement | null>(null);
-const currentHeight = ref<string>("0px");
+  const containerRef = ref<HTMLElement | null>(null);
+  const currentHeight = ref<string>('0px');
 
-const setHeight = async () => {
-  await nextTick();
-  if (containerRef.value) {
-    currentHeight.value = props.centerContent
-      ? "100%"
-      : `${containerRef.value.scrollHeight}px`;
-  }
-};
+  const setHeight = async () => {
+    await nextTick();
+    if (containerRef.value) {
+      currentHeight.value = props.centerContent ? '100%' : `${containerRef.value.scrollHeight}px`;
+    }
+  };
 
-watchEffect(() => {
-  if (props.isOpen) {
-    setHeight();
-  } else {
-    currentHeight.value = "0px";
-  }
-});
+  watchEffect(() => {
+    if (props.isOpen) {
+      setHeight();
+    } else {
+      currentHeight.value = '0px';
+    }
+  });
 
-const emit = defineEmits<{
-  (e: "toggleAccordion"): void;
-}>();
+  const emit = defineEmits<{
+    (e: 'toggleAccordion'): void;
+  }>();
 
-const toggleAccordion = () => {
-  emit("toggleAccordion");
-};
+  const toggleAccordion = () => {
+    emit('toggleAccordion');
+  };
 </script>
 
 <template>
   <div class="hubAccordionElement creamCard">
     <div
-      @click="toggleAccordion()"
       class="hubAccordionElement_title"
       :class="{ isSmallerTitle: isSmallerTitle, isOpen: isOpen }"
+      @click="toggleAccordion()"
     >
       <p :class="{ isTitleCenter: isTitleCenter }">
         {{ $t(title) }}
@@ -84,64 +82,64 @@ const toggleAccordion = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
+  @import '@/assets/styles/variables';
 
-.hubAccordionElement {
-  overflow: hidden;
-  min-height: 60px;
-  cursor: pointer;
+  .hubAccordionElement {
+    overflow: hidden;
+    min-height: 60px;
+    cursor: pointer;
 
-  &_title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: $grayColor;
-    font-size: 24px;
-    font-weight: 600;
-    padding: 24px;
-    transition:
-      background-color,
-      padding 0.4s;
-
-    .isTitleCenter {
-      text-align: center;
-      width: 100%;
-    }
-
-    .v-icon {
-      transition: transform 0.4s;
-      transform: rotate(-180deg);
-    }
-
-    &.isSmallerTitle {
-      font-size: 18px;
-      padding: 16px;
-    }
-
-    &.isOpen {
-      padding: 12px;
+    &_title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: $grayColor;
+      font-size: 24px;
+      font-weight: 600;
+      padding: 24px;
       transition:
         background-color,
         padding 0.4s;
-      background-color: $mainBrownColor;
-      color: white;
-      border-radius: 4px;
+
+      .isTitleCenter {
+        text-align: center;
+        width: 100%;
+      }
 
       .v-icon {
-        transform: rotate(0deg);
         transition: transform 0.4s;
+        transform: rotate(-180deg);
+      }
+
+      &.isSmallerTitle {
+        font-size: 18px;
+        padding: 16px;
+      }
+
+      &.isOpen {
+        padding: 12px;
+        transition:
+          background-color,
+          padding 0.4s;
+        background-color: $mainBrownColor;
+        color: white;
+        border-radius: 4px;
+
+        .v-icon {
+          transform: rotate(0deg);
+          transition: transform 0.4s;
+        }
+      }
+    }
+    &_container {
+      overflow: hidden;
+      transition: height 0.4s;
+
+      &.centerContent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
-  &_container {
-    overflow: hidden;
-    transition: height 0.4s;
-
-    &.centerContent {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-}
 </style>

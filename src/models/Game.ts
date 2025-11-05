@@ -1,49 +1,51 @@
-import { Type } from "class-transformer";
-import { FoxGame } from "./FoxGame";
-import { User } from "./User";
-import { Question } from "./Question";
+import { Type } from 'class-transformer';
+import { FoxGame } from './FoxGame';
+import { User } from './User';
+import { Question } from './Question';
 
 export class Game {
-
   @Type(() => String)
   code: string | null;
-  
+
   @Type(() => FoxGame)
   foxGame: FoxGame;
-  
+
   @Type(() => User)
   owner: User;
-  
+
   @Type(() => Boolean)
   isPublic: boolean;
-  
+
+  @Type(() => Boolean)
+  useDixitRules: boolean;
+
   @Type(() => User)
   users: User[];
-  
+
   @Type(() => String)
   password: string | null;
-  
+
   @Type(() => Boolean)
   usePublicQuestions: boolean;
-  
+
   @Type(() => Boolean)
   usePrivateQuestions: boolean;
-  
+
   @Type(() => Boolean)
   isQuestionsFromAnotherGamesAllowed: boolean;
-  
+
   @Type(() => Question)
   questions: Question[];
-  
+
   @Type(() => Number)
   round: number;
-  
+
   @Type(() => Question)
   currentQuestion: Question | null;
-  
+
   @Type(() => Boolean)
   isGameStarted: boolean;
-  
+
   @Type(() => Boolean)
   hasGameEnded: boolean;
 
@@ -62,6 +64,7 @@ export class Game {
     currentQuestion = null,
     isGameStarted = false,
     hasGameEnded = false,
+    useDixitRules = false
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -71,13 +74,13 @@ export class Game {
     this.password = password;
     this.usePublicQuestions = usePublicQuestions;
     this.usePrivateQuestions = usePrivateQuestions;
-    this.isQuestionsFromAnotherGamesAllowed =
-    isQuestionsFromAnotherGamesAllowed;
+    this.isQuestionsFromAnotherGamesAllowed = isQuestionsFromAnotherGamesAllowed;
     this.questions = questions;
     this.round = round;
     this.currentQuestion = currentQuestion;
     this.isGameStarted = isGameStarted;
     this.hasGameEnded = hasGameEnded;
+    this.useDixitRules = useDixitRules;
   }
 
   get usersCount(): number {
@@ -85,11 +88,14 @@ export class Game {
   }
 
   get readyUsersCount(): number {
-    return this.users.filter((user) => user.isReady).length;
+    return this.users.filter(user => user.isReady).length;
   }
 
   get areUsersUnready(): boolean {
-    return this.users.length === 0 || this.users.filter((user) => user.userId !== this.owner.userId).some((user) => !user.isReady);
+    return (
+      this.users.length === 0 ||
+      this.users.filter(user => user.userId !== this.owner.userId).some(user => !user.isReady)
+    );
   }
 
   get isPasswordSet(): boolean {

@@ -1,6 +1,6 @@
-import { Question } from "@/models/Question";
-import type { Catalog } from "@/models/Catalog";
-import { psychClient } from "../clients/PsychClient";
+import { Question } from '@/models/Question';
+import type { Catalog } from '@/models/Catalog';
+import { psychClient } from '../clients/PsychClient';
 
 export const psychService = {
   async addQuestion(question: Question): Promise<number> {
@@ -31,8 +31,6 @@ export const psychService = {
     questionsIds: number[],
     catalogsIds: (number | null)[]
   ): Promise<boolean> {
-    return (
-      await psychClient.assignedQuestionsToCatalogs(questionsIds, catalogsIds)
-    ).data;
+    return (await psychClient.assignedQuestionsToCatalogs(questionsIds, catalogsIds)).data;
   },
 };

@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose } from 'class-transformer';
 
 export class CatalogType {
   @Expose()
@@ -10,7 +10,7 @@ export class CatalogType {
   @Expose()
   name: string;
 
-  constructor(catalogTypeId: number = 0, size: number = 0, name: string = "") {
+  constructor(catalogTypeId: number = 0, size: number = 0, name: string = '') {
     this.catalogTypeId = catalogTypeId;
     this.size = size;
     this.name = name;

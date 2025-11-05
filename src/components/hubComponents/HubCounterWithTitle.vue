@@ -1,18 +1,9 @@
 <script setup lang="ts">
-const props = defineProps({
-  value: {
-    type: Number,
-    required: true,
-  },
-  maxValue: {
-    type: Number,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-});
+  const { value, maxValue, title } = defineProps<{
+    value: number;
+    maxValue: number;
+    title: string;
+  }>();
 </script>
 
 <template>
@@ -23,22 +14,22 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
+  @import '@/assets/styles/variables';
 
-.hubCounterWithTitle {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: $mainBrownColor;
-  font-weight: 600;
-  width: 100%;
+  .hubCounterWithTitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: $mainBrownColor;
+    font-weight: 600;
+    width: 100%;
 
-  &_title {
-    font-size: 24px;
+    &_title {
+      font-size: 24px;
+    }
+
+    &_counter {
+      font-size: 18px;
+    }
   }
-
-  &_counter {
-    font-size: 18px;
-  }
-}
 </style>

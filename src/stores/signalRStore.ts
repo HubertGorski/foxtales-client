@@ -1,12 +1,12 @@
-import { defineStore } from "pinia";
-import { User } from "@/models/User";
-import { BASE_URL_PSYCH } from "@/api/Client";
-import * as signalR from "@microsoft/signalr";
-import { Game } from "@/models/Game";
-import { instanceToPlain, plainToInstance } from "class-transformer";
-import type { Question } from "@/models/Question";
-import type { Answer } from "@/models/Answer";
-import { useUserStore } from "./userStore";
+import { defineStore } from 'pinia';
+import { User } from '@/models/User';
+import { BASE_URL_PSYCH } from '@/api/Client';
+import * as signalR from '@microsoft/signalr';
+import { Game } from '@/models/Game';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
+import type { Question } from '@/models/Question';
+import type { Answer } from '@/models/Answer';
+import { useUserStore } from './userStore';
 
 interface SignalRState {
   connection: signalR.HubConnection | null;
@@ -17,7 +17,7 @@ interface SignalRState {
 }
 
 export const useSignalRStore = defineStore({
-  id: "signalRStore",
+  id: 'signalRStore',
   state: (): SignalRState => ({
     connection: null,
     game: null,
@@ -47,33 +47,31 @@ export const useSignalRStore = defineStore({
         .configureLogging(signalR.LogLevel.Warning)
         .build();
 
-      this.connection.on("PlayerLeft", (playerId: number) => {
+      this.connection.on('PlayerLeft', (playerId: number) => {
         if (!this.game) {
           return;
         }
 
-        this.game.users = this.game.users.filter(
-          (p: User) => p.userId !== playerId
-        );
+        this.game.users = this.game.users.filter((p: User) => p.userId !== playerId);
       });
 
-      this.connection.on("RoomClosed", () => {
+      this.connection.on('RoomClosed', () => {
         this.clearStore();
       });
 
-      this.connection.on("LoadRoom", (game: Game) => {
+      this.connection.on('LoadRoom', (game: Game) => {
         this.game = plainToInstance(Game, game);
       });
 
-      this.connection.on("ReceiveError", (error) => {
-        if (error.fieldId === "code") {
+      this.connection.on('ReceiveError', error => {
+        if (error.fieldId === 'code') {
           this.errorCode = error.message;
         } else {
           this.errorPassword = error.message;
         }
       });
 
-      this.connection.on("GetPublicRooms", (games: Game[]) => {
+      this.connection.on('GetPublicRooms', (games: Game[]) => {
         this.publicGames = plainToInstance(Game, games);
       });
 
@@ -95,7 +93,7 @@ export const useSignalRStore = defineStore({
       }
 
       await this.connection.invoke(
-        "JoinRoom",
+        'JoinRoom',
         gameCode,
         instanceToPlain(player),
         password,
@@ -109,7 +107,7 @@ export const useSignalRStore = defineStore({
       }
 
       this.game = game;
-      await this.connection.invoke("CreateRoom", instanceToPlain(this.game));
+      await this.connection.invoke('CreateRoom', instanceToPlain(this.game));
     },
 
     async goToJoinGameView() {
@@ -117,7 +115,7 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke("GoToJoinGameView");
+      await this.connection.invoke('GoToJoinGameView');
     },
 
     async editRoom(game: Game) {
@@ -126,7 +124,7 @@ export const useSignalRStore = defineStore({
       }
 
       this.game = game;
-      await this.connection.invoke("EditRoom", instanceToPlain(game));
+      await this.connection.invoke('EditRoom', instanceToPlain(game));
     },
 
     async setStatus(playerId: number, status: boolean) {
@@ -134,12 +132,7 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke(
-        "SetStatus",
-        this.game.code,
-        playerId,
-        status
-      );
+      await this.connection.invoke('SetStatus', this.game.code, playerId, status);
     },
 
     async leaveRoom(playerId: number) {
@@ -147,7 +140,7 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke("LeaveRoom", this.game.code, playerId);
+      await this.connection.invoke('LeaveRoom', this.game.code, playerId);
 
       this.clearStore();
     },
@@ -158,7 +151,7 @@ export const useSignalRStore = defineStore({
       }
 
       await this.connection.invoke(
-        "AddQuestionsToGame",
+        'AddQuestionsToGame',
         this.game.code,
         playerId,
         instanceToPlain(questions)
@@ -170,7 +163,7 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke("StartGame", this.game.code);
+      await this.connection.invoke('StartGame', this.game.code);
     },
 
     async addAnswer(answer: Answer) {
@@ -178,11 +171,7 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke(
-        "AddAnswer",
-        this.game.code,
-        instanceToPlain(answer)
-      );
+      await this.connection.invoke('AddAnswer', this.game.code, instanceToPlain(answer));
     },
 
     async markAllUsersUnready() {
@@ -190,19 +179,15 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke("MarkAllUsersUnready", this.game.code);
+      await this.connection.invoke('MarkAllUsersUnready', this.game.code);
     },
 
     async setNewRound(playerId: number) {
-      if (
-        !this.connection ||
-        !this.game ||
-        this.game.owner.userId !== playerId
-      ) {
+      if (!this.connection || !this.game || this.game.owner.userId !== playerId) {
         return;
       }
 
-      await this.connection.invoke("SetNewRound", this.game.code);
+      await this.connection.invoke('SetNewRound', this.game.code);
     },
 
     async chooseAnswer(playerId: number, selectedAnswerUserId: number) {
@@ -210,12 +195,7 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke(
-        "ChooseAnswer",
-        this.game.code,
-        playerId,
-        selectedAnswerUserId
-      );
+      await this.connection.invoke('ChooseAnswer', this.game.code, playerId, selectedAnswerUserId);
     },
   },
 });

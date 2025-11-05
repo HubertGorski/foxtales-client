@@ -1,5 +1,5 @@
-import { useViewStore } from "@/stores/viewStore";
-import { onMounted, onUnmounted } from "vue";
+import { useViewStore } from '@/stores/viewStore';
+import { onMounted, onUnmounted } from 'vue';
 
 export function useKeyboardScrollControl(): void {
   const viewStore = useViewStore();
@@ -14,7 +14,7 @@ export function useKeyboardScrollControl(): void {
 
   function enableScroll(): void {
     if (scrollListener) {
-      document.removeEventListener("touchmove", scrollListener, {
+      document.removeEventListener('touchmove', scrollListener, {
         passive: false,
       } as any);
       scrollListener = undefined;
@@ -24,7 +24,7 @@ export function useKeyboardScrollControl(): void {
   function disableScroll(): void {
     if (!scrollListener) {
       scrollListener = blockScroll;
-      document.addEventListener("touchmove", scrollListener, {
+      document.addEventListener('touchmove', scrollListener, {
         passive: false,
       } as any);
     }
@@ -49,7 +49,7 @@ export function useKeyboardScrollControl(): void {
       return;
     }
 
-    const target = document.querySelector(".foxTales");
+    const target = document.querySelector('.foxTales');
     if (!target) return;
 
     const rect = target.getBoundingClientRect();

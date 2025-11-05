@@ -1,41 +1,37 @@
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from 'vue';
 
-const props = defineProps({
-  iconOff: {
-    type: String,
-    required: true,
-  },
-  iconOn: {
-    type: String,
-    required: true,
-  },
-  iconSize: {
-    type: String,
-    required: false,
-  },
-  action: {
-    type: Function,
-    required: true,
-  },
-});
+  const props = defineProps({
+    iconOff: {
+      type: String,
+      required: true,
+    },
+    iconOn: {
+      type: String,
+      required: true,
+    },
+    iconSize: {
+      type: String,
+      required: false,
+    },
+    action: {
+      type: Function,
+      required: true,
+    },
+  });
 
-const isActive = ref(false);
+  const isActive = ref(false);
 
-const handleAction = () => {
-  isActive.value = !isActive.value;
-  props.action();
-};
+  const handleAction = () => {
+    isActive.value = !isActive.value;
+    props.action();
+  };
 </script>
 
 <template>
-  <div
-    class="orangeSwitchBtn"
-    @click="handleAction"
-    :class="{ isActive: isActive }"
-  >
+  <div class="orangeSwitchBtn" :class="{ isActive: isActive }" @click="handleAction">
     <transition name="fade2" mode="out-in">
-      <v-icon :style="{ fontSize: `${iconSize}px` }" :key="isActive ? 1 : 0">
+      <v-icon :key="isActive ? 1 : 0" :style="{ fontSize: `${iconSize}px` }">
         {{ isActive ? iconOff : iconOn }}
       </v-icon>
     </transition>
@@ -43,33 +39,33 @@ const handleAction = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables";
-@import "@/assets/styles/hubAnimations";
+  @import '@/assets/styles/variables';
+  @import '@/assets/styles/hubAnimations';
 
-.orangeSwitchBtn {
-  cursor: pointer;
-  background-color: $mainOrangeColor;
-  color: $whiteColor;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow:
-    0 4px 8px rgba(252, 152, 40, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+  .orangeSwitchBtn {
+    cursor: pointer;
+    background-color: $mainOrangeColor;
+    color: $whiteColor;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 4px 8px rgba(252, 152, 40, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.1);
 
-  border: 1px solid rgba(84, 50, 47, 0.15);
-  transition: all 0.2s;
-  height: 48px;
-  width: 48px;
-
-  .v-icon {
-    font-size: 48px;
-  }
-
-  &.isActive {
-    background-color: $darkOrangeColor;
+    border: 1px solid rgba(84, 50, 47, 0.15);
     transition: all 0.2s;
+    height: 48px;
+    width: 48px;
+
+    .v-icon {
+      font-size: 48px;
+    }
+
+    &.isActive {
+      background-color: $darkOrangeColor;
+      transition: all 0.2s;
+    }
   }
-}
 </style>

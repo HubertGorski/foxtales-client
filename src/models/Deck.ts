@@ -1,4 +1,4 @@
-import type { DylematyCard } from "./DylematyCard";
+import type { DylematyCard } from './DylematyCard';
 
 export class Deck {
   id: number;
@@ -9,8 +9,8 @@ export class Deck {
 
   constructor(
     id: number = 0,
-    title: string = "",
-    description: string = "",
+    title: string = '',
+    description: string = '',
     size: number = 0,
     cards: DylematyCard[] = []
   ) {

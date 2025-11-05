@@ -9,10 +9,10 @@ export class Achievement {
 
   constructor(
     id = 0,
-    title: string = "",
-    subtitle: string = "",
-    description: string = "",
-    icon: string = "",
+    title: string = '',
+    subtitle: string = '',
+    description: string = '',
+    icon: string = '',
     currentLevel: number = 0,
     boundaryLevels: number[] = [1, 2, 3, 4, 5]
   ) {
@@ -27,8 +27,7 @@ export class Achievement {
 
   get getUnlockedLevel(): number {
     return this.boundaryLevels.reduce(
-      (lastIndex, level, index) =>
-        this.currentLevel >= level ? index : lastIndex,
+      (lastIndex, level, index) => (this.currentLevel >= level ? index : lastIndex),
       -1
     );
   }

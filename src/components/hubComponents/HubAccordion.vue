@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { type PropType } from "vue";
-import HubAccordionElement from "./HubAccordionElement.vue";
-import HubDivider from "./HubDivider.vue";
-import IsComing from "../IsComing.vue";
+  import { type PropType } from 'vue';
+  import HubAccordionElement from './HubAccordionElement.vue';
+  import HubDivider from './HubDivider.vue';
+  import IsComing from '../IsComing.vue';
 
-const props = defineProps({
-  slotNames: {
-    type: Array as PropType<Array<{ slotName: string; isComing: boolean }>>,
-    required: true,
-  },
-  isSmallerTitle: {
-    type: Boolean,
-    default: false,
-  },
-  isDividerVisible: {
-    type: Boolean,
-    default: false,
-  },
-});
-const setOpenTab = defineModel({ type: String, default: "" });
+  const props = defineProps({
+    slotNames: {
+      type: Array as PropType<Array<{ slotName: string; isComing: boolean }>>,
+      required: true,
+    },
+    isSmallerTitle: {
+      type: Boolean,
+      default: false,
+    },
+    isDividerVisible: {
+      type: Boolean,
+      default: false,
+    },
+  });
+  const setOpenTab = defineModel({ type: String, default: '' });
 
-const toggleAccordion = (slotName: string) => {
-  setOpenTab.value = setOpenTab.value === slotName ? "" : slotName;
-};
+  const toggleAccordion = (slotName: string) => {
+    setOpenTab.value = setOpenTab.value === slotName ? '' : slotName;
+  };
 
-const showDivider = (index: number) => {
-  return props.isDividerVisible && index !== props.slotNames.length - 1;
-};
+  const showDivider = (index: number) => {
+    return props.isDividerVisible && index !== props.slotNames.length - 1;
+  };
 </script>
 
 <template>
@@ -50,9 +50,9 @@ const showDivider = (index: number) => {
 </template>
 
 <style lang="scss" scoped>
-.hubAccordion {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+  .hubAccordion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 </style>

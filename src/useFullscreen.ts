@@ -1,4 +1,4 @@
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 // TODO: dodac przycisk w przegladarce
 export function useFullscreen() {
   const isFullscreen = ref<boolean>(false);
@@ -8,7 +8,7 @@ export function useFullscreen() {
       try {
         await document.documentElement.requestFullscreen();
       } catch (err) {
-        console.error("It was not possible to enter Fullscreen:", err);
+        console.error('It was not possible to enter Fullscreen:', err);
       }
     }
   };
@@ -18,7 +18,7 @@ export function useFullscreen() {
       try {
         await document.exitFullscreen();
       } catch (err) {
-        console.error("It was not possible to leave Fullscreen:", err);
+        console.error('It was not possible to leave Fullscreen:', err);
       }
     }
   };
@@ -28,11 +28,11 @@ export function useFullscreen() {
   };
 
   onMounted(() => {
-    document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener('fullscreenchange', onFullscreenChange);
   });
 
   onBeforeUnmount(() => {
-    document.removeEventListener("fullscreenchange", onFullscreenChange);
+    document.removeEventListener('fullscreenchange', onFullscreenChange);
   });
 
   return { isFullscreen, enter, exit };

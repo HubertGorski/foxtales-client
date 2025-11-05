@@ -1,4 +1,4 @@
-import { Permission } from "@/models/Permission";
+import { Permission } from '@/models/Permission';
 
 export enum PERMISSION {
   ADD_NEW_PRIVATE_QUESTION_PER_DAY,

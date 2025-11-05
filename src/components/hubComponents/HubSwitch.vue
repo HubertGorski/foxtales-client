@@ -1,31 +1,26 @@
 <script setup lang="ts">
-import HubTooltip from "./HubTooltip.vue";
-import { ICON } from "@/enums/iconsEnum";
+  import HubTooltip from './HubTooltip.vue';
+  import { ICON } from '@/enums/iconsEnum';
 
-const props = defineProps({
-  label: {
-    type: String,
-    required: false,
-  },
-  tooltipText: {
-    type: String,
-    default: "",
-  },
-  withIcon: {
-    type: Boolean,
-    default: false,
-  },
-});
+  const {
+    label,
+    tooltipText = '',
+    withIcon = false,
+  } = defineProps<{
+    label?: string;
+    tooltipText?: string;
+    withIcon?: boolean;
+  }>();
 
-const value = defineModel({ type: Boolean, required: true });
+  const value = defineModel({ type: Boolean, required: true });
 
-const emit = defineEmits<{
-  (e: "onSwitchChange", newValue: boolean | null): void;
-}>();
+  const emit = defineEmits<{
+    (e: 'onSwitchChange', newValue: boolean | null): void;
+  }>();
 
-const onSwitchChange = (newValue: boolean | null) => {
-  emit("onSwitchChange", newValue);
-};
+  const onSwitchChange = (newValue: boolean | null) => {
+    emit('onSwitchChange', newValue);
+  };
 </script>
 
 <template>
@@ -47,26 +42,26 @@ const onSwitchChange = (newValue: boolean | null) => {
 </template>
 
 <style lang="scss">
-@import "@/assets/styles/variables";
+  @import '@/assets/styles/variables';
 
-.hubSwitch {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: $grayColor;
-  max-height: 50px;
+  .hubSwitch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $grayColor;
+    max-height: 50px;
 
-  &_content {
-    position: relative;
+    &_content {
+      position: relative;
+    }
+
+    .v-icon {
+      position: absolute;
+      top: 0;
+      margin: 2px;
+      font-size: 14px;
+      color: $lightGrayColor;
+      cursor: help;
+    }
   }
-
-  .v-icon {
-    position: absolute;
-    top: 0;
-    margin: 2px;
-    font-size: 14px;
-    color: $lightGrayColor;
-    cursor: help;
-  }
-}
 </style>

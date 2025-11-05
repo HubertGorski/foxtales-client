@@ -1,12 +1,12 @@
-import type { Catalog } from "@/models/Catalog";
-import { Deck } from "@/models/Deck";
-import { DYLEMATY_CARD_TYPE, DylematyCard } from "@/models/DylematyCard";
-import type { Question } from "@/models/Question";
+import type { Catalog } from '@/models/Catalog';
+import { Deck } from '@/models/Deck';
+import { DYLEMATY_CARD_TYPE, DylematyCard } from '@/models/DylematyCard';
+import type { Question } from '@/models/Question';
 
 export class ListElement {
   id: number = 0;
-  title: string = "";
-  description: string = "";
+  title: string = '';
+  description: string = '';
   isSelected: boolean = false;
   elementsCount?: number;
   size?: number;
@@ -64,7 +64,7 @@ export function convertDecksToListElement(deck: Deck): ListElement {
     isSelected: false,
     elementsCount: deck.cardsCount,
     size: deck.size,
-    cards: deck.cards
+    cards: deck.cards,
   });
 }
 

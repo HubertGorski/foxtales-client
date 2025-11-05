@@ -1,8 +1,7 @@
 export enum GENDER {
-  WOMAN = "woman",
-  MAN = "man",
-  ALL = "all",
+  WOMAN = 'woman',
+  MAN = 'man',
+  ALL = 'all',
 }
 
-export const DEFAULT_FOX_NAME: string =
-  "Fox Gamer";
+export const DEFAULT_FOX_NAME: string = 'Fox Gamer';

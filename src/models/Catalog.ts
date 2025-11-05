@@ -1,6 +1,6 @@
-import { Expose, Type } from "class-transformer";
-import { Question } from "./Question";
-import { CatalogType } from "./CatalogType";
+import { Expose, Type } from 'class-transformer';
+import { Question } from './Question';
+import { CatalogType } from './CatalogType';
 
 export class Catalog {
   catalogId: number | null;
@@ -35,8 +35,8 @@ export class Catalog {
   constructor(
     id: number | null = null,
     catalogType: CatalogType = new CatalogType(),
-    title: string = "",
-    description: string = "",
+    title: string = '',
+    description: string = '',
     ownerId: number = 0,
     createdDate: Date = new Date(),
     usedCount: number = 0,
@@ -76,9 +76,7 @@ export class Catalog {
 
   @Expose()
   get questionsIds(): (number | null)[] {
-    return this.questions
-      .map((question: Question) => question.id)
-      .filter((id) => id != null);
+    return this.questions.map((question: Question) => question.id).filter(id => id != null);
   }
 
   setQuestions(questions: Question[]): this {
