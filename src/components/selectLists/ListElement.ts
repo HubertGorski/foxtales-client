@@ -52,7 +52,7 @@ export function convertCatalogsToListElement(catalog: Catalog): ListElement {
     description: catalog.description,
     isSelected: false,
     elementsCount: catalog.questionsCount,
-    size: catalog.catalogType.size,
+    size: catalog.catalogType?.size ?? null,
   });
 }
 

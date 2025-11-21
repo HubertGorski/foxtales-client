@@ -145,13 +145,13 @@ export const useSignalRStore = defineStore({
       this.clearStore();
     },
 
-    async addQuestionsToGame(playerId: number, questions: Question[]) {
+    async addPrivateQuestionsToGame(playerId: number, questions: Question[]) {
       if (!this.connection || !this.game) {
         return;
       }
 
       await this.connection.invoke(
-        'AddQuestionsToGame',
+        'AddPrivateQuestionsToGame',
         this.game.code,
         playerId,
         instanceToPlain(questions)
