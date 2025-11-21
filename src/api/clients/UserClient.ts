@@ -3,12 +3,14 @@ import { apiClient } from '../Client';
 import type { User } from '@/models/User';
 import type { FoxGame } from '@/models/FoxGame';
 import type { CatalogType } from '@/models/CatalogType';
+import type { Catalog } from '@/models/Catalog';
 
 export interface IUserLoginResponse {
   user: User;
   avatars: Avatar[];
   foxGames: FoxGame[];
   availableCatalogTypes: CatalogType[];
+  publicCatalogs: Catalog[];
 }
 
 export const userClient = {

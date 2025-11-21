@@ -9,6 +9,7 @@ import { userClient, type IUserLoginResponse } from '../clients/UserClient';
 import { useUserStore } from '@/stores/userStore';
 import i18n from '@/configs/i18n';
 import type { LANG } from '@/enums/languagesEnum';
+import { Catalog } from '@/models/Catalog';
 
 export const userService = {
   async logout(): Promise<void> {
@@ -37,6 +38,7 @@ export const userService = {
     const avatars: Avatar[] = [];
     const availableCatalogTypes: CatalogType[] = [];
     const foxGames: FoxGame[] = [];
+    const publicCatalogs: Catalog[] = [];
 
     data.avatars.forEach(avatar => {
       avatars.push(plainToInstance(Avatar, avatar));
@@ -48,6 +50,10 @@ export const userService = {
 
     data.foxGames.forEach(game => {
       foxGames.push(plainToInstance(FoxGame, game));
+    });
+
+    data.publicCatalogs.forEach(publicCatalog => {
+      publicCatalogs.push(plainToInstance(Catalog, publicCatalog));
     });
 
     foxGames.forEach(game => {
@@ -65,6 +71,7 @@ export const userService = {
     userStore.setUserSession(user);
     userStore.setAvatars(avatars);
     userStore.setAvailableCatalogTypes(availableCatalogTypes);
+    userStore.setPublicCatalogs(publicCatalogs);
   },
 
   async login(email: string, password: string): Promise<void> {

@@ -49,6 +49,9 @@ export class Game {
   @Type(() => Boolean)
   hasGameEnded: boolean;
 
+  @Type(() => Number)
+  selectedPublicCatalogId: number | null;
+
   constructor(
     owner: User = new User(),
     users: User[] = [],
@@ -64,7 +67,8 @@ export class Game {
     currentQuestion = null,
     isGameStarted = false,
     hasGameEnded = false,
-    useDixitRules = false
+    useDixitRules = false,
+    selectedPublicCatalogId = null
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -81,6 +85,7 @@ export class Game {
     this.isGameStarted = isGameStarted;
     this.hasGameEnded = hasGameEnded;
     this.useDixitRules = useDixitRules;
+    this.selectedPublicCatalogId = selectedPublicCatalogId;
   }
 
   get usersCount(): number {

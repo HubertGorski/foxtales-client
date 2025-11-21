@@ -11,6 +11,11 @@
   } from '@/components/SelectQuestionsPanel.vue';
   import type { Question } from '@/models/Question';
   import { useUserStore } from '@/stores/userStore';
+  import WhiteSelectList from '@/components/selectLists/WhiteSelectList.vue';
+  import {
+    convertCatalogsToListElement,
+    type ListElement,
+  } from '@/components/selectLists/ListElement';
 
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
@@ -19,6 +24,9 @@
   const currentGame = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
   const currentQuestions = ref<Question[]>(signalRStore.game?.questions ?? []);
+  const publicCatalogs = ref<ListElement[]>(
+    userStore.publicCatalogs.map(convertCatalogsToListElement)
+  );
 
   if (!newGame.value.code) {
     router.push(ROUTE_PATH.MENU);
@@ -30,8 +38,11 @@
   };
 
   const editRoom = async () => {
+    newGame.value.selectedPublicCatalogId =
+      publicCatalogs.value.find(catalog => catalog.isSelected)?.id ?? null;
+
     await signalRStore.editRoom(newGame.value);
-    await signalRStore.addQuestionsToGame(userStore.user.userId, currentQuestions.value);
+    await signalRStore.addPrivateQuestionsToGame(userStore.user.userId, currentQuestions.value);
 
     router.push(ROUTE_PATH.LOBBY);
   };
@@ -65,6 +76,15 @@
           label="lobby.usePublicQuestions"
           tooltipText="tooltip.publicQuestionsDescription"
           withIcon
+        />
+        <WhiteSelectList
+          v-if="newGame.usePublicQuestions"
+          v-model="publicCatalogs"
+          :itemsPerPage="1"
+          :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
+          showPagination
+          selectVisibleItems
+          moveToSelectedItem
         />
         <SelectQuestionsPanel
           v-model:usePrivateQuestions="newGame.usePrivateQuestions"
