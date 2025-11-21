@@ -71,8 +71,8 @@
     userStore.user.chosenCatalogId = questions.chosenCatalogId;
   };
 
-  const addQuestionsToGame = async () => {
-    await signalRStore.addQuestionsToGame(userStore.user.userId, currentQuestions.value);
+  const addPrivateQuestionsToGame = async () => {
+    await signalRStore.addPrivateQuestionsToGame(userStore.user.userId, currentQuestions.value);
     showSettingsPanel.value = false;
   };
 
@@ -188,7 +188,7 @@
           v-model:usePrivateQuestions="usePrivateQuestions"
           @setQuestions="setCurrentQuestions"
         />
-        <HubBtn class="settings_btn" text="accept" :action="addQuestionsToGame" />
+        <HubBtn class="settings_btn" text="accept" :action="addPrivateQuestionsToGame" />
       </div>
     </HubPopup>
   </div>

@@ -12,6 +12,7 @@ interface UserState {
   user: User;
   avatars: Avatar[];
   availableCatalogType: CatalogType[];
+  publicCatalogs: Catalog[];
 }
 
 export const useUserStore = defineStore({
@@ -20,6 +21,7 @@ export const useUserStore = defineStore({
     user: new User(),
     avatars: [],
     availableCatalogType: [],
+    publicCatalogs: [],
   }),
 
   getters: {
@@ -51,6 +53,10 @@ export const useUserStore = defineStore({
   },
 
   actions: {
+    setPublicCatalogs(publicCatalogs: Catalog[]) {
+      this.publicCatalogs = publicCatalogs;
+    },
+
     setAvailableCatalogTypes(availableCatalogType: CatalogType[]) {
       this.availableCatalogType = availableCatalogType;
     },
