@@ -45,7 +45,7 @@
   <div class="homeView">
     <div>
       <p class="homeView_title">FOX TALES</p>
-      <p class="homeView_subtitle">Be as sly as a fox!</p>
+      <p class="homeView_subtitle">Be as sly as a fox</p>
     </div>
     <div class="homeView_btns">
       <HubBtn

@@ -8,10 +8,18 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', '192.png', '512.png'],
+      workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
+      },
       manifest: {
         name: 'Fox Tales - Be as sly as a fox!',
         short_name: 'Fox Tales',
-        start_url: '.',
+        start_url: '/',
+        scope: '/',
         display: 'standalone',
         background_color: '#d3b39d',
         theme_color: '#d3b39d',
