@@ -90,7 +90,6 @@
       return;
     }
 
-    await signalRStore.connect();
     await signalRStore.joinRoom(
       customCode.value,
       userStore.user,
