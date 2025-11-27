@@ -85,6 +85,7 @@
           showPagination
           selectVisibleItems
           moveToSelectedItem
+          minimalView
         />
         <SelectQuestionsPanel
           v-model:usePrivateQuestions="newGame.usePrivateQuestions"

@@ -50,6 +50,10 @@
       type: Boolean,
       default: false,
     },
+    minimalView: {
+      type: Boolean,
+      default: false,
+    },
     selectItemId: {
       type: Number,
       required: false,
@@ -104,6 +108,10 @@
 
   const selectedItems = computed(() => items.value.filter(item => item.isSelected));
 
+  const paginationText = computed(() =>
+    props.minimalView ? visibleItems.value[0].title : `${currentPage.value} / ${totalPages.value}`
+  );
+
   const setPreviousPage = () => {
     currentPage.value = currentPage.value - 1;
   };
@@ -147,45 +155,54 @@
 
 <template>
   <div class="whiteSelectList">
-    <div v-if="showSelectedCount && visibleItems.length > 0" class="whiteSelectList_selectedCount">
-      {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} / {{ items.length }})
-    </div>
-    <div v-if="visibleItems.length === 0" class="noData">
-      <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
-      <p>{{ $t(emptyDataText) }}</p>
-    </div>
-    <div
-      v-else
-      class="whiteSelectList_data"
-      :style="totalPages > 1 ? { height: height + 'px' } : {}"
-    >
+    <div v-if="!minimalView">
       <div
-        v-for="item in visibleItems"
-        :key="item.id"
-        class="item"
-        :class="{ isSelected: item.isSelected }"
+        v-if="showSelectedCount && visibleItems.length > 0"
+        class="whiteSelectList_selectedCount"
       >
-        <HubTooltip
-          :tooltipText="item.description"
-          :tooltipDisabled="!item.description"
-          maxWidth
-          dictsDisabled
+        {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} / {{ items.length }})
+      </div>
+      <div v-if="visibleItems.length === 0" class="noData">
+        <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
+        <p>{{ $t(emptyDataText) }}</p>
+      </div>
+      <div
+        v-else
+        class="whiteSelectList_data"
+        :style="totalPages > 1 ? { height: height + 'px' } : {}"
+      >
+        <div
+          v-for="item in visibleItems"
+          :key="item.id"
+          class="item"
+          :class="{ isSelected: item.isSelected }"
         >
-          <div class="item_name">
-            <div v-if="showElementsCountInItem" class="elementsCount">
-              ({{ item.elementsCount }}/{{ item.size }})
+          <HubTooltip
+            :tooltipText="item.description"
+            :tooltipDisabled="!item.description"
+            maxWidth
+            dictsDisabled
+          >
+            <div class="item_name">
+              <div v-if="showElementsCountInItem" class="elementsCount">
+                ({{ item.elementsCount }}/{{ item.size }})
+              </div>
+              {{ item.title }}
             </div>
-            {{ item.title }}
+          </HubTooltip>
+          <div v-if="showItemDetailsBtn" class="item_actionIcon" @click="showDetails(item)">
+            <v-icon>{{ ICON.EDIT_COLLECTION }}</v-icon>
           </div>
-        </HubTooltip>
-        <div v-if="showItemDetailsBtn" class="item_actionIcon" @click="showDetails(item)">
-          <v-icon>{{ ICON.EDIT_COLLECTION }}</v-icon>
-        </div>
-        <div v-else class="item_icon" @click="selectItem(item)">
-          <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>
-          <v-icon v-else>{{ ICON.SELECT_OFF }}</v-icon>
+          <div v-else class="item_icon" @click="selectItem(item)">
+            <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>
+            <v-icon v-else>{{ ICON.SELECT_OFF }}</v-icon>
+          </div>
         </div>
       </div>
+    </div>
+    <div v-if="visibleItems.length === 0" class="noData noData--minimalView">
+      <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
+      <p>{{ $t(emptyDataText) }}</p>
     </div>
     <div v-if="totalPages > 1 && showPagination" class="pagination">
       <HubBtn
@@ -194,7 +211,7 @@
         :action="previousPageBtn.action"
         :disabled="previousPageBtn.disabled"
       />
-      <div class="pagination_data">{{ currentPage }} / {{ totalPages }}</div>
+      <div class="pagination_data">{{ paginationText }}</div>
       <HubBtn
         class="pagination_btn"
         :icon="nextPageBtn.icon"
@@ -223,6 +240,15 @@
       align-items: center;
       padding: 4px 8px;
       opacity: 0.9;
+
+      &--minimalView {
+        background: $background;
+        border-radius: 12px;
+        box-shadow:
+          0 4px 6px rgba(0, 0, 0, 0.1),
+          0 1px 3px rgba(0, 0, 0, 0.06);
+      }
+
       img {
         width: 64px;
       }
