@@ -10,13 +10,15 @@ import { useUserStore } from '@/stores/userStore';
 import i18n from '@/configs/i18n';
 import type { LANG } from '@/enums/languagesEnum';
 import { Catalog } from '@/models/Catalog';
+import { useSignalRStore } from '@/stores/signalRStore';
 
 export const userService = {
   async logout(): Promise<void> {
     await userClient.logout();
+    await useSignalRStore().disconnect();
   },
 
-  setUserSession(data: IUserLoginResponse) {
+  async setUserSession(data: IUserLoginResponse): Promise<void> {
     const user = plainToInstance(User, data.user);
     for (const limit of user.userLimits) {
       switch (limit.type) {
@@ -65,6 +67,7 @@ export const userService = {
     });
 
     const userStore = useUserStore();
+    const signalRStore = useSignalRStore();
 
     const currentLocale = i18n.global.locale.value;
     user.language = currentLocale as LANG;
@@ -72,6 +75,8 @@ export const userService = {
     userStore.setAvatars(avatars);
     userStore.setAvailableCatalogTypes(availableCatalogTypes);
     userStore.setPublicCatalogs(publicCatalogs);
+
+    await signalRStore.connect();
   },
 
   async login(email: string, password: string): Promise<void> {

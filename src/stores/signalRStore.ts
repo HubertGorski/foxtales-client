@@ -29,7 +29,15 @@ export const useSignalRStore = defineStore({
   getters: {},
 
   actions: {
-    clearStore() {
+    async disconnect() {
+      if (this.connection) {
+        try {
+          await this.connection.stop();
+        } catch (e) {
+          console.error('Error while stopping connection:', e);
+        }
+      }
+
       this.connection = null;
       this.game = null;
     },
@@ -56,7 +64,7 @@ export const useSignalRStore = defineStore({
       });
 
       this.connection.on('RoomClosed', () => {
-        this.clearStore();
+        this.game = null;
       });
 
       this.connection.on('LoadRoom', (game: Game) => {
@@ -86,10 +94,6 @@ export const useSignalRStore = defineStore({
     ) {
       if (!this.connection) {
         return;
-      }
-
-      if (this.game) {
-        await this.leaveRoom(player.userId);
       }
 
       await this.connection.invoke(
@@ -141,8 +145,6 @@ export const useSignalRStore = defineStore({
       }
 
       await this.connection.invoke('LeaveRoom', this.game.code, playerId);
-
-      this.clearStore();
     },
 
     async addPrivateQuestionsToGame(playerId: number, questions: Question[]) {

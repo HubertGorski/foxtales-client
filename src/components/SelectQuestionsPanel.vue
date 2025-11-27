@@ -87,10 +87,12 @@
         v-if="selectedPrivateQuestionsSelectedOption.id == QUESTION_SOURCE.SELECTED_CATALOG"
         v-model="catalogs"
         :itemsPerPage="1"
+        emptyDataText="psych.noDirectoryHasBeenCreatedYet"
         :selectItemId="userStore.user.chosenCatalogId"
         showPagination
         selectVisibleItems
         moveToSelectedItem
+        minimalView
       />
     </div>
   </div>
