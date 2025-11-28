@@ -200,7 +200,7 @@
         </div>
       </div>
     </div>
-    <div v-if="visibleItems.length === 0" class="noData noData--minimalView">
+    <div v-if="visibleItems.length === 0 && minimalView" class="noData noData--minimalView">
       <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
       <p>{{ $t(emptyDataText) }}</p>
     </div>
