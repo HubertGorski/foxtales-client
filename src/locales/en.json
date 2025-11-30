@@ -1,4 +1,12 @@
 {
+  "terms": {
+    "termsAndPrivacyPolicy": "Terms of Service and Privacy Policy",
+    "accept": "I accept",
+    "statute": "the Terms of Service",
+    "privacyPolicy": "the Privacy Policy"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "and": "and",
   "confirmDeleteItemsTextPopup": "Are you sure you want to delete the selected items?",
   "confirmDeleteCatalogTextPopup": "Are you sure you want to delete the selected catalog?",
   "delete": "Delete",
@@ -157,6 +165,7 @@
     "selectedDecks": "Selected decks"
   },
   "auth": {
+    "termsAcceptedCannotBeEmpty": "To use the application, confirm the regulations",
     "fillFormCorrectly": "Please fill out the registration form correctly to continue",
     "youAreAlreadyAuthenticated": "Unexpected error. Account is already logged in.",
     "emailIsRequired": "Email is required",

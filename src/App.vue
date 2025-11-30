@@ -45,6 +45,10 @@
     background-color: #d3b39d;
   }
 
+  ul {
+    padding-left: 16px;
+  }
+
   #app {
     display: flex;
     align-items: center;

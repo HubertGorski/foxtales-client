@@ -1,4 +1,12 @@
 {
+  "terms": {
+    "termsAndPrivacyPolicy": "AGB und Datenschutzrichtlinie",
+    "accept": "Ich akzeptiere",
+    "statute": "die AGB",
+    "privacyPolicy": "die Datenschutzerklärung"
+  },
+  "privacyPolicy": "Datenschutzerklärung",
+  "and": "und",
   "confirmDeleteItemsTextPopup": "Bist du sicher, dass du die ausgewählten Elemente löschen möchtest?",
   "confirmDeleteCatalogTextPopup": "Bist du sicher, dass du den ausgewählten Katalog löschen möchtest?",
   "delete": "Löschen",
@@ -157,6 +165,7 @@
     "selectedDecks": "Ausgewählte Decks"
   },
   "auth": {
+    "termsAcceptedCannotBeEmpty": "Um die Anwendung nutzen zu können, müssen Sie die Bestimmungen bestätigen",
     "fillFormCorrectly": "Bitte fülle das Registrierungsformular korrekt aus, um fortzufahren.",
     "youAreAlreadyAuthenticated": "Unerwarteter Fehler. Konto ist bereits angemeldet.",
     "emailIsRequired": "E-Mail ist erforderlich",

@@ -17,6 +17,8 @@
   import { useField, useForm } from 'vee-validate';
   import * as yup from 'yup';
   import { getAvatar } from '@/utils/imgUtils';
+  import HubAccordionElement from '@/components/hubComponents/HubAccordionElement.vue';
+  import Terms from '@/components/Terms.vue';
 
   const userStore = useUserStore();
   const { t, locale } = useI18n();
@@ -252,6 +254,9 @@
           </div>
         </template>
       </HubAccordion>
+      <Terms :isLabelVisible="false">
+        <HubAccordionElement title="terms.termsAndPrivacyPolicy" isSmallerTitle @click="" />
+      </Terms>
     </div>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
   </div>

@@ -1,4 +1,12 @@
 {
+  "terms": {
+    "termsAndPrivacyPolicy": "Regulamin i Polityka Prywatności",
+    "accept": "Akceptuję",
+    "statute": "Regulamin",
+    "privacyPolicy": "Politykę Prywatności"
+  },
+  "privacyPolicy": "Polityka Prywatności",
+  "and": "i",
   "confirmDeleteItemsTextPopup": "Czy na pewno chcesz usunąć wybrane elementy?",
   "confirmDeleteCatalogTextPopup": "Czy na pewno chcesz usunąć wybrany katalog?",
   "delete": "Usuń",
@@ -157,6 +165,7 @@
     "selectedDecks": "Wybrane talie"
   },
   "auth": {
+    "termsAcceptedCannotBeEmpty": "By korzystać z aplikacji potwierdź regulamin",
     "fillFormCorrectly": "By kontynuować należy prawidłowo uzupełnić formularz rejestracyjny",
     "youAreAlreadyAuthenticated": "Niespodziewany błąd. Konto już jest zalogowane.",
     "emailIsRequired": "Email jest wymagany",
