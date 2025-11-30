@@ -84,13 +84,19 @@ export const userService = {
     this.setUserSession(response.data);
   },
 
-  async registerTmpUser(username: string): Promise<void> {
-    const response = await userClient.registerTmpUser(username);
+  async registerTmpUser(username: string, termsAccepted: boolean): Promise<void> {
+    const response = await userClient.registerTmpUser(username, termsAccepted);
     this.setUserSession(response.data);
   },
 
-  async register(email: string, username: string, password: string, confirmPassword: string) {
-    return await userClient.register(email, username, password, confirmPassword);
+  async register(
+    email: string,
+    username: string,
+    password: string,
+    confirmPassword: string,
+    termsAccepted: boolean
+  ) {
+    return await userClient.register(email, username, password, confirmPassword, termsAccepted);
   },
 
   async setAvatar(avatarId: number): Promise<boolean> {

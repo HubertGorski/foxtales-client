@@ -8,6 +8,10 @@
   import { useI18n } from 'vue-i18n';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import HubTooltip from '@/components/hubComponents/HubTooltip.vue';
+  import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
+  import Terms from '@/components/Terms.vue';
+
+  type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsAccepted';
 
   const { t } = useI18n();
   const router = useRouter();
@@ -20,14 +24,26 @@
     password: yup.string().required(t('auth.passwordIsRequired')),
     confirmpassword: yup.string().required(t('auth.passwordIsRequired')),
     username: yup.string().required(t('auth.usernameCannotBeEmpty')),
+    termsAccepted: yup.boolean().required(t('auth.termsAcceptedCannotBeEmpty')),
   });
 
-  const { handleSubmit, setFieldError } = useForm({ validationSchema: schema });
+  const { handleSubmit, setFieldError } = useForm({
+    validationSchema: schema,
+    initialValues: {
+      termsAccepted: false,
+      email: '',
+      confirmpassword: '',
+      password: '',
+      username: '',
+    },
+  });
   const { value: email, errorMessage: emailError } = useField('email');
   const { value: confirmpassword, errorMessage: confirmpasswordError } =
     useField('confirmpassword');
   const { value: password, errorMessage: passwordError } = useField('password');
   const { value: username, errorMessage: usernameError } = useField('username');
+  const { value: termsAccepted, errorMessage: termsAcceptedError } =
+    useField<boolean>('termsAccepted');
 
   const onSubmit = handleSubmit(async values => {
     try {
@@ -35,7 +51,8 @@
         values.email,
         values.username,
         values.password,
-        values.confirmpassword
+        values.confirmpassword,
+        values.termsAccepted
       );
       router.push(ROUTE_PATH.WELCOME);
     } catch (err: any) {
@@ -44,7 +61,7 @@
       if (data?.errors) {
         Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
           if (Array.isArray(messages)) {
-            setFieldError(field.toLowerCase(), t(`auth.${messages[0]}`));
+            setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
           }
         });
       } else {
@@ -132,6 +149,13 @@
           @focus="step = 2"
         />
       </div>
+      <HubCheckbox
+        v-model="termsAccepted"
+        class="registerView_terms"
+        :error-messages="termsAcceptedError"
+      >
+        <Terms />
+      </HubCheckbox>
       <div class="registerView_actions">
         <HubBtn :text="$t('back2')" :action="navigateBack" />
         <HubTooltip
@@ -200,6 +224,11 @@
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr;
       gap: 10px;
+    }
+
+    &_terms {
+      margin-top: -18px;
+      padding-bottom: 8px;
     }
 
     .hubBtn {

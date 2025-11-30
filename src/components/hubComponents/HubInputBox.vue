@@ -63,7 +63,9 @@
       :error-messages="errorMessages"
       @focus="handleFocus"
       @blur="handleBlur"
-    />
+    >
+      <slot></slot>
+    </HubInputWithBtn>
   </div>
 </template>
 

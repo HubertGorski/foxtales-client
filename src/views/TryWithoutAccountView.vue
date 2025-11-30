@@ -9,6 +9,10 @@
   import { useField, useForm } from 'vee-validate';
   import * as yup from 'yup';
   import { userService } from '@/api/services/UserService';
+  import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
+  import Terms from '@/components/Terms.vue';
+
+  type FormFields = 'username' | 'termsAccepted';
 
   const { t } = useI18n();
   const router = useRouter();
@@ -16,20 +20,29 @@
 
   const schema = yup.object({
     username: yup.string().required(t('auth.usernameCannotBeEmpty')),
+    termsAccepted: yup.boolean().required(t('auth.termsAcceptedCannotBeEmpty')),
   });
-  const { handleSubmit, setFieldError } = useForm({ validationSchema: schema });
+  const { handleSubmit, setFieldError } = useForm({
+    validationSchema: schema,
+    initialValues: {
+      termsAccepted: false,
+      username: '',
+    },
+  });
   const { value: username, errorMessage: usernameError } = useField<string>('username');
+  const { value: termsAccepted, errorMessage: termsAcceptedError } =
+    useField<boolean>('termsAccepted');
 
   const onSubmit = handleSubmit(async values => {
     try {
-      await userService.registerTmpUser(values.username);
+      await userService.registerTmpUser(values.username, values.termsAccepted);
       router.push(ROUTE_PATH.MENU);
     } catch (err: any) {
       const data = err?.response?.data;
       if (data?.errors) {
         Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
           if (Array.isArray(messages)) {
-            setFieldError(field.toLowerCase(), t(`auth.${messages[0]}`));
+            setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
           }
         });
       } else {
@@ -55,14 +68,17 @@
       btnText="tryWithoutAccount"
       :btnAction="onSubmit"
       withFoxImg
-    />
+    >
+      <HubCheckbox v-model="termsAccepted" :error-messages="termsAcceptedError">
+        <Terms />
+      </HubCheckbox>
+    </HubInputBox>
     <NavigationBtns class="navBtns" btn="back" btn2="register" :btnCustomAction="back" />
   </div>
 </template>
 
 <style lang="scss" scoped>
   @import '@/assets/styles/variables';
-
   .tryWithoutAccountView {
     position: relative;
     display: flex;

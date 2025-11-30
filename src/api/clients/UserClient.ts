@@ -22,17 +22,24 @@ export const userClient = {
     return apiClient.post('/user/login', { email, password });
   },
 
-  register(email: string, username: string, password: string, confirmPassword: string) {
+  register(
+    email: string,
+    username: string,
+    password: string,
+    confirmPassword: string,
+    termsAccepted: boolean
+  ) {
     return apiClient.post('/user/registerUser', {
       email,
       username,
       password,
       confirmPassword,
+      termsAccepted,
     });
   },
 
-  registerTmpUser(username: string): Promise<{ data: IUserLoginResponse }> {
-    return apiClient.post('/user/registerTmpUser', { username });
+  registerTmpUser(username: string, termsAccepted: boolean): Promise<{ data: IUserLoginResponse }> {
+    return apiClient.post('/user/registerTmpUser', { username, termsAccepted });
   },
 
   setAvatar(avatarId: number): Promise<boolean> {
