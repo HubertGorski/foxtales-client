@@ -7,35 +7,29 @@
   import HubInputBox from '@/components/hubComponents/HubInputBox.vue';
   import NavigationBtns from '@/components/NavigationBtns.vue';
   import { useField, useForm } from 'vee-validate';
-  import * as yup from 'yup';
   import { userService } from '@/api/services/UserService';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
 
-  type FormFields = 'username' | 'termsAccepted';
+  type FormFields = 'username' | 'termsaccepted';
 
   const { t } = useI18n();
   const router = useRouter();
   const error = ref('');
 
-  const schema = yup.object({
-    username: yup.string().required(t('auth.usernameCannotBeEmpty')),
-    termsAccepted: yup.boolean().required(t('auth.termsAcceptedCannotBeEmpty')),
-  });
   const { handleSubmit, setFieldError } = useForm({
-    validationSchema: schema,
     initialValues: {
-      termsAccepted: false,
+      termsaccepted: false,
       username: '',
     },
   });
   const { value: username, errorMessage: usernameError } = useField<string>('username');
   const { value: termsAccepted, errorMessage: termsAcceptedError } =
-    useField<boolean>('termsAccepted');
+    useField<boolean>('termsaccepted');
 
   const onSubmit = handleSubmit(async values => {
     try {
-      await userService.registerTmpUser(values.username, values.termsAccepted);
+      await userService.registerTmpUser(values.username, values.termsaccepted);
       router.push(ROUTE_PATH.MENU);
     } catch (err: any) {
       const data = err?.response?.data;

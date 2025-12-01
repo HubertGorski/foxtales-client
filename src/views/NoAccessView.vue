@@ -29,7 +29,7 @@
       btn="back2"
       btn2="logout"
     />
-    <NavigationBtns v-else btn="goToLogin" />
+    <NavigationBtns v-else btn="closeGame" />
   </div>
 </template>
 
