@@ -3,7 +3,6 @@
   import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { userService } from '@/api/services/UserService';
-  import * as yup from 'yup';
   import { useField, useForm } from 'vee-validate';
   import { useI18n } from 'vue-i18n';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
@@ -11,7 +10,7 @@
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
 
-  type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsAccepted';
+  type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsaccepted';
 
   const { t } = useI18n();
   const router = useRouter();
@@ -19,18 +18,9 @@
   const step = ref(0);
   const errorRegister = ref('');
 
-  const schema = yup.object({
-    email: yup.string().required(t('auth.emailIsRequired')).email(t('auth.emailFormatIsIncorrect')),
-    password: yup.string().required(t('auth.passwordIsRequired')),
-    confirmpassword: yup.string().required(t('auth.passwordIsRequired')),
-    username: yup.string().required(t('auth.usernameCannotBeEmpty')),
-    termsAccepted: yup.boolean().required(t('auth.termsAcceptedCannotBeEmpty')),
-  });
-
   const { handleSubmit, setFieldError } = useForm({
-    validationSchema: schema,
     initialValues: {
-      termsAccepted: false,
+      termsaccepted: false,
       email: '',
       confirmpassword: '',
       password: '',
@@ -43,7 +33,7 @@
   const { value: password, errorMessage: passwordError } = useField('password');
   const { value: username, errorMessage: usernameError } = useField('username');
   const { value: termsAccepted, errorMessage: termsAcceptedError } =
-    useField<boolean>('termsAccepted');
+    useField<boolean>('termsaccepted');
 
   const onSubmit = handleSubmit(async values => {
     try {
@@ -52,7 +42,7 @@
         values.username,
         values.password,
         values.confirmpassword,
-        values.termsAccepted
+        values.termsaccepted
       );
       router.push(ROUTE_PATH.WELCOME);
     } catch (err: any) {
