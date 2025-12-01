@@ -45,7 +45,8 @@
     background-color: #d3b39d;
   }
 
-  ul, ol {
+  ul,
+  ol {
     padding-left: 16px;
   }
 
