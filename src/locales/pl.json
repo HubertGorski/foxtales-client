@@ -112,7 +112,7 @@
     "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań.",
     "publicQuestionsDescription": "Korzystaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację.",
     "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu.",
-    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty wybierając odpowiedź gracza o którym jest dane pytanie."
+    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie."
   },
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju."
