@@ -24,6 +24,17 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Story+Script&display=swap');
 
+  :fullscreen,
+  ::-webkit-full-screen,
+  :-ms-fullscreen {
+    height: 100vh;
+    height: 100dvh;
+    height: var(--real-vh, 100dvh);
+    width: 100vw;
+    width: 100dvw;
+    overscroll-behavior: none;
+  }
+
   * {
     user-select: none;
     scrollbar-width: thin;
@@ -39,10 +50,18 @@
   html,
   body {
     height: 100%;
+    height: 100dvh;
+    height: var(--real-vh, 100dvh);
     overscroll-behavior: none;
     margin: 0;
     overflow: hidden !important;
+    -webkit-tap-highlight-color: transparent;
     background-color: #d3b39d;
+  }
+
+  body {
+    position: fixed;
+    inset: 0;
   }
 
   ul,
@@ -68,6 +87,7 @@
   @media (min-width: 470px) {
     .foxTales {
       max-height: 95dvh;
+      border-radius: 12px;
     }
   }
 </style>
