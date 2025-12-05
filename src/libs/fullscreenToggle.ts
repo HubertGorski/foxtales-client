@@ -26,13 +26,16 @@ export function toggleFullscreen(): void {
   }
 }
 
-export function fixViewportHeight() {
-  const setVH = () => {
-    const vh = window.visualViewport?.height || window.innerHeight;
+export function setupViewportFix() {
+  const update = () => {
+    const vh = window.visualViewport?.height ?? window.innerHeight;
     document.documentElement.style.setProperty('--real-vh', `${vh}px`);
   };
 
-  setVH();
-  window.visualViewport?.addEventListener('resize', setVH);
-  window.visualViewport?.addEventListener('scroll', setVH);
+  update();
+
+  window.visualViewport?.addEventListener('resize', update);
+  window.visualViewport?.addEventListener('scroll', update);
+
+  document.addEventListener('focusout', () => setTimeout(update, 250));
 }
