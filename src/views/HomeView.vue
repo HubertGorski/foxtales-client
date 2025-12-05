@@ -3,7 +3,7 @@
   import { useRouter } from 'vue-router';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import { ICON } from '@/enums/iconsEnum';
-  import { fixViewportHeight, toggleFullscreen } from '@/libs/fullscreenToggle';
+  import { toggleFullscreen } from '@/libs/fullscreenToggle';
   import OrangeSwitchBtn from '@/components/OrangeSwitchBtn.vue';
   import { useI18n } from 'vue-i18n';
   import { LANG } from '@/enums/languagesEnum';
@@ -17,8 +17,6 @@
 
   const handleFullscreen = () => {
     toggleFullscreen();
-    fixViewportHeight();
-    setTimeout(() => window.scrollTo(0, 1), 150);
   };
 
   const btns = [
@@ -47,7 +45,7 @@
   <div class="homeView">
     <div>
       <p class="homeView_title">FOX TALES</p>
-      <p class="homeView_subtitle">Be as sly as a fox</p>
+      <p class="homeView_subtitle">Be as sly as a fox!</p>
     </div>
     <div class="homeView_btns">
       <HubBtn

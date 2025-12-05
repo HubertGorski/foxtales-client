@@ -2,6 +2,7 @@
   import { computed } from 'vue';
   import HubBtn from './HubBtn.vue';
   import { useI18n } from 'vue-i18n';
+  import { fixViewportHeight } from '@/libs/fullscreenToggle';
 
   const props = defineProps({
     btnText: {
@@ -71,6 +72,9 @@
     if (related && related.closest('[data-no-blur]')) {
       return;
     }
+
+    fixViewportHeight();
+    setTimeout(() => window.scrollTo(0, 1), 150);
 
     // Safari
     setTimeout(() => {
