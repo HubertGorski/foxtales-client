@@ -25,3 +25,14 @@ export function toggleFullscreen(): void {
     }
   }
 }
+
+export function fixViewportHeight() {
+  const setVH = () => {
+    const vh = window.visualViewport?.height || window.innerHeight;
+    document.documentElement.style.setProperty('--real-vh', `${vh}px`);
+  };
+
+  setVH();
+  window.visualViewport?.addEventListener('resize', setVH);
+  window.visualViewport?.addEventListener('scroll', setVH);
+}
