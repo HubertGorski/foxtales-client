@@ -2,7 +2,7 @@
   import { computed } from 'vue';
   import HubBtn from './HubBtn.vue';
   import { useI18n } from 'vue-i18n';
-  import { isFullscreen } from '@/libs/fullscreenToggle';
+  import { toggleFullscreen } from '@/libs/fullscreenToggle';
 
   const props = defineProps({
     btnText: {
@@ -73,17 +73,9 @@
       return;
     }
 
-    if (isFullscreen()) {
-      const el = document.documentElement;
-
-      if (el.requestFullscreen) {
-        el.requestFullscreen();
-      } else if ((el as any).webkitRequestFullscreen) {
-        (el as any).webkitRequestFullscreen();
-      } else if ((el as any).msRequestFullscreen) {
-        (el as any).msRequestFullscreen();
-      }
-    }
+    console.log('xd');
+    toggleFullscreen();
+    toggleFullscreen();
 
     // Safari
     setTimeout(() => {
