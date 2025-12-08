@@ -58,6 +58,10 @@
       type: Number,
       required: false,
     },
+    infinityPages: {
+      type: Boolean,
+      default: false,
+    },
   });
 
   const emit = defineEmits<{
@@ -92,14 +96,14 @@
   const previousPageBtn = computed(() => {
     return {
       icon: ICON.ARROW_LEFT,
-      disabled: currentPage.value === 1,
+      disabled: props.infinityPages ? false : currentPage.value === 1,
       action: () => setPreviousPage(),
     };
   });
   const nextPageBtn = computed(() => {
     return {
       icon: ICON.ARROW_RIGHT,
-      disabled: currentPage.value >= totalPages.value,
+      disabled: props.infinityPages ? false : currentPage.value >= totalPages.value,
       action: () => setNextPage(),
     };
   });
@@ -113,10 +117,20 @@
   );
 
   const setPreviousPage = () => {
+    if (currentPage.value === 1) {
+      currentPage.value = totalPages.value;
+      return;
+    }
+
     currentPage.value = currentPage.value - 1;
   };
 
   const setNextPage = () => {
+    if (currentPage.value === totalPages.value) {
+      currentPage.value = 1;
+      return;
+    }
+
     currentPage.value = currentPage.value + 1;
   };
 

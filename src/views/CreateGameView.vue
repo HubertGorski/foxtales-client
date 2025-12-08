@@ -86,6 +86,7 @@
           selectVisibleItems
           moveToSelectedItem
           minimalView
+          infinityPages
         />
         <SelectQuestionsPanel
           v-model:usePrivateQuestions="newGame.usePrivateQuestions"

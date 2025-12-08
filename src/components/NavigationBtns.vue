@@ -80,7 +80,7 @@
     {
       text: 'logout',
       isOrange: false,
-      action: () => router.push(ROUTE_PATH.HOME), // TODO: naprawic revoke tokenu
+      action: () => router.push(ROUTE_PATH.HOME),
     },
     {
       text: 'goToLogin',
