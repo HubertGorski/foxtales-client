@@ -210,4 +210,14 @@
       }
     }
   }
+
+  @media (max-width: 420px) {
+    .createGameView_card {
+      padding: 4px;
+    }
+    .creamCard {
+      padding-left: 4px !important;
+      padding-right: 4px !important;
+    }
+  }
 </style>

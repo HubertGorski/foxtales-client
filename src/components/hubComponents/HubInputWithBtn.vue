@@ -2,7 +2,6 @@
   import { computed } from 'vue';
   import HubBtn from './HubBtn.vue';
   import { useI18n } from 'vue-i18n';
-  import { toggleFullscreen } from '@/libs/fullscreenToggle';
 
   const props = defineProps({
     btnText: {
@@ -72,10 +71,6 @@
     if (related && related.closest('[data-no-blur]')) {
       return;
     }
-
-    console.log('xd');
-    toggleFullscreen();
-    toggleFullscreen();
 
     // Safari
     setTimeout(() => {
