@@ -211,11 +211,14 @@
     }
   }
 
-  @media (max-width: 420px) {
+  @media (max-width: 410px) {
     .createGameView_card {
       padding: 4px;
     }
-    .creamCard {
+  }
+
+  @media (max-width: 380px) {
+    .createGameView .creamCard {
       padding-left: 4px !important;
       padding-right: 4px !important;
     }
