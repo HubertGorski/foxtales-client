@@ -28,7 +28,9 @@
     <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
       <div class="hubSwitch_content">
         <span v-if="label">{{ $t(label) }}</span>
-        <v-icon v-if="withIcon">{{ ICON.INFO }}</v-icon>
+        <div class="iconContainer">
+          <v-icon v-if="withIcon">{{ ICON.INFO }}</v-icon>
+        </div>
       </div>
     </HubTooltip>
     <v-switch
@@ -55,13 +57,16 @@
       position: relative;
     }
 
-    .v-icon {
-      position: absolute;
-      top: 0;
-      margin: 2px;
-      font-size: 14px;
-      color: $lightGrayColor;
-      cursor: help;
+    .iconContainer {
+      display: inline;
+
+      .v-icon {
+        padding-bottom: 12px;
+        margin: 2px;
+        font-size: 12px;
+        color: $lightGrayColor;
+        cursor: help;
+      }
     }
   }
 </style>
