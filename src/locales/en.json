@@ -44,6 +44,7 @@
   "join": "Join",
   "skip": "Skip",
   "skipTimeLeft": "Skip ({skipTimeLeft})",
+  "questionHasBeenChanged": "Question has been changed ({skipTimeLeft})",
   "or": "or",
   "add": "Add",
   "ready": "Ready",
