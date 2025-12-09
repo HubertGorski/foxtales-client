@@ -93,6 +93,7 @@
         selectVisibleItems
         moveToSelectedItem
         minimalView
+        infinityPages
       />
     </div>
   </div>
