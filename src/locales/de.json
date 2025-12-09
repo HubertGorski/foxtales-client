@@ -44,6 +44,7 @@
   "join": "Beitreten",
   "skip": "Überspringen",
   "skipTimeLeft": "Überspringen ({skipTimeLeft})",
+  "questionHasBeenChanged": "Die Frage wurde geändert ({skipTimeLeft})",
   "or": "oder",
   "add": "Hinzufügen",
   "ready": "Bereit",

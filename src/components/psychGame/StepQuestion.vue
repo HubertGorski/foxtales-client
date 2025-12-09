@@ -24,18 +24,11 @@
 
   const answerText = ref<string>('');
   const isFoxVisible = ref<boolean>(true);
-  const skipTimeLeft = ref(0);
+  const skipTimeLeft = ref<number>(0);
 
   const skipRound = async () => {
     event?.preventDefault();
-    skipTimeLeft.value = 5;
     await signalRStore.skipRound();
-    const timer = setInterval(() => {
-      skipTimeLeft.value--;
-      if (skipTimeLeft.value <= 0) {
-        clearInterval(timer);
-      }
-    }, 1000);
   };
 
   const addAnswer = async () => {
@@ -54,8 +47,11 @@
   const isOwner = computed(() => game.value.owner.userId === userStore.user.userId);
 
   const addAnswerBtn = computed(() => ({
-    text: 'add',
+    text: skipTimeLeft.value
+      ? t('questionHasBeenChanged', { skipTimeLeft: skipTimeLeft.value })
+      : 'add',
     isOrange: true,
+    isDisabled: skipTimeLeft.value > 0,
     action: addAnswer,
   }));
 
@@ -85,6 +81,19 @@
       }
     },
     { immediate: true }
+  );
+
+  watch(
+    () => game.value?.currentQuestion,
+    () => {
+      skipTimeLeft.value = 5;
+      const timer = setInterval(() => {
+        skipTimeLeft.value--;
+        if (skipTimeLeft.value <= 0) {
+          clearInterval(timer);
+        }
+      }, 1000);
+    }
   );
 </script>
 
@@ -116,6 +125,7 @@
             :btnAction="addAnswerBtn.action"
             :btnText="addAnswerBtn.text"
             :btnIsOrange="addAnswerBtn.isOrange"
+            :btnIsDisabled="addAnswerBtn.isDisabled"
             :textareaRows="5"
             isTextarea
             @focus="isFoxVisible = false"
