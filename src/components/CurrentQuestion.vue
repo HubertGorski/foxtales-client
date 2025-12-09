@@ -33,9 +33,11 @@
     <img :src="fox" alt="Lisek" class="fox" />
     <img :src="getAvatar(avatarId)" alt="Lisek" class="foxAvatar" />
     <WhiteCard :header="username">
-      <div class="question">
-        {{ question }}
-      </div>
+      <transition name="fade" mode="out-in">
+        <div :key="question" class="question">
+          {{ question }}
+        </div>
+      </transition>
     </WhiteCard>
   </div>
 </template>

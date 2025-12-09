@@ -2,6 +2,7 @@
   import { computed, ref, toRef, watch } from 'vue';
   import HubInputWithBtn from '../hubComponents/HubInputWithBtn.vue';
   import HubImageWithText from '../hubComponents/HubImageWithText.vue';
+  import HubBtn from '../hubComponents/HubBtn.vue';
   import { useI18n } from 'vue-i18n';
   import HubDivider from '../hubComponents/HubDivider.vue';
   import { Game } from '@/models/Game';
@@ -9,6 +10,7 @@
   import { useUserStore } from '@/stores/userStore';
   import { Answer } from '@/models/Answer';
   import CurrentQuestion from '../CurrentQuestion.vue';
+  import { ICON } from '@/enums/iconsEnum';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
@@ -22,6 +24,19 @@
 
   const answerText = ref<string>('');
   const isFoxVisible = ref<boolean>(true);
+  const skipTimeLeft = ref(0);
+
+  const skipRound = async () => {
+    event?.preventDefault();
+    skipTimeLeft.value = 5;
+    await signalRStore.skipRound();
+    const timer = setInterval(() => {
+      skipTimeLeft.value--;
+      if (skipTimeLeft.value <= 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  };
 
   const addAnswer = async () => {
     isFoxVisible.value = true;
@@ -36,11 +51,23 @@
     userStore.user.isReady = true;
   };
 
+  const isOwner = computed(() => game.value.owner.userId === userStore.user.userId);
+
   const addAnswerBtn = computed(() => ({
     text: 'add',
     isOrange: true,
     action: addAnswer,
   }));
+
+  const skipBtn = computed(() => {
+    return {
+      text: skipTimeLeft.value ? t('skipTimeLeft', { skipTimeLeft: skipTimeLeft.value }) : 'skip',
+      isOrange: false,
+      action: skipRound,
+      disabled: game.value.readyUsersCount > 0 || skipTimeLeft.value > 0,
+      isVisible: isOwner.value,
+    };
+  });
 
   const waitingInfo = computed(
     () =>
@@ -67,12 +94,22 @@
     <div class="stepQuestion_gameSection">
       <transition name="fade" mode="out-in" appear>
         <div v-if="!userStore.user.isReady" key="stepAnswer">
-          <CurrentQuestion
-            :isFoxVisible="false"
-            :question="game.currentQuestion?.text ?? ''"
-            :avatarId="game.currentQuestion?.currentUser?.avatar.id ?? 0"
-            :username="game.currentQuestion?.currentUser?.username ?? ''"
-          />
+          <div class="question" :class="{ 'pb-4': isOwner }">
+            <CurrentQuestion
+              :isFoxVisible="isFoxVisible"
+              :question="game.currentQuestion?.text ?? ''"
+              :avatarId="game.currentQuestion?.currentUser?.avatar.id ?? 0"
+              :username="game.currentQuestion?.currentUser?.username ?? ''"
+            />
+            <HubBtn
+              v-if="skipBtn.isVisible"
+              :action="skipBtn.action"
+              :text="skipBtn.text"
+              :disabled="skipBtn.disabled"
+              :isOrange="skipBtn.isOrange"
+              :icon="ICON.MINI_ARROW_RIGHT"
+            />
+          </div>
           <HubInputWithBtn
             v-model="answerText"
             class="whiteCard input"
@@ -82,7 +119,7 @@
             :textareaRows="5"
             isTextarea
             @focus="isFoxVisible = false"
-            @blur="isFoxVisible = true"
+            @blur="isFoxVisible = false"
           />
         </div>
         <div v-else key="stepWaiting" class="stepWaiting">
@@ -109,6 +146,23 @@
       flex-direction: column;
       justify-content: center;
       padding: 12px;
+
+      .question {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+
+        .currentQuestion {
+          width: 100%;
+        }
+
+        .hubBtn {
+          max-width: fit-content;
+          padding: 4px 8px;
+          font-size: 12px;
+          margin: -4px 4px;
+        }
+      }
 
       .stepWaiting img {
         max-width: 100%;

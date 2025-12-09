@@ -89,7 +89,6 @@
 
     p {
       margin: 0;
-      margin-right: 8px;
     }
   }
 </style>

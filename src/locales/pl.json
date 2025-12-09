@@ -42,6 +42,8 @@
   "usersGame": "Gra użytkownika",
   "voteResults": "Wyniki głosowania",
   "join": "Dołącz",
+  "skip": "Pomiń",
+  "skipTimeLeft": "Pomiń ({skipTimeLeft})",
   "or": "lub",
   "add": "Dodaj",
   "ready": "Gotowy",

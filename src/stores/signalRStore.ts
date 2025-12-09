@@ -168,6 +168,14 @@ export const useSignalRStore = defineStore({
       await this.connection.invoke('StartGame', this.game.code);
     },
 
+    async skipRound() {
+      if (!this.connection || !this.game) {
+        return;
+      }
+
+      await this.connection.invoke('SkipRound', this.game.code);
+    },
+
     async addAnswer(answer: Answer) {
       if (!this.connection || !this.game) {
         return;

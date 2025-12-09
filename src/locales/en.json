@@ -42,6 +42,8 @@
   "usersGame": "User’s game",
   "voteResults": "Voting results",
   "join": "Join",
+  "skip": "Skip",
+  "skipTimeLeft": "Skip ({skipTimeLeft})",
   "or": "or",
   "add": "Add",
   "ready": "Ready",

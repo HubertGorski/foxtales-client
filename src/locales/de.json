@@ -42,6 +42,8 @@
   "usersGame": "Spiel des Benutzers",
   "voteResults": "Abstimmungsergebnisse",
   "join": "Beitreten",
+  "skip": "Überspringen",
+  "skipTimeLeft": "Überspringen ({skipTimeLeft})",
   "or": "oder",
   "add": "Hinzufügen",
   "ready": "Bereit",
