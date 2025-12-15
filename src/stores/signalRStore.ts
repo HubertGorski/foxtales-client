@@ -200,12 +200,17 @@ export const useSignalRStore = defineStore({
       await this.connection.invoke('SetNewRound', this.game.code);
     },
 
-    async chooseAnswer(playerId: number, selectedAnswerUserId: number) {
+    async chooseAnswer(playerId: number, selectedAnswerUserIds: number[]) {
       if (!this.connection || !this.game) {
         return;
       }
 
-      await this.connection.invoke('ChooseAnswer', this.game.code, playerId, selectedAnswerUserId);
+      await this.connection.invoke(
+        'ChooseAnswer',
+        this.game.code,
+        playerId,
+        selectedAnswerUserIds[0]
+      );
     },
   },
 });

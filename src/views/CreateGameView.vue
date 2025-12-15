@@ -12,10 +12,11 @@
   import type { Question } from '@/models/Question';
   import { useUserStore } from '@/stores/userStore';
   import WhiteSelectList from '@/components/selectLists/WhiteSelectList.vue';
-  import {
-    convertCatalogsToListElement,
-    type ListElement,
-  } from '@/components/selectLists/ListElement';
+  import { convertCatalogsToListElement, ListElement } from '@/components/selectLists/ListElement';
+  import { RULES } from '@/enums/rulesEnum';
+  import { useI18n } from 'vue-i18n';
+
+  const { t } = useI18n();
 
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
@@ -27,6 +28,21 @@
   const publicCatalogs = ref<ListElement[]>(
     userStore.publicCatalogs.map(convertCatalogsToListElement)
   );
+
+  const gameRules = ref<ListElement[]>([
+    new ListElement({
+      id: RULES.PSYCH,
+      title: t('lobby.usePsychRules'),
+    }),
+    new ListElement({
+      id: RULES.DIXIT,
+      title: t('lobby.useDixitRules'),
+    }),
+    // new ListElement({
+    //   id: RULES.QUIET_DAYS,
+    //   title: t('lobby.useQuietDaysRules'),
+    // }),
+  ]);
 
   if (!newGame.value.code) {
     router.push(ROUTE_PATH.MENU);
@@ -40,6 +56,7 @@
   const editRoom = async () => {
     newGame.value.selectedPublicCatalogId =
       publicCatalogs.value.find(catalog => catalog.isSelected)?.id ?? null;
+    newGame.value.currentRules = gameRules.value.find(catalog => catalog.isSelected)?.id as RULES;
 
     await signalRStore.editRoom(newGame.value);
     await signalRStore.addPrivateQuestionsToGame(userStore.user.userId, currentQuestions.value);
@@ -96,16 +113,22 @@
           v-model="newGame.isQuestionsFromAnotherGamesAllowed"
           label="lobby.isQuestionsFromAnotherGamesAllowed"
         />
+        <span class="chooseRules">{{ $t('chooseRulesGame') }}</span>
+        <WhiteSelectList
+          v-model="gameRules"
+          class="rulesGameList"
+          :itemsPerPage="1"
+          :selectItemId="newGame.currentRules"
+          showPagination
+          selectVisibleItems
+          moveToSelectedItem
+          minimalView
+          infinityPages
+        />
         <HubSwitch
           v-model="newGame.isPublic"
           label="lobby.gameVisibleOnList"
           tooltipText="tooltip.roomOnListDescription"
-          withIcon
-        />
-        <HubSwitch
-          v-model="newGame.useDixitRules"
-          label="lobby.useDixitRules"
-          tooltipText="tooltip.useDixitRules"
           withIcon
         />
         <div v-if="!newGame.isPublic" class="customCodeSection">
@@ -158,6 +181,15 @@
       width: 100%;
       position: relative;
       margin: 38px;
+
+      .chooseRules {
+        padding-top: 8px;
+        color: $grayColor;
+      }
+
+      .rulesGameList {
+        font-size: 14px;
+      }
 
       .fox {
         position: absolute;

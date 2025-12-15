@@ -1,7 +1,9 @@
 import { Type } from 'class-transformer';
+import { IsEnum } from 'class-validator';
 import { FoxGame } from './FoxGame';
 import { User } from './User';
 import { Question } from './Question';
+import { RULES } from '@/enums/rulesEnum';
 
 export class Game {
   @Type(() => String)
@@ -16,8 +18,8 @@ export class Game {
   @Type(() => Boolean)
   isPublic: boolean;
 
-  @Type(() => Boolean)
-  useDixitRules: boolean;
+  @IsEnum(RULES)
+  currentRules: RULES;
 
   @Type(() => User)
   users: User[];
@@ -67,7 +69,7 @@ export class Game {
     currentQuestion = null,
     isGameStarted = false,
     hasGameEnded = false,
-    useDixitRules = false,
+    currentRules = RULES.PSYCH,
     selectedPublicCatalogId = null
   ) {
     this.code = code;
@@ -84,7 +86,7 @@ export class Game {
     this.currentQuestion = currentQuestion;
     this.isGameStarted = isGameStarted;
     this.hasGameEnded = hasGameEnded;
-    this.useDixitRules = useDixitRules;
+    this.currentRules = currentRules;
     this.selectedPublicCatalogId = selectedPublicCatalogId;
   }
 
