@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref, toRef, watch } from 'vue';
+  import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue';
   import UserListElement from '../UserListElement.vue';
   import HubBtn from '../hubComponents/HubBtn.vue';
   import HubDivider from '../hubComponents/HubDivider.vue';
@@ -27,12 +27,32 @@
   const selectedAnswerUserIds = ref<number[]>([]);
   const isUserReady = ref<boolean>(false);
   const currentStep = ref<number>(0);
+  const timeLeft = ref(0);
+  let timerId: number = 0;
   const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
 
   const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
   const isSubjectPlayer = computed(
     () => userStore.user.userId === game.value.currentQuestion?.currentUser?.userId
   );
+
+  onMounted(() => {
+    if (isQuietDaysMode.value) {
+      timeLeft.value = 5;
+    }
+
+    timerId = setInterval(() => {
+      timeLeft.value--;
+
+      if (timeLeft.value <= 0) {
+        clearInterval(timerId);
+      }
+    }, 1000);
+  });
+
+  onUnmounted(() => {
+    clearInterval(timerId);
+  });
 
   const activeUser = computed(
     () => game.value.users.find(u => u.userId === userStore.user.userId)!
@@ -118,14 +138,21 @@
   const confirmBtn = computed(() => {
     return {
       text:
-        isQuietDaysMode.value && !isSubjectPlayer.value
-          ? 'next'
-          : isUserReady.value
-            ? 'accepted'
-            : 'accept',
+        timeLeft.value && isSubjectPlayer.value && isQuietDaysMode.value
+          ? `${t('chooseCorrectAnswers')} (${timeLeft.value})`
+          : isQuietDaysMode.value && !isSubjectPlayer.value
+            ? isUserReady.value
+              ? 'lobby.waitingForPlayers'
+              : 'checkResults'
+            : isUserReady.value
+              ? 'accepted'
+              : 'accept',
       isOrange: true,
       action: confirmSelectedAnswer,
-      disabled: !selectedAnswerUserIds.value || isUserReady.value,
+      disabled:
+        (!selectedAnswerUserIds.value.length && !isQuietDaysMode.value) ||
+        isUserReady.value ||
+        (timeLeft.value > 0 && isSubjectPlayer.value && isQuietDaysMode.value),
     };
   });
 
@@ -198,14 +225,8 @@
         :showPointInfo="false"
       /> TODO: dodac timer -->
       <HubTooltip
-        :tooltipText="
-          isQuietDaysMode && !isSubjectPlayer
-            ? $t('lobby.waitingForPlayers')
-            : isUserReady
-              ? $t('isAnswerPicked')
-              : $t('selectFavAnswer')
-        "
-        :tooltipDisabled="!confirmBtn.disabled"
+        :tooltipText="isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
+        :tooltipDisabled="!confirmBtn.disabled || isQuietDaysMode"
       >
         <HubBtn
           :action="confirmBtn.action"
