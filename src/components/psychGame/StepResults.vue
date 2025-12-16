@@ -7,11 +7,13 @@
   import HubBtn from '../hubComponents/HubBtn.vue';
   import UserListElement from '../UserListElement.vue';
   import { getAvatar } from '@/utils/imgUtils';
+  import { RULES } from '@/enums/rulesEnum';
 
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
 
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
+  const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
 
   const votersForHisAnswerString = computed<string>(() => {
     const currentUser = game.value.users.find(user => user.userId === userStore.user.userId);
@@ -56,7 +58,7 @@
           :isSelected="user.isReady"
         />
       </div>
-      <div class="votersForHisAnswer">
+      <div v-if="!isQuietDaysMode" class="votersForHisAnswer">
         <img src="@/assets/imgs/fox13.webp" alt="Lisek" />
         <div class="whiteCard voters">
           <div class="title">

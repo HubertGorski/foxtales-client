@@ -85,7 +85,11 @@
 
   watch(
     () => game.value?.currentQuestion,
-    () => {
+    (newQuestion, oldQuestion) => {
+      if (newQuestion?.id === oldQuestion?.id) {
+        return;
+      }
+
       skipTimeLeft.value = 5;
       const timer = setInterval(() => {
         skipTimeLeft.value--;

@@ -12,6 +12,7 @@
   import { getAvatar, getUnknownAvatar } from '@/utils/imgUtils';
   import CurrentQuestion from '../CurrentQuestion.vue';
   import HubTooltip from '../hubComponents/HubTooltip.vue';
+  import { RULES } from '@/enums/rulesEnum';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
@@ -23,17 +24,26 @@
 
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
-  const selectedAnswerUserId = ref<number | null>(null);
+  const selectedAnswerUserIds = ref<number[]>([]);
   const isUserReady = ref<boolean>(false);
   const currentStep = ref<number>(0);
   const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
 
+  const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
+  const isSubjectPlayer = computed(
+    () => userStore.user.userId === game.value.currentQuestion?.currentUser?.userId
+  );
+
+  const activeUser = computed(
+    () => game.value.users.find(u => u.userId === userStore.user.userId)!
+  );
+
   const confirmSelectedAnswer = () => {
-    if (!selectedAnswerUserId.value) {
+    if (!selectedAnswerUserIds.value.length && !isQuietDaysMode.value) {
       return;
     }
 
-    signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserId.value);
+    signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserIds.value);
     isUserReady.value = true;
   };
 
@@ -42,23 +52,80 @@
       return;
     }
 
-    selectedAnswerUserId.value = userId;
+    if (isQuietDaysMode.value && userStore.user.userId === userId) {
+      return;
+    }
+
+    if (isQuietDaysMode.value && !isSubjectPlayer.value) {
+      return;
+    }
+
+    if (isSelected(userId)) {
+      selectedAnswerUserIds.value = selectedAnswerUserIds.value.filter(id => id !== userId);
+    } else {
+      if (selectedAnswerUserIds.value.length && !isQuietDaysMode.value) {
+        selectedAnswerUserIds.value = [];
+      }
+
+      selectedAnswerUserIds.value.push(userId);
+    }
+  };
+
+  const isSelected = (userId: number): boolean => {
+    return selectedAnswerUserIds.value.includes(userId);
+  };
+
+  const getLabel = (user: User): string => {
+    if (!user.answer) {
+      return '';
+    }
+
+    if (!isQuietDaysMode.value) {
+      return currentStep.value ? `${t('votersCount')} ${user.answer.votersCount}` : '';
+    }
+
+    return currentStep.value &&
+      (user.answer.votersCount > 0 ||
+        user.userId === game.value.currentQuestion?.currentUser?.userId)
+      ? `${t('correctAnswer')}`
+      : '';
   };
 
   const chooseAnswerText = computed(() => {
-    if (currentStep.value === 0) {
+    if (currentStep.value !== 0) {
+      return isQuietDaysMode.value ? t('results') : t('voteResults');
+    }
+
+    if (!isQuietDaysMode.value) {
       return isUserReady.value ? t('waitForVotes') : t('chooseAnswer');
     }
 
-    return t('voteResults');
+    if (isSubjectPlayer.value) {
+      return isUserReady.value ? t('lobby.waitingForPlayers') : t('chooseCorrectAnswers');
+    }
+
+    return isUserReady.value ? t('lobby.waitingForPlayers') : t('moveOn');
+  });
+
+  const userList = computed(() => {
+    if (!isQuietDaysMode.value || !isSubjectPlayer.value) {
+      return shuffledUsers.value;
+    }
+
+    return shuffledUsers.value.filter(u => u.userId !== userStore.user.userId);
   });
 
   const confirmBtn = computed(() => {
     return {
-      text: isUserReady.value ? 'accepted' : 'accept',
+      text:
+        isQuietDaysMode.value && !isSubjectPlayer.value
+          ? 'next'
+          : isUserReady.value
+            ? 'accepted'
+            : 'accept',
       isOrange: true,
       action: confirmSelectedAnswer,
-      disabled: !selectedAnswerUserId.value || isUserReady.value,
+      disabled: !selectedAnswerUserIds.value || isUserReady.value,
     };
   });
 
@@ -102,12 +169,22 @@
     </div>
     <div class="answers">
       <UserListElement
-        v-for="user in shuffledUsers"
+        v-if="isQuietDaysMode && isSubjectPlayer"
+        :text="activeUser.answer?.answer ?? ''"
+        :avatarLabel="$t('you')"
+        :label="currentStep ? `${$t('correctAnswer')}` : ''"
+        :imgSource="getAvatar(activeUser.avatar.id)"
+        isSelected
+        isSelectedBold
+        @click="selectAnswer(activeUser.userId)"
+      />
+      <UserListElement
+        v-for="user in userList"
         :key="user.userId"
         :text="user.answer?.answer ?? ''"
         :avatarLabel="currentStep ? user.username : ''"
-        :label="currentStep ? `${$t('votersCount')} ${user.answer?.votersCount}` : ''"
-        :isSelected="selectedAnswerUserId === user.userId"
+        :label="getLabel(user)"
+        :isSelected="isSelected(user.userId)"
         :imgSource="currentStep ? getAvatar(user.avatar.id) : getUnknownAvatar()"
         isSelectedBold
         @click="selectAnswer(user.userId)"
@@ -121,7 +198,13 @@
         :showPointInfo="false"
       /> TODO: dodac timer -->
       <HubTooltip
-        :tooltipText="isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
+        :tooltipText="
+          isQuietDaysMode && !isSubjectPlayer
+            ? $t('lobby.waitingForPlayers')
+            : isUserReady
+              ? $t('isAnswerPicked')
+              : $t('selectFavAnswer')
+        "
         :tooltipDisabled="!confirmBtn.disabled"
       >
         <HubBtn
