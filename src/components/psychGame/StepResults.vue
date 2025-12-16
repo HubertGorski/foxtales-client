@@ -31,7 +31,7 @@
 
   const nextPageBtn = computed(() => {
     return {
-      text: 'ready',
+      text: userStore.user.isReady ? 'lobby.waitingForPlayers' : 'ready',
       isOrange: true,
       action: startNextRound,
       disabled: userStore.user.isReady,
