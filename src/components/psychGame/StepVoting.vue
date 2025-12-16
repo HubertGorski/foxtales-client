@@ -75,12 +75,36 @@
     return selectedAnswerUserIds.value.includes(userId);
   };
 
+  const getLabel = (user: User): string => {
+    if (!user.answer) {
+      return '';
+    }
+
+    if (!isQuietDaysMode.value) {
+      return currentStep.value ? `${t('votersCount')} ${user.answer.votersCount}` : '';
+    }
+
+    return currentStep.value &&
+      (user.answer.votersCount > 0 ||
+        user.userId === game.value.currentQuestion?.currentUser?.userId)
+      ? `${t('correctAnswer')}`
+      : '';
+  };
+
   const chooseAnswerText = computed(() => {
-    if (currentStep.value === 0) {
+    if (currentStep.value !== 0) {
+      return isQuietDaysMode.value ? t('results') : t('voteResults');
+    }
+
+    if (!isQuietDaysMode.value) {
       return isUserReady.value ? t('waitForVotes') : t('chooseAnswer');
     }
 
-    return t('voteResults');
+    if (isSubjectPlayer.value) {
+      return isUserReady.value ? t('lobby.waitingForPlayers') : t('chooseCorrectAnswers');
+    }
+
+    return isUserReady.value ? t('lobby.waitingForPlayers') : t('moveOn');
   });
 
   const userList = computed(() => {
@@ -148,9 +172,10 @@
         v-if="isQuietDaysMode && isSubjectPlayer"
         :text="activeUser.answer?.answer ?? ''"
         :avatarLabel="$t('you')"
-        :label="currentStep ? `${$t('votersCount')} ${activeUser.answer?.votersCount}` : ''"
+        :label="currentStep ? `${$t('correctAnswer')}` : ''"
         :imgSource="getAvatar(activeUser.avatar.id)"
         isSelected
+        isSelectedBold
         @click="selectAnswer(activeUser.userId)"
       />
       <UserListElement
@@ -158,7 +183,7 @@
         :key="user.userId"
         :text="user.answer?.answer ?? ''"
         :avatarLabel="currentStep ? user.username : ''"
-        :label="currentStep ? `${$t('votersCount')} ${user.answer?.votersCount}` : ''"
+        :label="getLabel(user)"
         :isSelected="isSelected(user.userId)"
         :imgSource="currentStep ? getAvatar(user.avatar.id) : getUnknownAvatar()"
         isSelectedBold
@@ -175,7 +200,7 @@
       <HubTooltip
         :tooltipText="
           isQuietDaysMode && !isSubjectPlayer
-            ? $t('waitingQuietMode')
+            ? $t('lobby.waitingForPlayers')
             : isUserReady
               ? $t('isAnswerPicked')
               : $t('selectFavAnswer')

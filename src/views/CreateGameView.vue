@@ -38,10 +38,10 @@
       id: RULES.DIXIT,
       title: t('lobby.useDixitRules'),
     }),
-    // new ListElement({
-    //   id: RULES.QUIET_DAYS,
-    //   title: t('lobby.useQuietDaysRules'),
-    // }),
+    new ListElement({
+      id: RULES.QUIET_DAYS,
+      title: t('lobby.useQuietDaysRules'),
+    }),
   ]);
 
   if (!newGame.value.code) {

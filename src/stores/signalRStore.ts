@@ -205,12 +205,7 @@ export const useSignalRStore = defineStore({
         return;
       }
 
-      await this.connection.invoke(
-        'ChooseAnswer',
-        this.game.code,
-        playerId,
-        selectedAnswerUserIds[0]
-      );
+      await this.connection.invoke('ChooseAnswer', this.game.code, playerId, selectedAnswerUserIds);
     },
   },
 });
