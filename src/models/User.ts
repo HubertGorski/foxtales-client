@@ -71,6 +71,7 @@ export class User {
   correctAnswersInDylematyCount: number = 0;
 
   // In game
+  teamId: number | null = null;
   isReady: boolean = false;
   pointsInGame: number = 0;
   round: number = 1;
@@ -86,7 +87,7 @@ export class User {
   @Type(() => Answer)
   answer: Answer | null = null;
 
-  @Type(() => User)
+  @Type(() => Number)
   votersIdsForHisAnswer: number[] = [];
 
   @Type(() => Vote)
