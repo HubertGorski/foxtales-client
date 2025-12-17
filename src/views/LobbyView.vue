@@ -18,6 +18,8 @@
   import type { Question } from '@/models/Question';
   import HubCounterWithTitle from '@/components/hubComponents/HubCounterWithTitle.vue';
   import { getAvatar } from '@/utils/imgUtils';
+  import { RULES } from '@/enums/rulesEnum';
+  import type { User } from '@/models/User';
 
   const router = useRouter();
   const signalRStore = useSignalRStore();
@@ -28,6 +30,7 @@
 
   const usePrivateQuestions = ref<boolean>(false);
   const showSettingsPanel = ref<boolean>(false);
+  const showTeamsPanel = ref<boolean>(false);
   const currentQuestions = ref<Question[]>([]);
 
   const leaveRoom = async () => {
@@ -37,6 +40,38 @@
 
   const goToSettings = async () => {
     router.push(ROUTE_PATH.CREATE_GAME_PSYCH);
+  };
+
+  const arrowLeftClicked = (user: User) => {
+    if (!user.teamId) {
+      user.teamId = game.value.users.length;
+      signalRStore.setTeam(user.userId, user.teamId);
+      return;
+    }
+
+    user.teamId--;
+
+    if (user.teamId === 0) {
+      user.teamId = null;
+    }
+
+    signalRStore.setTeam(user.userId, user.teamId);
+  };
+
+  const arrowRightClicked = (user: User) => {
+    if (!user.teamId) {
+      user.teamId = 1;
+      signalRStore.setTeam(user.userId, user.teamId);
+      return;
+    }
+
+    user.teamId++;
+
+    if (user.teamId === game.value.users.length + 1) {
+      user.teamId = null;
+    }
+
+    signalRStore.setTeam(user.userId, user.teamId);
   };
 
   const goToGame = async () => {
@@ -169,6 +204,12 @@
           :action="() => (showSettingsPanel = true)"
           :icon="ICON.ADD_TO_COLLECTION"
         />
+        <HubBtn
+          v-if="isOwner && game.currentRules == RULES.QUIET_DAYS"
+          class="settingsBtn"
+          :action="() => (showTeamsPanel = true)"
+          :icon="ICON.ADD_TO_COLLECTION"
+        />
       </div>
       <NavigationBtns
         :btn="optionBtn.text"
@@ -191,10 +232,25 @@
         <HubBtn class="settings_btn" text="accept" :action="addPrivateQuestionsToGame" />
       </div>
     </HubPopup>
+    <HubPopup v-model="showTeamsPanel">
+      <div class="settings creamCard">
+        <span class="settings_title">{{ $t('teamsSettings') }}</span>
+        <UserListElement
+          v-for="user in game.users"
+          :key="user.userId"
+          :imgSource="getAvatar(user.avatar.id)"
+          :text="user.username"
+          :label="user.teamId ? `${t('team')} ${user.teamId}` : t('noTeam')"
+          showArrowsLabel
+          @arrowLeftClicked="arrowLeftClicked(user)"
+          @arrowRightClicked="arrowRightClicked(user)"
+        />
+      </div>
+    </HubPopup>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import '@/assets/styles/variables';
   .lobbyView {
     background: $mainBackground;
@@ -207,6 +263,13 @@
 
     .settings {
       padding: 12px;
+      min-width: 360px;
+      max-height: 90vh;
+      overflow-y: scroll;
+
+      .userListElement_text {
+        background-color: white;
+      }
 
       &_title {
         font-weight: 600;

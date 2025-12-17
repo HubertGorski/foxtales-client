@@ -1,5 +1,7 @@
 <script setup lang="ts">
+  import { ICON } from '@/enums/iconsEnum';
   import HubTooltip from './hubComponents/HubTooltip.vue';
+  import HubBtn from './hubComponents/HubBtn.vue';
 
   const {
     imgSource,
@@ -9,6 +11,7 @@
     label = '',
     avatarLabel = '',
     tooltipText = '',
+    showArrowsLabel = false,
   } = defineProps<{
     imgSource: string;
     isSelected?: boolean;
@@ -17,7 +20,21 @@
     label?: string;
     avatarLabel?: string;
     tooltipText?: string;
+    showArrowsLabel?: boolean;
   }>();
+
+  const emit = defineEmits<{
+    (e: 'arrowLeftClicked'): void;
+    (e: 'arrowRightClicked'): void;
+  }>();
+
+  const arrowLeftClicked = () => {
+    emit('arrowLeftClicked');
+  };
+
+  const arrowRightClicked = () => {
+    emit('arrowRightClicked');
+  };
 </script>
 
 <template>
@@ -42,7 +59,12 @@
             {{ avatarLabel }}
           </div>
         </div>
-        <div v-if="label" class="whiteCard label">{{ label }}</div>
+        <div v-if="label && !showArrowsLabel" class="whiteCard label">{{ label }}</div>
+        <div v-if="label && showArrowsLabel" class="labelContainer">
+          <HubBtn :icon="ICON.ARROW_LEFT" :action="arrowLeftClicked" />
+          <div class="whiteCard label">{{ label }}</div>
+          <HubBtn :icon="ICON.ARROW_RIGHT" :action="arrowRightClicked" />
+        </div>
       </div>
     </div>
   </div>
@@ -110,6 +132,27 @@
         font-style: italic;
         color: $lightGrayColor;
         text-align: center;
+      }
+
+      .labelContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 100%;
+
+        .label {
+          font-size: 16px;
+          padding: 2px 0;
+          border-radius: 8px;
+          font-style: normal;
+          flex-grow: 1;
+        }
+
+        .hubBtn {
+          padding: 4px;
+          margin: 4px;
+          max-width: 32px;
+        }
       }
 
       .avatarLabel {
