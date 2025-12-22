@@ -3,7 +3,7 @@
   import { useRouter } from 'vue-router';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import { ICON } from '@/enums/iconsEnum';
-  import { setupViewportFix, toggleFullscreen } from '@/libs/fullscreenToggle';
+  import { toggleFullscreen } from '@/libs/fullscreenToggle';
   import OrangeSwitchBtn from '@/components/OrangeSwitchBtn.vue';
   import { useI18n } from 'vue-i18n';
   import { LANG } from '@/enums/languagesEnum';
@@ -16,11 +16,8 @@
   };
 
   const handleFullscreen = () => {
+    // TODO: przemyslec sprawe znikajacych przyciskow
     toggleFullscreen();
-    setTimeout(() => {
-      setupViewportFix();
-      window.scrollTo(0, 1);
-    }, 150);
   };
 
   const btns = [
@@ -68,6 +65,7 @@
         iconSize="34"
       />
       <OrangeSwitchBtn
+        v-if="false"
         :action="handleFullscreen"
         :iconOff="ICON.FULLSCREEN_OFF"
         :iconOn="ICON.FULLSCREEN_ON"
