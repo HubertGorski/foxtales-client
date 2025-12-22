@@ -30,7 +30,7 @@ export const useSignalRStore = defineStore({
 
   actions: {
     async ensureConnected() {
-      if (!this.connection) {
+      if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
         await this.connect();
       }
 
@@ -53,7 +53,7 @@ export const useSignalRStore = defineStore({
     },
 
     async connect() {
-      if (this.connection) {
+      if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
         return;
       }
 
