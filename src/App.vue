@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import { RouterView } from 'vue-router';
-  import { useDynamicHeight } from './libs/useDynamicHeight';
+  // import { useDynamicHeight } from './libs/useDynamicHeight';
   // import { useKeyboardScrollControl } from './libs/useKeyboardScrollControl';
   import { useOrientation } from './libs/useOrientation';
   import OrientationOverlay from './components/OrientationOverlay.vue';
   import { useDevice } from './libs/useDevice';
 
-  useDynamicHeight('#app');
-  useDynamicHeight('.foxTales');
+  // useDynamicHeight('#app');
+  // useDynamicHeight('.foxTales');
   useDevice();
   // useKeyboardScrollControl();
 
@@ -63,12 +63,14 @@
     align-items: center;
     overflow: hidden;
     overscroll-behavior: none;
+    height: 100%;
   }
 
   .foxTales {
     margin: 0 auto;
     width: 440px;
     max-width: 440px;
+    height: 100%;
     overflow: auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }

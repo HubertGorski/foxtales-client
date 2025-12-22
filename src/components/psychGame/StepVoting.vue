@@ -58,12 +58,12 @@
     () => game.value.users.find(u => u.userId === userStore.user.userId)!
   );
 
-  const confirmSelectedAnswer = () => {
+  const confirmSelectedAnswer = async () => {
     if (!selectedAnswerUserIds.value.length && !isQuietDaysMode.value) {
       return;
     }
 
-    signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserIds.value);
+    await signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserIds.value);
     isUserReady.value = true;
   };
 

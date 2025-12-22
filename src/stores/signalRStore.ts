@@ -29,10 +29,20 @@ export const useSignalRStore = defineStore({
   getters: {},
 
   actions: {
+    async ensureConnected() {
+      if (!this.connection) {
+        await this.connect();
+      }
+
+      if (!this.connection) {
+        throw new Error('Connection not created');
+      }
+    },
+
     async disconnect() {
       if (this.connection) {
         try {
-          await this.connection.stop();
+          await this.connection?.stop();
         } catch (e) {
           console.error('Error while stopping connection:', e);
         }
@@ -55,7 +65,7 @@ export const useSignalRStore = defineStore({
         .configureLogging(signalR.LogLevel.Warning)
         .build();
 
-      this.connection.on('PlayerLeft', (playerId: number) => {
+      this.connection?.on('PlayerLeft', (playerId: number) => {
         if (!this.game) {
           return;
         }
@@ -63,15 +73,15 @@ export const useSignalRStore = defineStore({
         this.game.users = this.game.users.filter((p: User) => p.userId !== playerId);
       });
 
-      this.connection.on('RoomClosed', () => {
+      this.connection?.on('RoomClosed', () => {
         this.game = null;
       });
 
-      this.connection.on('LoadRoom', (game: Game) => {
+      this.connection?.on('LoadRoom', (game: Game) => {
         this.game = plainToInstance(Game, game);
       });
 
-      this.connection.on('ReceiveError', error => {
+      this.connection?.on('ReceiveError', error => {
         if (error.fieldId === 'code') {
           this.errorCode = error.message;
         } else {
@@ -79,11 +89,11 @@ export const useSignalRStore = defineStore({
         }
       });
 
-      this.connection.on('GetPublicRooms', (games: Game[]) => {
+      this.connection?.on('GetPublicRooms', (games: Game[]) => {
         this.publicGames = plainToInstance(Game, games);
       });
 
-      await this.connection.start();
+      await this.connection?.start();
     },
 
     async joinRoom(
@@ -92,11 +102,8 @@ export const useSignalRStore = defineStore({
       password: string,
       ownerId: number | null = null
     ) {
-      if (!this.connection) {
-        return;
-      }
-
-      await this.connection.invoke(
+      await this.ensureConnected();
+      await this.connection?.invoke(
         'JoinRoom',
         gameCode,
         instanceToPlain(player),
@@ -106,61 +113,56 @@ export const useSignalRStore = defineStore({
     },
 
     async createRoom(game: Game) {
-      if (!this.connection) {
-        return;
-      }
-
+      await this.ensureConnected();
       this.game = game;
-      await this.connection.invoke('CreateRoom', instanceToPlain(this.game));
+      await this.connection?.invoke('CreateRoom', instanceToPlain(this.game));
     },
 
     async goToJoinGameView() {
-      if (!this.connection) {
-        return;
-      }
-
-      await this.connection.invoke('GoToJoinGameView');
+      await this.ensureConnected();
+      await this.connection?.invoke('GoToJoinGameView');
     },
 
     async editRoom(game: Game) {
-      if (!this.connection) {
-        return;
-      }
-
+      await this.ensureConnected();
       this.game = game;
-      await this.connection.invoke('EditRoom', instanceToPlain(game));
+      await this.connection?.invoke('EditRoom', instanceToPlain(game));
     },
 
     async setTeam(playerId: number, teamId: number | null) {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('SetTeam', this.game.code, playerId, teamId);
+      await this.connection?.invoke('SetTeam', this.game.code, playerId, teamId);
     },
 
     async setStatus(playerId: number, status: boolean) {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('SetStatus', this.game.code, playerId, status);
+      await this.connection?.invoke('SetStatus', this.game.code, playerId, status);
     },
 
     async leaveRoom(playerId: number) {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('LeaveRoom', this.game.code, playerId);
+      await this.connection?.invoke('LeaveRoom', this.game.code, playerId);
     },
 
     async addPrivateQuestionsToGame(playerId: number, questions: Question[]) {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke(
+      await this.connection?.invoke(
         'AddPrivateQuestionsToGame',
         this.game.code,
         playerId,
@@ -169,51 +171,62 @@ export const useSignalRStore = defineStore({
     },
 
     async startGame() {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('StartGame', this.game.code);
+      await this.connection?.invoke('StartGame', this.game.code);
     },
 
     async skipRound() {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('SkipRound', this.game.code);
+      await this.connection?.invoke('SkipRound', this.game.code);
     },
 
     async addAnswer(answer: Answer) {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('AddAnswer', this.game.code, instanceToPlain(answer));
+      await this.connection?.invoke('AddAnswer', this.game.code, instanceToPlain(answer));
     },
 
     async markAllUsersUnready() {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('MarkAllUsersUnready', this.game.code);
+      await this.connection?.invoke('MarkAllUsersUnready', this.game.code);
     },
 
     async setNewRound(playerId: number) {
-      if (!this.connection || !this.game || this.game.owner.userId !== playerId) {
+      await this.ensureConnected();
+      if (!this.game || this.game.owner.userId !== playerId) {
         return;
       }
 
-      await this.connection.invoke('SetNewRound', this.game.code);
+      await this.connection?.invoke('SetNewRound', this.game.code);
     },
 
     async chooseAnswer(playerId: number, selectedAnswerUserIds: number[]) {
-      if (!this.connection || !this.game) {
+      await this.ensureConnected();
+      if (!this.game) {
         return;
       }
 
-      await this.connection.invoke('ChooseAnswer', this.game.code, playerId, selectedAnswerUserIds);
+      await this.connection?.invoke(
+        'ChooseAnswer',
+        this.game.code,
+        playerId,
+        selectedAnswerUserIds
+      );
     },
   },
 });
