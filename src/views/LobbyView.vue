@@ -42,10 +42,10 @@
     router.push(ROUTE_PATH.CREATE_GAME_PSYCH);
   };
 
-  const arrowLeftClicked = (user: User) => {
+  const arrowLeftClicked = async (user: User) => {
     if (!user.teamId) {
       user.teamId = game.value.users.length;
-      signalRStore.setTeam(user.userId, user.teamId);
+      await signalRStore.setTeam(user.userId, user.teamId);
       return;
     }
 
@@ -55,13 +55,13 @@
       user.teamId = null;
     }
 
-    signalRStore.setTeam(user.userId, user.teamId);
+    await signalRStore.setTeam(user.userId, user.teamId);
   };
 
-  const arrowRightClicked = (user: User) => {
+  const arrowRightClicked = async (user: User) => {
     if (!user.teamId) {
       user.teamId = 1;
-      signalRStore.setTeam(user.userId, user.teamId);
+      await signalRStore.setTeam(user.userId, user.teamId);
       return;
     }
 
@@ -71,7 +71,7 @@
       user.teamId = null;
     }
 
-    signalRStore.setTeam(user.userId, user.teamId);
+    await signalRStore.setTeam(user.userId, user.teamId);
   };
 
   const goToGame = async () => {

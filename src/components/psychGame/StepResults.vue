@@ -38,9 +38,9 @@
     };
   });
 
-  const startNextRound = () => {
+  const startNextRound = async () => {
+    await signalRStore.setStatus(userStore.user.userId, true);
     userStore.user.isReady = true;
-    signalRStore.setStatus(userStore.user.userId, true);
   };
 </script>
 

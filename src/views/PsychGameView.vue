@@ -61,7 +61,7 @@
 
   watch(
     game,
-    (game: Game | null) => {
+    async (game: Game | null) => {
       if (game == null || game.code == null) {
         router.push({
           path: ROUTE_PATH.NO_ACCESS,
@@ -80,7 +80,7 @@
       }
 
       if (game?.owner.userId === userStore.user.userId && currentStep.value != 2) {
-        signalRStore.markAllUsersUnready();
+        await signalRStore.markAllUsersUnready();
       }
 
       if (currentStep.value == 2) {
