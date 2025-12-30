@@ -49,7 +49,11 @@
   }
 
   const leaveRoom = async () => {
-    await signalRStore.leaveRoom(userStore.user.userId);
+    const success = await signalRStore.leaveRoom(userStore.user.userId);
+    if (!success) {
+      return;
+    }
+
     router.push(ROUTE_PATH.MENU);
   };
 
@@ -58,8 +62,18 @@
       publicCatalogs.value.find(catalog => catalog.isSelected)?.id ?? null;
     newGame.value.currentRules = gameRules.value.find(catalog => catalog.isSelected)?.id as RULES;
 
-    await signalRStore.editRoom(newGame.value);
-    await signalRStore.addPrivateQuestionsToGame(userStore.user.userId, currentQuestions.value);
+    let success = await signalRStore.editRoom(newGame.value);
+    if (!success) {
+      return;
+    }
+
+    success = await signalRStore.addPrivateQuestionsToGame(
+      userStore.user.userId,
+      currentQuestions.value
+    );
+    if (!success) {
+      return;
+    }
 
     router.push(ROUTE_PATH.LOBBY);
   };

@@ -1,17 +1,52 @@
 import { defineStore } from 'pinia';
 import { User } from '@/models/User';
 import { BASE_URL_PSYCH } from '@/api/Client';
-import * as signalR from '@microsoft/signalr';
 import { Game } from '@/models/Game';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import type { Question } from '@/models/Question';
 import type { Answer } from '@/models/Answer';
 import { useUserStore } from './userStore';
+import {
+  HubConnectionBuilder,
+  LogLevel,
+  HubConnection,
+  HubConnectionState,
+} from '@microsoft/signalr';
+
+async function safeSignalRInvoke<T>(
+  connection: HubConnection | null,
+  methodName: string,
+  ...args: any[]
+): Promise<{ data?: T; error?: string }> {
+  try {
+    if (!connection) {
+      return { error: 'Brak połączenia z serwerem. Łączenie ponownie...' };
+    }
+
+    if (connection.state !== HubConnectionState.Connected) {
+      await connection.start();
+    }
+
+    const result = await connection.invoke<T>(methodName, ...args);
+    return { data: result };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    if (message.includes('No connection')) {
+      return { error: 'Brak połączenia z serwerem' };
+    }
+    if (message.includes('timeout')) {
+      return { error: 'Przekroczono czas oczekiwania na odpowiedź serwera' };
+    }
+
+    return { error: message };
+  }
+}
 
 interface SignalRState {
-  connection: signalR.HubConnection | null;
+  connection: HubConnection | null;
   game: Game | null;
   publicGames: Game[];
+  connectionError: string | null;
   errorPassword: string | null;
   errorCode: string | null;
 }
@@ -22,6 +57,7 @@ export const useSignalRStore = defineStore({
     connection: null,
     game: null,
     publicGames: [],
+    connectionError: null,
     errorCode: null,
     errorPassword: null,
   }),
@@ -29,16 +65,6 @@ export const useSignalRStore = defineStore({
   getters: {},
 
   actions: {
-    async ensureConnected() {
-      if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
-        await this.connect();
-      }
-
-      if (!this.connection) {
-        throw new Error('Connection not created');
-      }
-    },
-
     async disconnect() {
       if (this.connection) {
         try {
@@ -53,16 +79,12 @@ export const useSignalRStore = defineStore({
     },
 
     async connect() {
-      if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
-        return;
-      }
-
-      this.connection = new signalR.HubConnectionBuilder()
+      this.connection = new HubConnectionBuilder()
         .withUrl(BASE_URL_PSYCH, {
           accessTokenFactory: () => useUserStore().getAccessToken(),
         })
         .withAutomaticReconnect()
-        .configureLogging(signalR.LogLevel.Warning)
+        .configureLogging(LogLevel.Warning)
         .build();
 
       this.connection?.on('PlayerLeft', (playerId: number) => {
@@ -102,131 +124,179 @@ export const useSignalRStore = defineStore({
       password: string,
       ownerId: number | null = null
     ) {
-      await this.ensureConnected();
-      await this.connection?.invoke(
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
         'JoinRoom',
         gameCode,
         instanceToPlain(player),
         password,
         ownerId
       );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async createRoom(game: Game) {
-      await this.ensureConnected();
       this.game = game;
-      await this.connection?.invoke('CreateRoom', instanceToPlain(this.game));
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'CreateRoom', instanceToPlain(this.game));
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async goToJoinGameView() {
-      await this.ensureConnected();
-      await this.connection?.invoke('GoToJoinGameView');
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'GoToJoinGameView');
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async editRoom(game: Game) {
-      await this.ensureConnected();
       this.game = game;
-      await this.connection?.invoke('EditRoom', instanceToPlain(game));
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'EditRoom', instanceToPlain(game));
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async setTeam(playerId: number, teamId: number | null) {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke('SetTeam', this.game.code, playerId, teamId);
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
+        'SetTeam',
+        this.game.code,
+        playerId,
+        teamId
+      );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async setStatus(playerId: number, status: boolean) {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke('SetStatus', this.game.code, playerId, status);
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
+        'SetStatus',
+        this.game.code,
+        playerId,
+        status
+      );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async leaveRoom(playerId: number) {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke('LeaveRoom', this.game.code, playerId);
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'LeaveRoom', this.game.code, playerId);
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async addPrivateQuestionsToGame(playerId: number, questions: Question[]) {
-      await this.ensureConnected();
       if (!this.game) {
-        return;
+        return false;
       }
 
-      await this.connection?.invoke(
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
         'AddPrivateQuestionsToGame',
         this.game.code,
         playerId,
         instanceToPlain(questions)
       );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async startGame() {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke('StartGame', this.game.code);
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'StartGame', this.game.code);
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async skipRound() {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke('SkipRound', this.game.code);
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'SkipRound', this.game.code);
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async addAnswer(answer: Answer) {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke('AddAnswer', this.game.code, instanceToPlain(answer));
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
+        'AddAnswer',
+        this.game.code,
+        instanceToPlain(answer)
+      );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async markAllUsersUnready() {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke('MarkAllUsersUnready', this.game.code);
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'MarkAllUsersUnready', this.game.code);
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async setNewRound(playerId: number) {
-      await this.ensureConnected();
       if (!this.game || this.game.owner.userId !== playerId) {
         return;
       }
 
-      await this.connection?.invoke('SetNewRound', this.game.code);
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'SetNewRound', this.game.code);
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
 
     async chooseAnswer(playerId: number, selectedAnswerUserIds: number[]) {
-      await this.ensureConnected();
       if (!this.game) {
         return;
       }
 
-      await this.connection?.invoke(
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
         'ChooseAnswer',
         this.game.code,
         playerId,
         selectedAnswerUserIds
       );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
     },
   },
 });

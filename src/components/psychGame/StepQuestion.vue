@@ -40,7 +40,12 @@
       userStore.user.userId,
       answerText.value
     );
-    await signalRStore.addAnswer(answer);
+
+    const success = await signalRStore.addAnswer(answer);
+    if (!success) {
+      return;
+    }
+
     userStore.user.isReady = true;
   };
 
@@ -51,7 +56,7 @@
       ? t('questionHasBeenChanged', { skipTimeLeft: skipTimeLeft.value })
       : 'add',
     isOrange: true,
-    isDisabled: skipTimeLeft.value > 0,
+    isDisabled: skipTimeLeft.value > 0 || userStore.user.isReady,
     action: addAnswer,
   }));
 

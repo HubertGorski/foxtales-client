@@ -5,6 +5,9 @@
   import { useOrientation } from './libs/useOrientation';
   import OrientationOverlay from './components/OrientationOverlay.vue';
   import { useDevice } from './libs/useDevice';
+  import { computed, ref } from 'vue';
+  import { useSignalRStore } from './stores/signalRStore';
+  import { ICON } from './enums/iconsEnum';
 
   // useDynamicHeight('#app');
   // useDynamicHeight('.foxTales');
@@ -12,10 +15,21 @@
   // useKeyboardScrollControl();
 
   const { isLandscape } = useOrientation();
+  const showErrorPanel = ref<boolean>(true);
+  const connectionError = computed(() => useSignalRStore().connectionError);
 </script>
 
 <template>
   <div class="foxTales">
+    <div
+      v-if="connectionError"
+      class="foxTales_error"
+      :class="{ showErrorPanel: showErrorPanel }"
+      @click="showErrorPanel = !showErrorPanel"
+    >
+      <v-icon>{{ ICON.ERROR }}</v-icon>
+      <span>{{ connectionError }}</span>
+    </div>
     <RouterView />
   </div>
   <OrientationOverlay v-if="isLandscape" />
@@ -73,6 +87,35 @@
     height: 100%;
     overflow: auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: relative;
+  }
+
+  .foxTales_error {
+    position: absolute;
+    background-color: #b00020;
+    color: white;
+    z-index: 9999;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    margin: 4px;
+    transition: all 0.4s;
+    overflow: hidden;
+  }
+
+  .foxTales_error .v-icon {
+    margin: 0 4px;
+  }
+
+  .foxTales_error span {
+    font-size: 12px;
+    padding-left: 4px;
+  }
+
+  .foxTales_error.showErrorPanel {
+    width: 420px;
   }
 
   @media (min-width: 470px) {

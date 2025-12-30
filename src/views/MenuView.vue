@@ -14,12 +14,20 @@
   const signalRStore = useSignalRStore();
 
   const navigateToJoinGame = async () => {
-    await signalRStore.goToJoinGameView();
+    const success = await signalRStore.goToJoinGameView();
+    if (!success) {
+      return;
+    }
+
     router.push(ROUTE_PATH.JOIN_GAME);
   };
 
   const navigateToCreateGame = async () => {
-    await signalRStore.createRoom(new Game(userStore.user));
+    const success = await signalRStore.createRoom(new Game(userStore.user));
+    if (!success) {
+      return;
+    }
+
     router.push(ROUTE_PATH.CREATE_GAME);
   };
 
