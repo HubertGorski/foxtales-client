@@ -27,4 +27,5 @@ export enum ICON {
   LANGUAGE = 'mdi-web',
   FULLSCREEN_ON = 'mdi-fullscreen',
   FULLSCREEN_OFF = 'mdi-fullscreen-exit',
+  ERROR = 'mdi-alert-circle-outline',
 }

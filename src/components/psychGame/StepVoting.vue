@@ -63,7 +63,15 @@
       return;
     }
 
-    await signalRStore.chooseAnswer(userStore.user.userId, selectedAnswerUserIds.value);
+    const success = await signalRStore.chooseAnswer(
+      userStore.user.userId,
+      selectedAnswerUserIds.value
+    );
+
+    if (!success) {
+      return;
+    }
+
     isUserReady.value = true;
   };
 

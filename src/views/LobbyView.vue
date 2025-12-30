@@ -34,7 +34,11 @@
   const currentQuestions = ref<Question[]>([]);
 
   const leaveRoom = async () => {
-    await signalRStore.leaveRoom(userStore.user.userId);
+    const success = await signalRStore.leaveRoom(userStore.user.userId);
+    if (!success) {
+      return;
+    }
+
     router.push(ROUTE_PATH.MENU);
   };
 
@@ -78,10 +82,13 @@
     await signalRStore.startGame();
   };
 
-  //TODO: nie da sie wystartowac jak sie wyjdzie i wejdzie
   const setReady = async () => {
+    const success = await signalRStore.setStatus(userStore.user.userId, !userStore.user.isReady);
+    if (!success) {
+      return;
+    }
+
     userStore.user.isReady = !userStore.user.isReady;
-    await signalRStore.setStatus(userStore.user.userId, userStore.user.isReady);
   };
 
   const optionBtnAction = async () => {
@@ -107,7 +114,14 @@
   };
 
   const addPrivateQuestionsToGame = async () => {
-    await signalRStore.addPrivateQuestionsToGame(userStore.user.userId, currentQuestions.value);
+    const success = await signalRStore.addPrivateQuestionsToGame(
+      userStore.user.userId,
+      currentQuestions.value
+    );
+    if (!success) {
+      return;
+    }
+
     showSettingsPanel.value = false;
   };
 

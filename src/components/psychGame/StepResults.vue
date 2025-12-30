@@ -39,7 +39,11 @@
   });
 
   const startNextRound = async () => {
-    await signalRStore.setStatus(userStore.user.userId, true);
+    const success = await signalRStore.setStatus(userStore.user.userId, true);
+    if (!success) {
+      return;
+    }
+
     userStore.user.isReady = true;
   };
 </script>

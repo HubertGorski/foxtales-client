@@ -39,7 +39,11 @@
   };
 
   const leaveRoom = async () => {
-    await signalRStore.leaveRoom(userStore.user.userId);
+    const success = await signalRStore.leaveRoom(userStore.user.userId);
+    if (!success) {
+      return;
+    }
+
     router.push(ROUTE_PATH.MENU);
   };
 
