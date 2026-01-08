@@ -193,7 +193,7 @@ export const useSignalRStore = defineStore({
       return !this.connectionError;
     },
 
-    async SetReadyForAddAnswer(playerId: number) {
+    async setReadyForAddAnswer(playerId: number) {
       if (!this.game) {
         return;
       }
@@ -202,6 +202,22 @@ export const useSignalRStore = defineStore({
       const result = await safeSignalRInvoke(
         connection,
         'SetReadyForAddAnswer',
+        this.game.code,
+        playerId
+      );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
+    },
+
+    async setUnreadyForAddAnswer(playerId: number) {
+      if (!this.game) {
+        return;
+      }
+
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
+        'SetUnreadyForAddAnswer',
         this.game.code,
         playerId
       );

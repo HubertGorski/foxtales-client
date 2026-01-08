@@ -32,6 +32,9 @@
   const showTeamsPanel = ref<boolean>(false);
   const currentQuestions = ref<Question[]>([]);
 
+  const currentUserId = computed(() => userStore.user.userId);
+  const isUserReady = computed(() => game.value.isUserReady(currentUserId.value, VIEW.ADD_ANSWER));
+
   const leaveRoom = async () => {
     const success = await signalRStore.leaveRoom(userStore.user.userId);
     if (!success) {
@@ -82,7 +85,11 @@
   };
 
   const setReady = async () => {
-    await signalRStore.SetReadyForAddAnswer(userStore.user.userId);
+    await signalRStore.setReadyForAddAnswer(userStore.user.userId);
+  };
+
+  const setUnready = async () => {
+    await signalRStore.setUnreadyForAddAnswer(userStore.user.userId);
   };
 
   const optionBtnAction = async () => {
@@ -95,7 +102,11 @@
 
   const startBtnAction = async () => {
     if (isOwner.value) {
-      goToGame();
+      return goToGame();
+    }
+
+    if (isUserReady.value) {
+      setUnready();
     } else {
       setReady();
     }
@@ -161,10 +172,7 @@
   });
 
   const isUserReadyForNewRound = (userId: number): boolean => {
-    return (
-      game.value.isUserReady(userId, VIEW.ADD_ANSWER) &&
-      game.value.isCurrentView(userId, VIEW.SHOW_RESULTS)
-    );
+    return game.value.isUserReady(userId, VIEW.ADD_ANSWER);
   };
 
   if (!game.value.users.length) {
@@ -234,7 +242,7 @@
         :btn2Disabled="startBtn.disabled"
         :btn2TooltipText="startBtn.tooltipText"
         :btn2CustomAction="startBtn.action"
-        :btn2isSwitch="!isOwner"
+        :btn2isClicked="isUserReady"
       />
     </div>
     <HubPopup v-model="showSettingsPanel">
