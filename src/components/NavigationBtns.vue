@@ -50,7 +50,7 @@
       type: String,
       default: '',
     },
-    btn2isSwitch: {
+    btn2isClicked: {
       type: Boolean,
       default: false,
     },
@@ -169,7 +169,7 @@
         :text="selectedBtn2.text"
         :isOrange="selectedBtn2.isOrange"
         :disabled="btn2Disabled"
-        :isSwitch="btn2isSwitch"
+        :isClicked="btn2isClicked"
       />
     </HubTooltip>
   </div>

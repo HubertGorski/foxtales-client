@@ -3,6 +3,14 @@
   import HubPopup from './HubPopup.vue';
 
   const props = defineProps({
+    backBtnText: {
+      type: String,
+      default: 'reject',
+    },
+    confirmBtnText: {
+      type: String,
+      default: 'accept',
+    },
     textPopup: {
       type: String,
       required: true,
@@ -16,12 +24,12 @@
   const isPopupOpen = defineModel({ type: Boolean, required: true });
 
   const backBtn = {
-    text: 'reject',
+    text: props.backBtnText,
     isOrange: false,
     action: () => (isPopupOpen.value = false),
   };
   const confirmBtn = {
-    text: 'accept',
+    text: props.confirmBtnText,
     isOrange: false,
     action: () => props.confirmAction(),
   };

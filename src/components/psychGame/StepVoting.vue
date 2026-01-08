@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue';
+  import { computed, onBeforeMount, onMounted, onUnmounted, ref, toRef } from 'vue';
   import UserListElement from '../UserListElement.vue';
   import HubBtn from '../hubComponents/HubBtn.vue';
   import HubDivider from '../hubComponents/HubDivider.vue';
@@ -13,30 +13,59 @@
   import CurrentQuestion from '../CurrentQuestion.vue';
   import HubTooltip from '../hubComponents/HubTooltip.vue';
   import { RULES } from '@/enums/rulesEnum';
+  import { VIEW } from '@/enums/viewsEnum';
+  import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
 
-  const emit = defineEmits<{
-    (e: 'nextStep'): void;
-  }>();
-
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
-  const selectedAnswerUserIds = ref<number[]>([]);
-  const isUserReady = ref<boolean>(false);
-  const currentStep = ref<number>(0);
+  const currentUserId = computed(() => userStore.user.userId);
+
+  const isUserReady = computed(() =>
+    game.value.isCurrentView(currentUserId.value, VIEW.SELECT_ANSWER_WAITING_FOR_USERS)
+  );
+
+  const showOwnersStep = computed(() =>
+    game.value.isCurrentView(currentUserId.value, VIEW.SHOW_OWNERS)
+  );
+
+  const selectedAnswerUserIds = ref<number[]>(
+    game.value.getSelectedAnswerUserIds(currentUserId.value)
+  );
+
+  const showConfirmEmptySelectPanel = ref<boolean>(false);
+
   const timeLeft = ref(0);
   let timerId: number = 0;
   const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
 
   const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
   const isSubjectPlayer = computed(
-    () => userStore.user.userId === game.value.currentQuestion?.currentUser?.userId
+    () => currentUserId.value === game.value.currentQuestion?.currentUser?.userId
   );
 
+  onBeforeMount(() => {
+    if (!signalRStore.userIdsOrderList.length) {
+      signalRStore.userIdsOrderList = shuffledUsers.value.map(user => user.userId);
+      return;
+    }
+
+    const orderMap = new Map(signalRStore.userIdsOrderList.map((id, index) => [id, index]));
+    shuffledUsers.value.sort((a, b) => {
+      const aIndex = orderMap.get(a.userId) ?? Infinity;
+      const bIndex = orderMap.get(b.userId) ?? Infinity;
+      return aIndex - bIndex;
+    });
+  });
+
   onMounted(() => {
+    if (isUserReady.value) {
+      return;
+    }
+
     if (isQuietDaysMode.value) {
       timeLeft.value = 5;
     }
@@ -54,33 +83,32 @@
     clearInterval(timerId);
   });
 
-  const activeUser = computed(
-    () => game.value.users.find(u => u.userId === userStore.user.userId)!
-  );
+  const activeUser = computed(() => game.value.users.find(u => u.userId === currentUserId.value)!);
 
   const confirmSelectedAnswer = async () => {
     if (!selectedAnswerUserIds.value.length && !isQuietDaysMode.value) {
       return;
     }
 
-    const success = await signalRStore.chooseAnswer(
-      userStore.user.userId,
-      selectedAnswerUserIds.value
-    );
-
-    if (!success) {
+    if (!selectedAnswerUserIds.value.length && isQuietDaysMode.value && isSubjectPlayer.value) {
+      showConfirmEmptySelectPanel.value = true;
       return;
     }
 
-    isUserReady.value = true;
+    await signalRStore.chooseAnswer(currentUserId.value, selectedAnswerUserIds.value);
+  };
+
+  const confirmEmptySelectAnswer = async () => {
+    showConfirmEmptySelectPanel.value = false;
+    await signalRStore.chooseAnswer(currentUserId.value, selectedAnswerUserIds.value);
   };
 
   const selectAnswer = (userId: number | null) => {
-    if (isUserReady.value || !userId) {
+    if (isUserReady.value || showOwnersStep.value || !userId) {
       return;
     }
 
-    if (isQuietDaysMode.value && userStore.user.userId === userId) {
+    if (isQuietDaysMode.value && currentUserId.value === userId) {
       return;
     }
 
@@ -109,10 +137,10 @@
     }
 
     if (!isQuietDaysMode.value) {
-      return currentStep.value ? `${t('votersCount')} ${user.answer.votersCount}` : '';
+      return showOwnersStep.value ? `${t('votersCount')} ${user.answer.votersCount}` : '';
     }
 
-    return currentStep.value &&
+    return showOwnersStep.value &&
       (user.answer.votersCount > 0 ||
         user.userId === game.value.currentQuestion?.currentUser?.userId)
       ? `${t('correctAnswer')}`
@@ -120,7 +148,7 @@
   };
 
   const chooseAnswerText = computed(() => {
-    if (currentStep.value !== 0) {
+    if (showOwnersStep.value) {
       return isQuietDaysMode.value ? t('results') : t('voteResults');
     }
 
@@ -140,7 +168,7 @@
       return shuffledUsers.value;
     }
 
-    return shuffledUsers.value.filter(u => u.userId !== userStore.user.userId);
+    return shuffledUsers.value.filter(u => u.userId !== currentUserId.value);
   });
 
   const confirmBtn = computed(() => {
@@ -169,26 +197,11 @@
       text: 'next',
       isOrange: true,
       action: () => {
-        emit('nextStep');
+        signalRStore.GoToResults(currentUserId.value);
       },
       disabled: false,
     };
   });
-
-  watch(
-    game,
-    (game: Game | null) => {
-      if (game && game.readyUsersCount == game.usersCount) {
-        currentStep.value = 1;
-
-        shuffledUsers.value = shuffledUsers.value.map(user => {
-          const freshUser = game.users.find(u => u.userId === user.userId);
-          return freshUser ? { ...user, ...freshUser } : user;
-        });
-      }
-    },
-    { immediate: true }
-  );
 </script>
 
 <template>
@@ -207,7 +220,7 @@
         v-if="isQuietDaysMode && isSubjectPlayer"
         :text="activeUser.answer?.answer ?? ''"
         :avatarLabel="$t('you')"
-        :label="currentStep ? `${$t('correctAnswer')}` : ''"
+        :label="showOwnersStep ? `${$t('correctAnswer')}` : ''"
         :imgSource="getAvatar(activeUser.avatar.id)"
         isSelected
         isSelectedBold
@@ -217,21 +230,15 @@
         v-for="user in userList"
         :key="user.userId"
         :text="user.answer?.answer ?? ''"
-        :avatarLabel="currentStep ? user.username : ''"
+        :avatarLabel="showOwnersStep ? user.username : ''"
         :label="getLabel(user)"
         :isSelected="isSelected(user.userId)"
-        :imgSource="currentStep ? getAvatar(user.avatar.id) : getUnknownAvatar()"
+        :imgSource="showOwnersStep ? getAvatar(user.avatar.id) : getUnknownAvatar()"
         isSelectedBold
         @click="selectAnswer(user.userId)"
       />
     </div>
-    <div v-if="!currentStep" class="acceptPanel">
-      <!-- <LevelBar
-        v-if="!isUserReady"
-        :points="timer - 9"
-        :requiredPointsToNextLevel="timer"
-        :showPointInfo="false"
-      /> TODO: dodac timer -->
+    <div v-if="!showOwnersStep" class="acceptPanel">
       <HubTooltip
         :tooltipText="isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
         :tooltipDisabled="!confirmBtn.disabled || isQuietDaysMode"
@@ -252,6 +259,13 @@
         :disabled="nextPageBtn.disabled"
       />
     </div>
+    <HubDialogPopup
+      v-model="showConfirmEmptySelectPanel"
+      :textPopup="$t('confirmEmptySelectAnswerPopup')"
+      backBtnText="cancel"
+      confirmBtnText="continue"
+      :confirmAction="confirmEmptySelectAnswer"
+    />
   </div>
 </template>
 

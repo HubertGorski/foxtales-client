@@ -20,18 +20,20 @@
   import { getAvatar } from '@/utils/imgUtils';
   import { RULES } from '@/enums/rulesEnum';
   import type { User } from '@/models/User';
+  import { VIEW } from '@/enums/viewsEnum';
 
   const router = useRouter();
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
   const { t } = useI18n();
 
-  userStore.user.isReady = false;
-
   const usePrivateQuestions = ref<boolean>(false);
   const showSettingsPanel = ref<boolean>(false);
   const showTeamsPanel = ref<boolean>(false);
   const currentQuestions = ref<Question[]>([]);
+
+  const currentUserId = computed(() => userStore.user.userId);
+  const isUserReady = computed(() => game.value.isUserReady(currentUserId.value, VIEW.ADD_ANSWER));
 
   const leaveRoom = async () => {
     const success = await signalRStore.leaveRoom(userStore.user.userId);
@@ -83,12 +85,11 @@
   };
 
   const setReady = async () => {
-    const success = await signalRStore.setStatus(userStore.user.userId, !userStore.user.isReady);
-    if (!success) {
-      return;
-    }
+    await signalRStore.setReadyForAddAnswer(userStore.user.userId);
+  };
 
-    userStore.user.isReady = !userStore.user.isReady;
+  const setUnready = async () => {
+    await signalRStore.setUnreadyForAddAnswer(userStore.user.userId);
   };
 
   const optionBtnAction = async () => {
@@ -101,7 +102,11 @@
 
   const startBtnAction = async () => {
     if (isOwner.value) {
-      goToGame();
+      return goToGame();
+    }
+
+    if (isUserReady.value) {
+      setUnready();
     } else {
       setReady();
     }
@@ -148,7 +153,7 @@
       return 'tooltip.toStartGameChooseQuestions';
     }
 
-    if (game.value.areUsersUnready && isOwner.value) {
+    if (game.value.getAreUsersUnready(VIEW.ADD_ANSWER) && isOwner.value) {
       return 'tooltip.startNewGame';
     }
 
@@ -161,10 +166,14 @@
       action: startBtnAction,
       tooltipText: tooltipText.value,
       disabled:
-        (game.value.areUsersUnready && isOwner.value) ||
+        (game.value.getAreUsersUnready(VIEW.ADD_ANSWER) && isOwner.value) ||
         (!game.value.questions.length && !game.value.usePublicQuestions && isOwner.value),
     };
   });
+
+  const isUserReadyForNewRound = (userId: number): boolean => {
+    return game.value.isUserReady(userId, VIEW.ADD_ANSWER);
+  };
 
   if (!game.value.users.length) {
     router.push(ROUTE_PATH.JOIN_GAME);
@@ -191,7 +200,7 @@
 <template>
   <div class="lobbyView">
     <HubCounterWithTitle
-      :value="game.readyUsersCount"
+      :value="game.getReadyUsersCount(VIEW.ADD_ANSWER)"
       :maxValue="game.usersCount"
       :title="$t('lobby.waitingForPlayers')"
     />
@@ -200,7 +209,7 @@
         v-for="user in game.users"
         :key="user.userId"
         :imgSource="getAvatar(user.avatar.id)"
-        :isSelected="user.isReady"
+        :isSelected="isUserReadyForNewRound(user.userId)"
         :text="user.username"
       />
     </div>
@@ -233,7 +242,7 @@
         :btn2Disabled="startBtn.disabled"
         :btn2TooltipText="startBtn.tooltipText"
         :btn2CustomAction="startBtn.action"
-        :btn2isSwitch="!isOwner"
+        :btn2isClicked="isUserReady"
       />
     </div>
     <HubPopup v-model="showSettingsPanel">

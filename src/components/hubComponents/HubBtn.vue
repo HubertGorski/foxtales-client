@@ -1,19 +1,14 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-
   const props = defineProps({
     text: { type: String, required: false },
     icon: { type: String, required: false },
     isOrange: { type: Boolean, default: false },
-    isSwitch: { type: Boolean, default: false },
+    isClicked: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     action: { type: Function, required: true },
   });
 
-  const isBtnClicked = ref(false);
-
   const handleAction = () => {
-    if (props.isSwitch) isBtnClicked.value = !isBtnClicked.value;
     props.action();
   };
 </script>
@@ -24,7 +19,7 @@
     class="hubBtn"
     :class="[
       { disabled },
-      isBtnClicked
+      isClicked
         ? isOrange
           ? 'hubBtn--darkOrange'
           : 'hubBtn--darkBrown'
