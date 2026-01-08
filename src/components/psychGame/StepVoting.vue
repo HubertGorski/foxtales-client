@@ -14,6 +14,7 @@
   import HubTooltip from '../hubComponents/HubTooltip.vue';
   import { RULES } from '@/enums/rulesEnum';
   import { VIEW } from '@/enums/viewsEnum';
+  import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
@@ -34,6 +35,8 @@
   const selectedAnswerUserIds = ref<number[]>(
     game.value.getSelectedAnswerUserIds(currentUserId.value)
   );
+
+  const showConfirmEmptySelectPanel = ref<boolean>(false);
 
   const timeLeft = ref(0);
   let timerId: number = 0;
@@ -87,6 +90,16 @@
       return;
     }
 
+    if (!selectedAnswerUserIds.value.length && isQuietDaysMode.value && isSubjectPlayer.value) {
+      showConfirmEmptySelectPanel.value = true;
+      return;
+    }
+
+    await signalRStore.chooseAnswer(currentUserId.value, selectedAnswerUserIds.value);
+  };
+
+  const confirmEmptySelectAnswer = async () => {
+    showConfirmEmptySelectPanel.value = false;
     await signalRStore.chooseAnswer(currentUserId.value, selectedAnswerUserIds.value);
   };
 
@@ -246,6 +259,13 @@
         :disabled="nextPageBtn.disabled"
       />
     </div>
+    <HubDialogPopup
+      v-model="showConfirmEmptySelectPanel"
+      :textPopup="$t('confirmEmptySelectAnswerPopup')"
+      backBtnText="cancel"
+      confirmBtnText="continue"
+      :confirmAction="confirmEmptySelectAnswer"
+    />
   </div>
 </template>
 
