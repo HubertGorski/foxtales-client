@@ -14,6 +14,7 @@ import { Type } from 'class-transformer';
 import type { QUESTION_SOURCE } from '@/enums/questionSource';
 import { Answer } from './Answer';
 import { Vote } from './Vote';
+import type { VIEW } from '@/enums/viewsEnum';
 
 export class User {
   // Basic info
@@ -72,7 +73,13 @@ export class User {
 
   // In game
   teamId: number | null = null;
-  isReady: boolean = false;
+
+  @Type(() => Number)
+  isReadyForView: VIEW | null = null;
+
+  @Type(() => Number)
+  currentView: VIEW | null = null;
+
   pointsInGame: number = 0;
   round: number = 1;
 

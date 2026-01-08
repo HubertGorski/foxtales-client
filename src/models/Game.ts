@@ -4,6 +4,7 @@ import { FoxGame } from './FoxGame';
 import { User } from './User';
 import { Question } from './Question';
 import { RULES } from '@/enums/rulesEnum';
+import type { VIEW } from '@/enums/viewsEnum';
 
 export class Game {
   @Type(() => String)
@@ -94,14 +95,16 @@ export class Game {
     return this.users.length;
   }
 
-  get readyUsersCount(): number {
-    return this.users.filter(user => user.isReady).length;
+  getReadyUsersCount(view: VIEW): number {
+    return this.users.filter(user => user.isReadyForView === view).length;
   }
 
-  get areUsersUnready(): boolean {
+  getAreUsersUnready(view: VIEW): boolean {
     return (
       this.users.length === 0 ||
-      this.users.filter(user => user.userId !== this.owner.userId).some(user => !user.isReady)
+      this.users
+        .filter(user => user.userId !== this.owner.userId)
+        .some(user => user.isReadyForView !== view)
     );
   }
 
@@ -111,5 +114,13 @@ export class Game {
 
   setUsers(users: User[]): void {
     this.users = users;
+  }
+
+  isCurrentView(userId: number, view: VIEW): boolean {
+    return this.users.find(user => user.userId === userId)?.currentView === view;
+  }
+
+  isUserReady(userId: number, view: VIEW): boolean {
+    return this.users.find(user => user.userId === userId)?.isReadyForView === view;
   }
 }

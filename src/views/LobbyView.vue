@@ -20,13 +20,12 @@
   import { getAvatar } from '@/utils/imgUtils';
   import { RULES } from '@/enums/rulesEnum';
   import type { User } from '@/models/User';
+  import { VIEW } from '@/enums/viewsEnum';
 
   const router = useRouter();
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
   const { t } = useI18n();
-
-  userStore.user.isReady = false;
 
   const usePrivateQuestions = ref<boolean>(false);
   const showSettingsPanel = ref<boolean>(false);
@@ -83,12 +82,7 @@
   };
 
   const setReady = async () => {
-    const success = await signalRStore.setStatus(userStore.user.userId, !userStore.user.isReady);
-    if (!success) {
-      return;
-    }
-
-    userStore.user.isReady = !userStore.user.isReady;
+    await signalRStore.SetReadyForAddAnswer(userStore.user.userId);
   };
 
   const optionBtnAction = async () => {
@@ -148,7 +142,7 @@
       return 'tooltip.toStartGameChooseQuestions';
     }
 
-    if (game.value.areUsersUnready && isOwner.value) {
+    if (game.value.getAreUsersUnready(VIEW.ADD_ANSWER) && isOwner.value) {
       return 'tooltip.startNewGame';
     }
 
@@ -161,10 +155,17 @@
       action: startBtnAction,
       tooltipText: tooltipText.value,
       disabled:
-        (game.value.areUsersUnready && isOwner.value) ||
+        (game.value.getAreUsersUnready(VIEW.ADD_ANSWER) && isOwner.value) ||
         (!game.value.questions.length && !game.value.usePublicQuestions && isOwner.value),
     };
   });
+
+  const isUserReadyForNewRound = (userId: number): boolean => {
+    return (
+      game.value.isUserReady(userId, VIEW.ADD_ANSWER) &&
+      game.value.isCurrentView(userId, VIEW.SHOW_RESULTS)
+    );
+  };
 
   if (!game.value.users.length) {
     router.push(ROUTE_PATH.JOIN_GAME);
@@ -191,7 +192,7 @@
 <template>
   <div class="lobbyView">
     <HubCounterWithTitle
-      :value="game.readyUsersCount"
+      :value="game.getReadyUsersCount(VIEW.ADD_ANSWER)"
       :maxValue="game.usersCount"
       :title="$t('lobby.waitingForPlayers')"
     />
@@ -200,7 +201,7 @@
         v-for="user in game.users"
         :key="user.userId"
         :imgSource="getAvatar(user.avatar.id)"
-        :isSelected="user.isReady"
+        :isSelected="isUserReadyForNewRound(user.userId)"
         :text="user.username"
       />
     </div>

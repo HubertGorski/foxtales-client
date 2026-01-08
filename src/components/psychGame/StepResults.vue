@@ -8,6 +8,7 @@
   import UserListElement from '../UserListElement.vue';
   import { getAvatar } from '@/utils/imgUtils';
   import { RULES } from '@/enums/rulesEnum';
+  import { VIEW } from '@/enums/viewsEnum';
 
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
@@ -15,8 +16,15 @@
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
   const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
 
+  const currentUserId = computed(() => userStore.user.userId);
+  const isReadyForNewRound = computed(
+    () =>
+      game.value.isUserReady(currentUserId.value, VIEW.ADD_ANSWER) &&
+      game.value.isCurrentView(currentUserId.value, VIEW.SHOW_RESULTS)
+  );
+
   const votersForHisAnswerString = computed<string>(() => {
-    const currentUser = game.value.users.find(user => user.userId === userStore.user.userId);
+    const currentUser = game.value.users.find(user => user.userId === currentUserId.value);
     const votersIds = currentUser?.votersIdsForHisAnswer;
 
     if (!votersIds?.length) return '';
@@ -31,20 +39,22 @@
 
   const nextPageBtn = computed(() => {
     return {
-      text: userStore.user.isReady ? 'lobby.waitingForPlayers' : 'ready',
+      text: isReadyForNewRound.value ? 'lobby.waitingForPlayers' : 'ready',
       isOrange: true,
       action: startNextRound,
-      disabled: userStore.user.isReady,
+      disabled: isReadyForNewRound.value,
     };
   });
 
   const startNextRound = async () => {
-    const success = await signalRStore.setStatus(userStore.user.userId, true);
-    if (!success) {
-      return;
-    }
+    await signalRStore.SetReadyForNewRound(userStore.user.userId);
+  };
 
-    userStore.user.isReady = true;
+  const isUserReadyForNewRound = (userId: number): boolean => {
+    return (
+      game.value.isUserReady(userId, VIEW.ADD_ANSWER) &&
+      game.value.isCurrentView(userId, VIEW.SHOW_RESULTS)
+    );
   };
 </script>
 
@@ -59,7 +69,7 @@
           :imgSource="getAvatar(user.avatar.id)"
           :text="user.username"
           :label="`${user.pointsInGame} ${$t('points')}`"
-          :isSelected="user.isReady"
+          :isSelected="isUserReadyForNewRound(user.userId)"
         />
       </div>
       <div v-if="!isQuietDaysMode" class="votersForHisAnswer">

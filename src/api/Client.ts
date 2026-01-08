@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// const BASE_URL = 'http://localhost:5161';
 // const BASE_URL = 'http://192.168.100.3:5161';
 const BASE_URL = 'https://api.foxtales.cc'; // PROD
 

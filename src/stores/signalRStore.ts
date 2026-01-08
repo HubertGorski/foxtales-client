@@ -177,7 +177,7 @@ export const useSignalRStore = defineStore({
       return !this.connectionError;
     },
 
-    async setStatus(playerId: number, status: boolean) {
+    async SetReadyForNewRound(playerId: number) {
       if (!this.game) {
         return;
       }
@@ -185,11 +185,37 @@ export const useSignalRStore = defineStore({
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
         connection,
-        'SetStatus',
+        'SetReadyForNewRound',
         this.game.code,
-        playerId,
-        status
+        playerId
       );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
+    },
+
+    async SetReadyForAddAnswer(playerId: number) {
+      if (!this.game) {
+        return;
+      }
+
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        connection,
+        'SetReadyForAddAnswer',
+        this.game.code,
+        playerId
+      );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
+    },
+
+    async GoToResults(playerId: number) {
+      if (!this.game) {
+        return;
+      }
+
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(connection, 'GoToResults', this.game.code, playerId);
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -260,17 +286,6 @@ export const useSignalRStore = defineStore({
       return !this.connectionError;
     },
 
-    async markAllUsersUnready() {
-      if (!this.game) {
-        return;
-      }
-
-      const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'MarkAllUsersUnready', this.game.code);
-      this.connectionError = result.error ?? null;
-      return !this.connectionError;
-    },
-
     async setNewRound(playerId: number) {
       if (!this.game || this.game.owner.userId !== playerId) {
         return;
@@ -295,6 +310,7 @@ export const useSignalRStore = defineStore({
         playerId,
         selectedAnswerUserIds
       );
+
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },

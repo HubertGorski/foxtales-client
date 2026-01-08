@@ -11,14 +11,11 @@
   import { Answer } from '@/models/Answer';
   import CurrentQuestion from '../CurrentQuestion.vue';
   import { ICON } from '@/enums/iconsEnum';
+  import { VIEW } from '@/enums/viewsEnum';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
-
-  const emit = defineEmits<{
-    (e: 'nextStep'): void;
-  }>();
 
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
@@ -37,26 +34,25 @@
     const answer = new Answer(
       0,
       game.value.currentQuestion?.id ?? 0,
-      userStore.user.userId,
+      currentUserId.value,
       answerText.value
     );
 
-    const success = await signalRStore.addAnswer(answer);
-    if (!success) {
-      return;
-    }
-
-    userStore.user.isReady = true;
+    await signalRStore.addAnswer(answer);
   };
 
-  const isOwner = computed(() => game.value.owner.userId === userStore.user.userId);
+  const currentUserId = computed(() => userStore.user.userId);
+  const isOwner = computed(() => game.value.owner.userId === currentUserId.value);
+  const isReady = computed(() =>
+    game.value.isCurrentView(currentUserId.value, VIEW.ADD_ANSWER_WAITING_FOR_USERS)
+  );
 
   const addAnswerBtn = computed(() => ({
     text: skipTimeLeft.value
       ? t('questionHasBeenChanged', { skipTimeLeft: skipTimeLeft.value })
       : 'add',
     isOrange: true,
-    isDisabled: skipTimeLeft.value > 0 || userStore.user.isReady,
+    isDisabled: skipTimeLeft.value > 0 || isReady.value,
     action: addAnswer,
   }));
 
@@ -65,28 +61,16 @@
       text: skipTimeLeft.value ? t('skipTimeLeft', { skipTimeLeft: skipTimeLeft.value }) : 'skip',
       isOrange: false,
       action: skipRound,
-      disabled: game.value.readyUsersCount > 0 || skipTimeLeft.value > 0,
+      disabled: game.value.getReadyUsersCount(VIEW.SELECT_ANSWER) > 0 || skipTimeLeft.value > 0,
       isVisible: isOwner.value,
     };
   });
 
   const waitingInfo = computed(
     () =>
-      `${t('lobby.waitingForPlayers')} ( ${game.value.readyUsersCount} / ${game.value.usersCount} )`
+      `${t('lobby.waitingForPlayers')} ( ${game.value.getReadyUsersCount(VIEW.SELECT_ANSWER)} / ${game.value.usersCount} )`
   );
-  const dividerText = computed(() =>
-    userStore.user.isReady ? t('waitForAnswers') : t('writeAnswer')
-  );
-
-  watch(
-    game,
-    (game: Game | null) => {
-      if (game?.readyUsersCount == game?.usersCount) {
-        emit('nextStep');
-      }
-    },
-    { immediate: true }
-  );
+  const dividerText = computed(() => (isReady.value ? t('waitForAnswers') : t('writeAnswer')));
 
   watch(
     () => game.value?.currentQuestion,
@@ -111,7 +95,7 @@
     <HubDivider :text="dividerText" />
     <div class="stepQuestion_gameSection">
       <transition name="fade" mode="out-in" appear>
-        <div v-if="!userStore.user.isReady" key="stepAnswer">
+        <div v-if="!isReady" key="stepAnswer">
           <div class="question" :class="{ 'pb-4': isOwner }">
             <CurrentQuestion
               :isFoxVisible="isFoxVisible"

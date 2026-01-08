@@ -4,39 +4,44 @@
   import StepQuestion from '@/components/psychGame/StepQuestion.vue';
   import StepResults from '@/components/psychGame/StepResults.vue';
   import StepVoting from '@/components/psychGame/StepVoting.vue';
-  import { computed, ref, toRef, watch } from 'vue';
+  import { computed, toRef, watch } from 'vue';
   import { Game } from '@/models/Game';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { NO_ACCESS_REASON } from '@/enums/noAccessReasonEnum';
   import { useUserStore } from '@/stores/userStore';
   import StepEnd from '@/components/psychGame/StepEnd.vue';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
+  import { VIEW } from '@/enums/viewsEnum';
+  import NoAccessView from './NoAccessView.vue';
 
   const router = useRouter();
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
 
-  const currentStep = ref<number>(0);
+  const currentUserId = computed(() => userStore.user.userId);
+  const currentUser =
+    computed(() => game.value.users.find(user => user.userId === currentUserId.value)) ?? null;
+
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
   const getCurrentStep = computed(() => {
-    switch (currentStep.value) {
-      case 0:
+    switch (currentUser.value?.currentView) {
+      case VIEW.ADD_ANSWER:
         return StepQuestion;
-      case 1:
+      case VIEW.ADD_ANSWER_WAITING_FOR_USERS:
+        return StepQuestion;
+      case VIEW.SELECT_ANSWER:
         return StepVoting;
-      case 2:
+      case VIEW.SELECT_ANSWER_WAITING_FOR_USERS:
+        return StepVoting;
+      case VIEW.SHOW_OWNERS:
+        return StepVoting;
+      case VIEW.SHOW_RESULTS:
         return StepResults;
       default:
-        currentStep.value = 0;
-        signalRStore.setNewRound(userStore.user.userId);
-        return StepQuestion;
+        return NoAccessView;
     }
   });
-
-  const handleNextStep = () => {
-    currentStep.value++;
-  };
 
   const leaveRoom = async () => {
     const success = await signalRStore.leaveRoom(userStore.user.userId);
@@ -71,24 +76,6 @@
           path: ROUTE_PATH.NO_ACCESS,
           query: { reason: NO_ACCESS_REASON.GAME_CLOSED },
         });
-
-        return;
-      }
-
-      userStore.user.isReady = game.users.find(
-        user => user.userId === userStore.user.userId
-      )!.isReady;
-
-      if (game?.readyUsersCount !== game?.usersCount) {
-        return;
-      }
-
-      if (game?.owner.userId === userStore.user.userId && currentStep.value != 2) {
-        await signalRStore.markAllUsersUnready();
-      }
-
-      if (currentStep.value == 2) {
-        handleNextStep();
       }
     },
     { immediate: true }
@@ -101,10 +88,8 @@
       <HubBtn :action="finishGameBtn.action" :text="finishGameBtn.text" />
       <span class="roundInfo">{{ $t('round') }} {{ game.round }}</span>
     </div>
-    <transition name="fade" mode="out-in">
-      <StepEnd v-if="game.hasGameEnded" @leaveRoom="leaveRoom" />
-      <component :is="getCurrentStep" v-else :key="currentStep" @nextStep="handleNextStep" />
-    </transition>
+    <StepEnd v-if="game.hasGameEnded" @leaveRoom="leaveRoom" />
+    <component :is="getCurrentStep" v-else :key="currentUser?.currentView ?? 0" />
   </div>
 </template>
 
