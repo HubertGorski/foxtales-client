@@ -2,7 +2,7 @@
   import { Game } from '@/models/Game';
   import { useSignalRStore } from '@/stores/signalRStore';
   import { useUserStore } from '@/stores/userStore';
-  import { computed, toRef } from 'vue';
+  import { computed, onBeforeMount, toRef } from 'vue';
   import HubDivider from '../hubComponents/HubDivider.vue';
   import HubBtn from '../hubComponents/HubBtn.vue';
   import UserListElement from '../UserListElement.vue';
@@ -44,6 +44,14 @@
       action: startNextRound,
       disabled: isReadyForNewRound.value,
     };
+  });
+
+  onBeforeMount(() => {
+    if (!signalRStore.userIdsOrderList.length) {
+      return;
+    }
+
+    signalRStore.userIdsOrderList = [];
   });
 
   const startNextRound = async () => {

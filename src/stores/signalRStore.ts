@@ -45,6 +45,7 @@ async function safeSignalRInvoke<T>(
 interface SignalRState {
   connection: HubConnection | null;
   game: Game | null;
+  userIdsOrderList: number[];
   publicGames: Game[];
   connectionError: string | null;
   errorPassword: string | null;
@@ -56,6 +57,7 @@ export const useSignalRStore = defineStore({
   state: (): SignalRState => ({
     connection: null,
     game: null,
+    userIdsOrderList: [],
     publicGames: [],
     connectionError: null,
     errorCode: null,

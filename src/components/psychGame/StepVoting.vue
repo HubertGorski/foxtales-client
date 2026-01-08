@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue';
+  import { computed, onBeforeMount, onMounted, onUnmounted, ref, toRef } from 'vue';
   import UserListElement from '../UserListElement.vue';
   import HubBtn from '../hubComponents/HubBtn.vue';
   import HubDivider from '../hubComponents/HubDivider.vue';
@@ -31,7 +31,10 @@
     game.value.isCurrentView(currentUserId.value, VIEW.SHOW_OWNERS)
   );
 
-  const selectedAnswerUserIds = ref<number[]>([]);
+  const selectedAnswerUserIds = ref<number[]>(
+    game.value.getSelectedAnswerUserIds(currentUserId.value)
+  );
+
   const timeLeft = ref(0);
   let timerId: number = 0;
   const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
@@ -41,7 +44,25 @@
     () => currentUserId.value === game.value.currentQuestion?.currentUser?.userId
   );
 
+  onBeforeMount(() => {
+    if (!signalRStore.userIdsOrderList.length) {
+      signalRStore.userIdsOrderList = shuffledUsers.value.map(user => user.userId);
+      return;
+    }
+
+    const orderMap = new Map(signalRStore.userIdsOrderList.map((id, index) => [id, index]));
+    shuffledUsers.value.sort((a, b) => {
+      const aIndex = orderMap.get(a.userId) ?? Infinity;
+      const bIndex = orderMap.get(b.userId) ?? Infinity;
+      return aIndex - bIndex;
+    });
+  });
+
   onMounted(() => {
+    if (isUserReady.value) {
+      return;
+    }
+
     if (isQuietDaysMode.value) {
       timeLeft.value = 5;
     }
@@ -168,19 +189,6 @@
       disabled: false,
     };
   });
-
-  watch(
-    game,
-    (game: Game | null) => {
-      if (game && showOwnersStep.value) {
-        shuffledUsers.value = shuffledUsers.value.map(user => {
-          const freshUser = game.users.find(u => u.userId === user.userId);
-          return freshUser ? { ...user, ...freshUser } : user;
-        });
-      }
-    },
-    { immediate: true }
-  );
 </script>
 
 <template>

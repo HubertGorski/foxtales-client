@@ -108,6 +108,12 @@ export class Game {
     );
   }
 
+  getSelectedAnswerUserIds(userId: number): number[] {
+    return this.users
+      .filter(user => user.votersIdsForHisAnswer.includes(userId))
+      .map(user => user.userId);
+  }
+
   get isPasswordSet(): boolean {
     return !!this.password;
   }
