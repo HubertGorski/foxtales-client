@@ -5,12 +5,12 @@ import { Catalog } from './Catalog';
 import { Avatar } from './Avatar';
 import { Achievement } from './Achievement';
 import { Permission } from './Permission';
-import { LANG } from '@/enums/languagesEnum';
+import { LANG, LangToNumber } from '@/enums/languagesEnum';
 import { Question } from './Question';
 import { DylematyCard } from './DylematyCard';
 import { Deck } from './Deck';
 import { UserLimit } from './UserLimit';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import type { QUESTION_SOURCE } from '@/enums/questionSource';
 import { Answer } from './Answer';
 import { Vote } from './Vote';
@@ -21,7 +21,12 @@ export class User {
   userId: number = 0;
   gender: GENDER = GENDER.MAN;
   role: ROLE = ROLE.USER;
+
+  @Transform(({ value }) => (typeof value === 'string' ? LangToNumber[value as LANG] : value), {
+    toPlainOnly: true,
+  })
   language: LANG = LANG.PL;
+
   invitedUsersToAppCount: number = 0;
   lastSign: Date = new Date();
   registerDate: Date = new Date();

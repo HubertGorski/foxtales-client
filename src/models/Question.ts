@@ -6,6 +6,7 @@ import { Transform, Type } from 'class-transformer';
 export class Question {
   id: number | null;
   text: string;
+  textInOtherLanguage?: Partial<Record<LANG, string>>;
   ownerId: number;
 
   @Transform(
