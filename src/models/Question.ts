@@ -6,7 +6,14 @@ import { Transform, Type } from 'class-transformer';
 export class Question {
   id: number | null;
   text: string;
-  textInOtherLanguage?: Partial<Record<LANG, string>>;
+
+  @Transform(({ value }) => {
+    if (!value) return null;
+    return Object.fromEntries(
+      Object.entries(value).map(([key, val]) => [key.toLowerCase() as LANG, val])
+    );
+  })
+  textInOtherLanguage: Partial<Record<LANG, string>> | null = null;
   ownerId: number;
 
   @Transform(
