@@ -13,7 +13,7 @@ export class Question {
       Object.entries(value).map(([key, val]) => [key.toLowerCase() as LANG, val])
     );
   })
-  textInOtherLanguage: Partial<Record<LANG, string>> | null = null;
+  textInOtherLanguages: Partial<Record<LANG, string>> | null = null;
   ownerId: number;
 
   @Transform(

@@ -19,6 +19,8 @@
   import { getAvatar } from '@/utils/imgUtils';
   import HubAccordionElement from '@/components/hubComponents/HubAccordionElement.vue';
   import Terms from '@/components/Terms.vue';
+  import HubSwitch from '@/components/hubComponents/HubSwitch.vue';
+  import HubDivider from '@/components/hubComponents/HubDivider.vue';
 
   const userStore = useUserStore();
   const { t, locale } = useI18n();
@@ -243,6 +245,12 @@
         </template>
         <template #changeLanguage>
           <div class="accordionContent">
+            <HubSwitch
+              v-model="userStore.user.useAiTranslations"
+              label="aiLiveTranslation"
+              tooltipText="aiLiveTranslationTooltip"
+            />
+            <HubDivider :text="$t('changeInterfaceLanguage')" />
             <WhiteSelectList v-model="languages" />
             <HubBtn
               class="setLangBtn"
@@ -336,7 +344,7 @@
     }
 
     .accordionContent {
-      padding: 16px;
+      padding: 12px 16px;
 
       .setLangBtn {
         margin-top: 12px;

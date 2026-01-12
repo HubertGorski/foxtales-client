@@ -72,9 +72,9 @@
   );
   const dividerText = computed(() => (isReady.value ? t('waitForAnswers') : t('writeAnswer')));
   const questionText = computed((): string => {
-    if (game.value.currentQuestion?.textInOtherLanguage) {
+    if (game.value.currentQuestion?.textInOtherLanguages) {
       return (
-        game.value.currentQuestion.textInOtherLanguage[userStore.user.language] ??
+        game.value.currentQuestion.textInOtherLanguages[userStore.user.language] ??
         game.value.currentQuestion.text
       );
     }
