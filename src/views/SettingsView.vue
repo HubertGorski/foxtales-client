@@ -31,6 +31,8 @@
     t('languages.polish'),
     t('languages.english'),
     t('languages.german'),
+    t('languages.french'),
+    t('languages.spanish'),
   ]);
 
   const languages = ref<ListElement[]>([
@@ -51,6 +53,18 @@
       title: translatedLanguages.value[2],
       description: '',
       isSelected: currentUser.language === LANG.DE,
+    }),
+    new ListElement({
+      id: 3,
+      title: translatedLanguages.value[3],
+      description: '',
+      isSelected: currentUser.language === LANG.FR,
+    }),
+    new ListElement({
+      id: 4,
+      title: translatedLanguages.value[4],
+      description: '',
+      isSelected: currentUser.language === LANG.ES,
     }),
   ]);
 
@@ -251,7 +265,7 @@
               tooltipText="aiLiveTranslationTooltip"
             />
             <HubDivider :text="$t('changeInterfaceLanguage')" />
-            <WhiteSelectList v-model="languages" />
+            <WhiteSelectList v-model="languages" :itemsPerPage="10" />
             <HubBtn
               class="setLangBtn"
               :action="acceptLanguageBtn.action"

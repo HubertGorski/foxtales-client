@@ -155,7 +155,9 @@
   "languages": {
     "polish": "Polnisch",
     "english": "Englisch",
-    "german": "Deutsch"
+    "german": "Deutsch",
+    "french": "Französisch",
+    "spanish": "Spanisch"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Es wurde noch kein Katalog erstellt.",
