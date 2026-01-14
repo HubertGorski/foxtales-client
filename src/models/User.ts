@@ -88,6 +88,7 @@ export class User {
   currentView: VIEW | null = null;
 
   pointsInGame: number = 0;
+  newPoints: number = 0;
   round: number = 1;
 
   // In Psych Game

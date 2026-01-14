@@ -8,6 +8,7 @@
     isSelected = false,
     isSelectedBold = false,
     text = '',
+    sublabel = '',
     label = '',
     avatarLabel = '',
     tooltipText = '',
@@ -17,6 +18,7 @@
     isSelected?: boolean;
     isSelectedBold?: boolean;
     text?: string;
+    sublabel?: string;
     label?: string;
     avatarLabel?: string;
     tooltipText?: string;
@@ -59,7 +61,10 @@
             {{ avatarLabel }}
           </div>
         </div>
-        <div v-if="label && !showArrowsLabel" class="whiteCard label">{{ label }}</div>
+        <div class="pointLabels">
+          <div v-if="sublabel" :key="sublabel" class="whiteCard label label-sub">{{ sublabel }}</div>
+          <div v-if="label && !showArrowsLabel" class="whiteCard label">{{ label }}</div>
+        </div>
         <div v-if="label && showArrowsLabel" class="labelContainer">
           <HubBtn :icon="ICON.ARROW_LEFT" :action="arrowLeftClicked" />
           <div class="whiteCard label">{{ label }}</div>
@@ -132,6 +137,17 @@
         font-style: italic;
         color: $lightGrayColor;
         text-align: center;
+        z-index: 2;
+
+        &-sub {
+          min-width: 42px;
+          animation: slideIntoLabel 1s ease-in 0.5s forwards;
+        }
+      }
+
+      .pointLabels {
+        display: flex;
+        gap: 2px;
       }
 
       .labelContainer {
@@ -173,6 +189,12 @@
       left: 8px;
       top: 4px;
       z-index: 2;
+    }
+  }
+
+  @keyframes slideIntoLabel {
+    100% {
+      transform: translateX(48px);
     }
   }
 </style>
