@@ -103,6 +103,7 @@
     "yourAnswerWasChosen": "Votre réponse a été choisie par :",
     "aiLiveTranslation": "Traduction IA en direct",
     "aiLiveTranslationTooltip": "Activez pour que l'IA traduise les questions et réponses dans votre langue pendant le jeu. Laissez désactivé pour jouer dans la langue d'origine.",
+    "confirmAvatar": "Voulez-vous choisir ce renard ?",
     "changeLanguage": "Langue du jeu",
     "changeInterfaceLanguage": "Langue de l'interface",
     "isComing": "Bientôt disponible",

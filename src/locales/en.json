@@ -103,6 +103,7 @@
   "yourAnswerWasChosen": "Your answer was chosen by:",
   "aiLiveTranslation": "AI live translation",
   "aiLiveTranslationTooltip": "Enable to have AI translate questions and answers into your language during the game. Leave disabled to play in the original language.",
+  "confirmAvatar": "Do you want to choose this fox?",
   "changeLanguage": "Game language",
   "changeInterfaceLanguage": "Application language",
   "isComing": "Coming soon",

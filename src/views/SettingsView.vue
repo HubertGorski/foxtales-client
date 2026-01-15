@@ -21,6 +21,7 @@
   import Terms from '@/components/Terms.vue';
   import HubSwitch from '@/components/hubComponents/HubSwitch.vue';
   import HubDivider from '@/components/hubComponents/HubDivider.vue';
+  import HubDialogPopup from '@/components/hubComponents/HubDialogPopup.vue';
 
   const userStore = useUserStore();
   const { t, locale } = useI18n();
@@ -34,6 +35,9 @@
     t('languages.french'),
     t('languages.spanish'),
   ]);
+
+  const isConfirmFoxPanelVisible = ref<boolean>(false);
+  const selectedAvatar = ref<Avatar | null>(null);
 
   const languages = ref<ListElement[]>([
     new ListElement({
@@ -87,14 +91,29 @@
     });
   };
 
-  const changeAvatar = async (avatar: Avatar) => {
+  const showConfirmFoxPanel = async (avatar: Avatar) => {
     if (isEqual(userStore.getAvatar(), avatar)) {
       return;
     }
 
-    const response = await userService.setAvatar(avatar.id);
+    isConfirmFoxPanelVisible.value = true;
+    selectedAvatar.value = avatar;
+  };
+
+  const closeConfirmAvatarDialog = async () => {
+    isConfirmFoxPanelVisible.value = false;
+    selectedAvatar.value = null;
+  };
+
+  const changeAvatar = async () => {
+    if (!selectedAvatar.value) {
+      return;
+    }
+
+    const response = await userService.setAvatar(selectedAvatar.value.id);
     if (response) {
-      userStore.setAvatar(avatar);
+      userStore.setAvatar(selectedAvatar.value);
+      closeConfirmAvatarDialog();
     }
   };
 
@@ -136,6 +155,10 @@
     );
 
     return [...unlockedAvatars, ...lockedAvatars];
+  });
+
+  const fox = computed(() => {
+    return new URL(`/src/assets/imgs/${selectedAvatar.value?.id}.webp`, import.meta.url).href;
   });
 
   const selectedLanguage = computed(
@@ -236,7 +259,7 @@
                   isDisabled: avatar.isDisabled(currentUser.avatarsIds),
                 }"
                 class="avatar_img"
-                @click="changeAvatar(avatar)"
+                @click="showConfirmFoxPanel(avatar)"
               />
               <v-icon v-if="avatar.isDisabled(currentUser.avatarsIds)" class="avatar_lock">
                 {{ ICON.LOCK }}
@@ -281,6 +304,17 @@
       </Terms>
     </div>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
+    <HubDialogPopup
+      v-model="isConfirmFoxPanelVisible"
+      :textPopup="$t('confirmAvatar')"
+      :confirmAction="changeAvatar"
+      :backAction="closeConfirmAvatarDialog"
+      :showDefaultImg="false"
+    >
+      <div class="selectedFox">
+        <img :src="fox" alt="Lisek" class="selectedFox_img" />
+      </div>
+    </HubDialogPopup>
   </div>
 </template>
 
@@ -293,6 +327,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    .selectedFox {
+      display: flex;
+      justify-content: center;
+      &_img {
+        height: 180px;
+      }
+    }
 
     .settings {
       display: flex;
