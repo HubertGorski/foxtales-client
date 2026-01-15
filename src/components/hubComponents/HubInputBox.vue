@@ -14,6 +14,7 @@
     withFoxImg = false,
     isTextarea = false,
     errorMessages,
+    btnLoading = false,
   } = defineProps<{
     title: string;
     btnText: string;
@@ -27,6 +28,7 @@
     withFoxImg?: boolean;
     isTextarea?: boolean;
     errorMessages?: string;
+    btnLoading?: boolean;
   }>();
 
   const text = defineModel({ type: String, required: true });
@@ -61,6 +63,7 @@
       :isTextarea="isTextarea"
       :textPlaceholder="textPlaceholder"
       :error-messages="errorMessages"
+      :btnLoading="btnLoading"
       @focus="handleFocus"
       @blur="handleBlur"
     >

@@ -9,6 +9,7 @@
   import HubTooltip from '@/components/hubComponents/HubTooltip.vue';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
+  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsaccepted';
 
@@ -16,7 +17,6 @@
   const router = useRouter();
 
   const step = ref(0);
-  const errorRegister = ref('');
 
   const { handleSubmit, setFieldError } = useForm({
     initialValues: {
@@ -55,7 +55,9 @@
           }
         });
       } else {
-        errorRegister.value = data?.title ? t(`auth.${data.title}`) : t('auth.unexpectedError');
+        useUserStore().connectionError = data?.title
+          ? t(`auth.${data.title}`)
+          : t('auth.unexpectedError');
       }
     }
   });
@@ -77,7 +79,7 @@
   });
 
   const areErrorExist = computed(() => {
-    return !!(areErrorExistInPart1.value || areErrorExistInPart2.value || errorRegister.value);
+    return !!(areErrorExistInPart1.value || areErrorExistInPart2.value);
   });
 
   const isCreateBtnDisabled = computed(() => {
@@ -173,9 +175,6 @@
           />
         </HubTooltip>
       </div>
-      <div class="error">
-        {{ errorRegister }}
-      </div>
     </form>
   </div>
 </template>
@@ -224,13 +223,6 @@
     .hubBtn {
       padding: 12px;
       font-size: 16px;
-    }
-
-    .error {
-      width: 100%;
-      text-align: center;
-      padding-top: 12px;
-      color: $errorColor;
     }
   }
 </style>

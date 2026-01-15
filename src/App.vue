@@ -8,6 +8,7 @@
   import { computed, ref } from 'vue';
   import { useSignalRStore } from './stores/signalRStore';
   import { ICON } from './enums/iconsEnum';
+  import { useUserStore } from './stores/userStore';
 
   // useDynamicHeight('#app');
   // useDynamicHeight('.foxTales');
@@ -16,7 +17,9 @@
 
   const { isLandscape } = useOrientation();
   const showErrorPanel = ref<boolean>(true);
-  const connectionError = computed(() => useSignalRStore().connectionError);
+  const connectionError = computed(
+    () => useSignalRStore().connectionError ?? useUserStore().connectionError
+  );
 </script>
 
 <template>

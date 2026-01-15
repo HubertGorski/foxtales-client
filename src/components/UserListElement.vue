@@ -62,7 +62,9 @@
           </div>
         </div>
         <div class="pointLabels">
-          <div v-if="sublabel" :key="sublabel" class="whiteCard label label-sub">{{ sublabel }}</div>
+          <div v-if="sublabel" :key="sublabel" class="whiteCard label label-sub">
+            {{ sublabel }}
+          </div>
           <div v-if="label && !showArrowsLabel" class="whiteCard label">{{ label }}</div>
         </div>
         <div v-if="label && showArrowsLabel" class="labelContainer">
