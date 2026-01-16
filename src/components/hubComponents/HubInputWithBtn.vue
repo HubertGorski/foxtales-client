@@ -49,6 +49,10 @@
       type: Boolean,
       default: false,
     },
+    btnLoading: {
+      type: Boolean,
+      default: false,
+    },
     errorMessages: {
       type: String,
     },
@@ -139,6 +143,7 @@
         :text="btnText"
         :isOrange="btnIsOrange"
         :disabled="btnIsDisabled"
+        :loading="btnLoading"
       />
       <HubBtn
         v-if="extraBtnAction && extraBtnIcon"

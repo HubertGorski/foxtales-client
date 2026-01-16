@@ -19,6 +19,9 @@
   import { getAvatar } from '@/utils/imgUtils';
   import HubAccordionElement from '@/components/hubComponents/HubAccordionElement.vue';
   import Terms from '@/components/Terms.vue';
+  import HubSwitch from '@/components/hubComponents/HubSwitch.vue';
+  import HubDivider from '@/components/hubComponents/HubDivider.vue';
+  import HubDialogPopup from '@/components/hubComponents/HubDialogPopup.vue';
 
   const userStore = useUserStore();
   const { t, locale } = useI18n();
@@ -29,7 +32,12 @@
     t('languages.polish'),
     t('languages.english'),
     t('languages.german'),
+    t('languages.french'),
+    t('languages.spanish'),
   ]);
+
+  const isConfirmFoxPanelVisible = ref<boolean>(false);
+  const selectedAvatar = ref<Avatar | null>(null);
 
   const languages = ref<ListElement[]>([
     new ListElement({
@@ -49,6 +57,18 @@
       title: translatedLanguages.value[2],
       description: '',
       isSelected: currentUser.language === LANG.DE,
+    }),
+    new ListElement({
+      id: 3,
+      title: translatedLanguages.value[3],
+      description: '',
+      isSelected: currentUser.language === LANG.FR,
+    }),
+    new ListElement({
+      id: 4,
+      title: translatedLanguages.value[4],
+      description: '',
+      isSelected: currentUser.language === LANG.ES,
     }),
   ]);
 
@@ -71,14 +91,29 @@
     });
   };
 
-  const changeAvatar = async (avatar: Avatar) => {
+  const showConfirmFoxPanel = async (avatar: Avatar) => {
     if (isEqual(userStore.getAvatar(), avatar)) {
       return;
     }
 
-    const response = await userService.setAvatar(avatar.id);
+    isConfirmFoxPanelVisible.value = true;
+    selectedAvatar.value = avatar;
+  };
+
+  const closeConfirmAvatarDialog = async () => {
+    isConfirmFoxPanelVisible.value = false;
+    selectedAvatar.value = null;
+  };
+
+  const changeAvatar = async () => {
+    if (!selectedAvatar.value) {
+      return;
+    }
+
+    const response = await userService.setAvatar(selectedAvatar.value.id);
     if (response) {
-      userStore.setAvatar(avatar);
+      userStore.setAvatar(selectedAvatar.value);
+      closeConfirmAvatarDialog();
     }
   };
 
@@ -120,6 +155,10 @@
     );
 
     return [...unlockedAvatars, ...lockedAvatars];
+  });
+
+  const fox = computed(() => {
+    return new URL(`/src/assets/imgs/${selectedAvatar.value?.id}.webp`, import.meta.url).href;
   });
 
   const selectedLanguage = computed(
@@ -220,7 +259,7 @@
                   isDisabled: avatar.isDisabled(currentUser.avatarsIds),
                 }"
                 class="avatar_img"
-                @click="changeAvatar(avatar)"
+                @click="showConfirmFoxPanel(avatar)"
               />
               <v-icon v-if="avatar.isDisabled(currentUser.avatarsIds)" class="avatar_lock">
                 {{ ICON.LOCK }}
@@ -243,7 +282,13 @@
         </template>
         <template #changeLanguage>
           <div class="accordionContent">
-            <WhiteSelectList v-model="languages" />
+            <HubSwitch
+              v-model="userStore.user.useAiTranslations"
+              label="aiLiveTranslation"
+              tooltipText="aiLiveTranslationTooltip"
+            />
+            <HubDivider :text="$t('changeInterfaceLanguage')" />
+            <WhiteSelectList v-model="languages" :itemsPerPage="10" />
             <HubBtn
               class="setLangBtn"
               :action="acceptLanguageBtn.action"
@@ -259,6 +304,17 @@
       </Terms>
     </div>
     <NavigationBtns btn="back" btn2="shop" btn2Disabled />
+    <HubDialogPopup
+      v-model="isConfirmFoxPanelVisible"
+      :textPopup="$t('confirmAvatar')"
+      :confirmAction="changeAvatar"
+      :backAction="closeConfirmAvatarDialog"
+      :showDefaultImg="false"
+    >
+      <div class="selectedFox">
+        <img :src="fox" alt="Lisek" class="selectedFox_img" />
+      </div>
+    </HubDialogPopup>
   </div>
 </template>
 
@@ -271,6 +327,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    .selectedFox {
+      display: flex;
+      justify-content: center;
+      &_img {
+        height: 180px;
+      }
+    }
 
     .settings {
       display: flex;
@@ -336,7 +400,7 @@
     }
 
     .accordionContent {
-      padding: 16px;
+      padding: 12px 16px;
 
       .setLangBtn {
         margin-top: 12px;

@@ -71,6 +71,16 @@
       `${t('lobby.waitingForPlayers')} ( ${game.value.getReadyUsersCount(VIEW.SELECT_ANSWER)} / ${game.value.usersCount} )`
   );
   const dividerText = computed(() => (isReady.value ? t('waitForAnswers') : t('writeAnswer')));
+  const questionText = computed((): string => {
+    if (game.value.currentQuestion?.textInOtherLanguages) {
+      return (
+        game.value.currentQuestion.textInOtherLanguages[userStore.user.language] ??
+        game.value.currentQuestion.text
+      );
+    }
+
+    return game.value.currentQuestion?.text ?? '';
+  });
 
   watch(
     () => game.value?.currentQuestion,
@@ -99,7 +109,7 @@
           <div class="question" :class="{ 'pb-4': isOwner }">
             <CurrentQuestion
               :isFoxVisible="isFoxVisible"
-              :question="game.currentQuestion?.text ?? ''"
+              :question="questionText"
               :avatarId="game.currentQuestion?.currentUser?.avatar.id ?? 0"
               :username="game.currentQuestion?.currentUser?.username ?? ''"
             />

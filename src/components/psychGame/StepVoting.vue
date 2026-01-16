@@ -15,6 +15,7 @@
   import { RULES } from '@/enums/rulesEnum';
   import { VIEW } from '@/enums/viewsEnum';
   import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
+  import type { Answer } from '@/models/Answer';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
@@ -192,6 +193,17 @@
     };
   });
 
+  const questionText = computed((): string => {
+    if (game.value.currentQuestion?.textInOtherLanguages) {
+      return (
+        game.value.currentQuestion.textInOtherLanguages[userStore.user.language] ??
+        game.value.currentQuestion.text
+      );
+    }
+
+    return game.value.currentQuestion?.text ?? '';
+  });
+
   const nextPageBtn = computed(() => {
     return {
       text: 'next',
@@ -202,6 +214,14 @@
       disabled: false,
     };
   });
+
+  const getAnswerText = (answer: Answer | null): string => {
+    if (answer?.answerInOtherLanguages) {
+      return answer.answerInOtherLanguages[userStore.user.language] ?? answer.answer;
+    }
+
+    return answer?.answer ?? '';
+  };
 </script>
 
 <template>
@@ -210,7 +230,7 @@
       <HubDivider :text="chooseAnswerText" />
       <CurrentQuestion
         :isFoxVisible="false"
-        :question="game.currentQuestion?.text ?? ''"
+        :question="questionText"
         :avatarId="game.currentQuestion?.currentUser?.avatar.id ?? 0"
         :username="game.currentQuestion?.currentUser?.username ?? ''"
       />
@@ -229,7 +249,7 @@
       <UserListElement
         v-for="user in userList"
         :key="user.userId"
-        :text="user.answer?.answer ?? ''"
+        :text="getAnswerText(user.answer)"
         :avatarLabel="showOwnersStep ? user.username : ''"
         :label="getLabel(user)"
         :isSelected="isSelected(user.userId)"

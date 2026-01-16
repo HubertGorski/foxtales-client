@@ -2,6 +2,7 @@
   const props = defineProps({
     text: { type: String, required: false },
     icon: { type: String, required: false },
+    loading: { type: Boolean, default: false },
     isOrange: { type: Boolean, default: false },
     isClicked: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
@@ -9,6 +10,10 @@
   });
 
   const handleAction = () => {
+    if (props.loading || props.disabled) {
+      return;
+    }
+
     props.action();
   };
 </script>
@@ -18,7 +23,7 @@
     data-no-blur
     class="hubBtn"
     :class="[
-      { disabled },
+      { loading, disabled },
       isClicked
         ? isOrange
           ? 'hubBtn--darkOrange'
@@ -29,8 +34,11 @@
     ]"
     @click="handleAction()"
   >
-    <p v-if="text">{{ $t(text) }}</p>
-    <v-icon v-if="icon">{{ icon }}</v-icon>
+    <div v-if="loading" class="loader"></div>
+    <template v-else>
+      <p v-if="text">{{ $t(text) }}</p>
+      <v-icon v-if="icon">{{ icon }}</v-icon>
+    </template>
   </div>
 </template>
 
@@ -84,6 +92,21 @@
 
     p {
       margin: 0;
+    }
+  }
+
+  .loader {
+    width: 22px;
+    height: 22px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
     }
   }
 </style>

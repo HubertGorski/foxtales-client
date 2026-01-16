@@ -13,6 +13,7 @@ interface UserState {
   avatars: Avatar[];
   availableCatalogType: CatalogType[];
   publicCatalogs: Catalog[];
+  connectionError: string | null;
 }
 
 export const useUserStore = defineStore({
@@ -22,6 +23,7 @@ export const useUserStore = defineStore({
     avatars: [],
     availableCatalogType: [],
     publicCatalogs: [],
+    connectionError: null,
   }),
 
   getters: {

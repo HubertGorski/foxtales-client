@@ -101,7 +101,11 @@
   "nobodyChoseYourAnswer": "Niemand hat deine Antwort gewählt",
   "haveFunAndEnjoyGame": "Viel Spaß und gutes Spiel!",
   "yourAnswerWasChosen": "Deine Antwort wurde gewählt von:",
-  "changeLanguage": "Sprache ändern",
+  "changeLanguage": "Spielsprache",
+  "aiLiveTranslation": "KI-Live-Übersetzung",
+  "aiLiveTranslationTooltip": "Aktivieren, damit die KI Fragen und Antworten während des Spiels in Ihre Sprache übersetzt. Deaktiviert spielen Sie in der Originalsprache.",
+  "confirmAvatar": "Möchtest du diesen Fuchs wählen?",
+  "changeInterfaceLanguage": "Anwendungssprache",
   "isComing": "Bald verfügbar",
   "createdItems": "Erstellte Elemente",
   "selectedItems": "Ausgewählte Elemente",
@@ -152,7 +156,9 @@
   "languages": {
     "polish": "Polnisch",
     "english": "Englisch",
-    "german": "Deutsch"
+    "german": "Deutsch",
+    "french": "Französisch",
+    "spanish": "Spanisch"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Es wurde noch kein Katalog erstellt.",

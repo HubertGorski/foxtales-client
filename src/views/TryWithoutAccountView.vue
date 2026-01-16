@@ -10,12 +10,13 @@
   import { userService } from '@/api/services/UserService';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
+  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'username' | 'termsaccepted';
 
   const { t } = useI18n();
   const router = useRouter();
-  const error = ref('');
+  const loading = ref<boolean>(false);
 
   const { handleSubmit, setFieldError } = useForm({
     initialValues: {
@@ -29,6 +30,7 @@
 
   const onSubmit = handleSubmit(async values => {
     try {
+      loading.value = true;
       await userService.registerTmpUser(values.username, values.termsaccepted);
       router.push(ROUTE_PATH.MENU);
     } catch (err: any) {
@@ -40,8 +42,12 @@
           }
         });
       } else {
-        error.value = data?.title ? t(`auth.${data.title}`) : t('auth.unexpectedError');
+        useUserStore().connectionError = data?.title
+          ? t(`auth.${data.title}`)
+          : t('auth.unexpectedError');
       }
+
+      loading.value = false;
     }
   });
 
@@ -61,6 +67,7 @@
       title="auth.username"
       btnText="tryWithoutAccount"
       :btnAction="onSubmit"
+      :btnLoading="loading"
       withFoxImg
     >
       <HubCheckbox v-model="termsAccepted" :error-messages="termsAcceptedError">

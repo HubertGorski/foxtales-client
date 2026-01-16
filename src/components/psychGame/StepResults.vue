@@ -2,7 +2,7 @@
   import { Game } from '@/models/Game';
   import { useSignalRStore } from '@/stores/signalRStore';
   import { useUserStore } from '@/stores/userStore';
-  import { computed, onBeforeMount, toRef } from 'vue';
+  import { computed, onBeforeMount, reactive, toRef, watch } from 'vue';
   import HubDivider from '../hubComponents/HubDivider.vue';
   import HubBtn from '../hubComponents/HubBtn.vue';
   import UserListElement from '../UserListElement.vue';
@@ -64,6 +64,42 @@
       game.value.isCurrentView(userId, VIEW.SHOW_RESULTS)
     );
   };
+
+  const displayedPoints = reactive<Record<number, number>>({});
+  const animatedUserIds = new Set<number>();
+
+  const animatePoints = (userId: number, start: number, end: number, duration: number) => {
+    const startTime = performance.now();
+    const update = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const value = Math.floor(start + (end - start) * progress);
+      displayedPoints[userId] = value;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    };
+    requestAnimationFrame(update);
+  };
+
+  watch(
+    () => game.value.users,
+    users => {
+      users.forEach(user => {
+        if (!animatedUserIds.has(user.userId)) {
+          const startVal = user.pointsInGame - user.newPoints;
+          displayedPoints[user.userId] = startVal;
+          animatedUserIds.add(user.userId);
+
+          setTimeout(() => {
+            animatePoints(user.userId, startVal, user.pointsInGame, 1000);
+          }, 1500);
+        }
+      });
+    },
+    { immediate: true, deep: true }
+  );
 </script>
 
 <template>
@@ -76,7 +112,8 @@
           :key="user.userId"
           :imgSource="getAvatar(user.avatar.id)"
           :text="user.username"
-          :label="`${user.pointsInGame} ${$t('points')}`"
+          :sublabel="`+${user.newPoints}`"
+          :label="`${displayedPoints[user.userId] ?? user.pointsInGame} ${$t('points')}`"
           :isSelected="isUserReadyForNewRound(user.userId)"
         />
       </div>

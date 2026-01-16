@@ -101,7 +101,11 @@
   "nobodyChoseYourAnswer": "Nobody chose your answer",
   "haveFunAndEnjoyGame": "Have fun and enjoy the game.",
   "yourAnswerWasChosen": "Your answer was chosen by:",
-  "changeLanguage": "Change language",
+  "aiLiveTranslation": "AI live translation",
+  "aiLiveTranslationTooltip": "Enable to have AI translate questions and answers into your language during the game. Leave disabled to play in the original language.",
+  "confirmAvatar": "Do you want to choose this fox?",
+  "changeLanguage": "Game language",
+  "changeInterfaceLanguage": "Application language",
   "isComing": "Coming soon",
   "createdItems": "Created items",
   "selectedItems": "Selected items",
@@ -152,7 +156,9 @@
   "languages": {
     "polish": "Polish",
     "english": "English",
-    "german": "German"
+    "german": "German",
+    "french": "French",
+    "spanish": "Spanish"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "No catalog has been created yet.",

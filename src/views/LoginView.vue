@@ -3,15 +3,15 @@
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useForm, useField } from 'vee-validate';
   import * as yup from 'yup';
-  import { computed, ref } from 'vue';
+  import { computed } from 'vue';
   import { userService } from '@/api/services/UserService';
   import { useI18n } from 'vue-i18n';
   import { SESSION_STORAGE } from '@/enums/sessionStorageEnum';
   import { useViewStore } from '@/stores/viewStore';
+  import { useUserStore } from '@/stores/userStore';
 
   const { t } = useI18n();
   const router = useRouter();
-  const errorLogin = ref('');
 
   const schema = yup.object({
     email: yup.string().required(t('auth.emailIsRequired')).email(t('auth.emailFormatIsIncorrect')),
@@ -38,7 +38,7 @@
         router.push(ROUTE_PATH.MENU);
       }
     } catch (err: any) {
-      errorLogin.value = err?.response?.data
+      useUserStore().connectionError = err?.response?.data
         ? t(`auth.${err.response.data}`)
         : t('auth.unexpectedError');
     }
@@ -79,9 +79,6 @@
           {{ $t('auth.logIn') }}
         </button>
       </div>
-      <div class="error">
-        {{ errorLogin }}
-      </div>
     </form>
   </div>
 </template>
@@ -104,13 +101,6 @@
         height: 0;
         top: -4px;
       }
-    }
-
-    .error {
-      width: 100%;
-      text-align: center;
-      padding-top: 12px;
-      color: $errorColor;
     }
 
     .creamCard {

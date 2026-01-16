@@ -101,7 +101,11 @@
   "nobodyChoseYourAnswer": "Nikt nie wybrał Twojej odpowiedzi",
   "haveFunAndEnjoyGame": "Baw się dobrze i miłej gry.",
   "yourAnswerWasChosen": "Twoją odpowiedź wybrali:",
-  "changeLanguage": "Zmień język",
+  "aiLiveTranslation": "Tłumaczenie na żywo z AI",
+  "aiLiveTranslationTooltip": "Włącz, aby AI tłumaczyło pytania i odpowiedzi na Twój język w trakcie gry. Pozostaw wyłączone, aby grać w oryginalnym języku.",
+  "confirmAvatar": "Czy chcesz wybrać tego liska?",
+  "changeLanguage": "Język gry",
+  "changeInterfaceLanguage": "Język aplikacji",
   "isComing": "Wkrótce dostępne",
   "createdItems": "Utworzonych elementów",
   "selectedItems": "Wybrane elementy",
@@ -152,7 +156,9 @@
   "languages": {
     "polish": "Polski",
     "english": "Angielski",
-    "german": "Niemiecki"
+    "german": "Niemiecki",
+    "french": "Francuski",
+    "spanish": "Hiszpański"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
