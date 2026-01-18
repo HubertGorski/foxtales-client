@@ -21,13 +21,25 @@
   import HubDialogPopup from '@/components/hubComponents/HubDialogPopup.vue';
   import { psychService } from '@/api/services/PsychService';
   import { useViewStore } from '@/stores/viewStore';
+  import HubDivider from '@/components/hubComponents/HubDivider.vue';
+  import { useI18n } from 'vue-i18n';
 
   const userStore = useUserStore();
+  const { t } = useI18n();
 
-  const addQuestion = async (catalogs: Catalog[]) => {
+  const addQuestion = async (catalogs: Catalog[], fromDashboard: boolean = false) => {
     event?.preventDefault();
     if (addManyQuestonsToCatalogs.value && catalogs != null && catalogs.length) {
       return assignedQuestionsToCatalogs(catalogs);
+    }
+
+    if (!fromDashboard) {
+      actualSelectedCatalogs.value = catalogs;
+    }
+
+    if (!newQuestion.value) {
+      isQuestionCreatorOpen.value = false;
+      return;
     }
 
     const questionToStore = new Question(
@@ -38,8 +50,8 @@
     );
 
     let catalogIds: number[] = [];
-    if (catalogs && catalogs.length > 0) {
-      catalogIds = catalogs
+    if (actualSelectedCatalogs.value && actualSelectedCatalogs.value.length > 0) {
+      catalogIds = actualSelectedCatalogs.value
         .map(catalog => catalog.catalogId)
         .filter((id): id is number => id !== null);
       questionToStore.addCatalogs(catalogIds);
@@ -191,13 +203,25 @@
     userStore.user.catalogs.map(convertCatalogsToListElement)
   );
 
+  const actualSelectedCatalogs = ref<Catalog[]>([]);
+
   const addQuestionBtn = computed(() => {
     return {
       text: 'add',
       isOrange: true,
-      action: addQuestion,
+      action: () => addQuestion([], true),
       disabled: !newQuestion.value.trim(),
     };
+  });
+
+  const selectedCatalogsNames = computed((): string => {
+    return (actualSelectedCatalogs.value ?? []).map(c => `"${c.title}"`).join(', ');
+  });
+
+  const selectedCatalogsInfoText = computed((): string => {
+    return selectedCatalogsNames.value
+      ? `${t('selectedCatalogInfoText')} ${selectedCatalogsNames.value}`
+      : t('beforeSelectedCatalogInfoText');
   });
 
   const isKeyboardOpen = computed(() => {
@@ -251,6 +275,8 @@
         />
       </template>
       <template #addQuestion>
+        <div class="selectedCatalogs">{{ selectedCatalogsInfoText }}</div>
+        <HubDivider />
         <HubInputWithBtn
           v-model="newQuestion"
           class="addQuestionToLibrary"
@@ -314,6 +340,15 @@
 
     .addQuestionToLibrary {
       padding: 12px;
+    }
+
+    .selectedCatalogs {
+      margin: 8px 12px 0 12px;
+      font-style: italic;
+      color: $mainBrownColor;
+      overflow-x: scroll;
+      text-align: center;
+      white-space: nowrap;
     }
 
     .addQuestionTutorial {

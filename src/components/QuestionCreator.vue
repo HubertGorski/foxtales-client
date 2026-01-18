@@ -12,7 +12,7 @@
   const props = defineProps({
     newQuestion: {
       type: String,
-      required: true,
+      required: false,
     },
     isQuestionCreatorOpen: {
       type: Boolean,
@@ -70,17 +70,16 @@
   };
 
   const addQuestionBtn = computed(() => ({
-    text: 'add',
+    text: props.newQuestion ? 'add' : 'accept',
     isOrange: true,
     action: addQuestion,
-    disabled: !actualCatalogs.value.filter(catalog => catalog.isSelected).length,
   }));
 </script>
 
 <template>
   <div class="questionCreator creamCard">
     <div class="questionCreator_title">{{ $t('psych.addToCatalog') }}</div>
-    <WhiteCard v-if="!addMany" :header="$t('psych.createdQuestion')">
+    <WhiteCard v-if="!addMany && newQuestion" :header="$t('psych.createdQuestion')">
       <div class="question">
         {{ newQuestion }}
       </div>

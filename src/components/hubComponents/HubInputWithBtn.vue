@@ -19,6 +19,10 @@
       type: Function,
       required: true,
     },
+    extraBtnIsDisabled: {
+      type: Boolean,
+      required: false,
+    },
     extraBtnIsOrange: {
       type: Boolean,
       required: false,
@@ -150,7 +154,7 @@
         class="btn"
         :action="extraBtnAction"
         :icon="extraBtnIcon"
-        :disabled="btnIsDisabled"
+        :disabled="extraBtnIsDisabled"
         :isOrange="extraBtnIsOrange"
       />
     </div>

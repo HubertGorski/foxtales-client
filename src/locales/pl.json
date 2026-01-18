@@ -85,6 +85,8 @@
   "yourCatalogs": "Twoje katalogi",
   "yourQuestions": "Twoje pytania",
   "manageLibrary": "Zarządzaj biblioteką",
+  "beforeSelectedCatalogInfoText": "Nie wybrano katalogu. Przypisanie pytania do katalogu ułatwi jego późniejsze odnalezienie.",
+  "selectedCatalogInfoText": "Pytanie zostanie przypisane do:",
   "exampleQuestion": "Gdyby **** przez jeden dzień był niewidzialny, co by zrobił?",
   "questionTutorial": "Wpisz **** by pytanie dotyczyło dowolnego gracza w grze",
   "changeName": "Zmień imię",

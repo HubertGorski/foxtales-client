@@ -13,7 +13,6 @@ import ChooseGameViewVue from '@/views/ChooseGameView.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ROLE } from '@/enums/rolesEnum';
 import NoAccessViewVue from '@/views/NoAccessView.vue';
-import DylematyLibraryViewVue from '@/views/dylematy/DylematyLibraryView.vue';
 import { NO_ACCESS_REASON } from '@/enums/noAccessReasonEnum';
 import { SESSION_STORAGE } from '@/enums/sessionStorageEnum';
 import { PERMISSION_GAME } from '@/enums/permissions';
@@ -117,14 +116,6 @@ function getRoutesWithAuth() {
       component: LibraryViewVue,
       meta: {
         requiredGameSelected: true,
-      },
-    },
-    {
-      path: ROUTE_PATH.LIBRARY_DYLEMATY,
-      name: ROUTE_NAME.LIBRARY_DYLEMATY,
-      component: DylematyLibraryViewVue,
-      meta: {
-        permission: PERMISSION_GAME.DYLEMATY,
       },
     },
     {
