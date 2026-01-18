@@ -89,6 +89,11 @@ export const userService = {
     this.setUserSession(response.data);
   },
 
+  async refreshToken(): Promise<void> {
+    const response = await userClient.refreshToken();
+    useUserStore().setAccessToken(response.data);
+  },
+
   async register(
     email: string,
     username: string,

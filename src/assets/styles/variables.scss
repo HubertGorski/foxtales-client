@@ -1,5 +1,7 @@
-$mainBackground: linear-gradient(135deg, #f1e3d3, #d3b39d);
 $background: #fff5ea;
+$lightBackground: #f1e3d3;
+$darkBackground: #d3b39d;
+$mainBackground: linear-gradient(135deg, $lightBackground, $darkBackground);
 $infoBackgroundColor: #f0f8ff4d;
 $mainBrownColor: #54322f;
 $lightBrownColor: #654744;

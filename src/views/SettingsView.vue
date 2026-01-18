@@ -302,31 +302,39 @@
       <Terms :isLabelVisible="false">
         <HubAccordionElement title="terms.termsAndPrivacyPolicy" isSmallerTitle @click="" />
       </Terms>
+      <HubDialogPopup
+        v-model="isConfirmFoxPanelVisible"
+        :textPopup="$t('confirmAvatar')"
+        :confirmAction="changeAvatar"
+        :backAction="closeConfirmAvatarDialog"
+        :showDefaultImg="false"
+      >
+        <div class="selectedFox">
+          <img :src="fox" alt="Lisek" class="selectedFox_img" />
+        </div>
+      </HubDialogPopup>
     </div>
-    <NavigationBtns btn="back" btn2="shop" btn2Disabled />
-    <HubDialogPopup
-      v-model="isConfirmFoxPanelVisible"
-      :textPopup="$t('confirmAvatar')"
-      :confirmAction="changeAvatar"
-      :backAction="closeConfirmAvatarDialog"
-      :showDefaultImg="false"
-    >
-      <div class="selectedFox">
-        <img :src="fox" alt="Lisek" class="selectedFox_img" />
-      </div>
-    </HubDialogPopup>
+    <NavigationBtns class="pl-1 pr-1 pb-1 pt-1" btn="back" btn2="shop" btn2Disabled />
   </div>
 </template>
 
 <style lang="scss" scoped>
   @import '@/assets/styles/variables';
   .settingsView {
-    background: $mainBackground;
-    height: 100%;
-    padding: 12px;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    .settings {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      gap: 12px;
+      padding: 12px;
+      background: $darkBackground;
+    }
 
     .selectedFox {
       display: flex;
@@ -334,14 +342,6 @@
       &_img {
         height: 180px;
       }
-    }
-
-    .settings {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 12px;
-      flex-grow: 1;
     }
 
     .stats {
