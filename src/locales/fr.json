@@ -85,6 +85,8 @@
   "yourCatalogs": "Vos catalogues",
   "yourQuestions": "Vos questions",
   "manageLibrary": "Gérer la bibliothèque",
+  "beforeSelectedCatalogInfoText": "Aucun catalogue sélectionné. L'attribution de la question à un catalogue facilitera sa recherche ultérieure.",
+  "selectedCatalogInfoText": "La question sera attribuée à :",
   "exampleQuestion": "Si **** était invisible pendant une journée, que ferait-il ?",
   "questionTutorial": "Tapez **** pour poser la question sur n'importe quel joueur du jeu",
   "changeName": "Changer de nom",

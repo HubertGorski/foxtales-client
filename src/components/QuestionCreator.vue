@@ -98,7 +98,6 @@
       :action="addQuestionBtn.action"
       :text="addQuestionBtn.text"
       :isOrange="addQuestionBtn.isOrange"
-      :disabled="addQuestionBtn.disabled"
     />
   </div>
 </template>
