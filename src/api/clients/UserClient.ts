@@ -22,6 +22,10 @@ export const userClient = {
     return apiClient.post('/user/login', { email, password });
   },
 
+  refreshToken(): Promise<{ data: string }> {
+    return apiClient.post('/user/refresh');
+  },
+
   register(
     email: string,
     username: string,

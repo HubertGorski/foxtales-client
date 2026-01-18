@@ -12,8 +12,10 @@ import {
   HubConnection,
   HubConnectionState,
 } from '@microsoft/signalr';
+import { userService } from '@/api/services/UserService';
 
 async function safeSignalRInvoke<T>(
+  hasRetried: boolean,
   connection: HubConnection | null,
   methodName: string,
   ...args: any[]
@@ -31,9 +33,20 @@ async function safeSignalRInvoke<T>(
     return { data: result };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
+
+    if (!hasRetried && (message.includes('Unauthorized') || message.includes('401'))) {
+      try {
+        await userService.refreshToken();
+        return await safeSignalRInvoke<T>(true, connection, methodName, ...args);
+      } catch {
+        return { error: 'Sesja wygasła. Zaloguj się ponownie.' };
+      }
+    }
+
     if (message.includes('No connection')) {
       return { error: 'Brak połączenia z serwerem' };
     }
+
     if (message.includes('timeout')) {
       return { error: 'Przekroczono czas oczekiwania na odpowiedź serwera' };
     }
@@ -128,6 +141,7 @@ export const useSignalRStore = defineStore({
     ) {
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'JoinRoom',
         gameCode,
@@ -142,14 +156,19 @@ export const useSignalRStore = defineStore({
     async createRoom(game: Game) {
       this.game = game;
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'CreateRoom', instanceToPlain(this.game));
+      const result = await safeSignalRInvoke(
+        false,
+        connection,
+        'CreateRoom',
+        instanceToPlain(this.game)
+      );
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
 
     async goToJoinGameView() {
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'GoToJoinGameView');
+      const result = await safeSignalRInvoke(false, connection, 'GoToJoinGameView');
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -157,7 +176,7 @@ export const useSignalRStore = defineStore({
     async editRoom(game: Game) {
       this.game = game;
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'EditRoom', instanceToPlain(game));
+      const result = await safeSignalRInvoke(false, connection, 'EditRoom', instanceToPlain(game));
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -169,6 +188,7 @@ export const useSignalRStore = defineStore({
 
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'SetTeam',
         this.game.code,
@@ -186,6 +206,7 @@ export const useSignalRStore = defineStore({
 
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'SetReadyForNewRound',
         this.game.code,
@@ -202,6 +223,7 @@ export const useSignalRStore = defineStore({
 
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'SetReadyForAddAnswer',
         this.game.code,
@@ -218,6 +240,7 @@ export const useSignalRStore = defineStore({
 
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'SetUnreadyForAddAnswer',
         this.game.code,
@@ -233,7 +256,13 @@ export const useSignalRStore = defineStore({
       }
 
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'GoToResults', this.game.code, playerId);
+      const result = await safeSignalRInvoke(
+        false,
+        connection,
+        'GoToResults',
+        this.game.code,
+        playerId
+      );
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -244,7 +273,13 @@ export const useSignalRStore = defineStore({
       }
 
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'LeaveRoom', this.game.code, playerId);
+      const result = await safeSignalRInvoke(
+        false,
+        connection,
+        'LeaveRoom',
+        this.game.code,
+        playerId
+      );
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -256,6 +291,7 @@ export const useSignalRStore = defineStore({
 
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'AddPrivateQuestionsToGame',
         this.game.code,
@@ -272,7 +308,7 @@ export const useSignalRStore = defineStore({
       }
 
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'StartGame', this.game.code);
+      const result = await safeSignalRInvoke(false, connection, 'StartGame', this.game.code);
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -283,7 +319,7 @@ export const useSignalRStore = defineStore({
       }
 
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'SkipRound', this.game.code);
+      const result = await safeSignalRInvoke(false, connection, 'SkipRound', this.game.code);
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -295,6 +331,7 @@ export const useSignalRStore = defineStore({
 
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'AddAnswer',
         this.game.code,
@@ -310,7 +347,7 @@ export const useSignalRStore = defineStore({
       }
 
       const connection = this.connection as HubConnection | null;
-      const result = await safeSignalRInvoke(connection, 'SetNewRound', this.game.code);
+      const result = await safeSignalRInvoke(false, connection, 'SetNewRound', this.game.code);
       this.connectionError = result.error ?? null;
       return !this.connectionError;
     },
@@ -322,6 +359,7 @@ export const useSignalRStore = defineStore({
 
       const connection = this.connection as HubConnection | null;
       const result = await safeSignalRInvoke(
+        false,
         connection,
         'ChooseAnswer',
         this.game.code,
