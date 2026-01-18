@@ -15,6 +15,9 @@
 
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
   const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
+  const sortedUsers = computed(() =>
+    [...game.value.users].sort((a, b) => b.pointsInGame - a.pointsInGame)
+  );
 
   const currentUserId = computed(() => userStore.user.userId);
   const isReadyForNewRound = computed(
@@ -108,11 +111,11 @@
     <div class="content">
       <div class="summary">
         <UserListElement
-          v-for="user in game.users"
+          v-for="user in sortedUsers"
           :key="user.userId"
           :imgSource="getAvatar(user.avatar.id)"
           :text="user.username"
-          :sublabel="`+${user.newPoints}`"
+          :sublabel="user.newPoints ? `+${user.newPoints}` : ''"
           :label="`${displayedPoints[user.userId] ?? user.pointsInGame} ${$t('points')}`"
           :isSelected="isUserReadyForNewRound(user.userId)"
         />

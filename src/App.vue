@@ -88,7 +88,8 @@
     width: 440px;
     max-width: 440px;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     position: relative;
   }
