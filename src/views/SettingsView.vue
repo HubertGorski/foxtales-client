@@ -22,6 +22,7 @@
   import HubSwitch from '@/components/hubComponents/HubSwitch.vue';
   import HubDivider from '@/components/hubComponents/HubDivider.vue';
   import HubDialogPopup from '@/components/hubComponents/HubDialogPopup.vue';
+  import { emailService } from '@/api/services/EmailService';
 
   const userStore = useUserStore();
   const { t, locale } = useI18n();
@@ -36,6 +37,8 @@
     t('languages.spanish'),
   ]);
 
+  const mailContent = ref<string>('');
+  const isContactDisabled = ref<boolean>(false);
   const isConfirmFoxPanelVisible = ref<boolean>(false);
   const selectedAvatar = ref<Avatar | null>(null);
 
@@ -117,6 +120,11 @@
     }
   };
 
+  const contact = async () => {
+    isContactDisabled.value = true;
+    await emailService.contact(mailContent.value, currentUser);
+  };
+
   const schema = yup.object({
     username: yup.string(),
   });
@@ -182,6 +190,15 @@
       action: () => changeLanguage(),
     };
   });
+
+  const contactBtn = computed(() => {
+    return {
+      text: isContactDisabled.value ? 'messageHasBeenSent' : 'send',
+      isOrange: false,
+      disabled: !mailContent.value || isContactDisabled.value,
+      action: () => contact(),
+    };
+  });
 </script>
 
 <template>
@@ -193,6 +210,7 @@
           { slotName: 'chooseFox', isComing: false },
           { slotName: 'changeName', isComing: false },
           { slotName: 'changeLanguage', isComing: false },
+          { slotName: 'contact', isComing: true },
         ]"
         setOpenTab="accountStats"
       >
@@ -297,6 +315,21 @@
               :disabled="acceptLanguageBtn.disabled"
             />
           </div>
+        </template>
+        <template #contact>
+          <div class="contactTooltip">
+            {{ $t('contactTooltip') }}
+          </div>
+          <HubInputWithBtn
+            v-model="mailContent"
+            class="accordionContent"
+            :btnAction="contactBtn.action"
+            :btnText="contactBtn.text"
+            :btnIsOrange="contactBtn.isOrange"
+            :btnIsDisabled="contactBtn.disabled"
+            :inputDisabled="isContactDisabled"
+            isTextarea
+          />
         </template>
       </HubAccordion>
       <Terms :isLabelVisible="false">
@@ -406,6 +439,11 @@
         margin-top: 12px;
         padding: 6px;
       }
+    }
+
+    .contactTooltip {
+      padding: 12px 16px 0 16px;
+      color: $grayColor;
     }
 
     .achievements {
