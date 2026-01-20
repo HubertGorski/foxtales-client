@@ -195,6 +195,12 @@
     "selectedDecks": "Mazos seleccionados"
   },
   "auth": {
+    "tooManyRequests": "Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.",
+    "unknownError": "Ocurrió un error inesperado",
+    "unauthorized": "Sesión expirada. Por favor, inicia sesión de nuevo.",
+    "timeout": "Se superó el tiempo de espera de respuesta del servidor",
+    "noConnection": "Sin conexión con el servidor. Reconectando...",
+    "noConnectionHub": "Se perdió la conexión con el servidor. Reconectando...",
     "termsAcceptedCannotBeEmpty": "Para usar la aplicación, confirme el reglamento",
     "fillFormCorrectly": "Por favor, complete el formulario de registro correctamente para continuar",
     "youAreAlreadyAuthenticated": "Error inesperado. La cuenta ya ha iniciado sesión.",

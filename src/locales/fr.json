@@ -195,6 +195,12 @@
     "selectedDecks": "Paquets sélectionnés"
   },
   "auth": {
+    "tooManyRequests": "Trop de requêtes. Veuillez réessayer plus tard.",
+    "unknownError": "Une erreur inattendue s'est produite",
+    "unauthorized": "Session expirée. Veuillez vous reconnecter.",
+    "timeout": "Délai d'attente de la réponse du serveur dépassé",
+    "noConnection": "Pas de connexion au serveur. Reconnexion...",
+    "noConnectionHub": "Connexion au serveur perdue. Reconnexion...",
     "termsAcceptedCannotBeEmpty": "Pour utiliser l'application, confirmez le règlement",
     "fillFormCorrectly": "Veuillez remplir correctement le formulaire d'inscription pour continuer",
     "youAreAlreadyAuthenticated": "Erreur inattendue. Le compte est déjà connecté.",

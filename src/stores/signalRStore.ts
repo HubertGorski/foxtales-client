@@ -22,7 +22,7 @@ async function safeSignalRInvoke<T>(
 ): Promise<{ data?: T; error?: string }> {
   try {
     if (!connection) {
-      return { error: 'Brak połączenia z serwerem. Łączenie ponownie...' };
+      return { error: 'auth.noConnection' };
     }
 
     if (connection.state !== HubConnectionState.Connected) {
@@ -32,23 +32,27 @@ async function safeSignalRInvoke<T>(
     const result = await connection.invoke<T>(methodName, ...args);
     return { data: result };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : 'auth.unknownError';
 
     if (!hasRetried && (message.includes('Unauthorized') || message.includes('401'))) {
       try {
         await userService.refreshToken();
         return await safeSignalRInvoke<T>(true, connection, methodName, ...args);
       } catch {
-        return { error: 'Sesja wygasła. Zaloguj się ponownie.' };
+        return { error: 'auth.unauthorized' };
       }
     }
 
     if (message.includes('No connection')) {
-      return { error: 'Brak połączenia z serwerem' };
+      return { error: 'auth.noConnection' };
+    }
+
+    if (message.includes("Cannot start a HubConnection that is not in the 'Disconnected' state.")) {
+      return { error: 'auth.noConnectionHub' };
     }
 
     if (message.includes('timeout')) {
-      return { error: 'Przekroczono czas oczekiwania na odpowiedź serwera' };
+      return { error: 'auth.timeout' };
     }
 
     return { error: message };

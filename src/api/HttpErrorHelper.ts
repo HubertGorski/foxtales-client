@@ -3,16 +3,19 @@ import { AxiosError } from 'axios';
 export function mapHttpErrorToMessage(error: unknown): string {
   if (error instanceof AxiosError) {
     if (error.response) {
-      return error.response.data?.message ?? `Błąd serwera (${error.response.status})`;
+      return error.response.data?.message
+        ? `auth.${error.response.data?.message}`
+        : 'auth.unknownError';
     }
 
     if (error.request) {
-      return 'Brak połączenia z serwerem';
+      return 'auth.noConnection';
     }
+
     return error.message;
   }
 
-  return 'Nieoczekiwany błąd';
+  return 'auth.unknownError';
 }
 
 export function isValidationError(error: AxiosError): boolean {

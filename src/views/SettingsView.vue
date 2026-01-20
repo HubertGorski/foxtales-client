@@ -82,9 +82,7 @@
     achievement => achievement.isUnlocked
   ).length;
 
-  const showAllAchievement = () => {
-    console.log('showAllAchievement');
-  };
+  const showAllAchievement = () => {};
 
   const changeLanguage = () => {
     userStore.setLanguage(selectedLanguage.value);
@@ -210,7 +208,7 @@
           { slotName: 'chooseFox', isComing: false },
           { slotName: 'changeName', isComing: false },
           { slotName: 'changeLanguage', isComing: false },
-          { slotName: 'contact', isComing: true },
+          { slotName: 'contact', isComing: false },
         ]"
         setOpenTab="accountStats"
       >

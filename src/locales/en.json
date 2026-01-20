@@ -195,6 +195,12 @@
     "selectedDecks": "Selected decks"
   },
   "auth": {
+    "tooManyRequests": "Too many requests. Please try again later.",
+    "unknownError": "An unexpected error occurred",
+    "unauthorized": "Session expired. Please log in again.",
+    "timeout": "Server response timeout exceeded",
+    "noConnection": "No connection to the server. Reconnecting...",
+    "noConnectionHub": "Connection to the server lost. Reconnecting...",
     "termsAcceptedCannotBeEmpty": "To use the application, confirm the regulations",
     "fillFormCorrectly": "Please fill out the registration form correctly to continue",
     "youAreAlreadyAuthenticated": "Unexpected error. Account is already logged in.",

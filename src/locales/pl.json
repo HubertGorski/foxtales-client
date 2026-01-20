@@ -195,6 +195,12 @@
     "selectedDecks": "Wybrane talie"
   },
   "auth": {
+    "tooManyRequests": "Przekroczono limit zapytań. Spróbuj ponownie później.",
+    "unknownError": "Wystąpił niespodziewany błąd",
+    "unauthorized": "Sesja wygasła. Zaloguj się ponownie.",
+    "timeout": "Przekroczono czas oczekiwania na odpowiedź serwera",
+    "noConnection": "Brak połączenia z serwerem. Łączenie ponownie...",
+    "noConnectionHub": "Zerwano połączenie z serwerem. Łączenie ponownie...",
     "termsAcceptedCannotBeEmpty": "By korzystać z aplikacji potwierdź regulamin",
     "fillFormCorrectly": "By kontynuować należy prawidłowo uzupełnić formularz rejestracyjny",
     "youAreAlreadyAuthenticated": "Niespodziewany błąd. Konto już jest zalogowane.",

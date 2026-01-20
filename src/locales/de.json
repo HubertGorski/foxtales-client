@@ -195,6 +195,12 @@
     "selectedDecks": "Ausgewählte Decks"
   },
   "auth": {
+    "tooManyRequests": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
+    "unknownError": "Ein unerwarteter Fehler ist aufgetreten",
+    "unauthorized": "Sitzung abgelaufen. Bitte melden Sie sich erneut an.",
+    "timeout": "Zeitüberschreitung bei der Antwort des Servers",
+    "noConnection": "Keine Verbindung zum Server. Verbindung wird neu hergestellt...",
+    "noConnectionHub": "Verbindung zum Server unterbrochen. Verbindung wird neu hergestellt...",
     "termsAcceptedCannotBeEmpty": "Um die Anwendung nutzen zu können, müssen Sie die Bestimmungen bestätigen",
     "fillFormCorrectly": "Bitte fülle das Registrierungsformular korrekt aus, um fortzufahren.",
     "youAreAlreadyAuthenticated": "Unerwarteter Fehler. Konto ist bereits angemeldet.",
