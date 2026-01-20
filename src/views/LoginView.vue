@@ -27,20 +27,14 @@
   };
 
   const onSubmit = handleSubmit(async values => {
-    try {
-      await userService.login(values.email, values.password);
-      const redirectUrl = sessionStorage.getItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
+    await userService.login(values.email, values.password);
+    const redirectUrl = sessionStorage.getItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
 
-      if (redirectUrl) {
-        sessionStorage.removeItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
-        router.push(redirectUrl);
-      } else {
-        router.push(ROUTE_PATH.MENU);
-      }
-    } catch (err: any) {
-      useUserStore().connectionError = err?.response?.data
-        ? t(`auth.${err.response.data}`)
-        : t('auth.unexpectedError');
+    if (redirectUrl) {
+      sessionStorage.removeItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
+      router.push(redirectUrl);
+    } else {
+      router.push(ROUTE_PATH.MENU);
     }
   });
 

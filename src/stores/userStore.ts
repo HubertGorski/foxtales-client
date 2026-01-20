@@ -83,6 +83,10 @@ export const useUserStore = defineStore({
       this.user.avatar = newAvatar;
     },
 
+    setConnectionError(connectionError: string | null) {
+      this.connectionError = connectionError;
+    },
+
     setLanguage(newLanguage: LANG) {
       this.user.language = newLanguage;
     },

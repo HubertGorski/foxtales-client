@@ -10,10 +10,7 @@
   import { ICON } from './enums/iconsEnum';
   import { useUserStore } from './stores/userStore';
 
-  // useDynamicHeight('#app');
-  // useDynamicHeight('.foxTales');
   useDevice();
-  // useKeyboardScrollControl();
 
   const { isLandscape } = useOrientation();
   const showErrorPanel = ref<boolean>(true);

@@ -5,6 +5,7 @@ import {
   type InternalAxiosRequestConfig,
 } from 'axios';
 import Client from './Client';
+import { mapHttpErrorToMessage, isValidationError } from './HttpErrorHelper';
 
 type FailedRequest = {
   resolve: (value?: unknown) => void;
@@ -28,10 +29,12 @@ const processQueue = (error: any, token: string | null = null) => {
 
 export function setupInterceptors(
   getToken: () => string | null,
-  setToken: (token: string) => void
+  setToken: (token: string) => void,
+  onError?: (error: string | null) => void
 ) {
   Client.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+      onError?.(null);
       const token = getToken();
       if (token) {
         config.headers.set('Authorization', `Bearer ${token}`);
@@ -86,6 +89,10 @@ export function setupInterceptors(
         } finally {
           isRefreshing = false;
         }
+      }
+
+      if (!isValidationError(error)) {
+        onError?.(mapHttpErrorToMessage(error));
       }
 
       return Promise.reject(error);

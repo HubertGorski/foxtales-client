@@ -41,10 +41,6 @@
             setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
           }
         });
-      } else {
-        useUserStore().connectionError = data?.title
-          ? t(`auth.${data.title}`)
-          : t('auth.unexpectedError');
       }
 
       loading.value = false;
