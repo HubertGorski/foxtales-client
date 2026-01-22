@@ -13,6 +13,7 @@ export enum ICON {
   ADD_TO_COLLECTION = 'mdi-shape-rectangle-plus',
   EDIT_COLLECTION = 'mdi-square-edit-outline',
   QUESTION = 'mdi-help-circle',
+  QUESTION_OUTLINE = 'mdi-help-circle-outline',
   ANSWER = 'mdi-comment',
   GAME = 'mdi-gamepad-variant',
   ACHIEVEMENT = 'mdi-trophy',
@@ -28,4 +29,5 @@ export enum ICON {
   FULLSCREEN_ON = 'mdi-fullscreen',
   FULLSCREEN_OFF = 'mdi-fullscreen-exit',
   ERROR = 'mdi-alert-circle-outline',
+  POINTS = 'mdi-star-circle-outline',
 }

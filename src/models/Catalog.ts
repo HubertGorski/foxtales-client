@@ -1,6 +1,8 @@
 import { Expose, Type } from 'class-transformer';
 import { Question } from './Question';
 import { CatalogType } from './CatalogType';
+import { RULES } from '@/enums/rulesEnum';
+import { IsEnum } from 'class-validator';
 
 export class Catalog {
   catalogId: number | null;
@@ -17,6 +19,9 @@ export class Catalog {
   @Expose()
   ownerId: number;
 
+  @Expose()
+  questionsInCatalogCount: number;
+
   @Type(() => Question)
   @Expose()
   questions: Question[];
@@ -27,6 +32,9 @@ export class Catalog {
   @Type(() => CatalogType)
   @Expose()
   availableTypes: CatalogType[];
+
+  @IsEnum(RULES)
+  recommendedGameRules: RULES;
 
   createdDate: Date;
 
@@ -42,7 +50,9 @@ export class Catalog {
     usedCount: number = 0,
     isSelected: boolean = false,
     questions: Question[] = [],
-    availableTypes: CatalogType[] = []
+    availableTypes: CatalogType[] = [],
+    recommendedGameRules: RULES = RULES.DIXIT,
+    questionsInCatalogCount: number = 0
   ) {
     this.catalogId = id;
     this.catalogType = catalogType;
@@ -54,6 +64,8 @@ export class Catalog {
     this.isSelected = isSelected;
     this.questions = questions;
     this.availableTypes = availableTypes;
+    this.recommendedGameRules = recommendedGameRules;
+    this.questionsInCatalogCount = questionsInCatalogCount;
   }
 
   get questionsCount(): number {

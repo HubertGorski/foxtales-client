@@ -1,3 +1,4 @@
+import type { RULES } from '@/enums/rulesEnum';
 import type { Catalog } from '@/models/Catalog';
 import { Deck } from '@/models/Deck';
 import { DYLEMATY_CARD_TYPE, DylematyCard } from '@/models/DylematyCard';
@@ -9,6 +10,8 @@ export class ListElement {
   description: string = '';
   isSelected: boolean = false;
   elementsCount?: number;
+  elementsInCatalogCount?: number;
+  recommendedGameRules?: RULES | null;
   size?: number;
   cards?: DylematyCard[];
   type?: DYLEMATY_CARD_TYPE | null;
@@ -52,6 +55,8 @@ export function convertCatalogsToListElement(catalog: Catalog): ListElement {
     description: catalog.description,
     isSelected: false,
     elementsCount: catalog.questionsCount,
+    elementsInCatalogCount: catalog.questionsInCatalogCount,
+    recommendedGameRules: catalog.recommendedGameRules,
     size: catalog.catalogType?.size ?? null,
   });
 }
