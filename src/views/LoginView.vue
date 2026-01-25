@@ -8,7 +8,6 @@
   import { useI18n } from 'vue-i18n';
   import { SESSION_STORAGE } from '@/enums/sessionStorageEnum';
   import { useViewStore } from '@/stores/viewStore';
-  import { useUserStore } from '@/stores/userStore';
 
   const { t } = useI18n();
   const router = useRouter();

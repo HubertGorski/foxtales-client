@@ -15,8 +15,8 @@
   import { convertCatalogsToListElement, ListElement } from '@/components/selectLists/ListElement';
   import { RULES, RULES_I18N_KEY } from '@/enums/rulesEnum';
   import { useI18n } from 'vue-i18n';
-  import HubDivider from '@/components/hubComponents/HubDivider.vue';
   import PublicCatalogsList from '@/components/psychGame/PublicCatalogsList.vue';
+  import BrownNavigation from '@/components/BrownNavigation.vue';
 
   const { t } = useI18n();
 
@@ -112,99 +112,98 @@
         <v-tab>{{ $t('createCustom') }}</v-tab>
       </v-tabs>
     </div>
-    <div v-if="!isCustomMode" class="pt-11">
-      <HubDivider />
-      <PublicCatalogsList v-model="publicCatalogs" @setCatalogSelected="setCatalogSelected" />
-      <HubDivider />
-    </div>
-    <transition name="slide-up" mode="out-in">
-      <div
-        v-if="(isCatalogSelected && !isCustomMode) || isCustomMode"
-        class="createGameView_card"
-        :class="{ isNotCustomMode: !isCustomMode }"
-      >
-        <div class="creamCard">
-          <img v-if="isCustomMode" src="@/assets/imgs/fox7.webp" alt="Lisek" class="fox" />
-          <p v-if="isCustomMode" class="title">{{ $t('lobby.createGame') }}</p>
-          <div v-if="isCustomMode" class="customGameMode">
-            <HubSwitch
-              v-model="newGame.usePublicQuestions"
-              label="lobby.usePublicQuestions"
-              tooltipText="tooltip.publicQuestionsDescription"
-              withIcon
-            />
-            <WhiteSelectList
-              v-if="newGame.usePublicQuestions"
-              v-model="publicCatalogs"
-              :itemsPerPage="1"
-              :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
-              showPagination
-              selectVisibleItems
-              moveToSelectedItem
-              minimalView
-              infinityPages
-            />
-            <SelectQuestionsPanel
-              v-model:usePrivateQuestions="newGame.usePrivateQuestions"
-              @setQuestions="setCurrentQuestions"
-            />
-            <HubSwitch
-              v-model="newGame.isQuestionsFromAnotherGamesAllowed"
-              label="lobby.isQuestionsFromAnotherGamesAllowed"
-            />
-            <span class="chooseRules">{{ $t('chooseRulesGame') }}</span>
-            <WhiteSelectList
-              v-model="gameRules"
-              class="rulesGameList"
-              :itemsPerPage="1"
-              :selectItemId="newGame.currentRules"
-              showPagination
-              selectVisibleItems
-              moveToSelectedItem
-              minimalView
-              infinityPages
-            />
-          </div>
+    <PublicCatalogsList
+      v-if="!isCustomMode"
+      v-model="publicCatalogs"
+      @setCatalogSelected="setCatalogSelected"
+    />
+    <div v-else class="createGameView_card">
+      <div class="creamCard">
+        <img src="@/assets/imgs/fox7.webp" alt="Lisek" class="fox" />
+        <p class="title">{{ $t('lobby.createGame') }}</p>
+        <div class="customGameMode">
           <HubSwitch
-            v-model="newGame.isPublic"
-            label="lobby.gameVisibleOnList"
-            tooltipText="tooltip.roomOnListDescription"
+            v-model="newGame.usePublicQuestions"
+            label="lobby.usePublicQuestions"
+            tooltipText="tooltip.publicQuestionsDescription"
             withIcon
           />
-          <div v-if="!newGame.isPublic" class="customCodeSection">
-            <p class="customCodeSection_description">
-              {{ $t('lobby.inviteOtherPlayers') }}
-            </p>
-            <p class="customCodeSection_code">{{ newGame.code }}</p>
-          </div>
-          <div v-else class="publicSection">
-            <v-text-field
-              v-model="newGame.password"
-              class="publicSection_input"
-              :label="$t('lobby.entryPassword')"
-              type="password"
-              outlined
-              dense
-              hide-details
-            />
-            <span class="publicSection_info">{{ $t('info.passwordRoom') }}</span>
-          </div>
-          <NavigationBtns
-            btn="closeGame"
-            btn2="accept"
-            :btnCustomAction="leaveRoom"
-            :btn2CustomAction="editRoom"
-            btn2isOrange
+          <WhiteSelectList
+            v-if="newGame.usePublicQuestions"
+            v-model="publicCatalogs"
+            :itemsPerPage="1"
+            :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
+            showPagination
+            selectVisibleItems
+            moveToSelectedItem
+            minimalView
+            infinityPages
+          />
+          <SelectQuestionsPanel
+            v-model:usePrivateQuestions="newGame.usePrivateQuestions"
+            @setQuestions="setCurrentQuestions"
+          />
+          <HubSwitch
+            v-model="newGame.isQuestionsFromAnotherGamesAllowed"
+            label="lobby.isQuestionsFromAnotherGamesAllowed"
+          />
+          <span class="chooseRules">{{ $t('chooseRulesGame') }}</span>
+          <WhiteSelectList
+            v-model="gameRules"
+            class="rulesGameList"
+            :itemsPerPage="1"
+            :selectItemId="newGame.currentRules"
+            showPagination
+            selectVisibleItems
+            moveToSelectedItem
+            minimalView
+            infinityPages
           />
         </div>
+        <HubSwitch
+          v-model="newGame.isPublic"
+          label="lobby.gameVisibleOnList"
+          tooltipText="tooltip.roomOnListDescription"
+          withIcon
+        />
+        <div v-if="!newGame.isPublic" class="customCodeSection">
+          <p class="customCodeSection_description">
+            {{ $t('lobby.inviteOtherPlayers') }}
+          </p>
+          <p class="customCodeSection_code">{{ newGame.code }}</p>
+        </div>
+        <div v-else class="publicSection">
+          <v-text-field
+            v-model="newGame.password"
+            class="publicSection_input"
+            :label="$t('lobby.entryPassword')"
+            type="password"
+            outlined
+            dense
+            hide-details
+          />
+          <span class="publicSection_info">{{ $t('info.passwordRoom') }}</span>
+        </div>
+        <NavigationBtns
+          btn="closeGame"
+          btn2="accept"
+          :btnCustomAction="leaveRoom"
+          :btn2CustomAction="editRoom"
+          btn2isOrange
+        />
       </div>
-    </transition>
+    </div>
+    <BrownNavigation
+      v-if="!isCustomMode"
+      :textBtn="$t('closeGame')"
+      :action="leaveRoom"
+      :textInfo="$t('lobby.inviteOtherPlayers') + ' ' + newGame.code"
+    />
   </div>
 </template>
 
 <style lang="scss">
   @import '@/assets/styles/variables';
-  @import '@/assets/styles/hubAnimations';
 
   .createGameView {
     background: $mainBackground;
@@ -212,10 +211,10 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    min-height: 100%;
+    overflow: hidden;
+    height: 100%;
 
     &_controlBtns {
-      position: fixed;
       background: $mainBackground;
       width: 100%;
       display: flex;
@@ -235,17 +234,6 @@
       display: flex;
       align-items: center;
 
-      &.isNotCustomMode {
-        position: sticky;
-        bottom: 0;
-        .creamCard {
-          border: 1px solid $mainBrownColor;
-          box-shadow:
-            rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-            rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-        }
-      }
-
       .chooseRules {
         padding-top: 8px;
         color: $grayColor;
@@ -260,6 +248,7 @@
         height: 132px;
         right: 0;
         top: -64px;
+        z-index: 4;
       }
 
       .title {
