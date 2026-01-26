@@ -10,7 +10,6 @@
   import { userService } from '@/api/services/UserService';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
-  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'username' | 'termsaccepted';
 
