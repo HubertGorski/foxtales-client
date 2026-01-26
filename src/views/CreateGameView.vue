@@ -13,8 +13,10 @@
   import { useUserStore } from '@/stores/userStore';
   import WhiteSelectList from '@/components/selectLists/WhiteSelectList.vue';
   import { convertCatalogsToListElement, ListElement } from '@/components/selectLists/ListElement';
-  import { RULES } from '@/enums/rulesEnum';
+  import { RULES, RULES_I18N_KEY } from '@/enums/rulesEnum';
   import { useI18n } from 'vue-i18n';
+  import PublicCatalogsList from '@/components/psychGame/PublicCatalogsList.vue';
+  import BrownNavigation from '@/components/BrownNavigation.vue';
 
   const { t } = useI18n();
 
@@ -25,22 +27,24 @@
   const currentGame = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
   const currentQuestions = ref<Question[]>(signalRStore.game?.questions ?? []);
+  const isCustomMode = ref<number>(0);
   const publicCatalogs = ref<ListElement[]>(
     userStore.publicCatalogs.map(convertCatalogsToListElement)
   );
+  const isCatalogSelected = ref<boolean>(false);
 
   const gameRules = ref<ListElement[]>([
     new ListElement({
       id: RULES.PSYCH,
-      title: t('lobby.usePsychRules'),
+      title: t(RULES_I18N_KEY[RULES.PSYCH]),
     }),
     new ListElement({
       id: RULES.DIXIT,
-      title: t('lobby.useDixitRules'),
+      title: t(RULES_I18N_KEY[RULES.DIXIT]),
     }),
     new ListElement({
       id: RULES.QUIET_DAYS,
-      title: t('lobby.useQuietDaysRules'),
+      title: t(RULES_I18N_KEY[RULES.QUIET_DAYS]),
     }),
   ]);
 
@@ -88,6 +92,10 @@
     userStore.user.chosenCatalogId = questions.chosenCatalogId;
   };
 
+  const setCatalogSelected = (isSelected: boolean): void => {
+    isCatalogSelected.value = isSelected;
+  };
+
   watch(currentGame, (game: Game | null) => {
     if (game) {
       newGame.value.users = game.users;
@@ -98,47 +106,60 @@
 
 <template>
   <div class="createGameView">
-    <div class="createGameView_card">
-      <img src="@/assets/imgs/fox7.webp" alt="Lisek" class="fox" />
+    <div class="createGameView_controlBtns">
+      <v-tabs v-model="isCustomMode">
+        <v-tab>{{ $t('list') }}</v-tab>
+        <v-tab>{{ $t('createCustom') }}</v-tab>
+      </v-tabs>
+    </div>
+    <PublicCatalogsList
+      v-if="!isCustomMode"
+      v-model="publicCatalogs"
+      @setCatalogSelected="setCatalogSelected"
+    />
+    <div v-else class="createGameView_card">
       <div class="creamCard">
+        <img src="@/assets/imgs/fox7.webp" alt="Lisek" class="fox" />
         <p class="title">{{ $t('lobby.createGame') }}</p>
-        <HubSwitch
-          v-model="newGame.usePublicQuestions"
-          label="lobby.usePublicQuestions"
-          tooltipText="tooltip.publicQuestionsDescription"
-          withIcon
-        />
-        <WhiteSelectList
-          v-if="newGame.usePublicQuestions"
-          v-model="publicCatalogs"
-          :itemsPerPage="1"
-          :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
-          showPagination
-          selectVisibleItems
-          moveToSelectedItem
-          minimalView
-          infinityPages
-        />
-        <SelectQuestionsPanel
-          v-model:usePrivateQuestions="newGame.usePrivateQuestions"
-          @setQuestions="setCurrentQuestions"
-        />
-        <HubSwitch
-          v-model="newGame.isQuestionsFromAnotherGamesAllowed"
-          label="lobby.isQuestionsFromAnotherGamesAllowed"
-        />
-        <span class="chooseRules">{{ $t('chooseRulesGame') }}</span>
-        <WhiteSelectList
-          v-model="gameRules"
-          class="rulesGameList"
-          :itemsPerPage="1"
-          :selectItemId="newGame.currentRules"
-          showPagination
-          selectVisibleItems
-          moveToSelectedItem
-          minimalView
-          infinityPages
-        />
+        <div class="customGameMode">
+          <HubSwitch
+            v-model="newGame.usePublicQuestions"
+            label="lobby.usePublicQuestions"
+            tooltipText="tooltip.publicQuestionsDescription"
+            withIcon
+          />
+          <WhiteSelectList
+            v-if="newGame.usePublicQuestions"
+            v-model="publicCatalogs"
+            :itemsPerPage="1"
+            :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
+            showPagination
+            selectVisibleItems
+            moveToSelectedItem
+            minimalView
+            infinityPages
+          />
+          <SelectQuestionsPanel
+            v-model:usePrivateQuestions="newGame.usePrivateQuestions"
+            @setQuestions="setCurrentQuestions"
+          />
+          <HubSwitch
+            v-model="newGame.isQuestionsFromAnotherGamesAllowed"
+            label="lobby.isQuestionsFromAnotherGamesAllowed"
+          />
+          <span class="chooseRules">{{ $t('chooseRulesGame') }}</span>
+          <WhiteSelectList
+            v-model="gameRules"
+            class="rulesGameList"
+            :itemsPerPage="1"
+            :selectItemId="newGame.currentRules"
+            showPagination
+            selectVisibleItems
+            moveToSelectedItem
+            minimalView
+            infinityPages
+          />
+        </div>
         <HubSwitch
           v-model="newGame.isPublic"
           label="lobby.gameVisibleOnList"
@@ -172,6 +193,12 @@
         />
       </div>
     </div>
+    <BrownNavigation
+      v-if="!isCustomMode"
+      :textBtn="$t('closeGame')"
+      :action="leaveRoom"
+      :textInfo="$t('lobby.inviteOtherPlayers') + ' ' + newGame.code"
+    />
   </div>
 </template>
 
@@ -180,21 +207,32 @@
 
   .createGameView {
     background: $mainBackground;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    overflow: hidden;
+    height: 100%;
+
+    &_controlBtns {
+      background: $mainBackground;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 3;
+    }
 
     .creamCard {
       padding: 14px;
+      position: relative;
     }
 
     &_card {
-      padding: 12px 24px;
+      padding: 12px 20px;
       width: 100%;
-      position: relative;
-      margin: 38px;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
 
       .chooseRules {
         padding-top: 8px;
@@ -208,8 +246,9 @@
       .fox {
         position: absolute;
         height: 132px;
-        right: 32px;
-        top: -46px;
+        right: 0;
+        top: -64px;
+        z-index: 4;
       }
 
       .title {

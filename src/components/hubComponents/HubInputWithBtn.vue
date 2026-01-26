@@ -57,6 +57,10 @@
       type: Boolean,
       default: false,
     },
+    inputDisabled: {
+      type: Boolean,
+      default: false,
+    },
     errorMessages: {
       type: String,
     },
@@ -123,6 +127,7 @@
       :placeholder="actualTextPlaceholder"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
+      :disabled="inputDisabled"
       no-resize
       @keydown.enter="handleEnter"
       @focus="handleFocus"
@@ -135,6 +140,7 @@
       :type="textType"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
+      :disabled="inputDisabled"
       @keydown.enter="handleEnter"
       @focus="handleFocus"
       @blur="handleBlur"

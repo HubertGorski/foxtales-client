@@ -9,7 +9,6 @@
   import HubTooltip from '@/components/hubComponents/HubTooltip.vue';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
-  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsaccepted';
 
@@ -54,10 +53,6 @@
             setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
           }
         });
-      } else {
-        useUserStore().connectionError = data?.title
-          ? t(`auth.${data.title}`)
-          : t('auth.unexpectedError');
       }
     }
   });

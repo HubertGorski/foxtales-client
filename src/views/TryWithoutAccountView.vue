@@ -10,7 +10,6 @@
   import { userService } from '@/api/services/UserService';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
-  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'username' | 'termsaccepted';
 
@@ -41,10 +40,6 @@
             setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
           }
         });
-      } else {
-        useUserStore().connectionError = data?.title
-          ? t(`auth.${data.title}`)
-          : t('auth.unexpectedError');
       }
 
       loading.value = false;

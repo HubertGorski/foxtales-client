@@ -4,8 +4,10 @@
     icon: { type: String, required: false },
     loading: { type: Boolean, default: false },
     isOrange: { type: Boolean, default: false },
+    ghost: { type: Boolean, default: false },
     isClicked: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    small: { type: Boolean, default: false },
     action: { type: Function, required: true },
   });
 
@@ -23,7 +25,7 @@
     data-no-blur
     class="hubBtn"
     :class="[
-      { loading, disabled },
+      { loading, disabled, small, ghost },
       isClicked
         ? isOrange
           ? 'hubBtn--darkOrange'
@@ -93,6 +95,16 @@
     p {
       margin: 0;
     }
+  }
+
+  .ghost {
+    background: transparent;
+    color: $mainBrownColor;
+  }
+
+  .small {
+    max-height: 34px;
+    font-size: 14px;
   }
 
   .loader {

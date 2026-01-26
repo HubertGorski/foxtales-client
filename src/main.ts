@@ -22,7 +22,8 @@ app.use(i18n);
 const userStore = useUserStore();
 setupInterceptors(
   () => userStore.getAccessToken(),
-  token => userStore.setAccessToken(token)
+  token => userStore.setAccessToken(token),
+  error => userStore.setConnectionError(error)
 );
 
 app.mount('#app');

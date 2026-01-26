@@ -10,10 +10,7 @@
   import { ICON } from './enums/iconsEnum';
   import { useUserStore } from './stores/userStore';
 
-  // useDynamicHeight('#app');
-  // useDynamicHeight('.foxTales');
   useDevice();
-  // useKeyboardScrollControl();
 
   const { isLandscape } = useOrientation();
   const showErrorPanel = ref<boolean>(true);
@@ -31,7 +28,7 @@
       @click="showErrorPanel = !showErrorPanel"
     >
       <v-icon>{{ ICON.ERROR }}</v-icon>
-      <span>{{ connectionError }}</span>
+      <span>{{ $t(connectionError) }}</span>
     </div>
     <RouterView />
   </div>
@@ -95,7 +92,7 @@
   }
 
   .foxTales_error {
-    position: absolute;
+    position: fixed;
     background-color: #b00020;
     color: white;
     z-index: 9999;

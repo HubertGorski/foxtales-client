@@ -21,6 +21,7 @@ export class User {
   userId: number = 0;
   gender: GENDER = GENDER.MAN;
   role: ROLE = ROLE.USER;
+  email: string | null = null;
 
   @Transform(({ value }) => (typeof value === 'string' ? LangToNumber[value as LANG] : value), {
     toPlainOnly: true,

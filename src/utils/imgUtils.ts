@@ -9,3 +9,7 @@ export const getAvatar = (id: number | undefined): string => {
 export const getUnknownAvatar = (): string => {
   return new URL('/src/assets/imgs/defaultAvatars/idk.webp', import.meta.url).href;
 };
+
+export const getCatalogImg = (catalogId: number) => {
+  return new URL(`/src/assets/imgs/catalogs/${catalogId}.webp`, import.meta.url).href;
+};
