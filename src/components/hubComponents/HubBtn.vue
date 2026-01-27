@@ -99,7 +99,7 @@
 
   .ghost {
     background: transparent;
-    color: $mainBrownColor;
+    color: $whiteColor;
   }
 
   .small {
