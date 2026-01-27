@@ -16,6 +16,7 @@ export class ListElement {
   cards?: DylematyCard[];
   type?: DYLEMATY_CARD_TYPE | null;
   isPublic?: boolean;
+  photoId: number | null = null;
 
   constructor(args: Partial<ListElement> = {}) {
     Object.assign(this, { ...args });
@@ -57,6 +58,7 @@ export function convertCatalogsToListElement(catalog: Catalog): ListElement {
     elementsCount: catalog.questionsCount,
     elementsInCatalogCount: catalog.questionsInCatalogCount,
     recommendedGameRules: catalog.recommendedGameRules,
+    photoId: catalog.photoId,
     size: catalog.catalogType?.size ?? null,
   });
 }

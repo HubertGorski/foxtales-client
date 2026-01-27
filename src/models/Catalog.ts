@@ -29,6 +29,9 @@ export class Catalog {
   @Expose()
   usedCount: number;
 
+  @Expose()
+  photoId: number;
+
   @Type(() => CatalogType)
   @Expose()
   availableTypes: CatalogType[];
@@ -52,7 +55,8 @@ export class Catalog {
     questions: Question[] = [],
     availableTypes: CatalogType[] = [],
     recommendedGameRules: RULES = RULES.DIXIT,
-    questionsInCatalogCount: number = 0
+    questionsInCatalogCount: number = 0,
+    photoId: number = 0
   ) {
     this.catalogId = id;
     this.catalogType = catalogType;
@@ -66,6 +70,7 @@ export class Catalog {
     this.availableTypes = availableTypes;
     this.recommendedGameRules = recommendedGameRules;
     this.questionsInCatalogCount = questionsInCatalogCount;
+    this.photoId = photoId;
   }
 
   get questionsCount(): number {

@@ -179,11 +179,11 @@
           ? `${t('chooseCorrectAnswers')} (${timeLeft.value})`
           : isQuietDaysMode.value && !isSubjectPlayer.value
             ? isUserReady.value
-              ? 'lobby.waitingForPlayers'
-              : 'checkResults'
+              ? t('lobby.waitingForPlayers')
+              : t('checkResults')
             : isUserReady.value
-              ? 'accepted'
-              : 'accept',
+              ? t('accepted')
+              : t('accept'),
       isOrange: true,
       action: confirmSelectedAnswer,
       disabled:
@@ -268,6 +268,7 @@
           :text="confirmBtn.text"
           :isOrange="confirmBtn.isOrange"
           :disabled="confirmBtn.disabled"
+          :useDicts="false"
         />
       </HubTooltip>
     </div>

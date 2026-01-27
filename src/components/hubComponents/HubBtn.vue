@@ -9,6 +9,7 @@
     disabled: { type: Boolean, default: false },
     small: { type: Boolean, default: false },
     action: { type: Function, required: true },
+    useDicts: { type: Boolean, default: true },
   });
 
   const handleAction = () => {
@@ -38,7 +39,7 @@
   >
     <div v-if="loading" class="loader"></div>
     <template v-else>
-      <p v-if="text">{{ $t(text) }}</p>
+      <p v-if="text">{{ useDicts ? $t(text) : text }}</p>
       <v-icon v-if="icon">{{ icon }}</v-icon>
     </template>
   </div>

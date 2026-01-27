@@ -30,10 +30,10 @@
       <div class="publicCatalog_title">
         {{ publicCatalog.title }}
       </div>
-      <div class="publicCatalog_img">
-        <img :src="getCatalogImg(publicCatalog.id)" alt="Lisek" />
+      <div v-if="publicCatalog.photoId" class="publicCatalog_img">
+        <img :src="getCatalogImg(publicCatalog.photoId)" alt="Lisek" />
       </div>
-      <div v-if="publicCatalog.recommendedGameRules" class="publicCatalog_type">
+      <div v-if="publicCatalog.recommendedGameRules != null" class="publicCatalog_type">
         <v-icon>{{ ICON.POINTS }}</v-icon>
         {{ $t(RULES_I18N_KEY[publicCatalog.recommendedGameRules]) }}
       </div>
@@ -73,7 +73,7 @@
         border-top-right-radius: 12px;
         background-color: $mainBrownColor;
         color: $whiteColor;
-        padding: 4px 8px;
+        padding: 4px 12px;
         font-size: 12px;
       }
 
