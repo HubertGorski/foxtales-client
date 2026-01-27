@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useViewStore } from '@/stores/viewStore';
   import { computed, ref } from 'vue';
+  import IsComingMask from './isComingMask.vue';
 
   const props = defineProps({
     isEnabled: {
@@ -38,10 +39,7 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <div class="isComing_mask" :class="{ isMaskVisible: isMaskVisible }">
-      <img class="fox" src="/src/assets/imgs/isComingFox.webp" alt="Lisek" />
-      <span class="info">{{ $t('isComing') }}</span>
-    </div>
+    <IsComingMask :isMaskVisible="isMaskVisible" />
     <div :class="{ noneEvents: isEnabled }">
       <slot></slot>
     </div>
@@ -58,35 +56,6 @@
 
     .noneEvents {
       pointer-events: none;
-    }
-
-    &_mask {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      width: 100%;
-      opacity: 0;
-      background-color: #fff5eae8;
-      z-index: -1;
-      transition: all 0.4s;
-
-      .info {
-        color: $mainBrownColor;
-        font-weight: 600;
-        font-size: 20px;
-      }
-
-      .fox {
-        height: 150px;
-      }
-
-      &.isMaskVisible {
-        opacity: 1;
-        z-index: 1;
-      }
     }
   }
 </style>

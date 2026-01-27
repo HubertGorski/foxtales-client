@@ -6,7 +6,7 @@
   import { getCatalogImg } from '@/utils/imgUtils';
   import { RULES_I18N_DESC, RULES_I18N_KEY } from '@/enums/rulesEnum';
   import { ICON } from '@/enums/iconsEnum';
-  import IsComing from './IsComing.vue';
+  import IsComingMask from './isComingMask.vue';
 
   const selectedCatalogId = defineModel<number | null>({
     required: false,
@@ -16,6 +16,7 @@
   const emit = defineEmits<{
     (e: 'setSelectedCatalogId', value: null): void;
     (e: 'selectCatalog'): void;
+    (e: 'confirmSelection'): void;
   }>();
 
   const goBack = () => {
@@ -24,7 +25,7 @@
   };
 
   const confirmSelection = () => {
-    emit('selectCatalog');
+    emit('confirmSelection');
     goBack();
   };
 
@@ -50,51 +51,50 @@
       <div v-if="catalog" class="catalogDetails_card">
         <div class="catalogDetails_header">
           <HubBtn :text="'back'" :action="goBack" ghost small />
-          <HubBtn :text="'accept'" :action="confirmSelection" isOrange small disabled />
+          <HubBtn :text="'accept'" :action="confirmSelection" isOrange small />
         </div>
-        <isComing isEnabled>
-          <div class="catalogDetails_content">
-            <div class="catalogDetails_title">
-              {{ catalog.title }}
+        <IsComingMask v-if="true" :isAbsolute="false" isComingText="isComingDetails" />
+        <div v-else class="catalogDetails_content">
+          <div class="catalogDetails_title">
+            {{ catalog.title }}
+          </div>
+          <div class="catalogDetails_img">
+            <img :src="getCatalogImg(catalog.catalogId ?? 0)" alt="Lisek" />
+          </div>
+          <div class="catalogDetails_section">
+            <div class="catalogDetails_sectionTitle">
+              <v-icon>{{ ICON.INFO }}</v-icon>
+              {{ $t('description') }}
             </div>
-            <div class="catalogDetails_img">
-              <img :src="getCatalogImg(catalog.catalogId ?? 0)" alt="Lisek" />
-            </div>
-            <div class="catalogDetails_section">
-              <div class="catalogDetails_sectionTitle">
-                <v-icon>{{ ICON.INFO }}</v-icon>
-                {{ $t('description') }}
-              </div>
-              <div class="catalogDetails_description">
-                {{
-                  catalog.description ??
-                  'Lorem ipsum superanckiego opisu katalogu. W grze odpowiadamy na imprezowe pytania itd.'
-                }}
-              </div>
-            </div>
-            <div v-if="catalog.recommendedGameRules" class="catalogDetails_section">
-              <div class="catalogDetails_sectionTitle">
-                <v-icon>{{ ICON.POINTS }}</v-icon>
-                {{ $t(RULES_I18N_KEY[catalog.recommendedGameRules]) }}
-              </div>
-              <div class="catalogDetails_rulesDescription">
-                {{ $t(RULES_I18N_DESC[catalog.recommendedGameRules]) }}
-              </div>
-            </div>
-            <div class="catalogDetails_section">
-              <div class="catalogDetails_sectionTitle">
-                <v-icon>{{ ICON.QUESTION_OUTLINE }}</v-icon>
-                <span>Przykładowe pytania w grze</span>
-              </div>
-              <div class="catalogDetails_questions">
-                <span>{{ catalog.questionsInCatalogCount ?? 124 }} pytań w grze</span>
-                <span v-for="question in catalog.questions" class="whiteCard whiteCardContent">
-                  {{ `"${question.text}", ` }}
-                </span>
-              </div>
+            <div class="catalogDetails_description">
+              {{
+                catalog.description ??
+                'Lorem ipsum superanckiego opisu katalogu. W grze odpowiadamy na imprezowe pytania itd.'
+              }}
             </div>
           </div>
-        </isComing>
+          <div v-if="catalog.recommendedGameRules" class="catalogDetails_section">
+            <div class="catalogDetails_sectionTitle">
+              <v-icon>{{ ICON.POINTS }}</v-icon>
+              {{ $t(RULES_I18N_KEY[catalog.recommendedGameRules]) }}
+            </div>
+            <div class="catalogDetails_rulesDescription">
+              {{ $t(RULES_I18N_DESC[catalog.recommendedGameRules]) }}
+            </div>
+          </div>
+          <div class="catalogDetails_section">
+            <div class="catalogDetails_sectionTitle">
+              <v-icon>{{ ICON.QUESTION_OUTLINE }}</v-icon>
+              <span>Przykładowe pytania w grze</span>
+            </div>
+            <div class="catalogDetails_questions">
+              <span>{{ catalog.questionsInCatalogCount ?? 124 }} pytań w grze</span>
+              <span v-for="question in catalog.questions" class="whiteCard whiteCardContent">
+                {{ `"${question.text}", ` }}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </HubPopup>
   </div>

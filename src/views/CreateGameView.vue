@@ -18,8 +18,10 @@
   import PublicCatalogsList from '@/components/psychGame/PublicCatalogsList.vue';
   import BrownNavigation from '@/components/BrownNavigation.vue';
   import CatalogDetails from '@/components/CatalogDetails.vue';
+  import { useRoute } from 'vue-router';
 
   const { t } = useI18n();
+  const route = useRoute();
 
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
@@ -28,7 +30,10 @@
   const currentGame = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
   const currentQuestions = ref<Question[]>(signalRStore.game?.questions ?? []);
-  const isCustomMode = ref<number>(0);
+
+  const isCustomMode = ref<number>(
+    router.currentRoute.value.params.catalog === CREATE_GAME.CUSTOM ? 1 : 0
+  );
   const publicCatalogs = ref<ListElement[]>(
     userStore.publicCatalogs.map(convertCatalogsToListElement)
   );
@@ -54,6 +59,8 @@
     router.push(ROUTE_PATH.MENU);
   }
 
+  isCustomMode.value = route.query.catalog === CREATE_GAME.CUSTOM ? 1 : 0;
+
   const leaveRoom = async () => {
     const success = await signalRStore.leaveRoom(userStore.user.userId);
     if (!success) {
@@ -64,9 +71,19 @@
   };
 
   const editRoom = async () => {
-    newGame.value.selectedPublicCatalogId =
-      publicCatalogs.value.find(catalog => catalog.isSelected)?.id ?? null;
-    newGame.value.currentRules = gameRules.value.find(catalog => catalog.isSelected)?.id as RULES;
+    if (isCustomMode.value) {
+      newGame.value.selectedPublicCatalogId =
+        publicCatalogs.value.find(catalog => catalog.isSelected)?.id ?? null;
+      newGame.value.currentRules = gameRules.value.find(catalog => catalog.isSelected)?.id as RULES;
+    } else {
+      newGame.value.usePublicQuestions = true;
+      const selectedCatalog = useUserStore().publicCatalogs.find(
+        catalog => catalog.catalogId === selectedCatalogId.value
+      );
+
+      newGame.value.selectedPublicCatalogId = selectedCatalog?.catalogId ?? null;
+      newGame.value.currentRules = selectedCatalog?.recommendedGameRules ?? RULES.DIXIT;
+    }
 
     let success = await signalRStore.editRoom(newGame.value);
     if (!success) {
@@ -115,7 +132,11 @@
 
 <template>
   <div class="createGameView">
-    <CatalogDetails v-model="selectedCatalogId" @setSelectedCatalogId="setSelectedCatalogId" />
+    <CatalogDetails
+      v-model="selectedCatalogId"
+      @setSelectedCatalogId="setSelectedCatalogId"
+      @confirmSelection="editRoom"
+    />
     <div class="createGameView_controlBtns">
       <v-tabs v-model="isCustomMode" @click="() => setSelectedCatalogId(null)">
         <v-tab>{{ $t('list') }}</v-tab>

@@ -24,10 +24,12 @@
     color: $whiteColor;
     width: 100%;
     padding: 4px 8px;
+    gap: 8px;
 
     &_btn {
       padding: 4px 12px;
       cursor: pointer;
+      text-wrap: nowrap;
     }
 
     &_info {
