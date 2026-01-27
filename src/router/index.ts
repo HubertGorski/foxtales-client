@@ -95,35 +95,11 @@ function getRoutesWithAuth() {
       },
     },
     {
-      path: ROUTE_PATH.CREATE_GAME_DYLEMATY,
-      name: ROUTE_NAME.CREATE_GAME_DYLEMATY,
-      component: CreateGameViewVue,
-      meta: {
-        permission: PERMISSION_GAME.DYLEMATY,
-      },
-    },
-    {
-      path: ROUTE_PATH.CREATE_GAME_PSYCH,
-      name: ROUTE_NAME.CREATE_GAME_PSYCH,
-      component: CreateGameViewVue,
-      meta: {
-        permission: PERMISSION_GAME.PSYCH,
-      },
-    },
-    {
       path: ROUTE_PATH.LIBRARY,
       name: ROUTE_NAME.LIBRARY,
       component: LibraryViewVue,
       meta: {
         requiredGameSelected: true,
-      },
-    },
-    {
-      path: ROUTE_PATH.LIBRARY_PSYCH,
-      name: ROUTE_NAME.LIBRARY_PSYCH,
-      component: LibraryViewVue,
-      meta: {
-        permission: PERMISSION_GAME.PSYCH,
       },
     },
     {
