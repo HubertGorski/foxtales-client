@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ROUTE_PATH } from '@/router/routeEnums';
+  import { CREATE_GAME, ROUTE_PATH } from '@/router/routeEnums';
   import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/userStore';
   import HubAccordionElement from '@/components/hubComponents/HubAccordionElement.vue';
@@ -28,7 +28,12 @@
       return;
     }
 
-    router.push(ROUTE_PATH.CREATE_GAME);
+    router.push({
+      path: ROUTE_PATH.CREATE_GAME,
+      query: {
+        catalog: CREATE_GAME.PUBLIC,
+      },
+    });
   };
 
   const goToLibrary = () => {

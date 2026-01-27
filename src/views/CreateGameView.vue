@@ -4,7 +4,7 @@
   import NavigationBtns from '@/components/NavigationBtns.vue';
   import { useSignalRStore } from '@/stores/signalRStore';
   import router from '@/router';
-  import { ROUTE_PATH } from '@/router/routeEnums';
+  import { CREATE_GAME, ROUTE_PATH } from '@/router/routeEnums';
   import { Game } from '@/models/Game';
   import SelectQuestionsPanel, {
     type SelectedQuestions,
@@ -17,6 +17,7 @@
   import { useI18n } from 'vue-i18n';
   import PublicCatalogsList from '@/components/psychGame/PublicCatalogsList.vue';
   import BrownNavigation from '@/components/BrownNavigation.vue';
+  import CatalogDetails from '@/components/CatalogDetails.vue';
 
   const { t } = useI18n();
 
@@ -31,7 +32,8 @@
   const publicCatalogs = ref<ListElement[]>(
     userStore.publicCatalogs.map(convertCatalogsToListElement)
   );
-  const isCatalogSelected = ref<boolean>(false);
+
+  const selectedCatalogId = ref<number | null>(null);
 
   const gameRules = ref<ListElement[]>([
     new ListElement({
@@ -92,8 +94,15 @@
     userStore.user.chosenCatalogId = questions.chosenCatalogId;
   };
 
-  const setCatalogSelected = (isSelected: boolean): void => {
-    isCatalogSelected.value = isSelected;
+  const setSelectedCatalogId = (catalogId: number | null): void => {
+    selectedCatalogId.value = catalogId;
+    const catalogTab = isCustomMode.value ? CREATE_GAME.CUSTOM : CREATE_GAME.PUBLIC;
+    router.replace({
+      query: {
+        ...router.currentRoute.value.query,
+        catalog: catalogId ?? catalogTab,
+      },
+    });
   };
 
   watch(currentGame, (game: Game | null) => {
@@ -106,8 +115,9 @@
 
 <template>
   <div class="createGameView">
+    <CatalogDetails v-model="selectedCatalogId" @setSelectedCatalogId="setSelectedCatalogId" />
     <div class="createGameView_controlBtns">
-      <v-tabs v-model="isCustomMode">
+      <v-tabs v-model="isCustomMode" @click="() => setSelectedCatalogId(null)">
         <v-tab>{{ $t('list') }}</v-tab>
         <v-tab>{{ $t('createCustom') }}</v-tab>
       </v-tabs>
@@ -115,7 +125,8 @@
     <PublicCatalogsList
       v-if="!isCustomMode"
       v-model="publicCatalogs"
-      @setCatalogSelected="setCatalogSelected"
+      :selectedCatalogId="selectedCatalogId"
+      @setSelectedCatalogId="setSelectedCatalogId"
     />
     <div v-else class="createGameView_card">
       <div class="creamCard">

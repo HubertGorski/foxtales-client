@@ -33,6 +33,7 @@
 
     &_content {
       position: absolute;
+      max-width: 410px;
       transform: scale(0.00001);
       z-index: 2;
       margin: 0 auto;

@@ -30,4 +30,5 @@ export enum ICON {
   FULLSCREEN_OFF = 'mdi-fullscreen-exit',
   ERROR = 'mdi-alert-circle-outline',
   POINTS = 'mdi-star-circle-outline',
+  CHECK = 'mdi-check-circle-outline',
 }

@@ -45,7 +45,7 @@
   };
 
   const goToSettings = async () => {
-    router.push(ROUTE_PATH.CREATE_GAME_PSYCH);
+    router.push(ROUTE_PATH.CREATE_GAME);
   };
 
   const arrowLeftClicked = async (user: User) => {

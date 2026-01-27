@@ -2,11 +2,11 @@
   import { ICON } from '@/enums/iconsEnum';
   import { RULES_I18N_KEY } from '@/enums/rulesEnum';
   import { getCatalogImg } from '@/utils/imgUtils';
-  import { ref, type PropType } from 'vue';
+  import { type PropType } from 'vue';
   import type { ListElement } from '../selectLists/ListElement';
 
   const emit = defineEmits<{
-    (e: 'setCatalogSelected', isCatalogSelected: boolean): void;
+    (e: 'setSelectedCatalogId', id: number): void;
   }>();
 
   const publicCatalogs = defineModel({
@@ -14,15 +14,8 @@
     required: true,
   });
 
-  const selectedCatalogId = ref<number | null>(null);
-
   const selectCatalog = (id: number) => {
-    selectedCatalogId.value = selectedCatalogId.value === id ? null : id;
-    emit('setCatalogSelected', !!selectedCatalogId.value);
-  };
-
-  const isSelected = (id: number) => {
-    return selectedCatalogId.value === id;
+    emit('setSelectedCatalogId', id);
   };
 </script>
 
@@ -32,7 +25,6 @@
       v-for="publicCatalog in publicCatalogs"
       :key="publicCatalog.id"
       class="publicCatalog"
-      :class="{ selected: isSelected(publicCatalog.id) }"
       @click="selectCatalog(publicCatalog.id)"
     >
       <div class="publicCatalog_title">
@@ -76,12 +68,6 @@
       cursor: pointer;
       transition: all 0.3s;
 
-      &.selected {
-        transform: scale(1.03);
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        transition: all 0.3s;
-      }
-
       &_title {
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
@@ -93,7 +79,6 @@
 
       &_img {
         padding: 12px 12px 0 12px;
-
         img {
           max-width: 100%;
           border: 1px solid $lightBrownColor;
