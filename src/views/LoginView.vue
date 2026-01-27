@@ -27,12 +27,15 @@
 
   const onSubmit = handleSubmit(async values => {
     await userService.login(values.email, values.password);
-    const redirectUrl = sessionStorage.getItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
-
-    if (redirectUrl) {
-      sessionStorage.removeItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
-      router.push(redirectUrl);
-    } else {
+    try {
+      const redirectUrl = sessionStorage.getItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
+      if (redirectUrl) {
+        sessionStorage.removeItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN);
+        router.push(redirectUrl);
+      } else {
+        router.push(ROUTE_PATH.MENU);
+      }
+    } catch {
       router.push(ROUTE_PATH.MENU);
     }
   });
