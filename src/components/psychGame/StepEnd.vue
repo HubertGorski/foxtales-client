@@ -9,13 +9,14 @@
   import { cloneDeep } from 'lodash';
   import SummaryGame from './SummaryGame.vue';
   import HubBtn from '../hubComponents/HubBtn.vue';
+  import IsComingMask from '../isComingMask.vue';
 
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
   const isSummaryVisible = ref<boolean>(false);
 
   const emit = defineEmits<{
-    (e: 'leaveRoom'): void;
+    (e: 'continueGame'): void;
   }>();
 
   const game = cloneDeep(signalRStore.game) ?? new Game();
@@ -31,12 +32,12 @@
   });
 
   const navigationBtns = computed(() => {
-    const leaveRoomBtn = {
+    const continueGameBtn = {
       id: 1,
-      text: 'leaveGame',
+      text: 'continue',
       isOrange: false,
       isDisabled: false,
-      action: () => emit('leaveRoom'),
+      action: () => emit('continueGame'),
     };
 
     const backBtn = {
@@ -51,7 +52,7 @@
       id: 3,
       text: 'summary',
       isOrange: true,
-      isDisabled: false,
+      isDisabled: true,
       action: () => (isSummaryVisible.value = true),
     };
 
@@ -65,7 +66,7 @@
       },
     };
 
-    return isSummaryVisible.value ? [backBtn, goToShopBtn] : [leaveRoomBtn, goToSummaryBtn];
+    return isSummaryVisible.value ? [backBtn, goToShopBtn] : [continueGameBtn, goToSummaryBtn];
   });
 </script>
 
@@ -99,8 +100,7 @@
       </transition>
     </div>
     <div v-else class="tmpClass">
-      <img class="fox" src="@/assets/imgs/fox13.webp" alt="Lisek" />
-      {{ $t('pageNotExist') }}
+      <IsComingMask v-if="true" :isAbsolute="false" isComingText="isComingEndGame" />
     </div>
     <div class="btns">
       <HubBtn

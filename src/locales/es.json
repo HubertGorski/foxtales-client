@@ -117,6 +117,7 @@
   "changeLanguage": "Idioma del juego",
   "changeInterfaceLanguage": "Idioma de la interfaz",
   "isComing": "Próximamente",
+  "isComingEndGame": "El juego ha terminado. ¡Continúa para volver a jugar!",
   "isComingDetails": "Detalles próximamente. ¡Continúa para jugar!",
   "createdItems": "Elementos creados",
   "selectedItems": "Elementos seleccionados",

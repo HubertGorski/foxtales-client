@@ -16,7 +16,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $background;
+    background-color: $darkBackground;
     color: $mainBrownColor;
     font-size: 24px;
     font-weight: 600;

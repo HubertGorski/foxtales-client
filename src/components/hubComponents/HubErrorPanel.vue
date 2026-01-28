@@ -65,7 +65,7 @@
     }
 
     &.showErrorPanel {
-      width: 420px;
+      width: min(420px, calc(100vw - 16px));
     }
   }
 </style>
