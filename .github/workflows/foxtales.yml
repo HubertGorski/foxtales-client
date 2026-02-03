@@ -1,9 +1,7 @@
 name: FoxTales CI/CD
 
 on:
-  push:
-    branches:
-      - dev
+  workflow_dispatch:
 
 env:
   NODE_VERSION: '20'
