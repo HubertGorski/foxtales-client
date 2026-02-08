@@ -1,0 +1,27 @@
+name: Test Database Connection
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test DB Connection
+        env:
+          DB_TESTS_PASSWORD: ${{ secrets.DB_TESTS_PASSWORD }}
+          SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_IP: ${{ secrets.VPS_IP }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/vps_key
+          chmod 600 ~/.ssh/vps_key
+          ssh-keyscan -H "$VPS_IP" >> ~/.ssh/known_hosts
+
+          ssh -i ~/.ssh/vps_key "$VPS_USER@$VPS_IP" "
+            docker exec sqlserver-foxtales-tests /opt/mssql-tools18/bin/sqlcmd \
+              -S localhost -U SA -P '$DB_TESTS_PASSWORD' -d master -C \
+              -Q 'SELECT name FROM sys.databases'
+          "

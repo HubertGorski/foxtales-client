@@ -93,17 +93,33 @@
     return items.value.slice(startIndex, startIndex + props.itemsPerPage);
   });
 
+  const isPreviousPageBtnDisabled = computed(() => {
+    if (totalPages.value < 2) {
+      return true;
+    }
+
+    return props.infinityPages ? false : currentPage.value === 1;
+  });
+
+  const isNextPageBtnDisabled = computed(() => {
+    if (totalPages.value < 2) {
+      return true;
+    }
+
+    return props.infinityPages ? false : currentPage.value >= totalPages.value;
+  });
+
   const previousPageBtn = computed(() => {
     return {
       icon: ICON.ARROW_LEFT,
-      disabled: props.infinityPages ? false : currentPage.value === 1,
+      disabled: isPreviousPageBtnDisabled.value,
       action: () => setPreviousPage(),
     };
   });
   const nextPageBtn = computed(() => {
     return {
       icon: ICON.ARROW_RIGHT,
-      disabled: props.infinityPages ? false : currentPage.value >= totalPages.value,
+      disabled: isNextPageBtnDisabled.value,
       action: () => setNextPage(),
     };
   });
@@ -112,9 +128,13 @@
 
   const selectedItems = computed(() => items.value.filter(item => item.isSelected));
 
-  const paginationText = computed(() =>
-    props.minimalView ? visibleItems.value[0].title : `${currentPage.value} / ${totalPages.value}`
-  );
+  const paginationText = computed(() => {
+    if (props.minimalView) {
+      return visibleItems.value.length > 0 ? visibleItems.value[0].title : '';
+    }
+
+    return `${currentPage.value} / ${totalPages.value}`;
+  });
 
   const setPreviousPage = () => {
     if (currentPage.value === 1) {
@@ -218,7 +238,13 @@
       <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
       <p>{{ $t(emptyDataText) }}</p>
     </div>
-    <div v-if="totalPages > 1 && showPagination" class="pagination">
+    <div
+      v-if="
+        (!minimalView && showPagination && totalPages > 1) ||
+        (minimalView && showPagination && totalPages > 0)
+      "
+      class="pagination"
+    >
       <HubBtn
         class="pagination_btn"
         :icon="previousPageBtn.icon"
