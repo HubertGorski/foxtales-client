@@ -219,7 +219,7 @@
     "emailFormatIsIncorrect": "Invalid email format",
     "emailIsAlreadyTaken": "This email address is already taken",
     "usernameCannotBeEmpty": "Username cannot be empty",
-    "usernameFormatIsIncorrect": "Invalid username format",
+    "usernameFormatIsIncorrect": "Username must contain between 2 and 21 characters",
     "usernameIsAlreadyTaken": "This username is already taken",
     "passwordIsRequired": "Password is required",
     "passwordIsTooShort": "Password is too short",

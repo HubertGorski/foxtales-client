@@ -222,7 +222,7 @@
     "emailFormatIsIncorrect": "Podany email jest niepoprawny",
     "emailIsAlreadyTaken": "Ten adres email jest już zajęty",
     "usernameCannotBeEmpty": "Nazwa użytkownika nie może być pusta",
-    "usernameFormatIsIncorrect": "Format nazwy użytkownika jest niepoprawny",
+    "usernameFormatIsIncorrect": "Nazwa użytkownika musi zawierać od 2 do 21 znaków",
     "usernameIsAlreadyTaken": "Ta nazwa użytkownika jest już zajęta",
     "passwordIsRequired": "Hasło jest wymagane",
     "passwordIsTooShort": "Hasło jest zbyt krótkie",
