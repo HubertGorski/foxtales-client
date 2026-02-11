@@ -9,9 +9,12 @@
   import { getAvatar } from '@/utils/imgUtils';
   import { RULES } from '@/enums/rulesEnum';
   import { VIEW } from '@/enums/viewsEnum';
+  import { useI18n } from 'vue-i18n';
 
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
+
+  const { t } = useI18n();
 
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
   const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
@@ -35,7 +38,7 @@
     const userMap = new Map(game.value.users.map(user => [user.userId, user]));
 
     return votersIds
-      .map(id => userMap.get(id)?.username)
+      .map(id => (id === currentUserId.value ? t('you') : userMap.get(id)?.username))
       .filter(Boolean)
       .join(', ');
   });
