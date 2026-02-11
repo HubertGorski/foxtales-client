@@ -5,17 +5,26 @@
     teamId?: number;
   }>();
 
-  const color = {
-    0: 'red',
-    1: 'green',
-    2: 'blue',
-    3: 'yellow',
-    4: 'pink',
+  const colors: Record<number, string> = {
+    0: 'Black',
+    1: 'Green',
+    2: 'Red',
+    3: 'Chartreuse',
+    4: 'Fuchsia',
+    5: 'Blue',
+    6: 'DarkOrange',
+    7: 'Purple',
+    8: 'Teal',
+    9: 'Brown',
+  };
+
+  const getColor = (teamId: number): string => {
+    return colors[teamId] ?? 'Black';
   };
 </script>
 
 <template>
-  <div class="teamIcon" :style="{ color: color[teamId] }">
+  <div class="teamIcon" :style="{ color: getColor(teamId) }">
     <v-icon>{{ ICON.TEAM }}</v-icon>
   </div>
 </template>
