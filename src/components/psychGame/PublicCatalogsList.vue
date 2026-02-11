@@ -67,6 +67,8 @@
       background-color: $background;
       cursor: pointer;
       transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
 
       &_title {
         border-top-left-radius: 12px;
@@ -75,6 +77,9 @@
         color: $whiteColor;
         padding: 4px 12px;
         font-size: 12px;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
       }
 
       &_img {
