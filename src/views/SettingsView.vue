@@ -298,11 +298,6 @@
         </template>
         <template #changeLanguage>
           <div class="accordionContent">
-            <HubSwitch
-              v-model="userStore.user.useAiTranslations"
-              label="aiLiveTranslation"
-              tooltipText="aiLiveTranslationTooltip"
-            />
             <HubDivider :text="$t('changeInterfaceLanguage')" />
             <WhiteSelectList v-model="languages" :itemsPerPage="10" />
             <HubBtn
@@ -311,6 +306,14 @@
               :text="acceptLanguageBtn.text"
               :isOrange="acceptLanguageBtn.isOrange"
               :disabled="acceptLanguageBtn.disabled"
+            />
+            <HubDivider class="pt-4" :text="$t('advancedSettings')" />
+            <HubSwitch
+              v-model="userStore.user.useAiTranslations"
+              label="aiLiveTranslation"
+              tooltipText="aiLiveTranslationTooltip"
+              :inset="false"
+              color="brown"
             />
           </div>
         </template>

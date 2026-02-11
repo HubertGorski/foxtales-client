@@ -6,10 +6,14 @@
     label,
     tooltipText = '',
     withIcon = false,
+    inset = true,
+    color = 'orange',
   } = defineProps<{
     label?: string;
     tooltipText?: string;
     withIcon?: boolean;
+    inset?: boolean;
+    color?: string;
   }>();
 
   const value = defineModel({ type: Boolean, required: true });
@@ -24,7 +28,7 @@
 </script>
 
 <template>
-  <div class="hubSwitch">
+  <div class="hubSwitch" :class="{ noInset: !inset }">
     <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
       <div class="hubSwitch_content">
         <span v-if="label">{{ $t(label) }}</span>
@@ -35,9 +39,9 @@
     </HubTooltip>
     <v-switch
       v-model="value"
-      inset
+      :inset="inset"
       hide-details
-      color="orange"
+      :color="color"
       @update:model-value="onSwitchChange"
     />
   </div>
@@ -55,6 +59,10 @@
 
     &_content {
       position: relative;
+    }
+
+    &.noInset .v-switch .v-selection-control {
+      min-height: auto;
     }
 
     .iconContainer {
