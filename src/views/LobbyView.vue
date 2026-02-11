@@ -211,6 +211,7 @@
         :imgSource="getAvatar(user.avatar.id)"
         :isSelected="isUserReadyForNewRound(user.userId)"
         :text="user.username"
+        :teamId="user.teamId"
       />
     </div>
     <div class="buttons">
