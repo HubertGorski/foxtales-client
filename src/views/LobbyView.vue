@@ -49,35 +49,37 @@
   };
 
   const arrowLeftClicked = async (user: User) => {
+    let teamId: number | null = null;
     if (!user.teamId) {
-      user.teamId = game.value.users.length;
-      await signalRStore.setTeam(user.userId, user.teamId);
+      teamId = game.value.users.length;
+      await signalRStore.setTeam(user.userId, teamId);
       return;
     }
 
-    user.teamId--;
+    teamId = user.teamId - 1;
 
-    if (user.teamId === 0) {
-      user.teamId = null;
+    if (teamId === 0) {
+      teamId = null;
     }
 
-    await signalRStore.setTeam(user.userId, user.teamId);
+    await signalRStore.setTeam(user.userId, teamId);
   };
 
   const arrowRightClicked = async (user: User) => {
+    let teamId: number | null = null;
     if (!user.teamId) {
-      user.teamId = 1;
-      await signalRStore.setTeam(user.userId, user.teamId);
+      teamId = 1;
+      await signalRStore.setTeam(user.userId, teamId);
       return;
     }
 
-    user.teamId++;
+    teamId = user.teamId + 1;
 
-    if (user.teamId === game.value.users.length + 1) {
-      user.teamId = null;
+    if (teamId === game.value.users.length + 1) {
+      teamId = null;
     }
 
-    await signalRStore.setTeam(user.userId, user.teamId);
+    await signalRStore.setTeam(user.userId, teamId);
   };
 
   const goToGame = async () => {
@@ -211,6 +213,7 @@
         :imgSource="getAvatar(user.avatar.id)"
         :isSelected="isUserReadyForNewRound(user.userId)"
         :text="user.username"
+        :teamId="user.teamId"
       />
     </div>
     <div class="buttons">

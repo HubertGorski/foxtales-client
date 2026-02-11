@@ -35,4 +35,5 @@ export enum ICON {
   INCORRECT = 'mdi-close',
   WAKE_LOCK_ON = 'mdi-eye-outline',
   WAKE_LOCK_OFF = 'mdi-eye-off-outline',
+  TEAM = 'mdi-account-group',
 }

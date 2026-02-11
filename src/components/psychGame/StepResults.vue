@@ -121,6 +121,7 @@
           :sublabel="user.newPoints ? `+${user.newPoints}` : ''"
           :label="`${displayedPoints[user.userId] ?? user.pointsInGame} ${$t('points')}`"
           :isSelected="isUserReadyForNewRound(user.userId)"
+          :teamId="user.teamId"
         />
       </div>
       <div v-if="!isQuietDaysMode" class="votersForHisAnswer">

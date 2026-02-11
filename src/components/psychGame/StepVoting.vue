@@ -285,6 +285,7 @@
         :label="showOwnersStep ? `${$t('correctAnswer')}` : ''"
         :imgSource="getAvatar(activeUser.avatar.id)"
         :isSelected="!isDuoGame"
+        :teamId="activeUser.teamId"
         isSelectedBold
         @click="selectAnswer(activeUser.userId)"
       />
@@ -301,6 +302,7 @@
         :label="getLabel(user)"
         :isSelected="isSelected(user.userId)"
         :imgSource="showOwnersStep || isDuoGame ? getAvatar(user.avatar.id) : getUnknownAvatar()"
+        :teamId="showOwnersStep || isDuoGame ? user.teamId : 0"
         isSelectedBold
         @click="selectAnswer(user.userId)"
       />

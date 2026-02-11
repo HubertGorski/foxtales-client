@@ -2,6 +2,7 @@
   import { ICON } from '@/enums/iconsEnum';
   import HubTooltip from './hubComponents/HubTooltip.vue';
   import HubBtn from './hubComponents/HubBtn.vue';
+  import TeamIcon from './TeamIcon.vue';
 
   const {
     imgSource,
@@ -13,6 +14,7 @@
     avatarLabel = '',
     tooltipText = '',
     showArrowsLabel = false,
+    teamId = 0,
   } = defineProps<{
     imgSource: string;
     isSelected?: boolean;
@@ -23,6 +25,7 @@
     avatarLabel?: string;
     tooltipText?: string;
     showArrowsLabel?: boolean;
+    teamId?: number | null;
   }>();
 
   const emit = defineEmits<{
@@ -50,13 +53,14 @@
   >
     <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
       <img :src="imgSource" alt="Lisek" class="userListElement_avatar" />
+      <TeamIcon v-if="teamId" class="teamIcon" :teamId="teamId" />
     </HubTooltip>
     <div class="userListElement_content">
       <div v-if="text" class="userListElement_text">
         {{ text }}
       </div>
       <div class="userListElement_labels">
-        <div>
+        <div class="position-relative">
           <div v-if="avatarLabel" class="whiteCard label" :class="{ avatarLabel: !text.length }">
             {{ avatarLabel }}
           </div>
@@ -105,6 +109,14 @@
         border: 2px solid $mainBrownColor;
         left: 0;
         top: 0;
+        transition:
+          top 0.3s,
+          left 0.3s;
+      }
+
+      .teamIcon {
+        left: 46px;
+        top: 46px;
         transition:
           top 0.3s,
           left 0.3s;
@@ -206,6 +218,16 @@
       position: absolute;
       left: 8px;
       top: 4px;
+      z-index: 2;
+      transition:
+        top 0.3s,
+        left 0.3s;
+    }
+
+    .teamIcon {
+      position: absolute;
+      top: 48px;
+      left: 50px;
       z-index: 2;
       transition:
         top 0.3s,
