@@ -41,6 +41,9 @@
   "createCustom": "Create custom",
   "showDetails": "Show details",
   "questionsInGame": "questions in game",
+  "wakeLock": "Screen settings",
+  "wakeLockLabel": "Screen Wake Lock",
+  "wakeLockTooltip": "Prevents the screen from automatically turning off during the game.",
   "create": "Create",
   "leaveGame": "Leave game",
   "finishGame": "Finish game",
@@ -234,7 +237,10 @@
     "password": "Password",
     "repeatPassword": "Repeat password",
     "username": "Username",
-    "roomDoesntExist": "The provided code is invalid."
+    "roomDoesntExist": "The provided code is invalid.",
+    "wakeLockNotSupported": "Your browser does not support preventing screen sleep.",
+    "wakeLockReleaseError": "Error while restoring screen sleep mode",
+    "wakeLockRequestError": "Failed to keep the screen awake"
   },
   "foxGame": {
     "psych": {

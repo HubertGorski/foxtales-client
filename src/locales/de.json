@@ -41,6 +41,9 @@
   "createCustom": "Benutzerdefiniert erstellen",
   "showDetails": "Details anzeigen",
   "questionsInGame": "Fragen im Spiel",
+  "wakeLock": "Bildschirmeinstellungen",
+  "wakeLockLabel": "Bildschirmsperre verhindern",
+  "wakeLockTooltip": "Verhindert, dass sich der Bildschirm während des Spiels automatisch ausschaltet.",
   "create": "Erstellen",
   "leaveGame": "Spiel verlassen",
   "finishGame": "Spiel beenden",
@@ -234,7 +237,10 @@
     "password": "Passwort",
     "repeatPassword": "Passwort wiederholen",
     "username": "Benutzername",
-    "roomDoesntExist": "Der angegebene Code ist ungültig."
+    "roomDoesntExist": "Der angegebene Code ist ungültig.",
+    "wakeLockNotSupported": "Dein Browser unterstützt das Verhindern des Bildschirm-Ruhemodus nicht.",
+    "wakeLockReleaseError": "Fehler beim Wiederherstellen des Bildschirm-Ruhemodus",
+    "wakeLockRequestError": "Der Bildschirm-Wachmodus konnte nicht aktiviert werden"
   },
   "foxGame": {
     "psych": {

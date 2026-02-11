@@ -23,6 +23,7 @@
   import HubDivider from '@/components/hubComponents/HubDivider.vue';
   import HubDialogPopup from '@/components/hubComponents/HubDialogPopup.vue';
   import { emailService } from '@/api/services/EmailService';
+  import { toggleWakeLock } from '@/libs/wakeLock';
 
   const userStore = useUserStore();
   const { t, locale } = useI18n();
@@ -208,6 +209,7 @@
           { slotName: 'chooseFox', isComing: false },
           { slotName: 'changeName', isComing: false },
           { slotName: 'changeLanguage', isComing: false },
+          { slotName: 'wakeLock', isComing: false },
           { slotName: 'contact', isComing: false },
         ]"
         setOpenTab="accountStats"
@@ -314,6 +316,18 @@
               tooltipText="aiLiveTranslationTooltip"
               :inset="false"
               color="brown"
+            />
+          </div>
+        </template>
+        <template #wakeLock>
+          <div class="accordionContent">
+            <HubSwitch
+              v-model="userStore.user.useWakeLock"
+              label="wakeLockLabel"
+              tooltipText="wakeLockTooltip"
+              :inset="false"
+              color="brown"
+              @onSwitchChange="toggleWakeLock"
             />
           </div>
         </template>

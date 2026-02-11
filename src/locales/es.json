@@ -41,6 +41,9 @@
   "createCustom": "Crear personalizada",
   "showDetails": "Ver detalles",
   "questionsInGame": "preguntas en el juego",
+  "wakeLock": "Ajustes de pantalla",
+  "wakeLockLabel": "Bloqueo de suspensión de pantalla",
+  "wakeLockTooltip": "Evita que la pantalla se apague automáticamente durante el juego.",
   "create": "Crear",
   "leaveGame": "Abandonar el juego",
   "finishGame": "Terminar el juego",
@@ -234,7 +237,10 @@
     "password": "Contraseña",
     "repeatPassword": "Repetir contraseña",
     "username": "Nombre de usuario",
-    "roomDoesntExist": "El código proporcionado no es válido."
+    "roomDoesntExist": "El código proporcionado no es válido.",
+    "wakeLockNotSupported": "Tu navegador no soporta evitar que la pantalla se apague.",
+    "wakeLockReleaseError": "Error al restaurar el modo de suspensión de pantalla",
+    "wakeLockRequestError": "No se pudo mantener la pantalla activa"
   },
   "foxGame": {
     "psych": {

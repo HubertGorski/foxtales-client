@@ -7,6 +7,7 @@
   import OrangeSwitchBtn from '@/components/OrangeSwitchBtn.vue';
   import { useI18n } from 'vue-i18n';
   import { LANG } from '@/enums/languagesEnum';
+  import { toggleWakeLock } from '@/libs/wakeLock';
 
   const router = useRouter();
   const { locale } = useI18n();
@@ -62,6 +63,12 @@
         :action="changeLanguage"
         :iconOff="ICON.LANGUAGE"
         :iconOn="ICON.LANGUAGE"
+        iconSize="34"
+      />
+      <OrangeSwitchBtn
+        :action="toggleWakeLock"
+        :iconOff="ICON.WAKE_LOCK_OFF"
+        :iconOn="ICON.WAKE_LOCK_ON"
         iconSize="34"
       />
       <OrangeSwitchBtn

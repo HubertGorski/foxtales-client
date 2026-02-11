@@ -41,6 +41,9 @@
   "createCustom": "Créer une personnalisée",
   "showDetails": "Voir les détails",
   "questionsInGame": "questions dans le jeu",
+  "wakeLock": "Paramètres de l'écran",
+  "wakeLockLabel": "Éveil de l'écran",
+  "wakeLockTooltip": "Empêche l'écran de s'éteindre automatiquement pendant le jeu.",
   "create": "Créer",
   "leaveGame": "Quitter le jeu",
   "finishGame": "Terminer le jeu",
@@ -234,7 +237,10 @@
     "password": "Mot de passe",
     "repeatPassword": "Répéter le mot de passe",
     "username": "Nom d'utilisateur",
-    "roomDoesntExist": "Le code fourni est invalide."
+    "roomDoesntExist": "Le code fourni est invalide.",
+    "wakeLockNotSupported": "Votre navigateur ne permet pas d'empêcher la mise en veille de l'écran.",
+    "wakeLockReleaseError": "Erreur lors du rétablissement de la mise en veille",
+    "wakeLockRequestError": "Impossible d'activer le mode éveil de l'écran"
   },
   "foxGame": {
     "psych": {

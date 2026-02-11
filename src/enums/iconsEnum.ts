@@ -33,4 +33,6 @@ export enum ICON {
   CHECK = 'mdi-check-circle-outline',
   CORRECT = 'mdi-check',
   INCORRECT = 'mdi-close',
+  WAKE_LOCK_ON = 'mdi-eye-outline',
+  WAKE_LOCK_OFF = 'mdi-eye-off-outline',
 }

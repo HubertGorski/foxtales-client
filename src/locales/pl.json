@@ -41,6 +41,9 @@
   "createCustom": "Utwórz niestandardową",
   "showDetails": "Zobacz szczegóły",
   "questionsInGame": "pytań w grze",
+  "wakeLock": "Ustawienia ekranu",
+  "wakeLockLabel": "Blokada wygaszania ekranu",
+  "wakeLockTooltip": "Zapobiega automatycznemu wyłączaniu się ekranu podczas gry.",
   "create": "Utwórz",
   "leaveGame": "Opuść grę",
   "finishGame": "Zakończ grę",
@@ -237,7 +240,10 @@
     "password": "Hasło",
     "repeatPassword": "Powtórz hasło",
     "username": "Nazwa użytkownika",
-    "roomDoesntExist": "Podany kod jest nieprawidłowy."
+    "roomDoesntExist": "Podany kod jest nieprawidłowy.",
+    "wakeLockNotSupported": "Twoja przeglądarka nie obsługuje funkcji zapobiegania wygaszania ekranu.",
+    "wakeLockReleaseError": "Wystąpił błąd podczas przywracania wygaszania ekranu",
+    "wakeLockRequestError": "Nie udało się włączyć blokady wygaszania ekranu"
   },
   "foxGame": {
     "psych": {
