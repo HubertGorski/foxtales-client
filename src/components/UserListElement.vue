@@ -92,18 +92,33 @@
     }
 
     &.isSelected {
-      transform: scale(1.06);
-      transition: all 0.4s;
+      padding: 8px;
+      transition: all 0.3s;
+
+      .userListElement_text {
+        font-size: 19px;
+        transition: all 0.3s;
+      }
 
       .userListElement_avatar {
         transform: scale(1.1);
         border: 2px solid $mainBrownColor;
+        left: 0;
+        top: 0;
+        transition:
+          top 0.3s,
+          left 0.3s;
       }
     }
 
     &.isSelected.isSelectedBold .userListElement_avatar {
       transform: scale(1.1);
       border: 4px solid $mainBrownColor;
+      left: 0;
+      top: 0;
+      transition:
+        top 0.3s,
+        left 0.3s;
     }
 
     &_content {
@@ -121,6 +136,7 @@
       text-align: center;
       overflow: hidden;
       box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      transition: all 0.3s;
     }
 
     &_labels {
@@ -191,6 +207,9 @@
       left: 8px;
       top: 4px;
       z-index: 2;
+      transition:
+        top 0.3s,
+        left 0.3s;
     }
   }
 
