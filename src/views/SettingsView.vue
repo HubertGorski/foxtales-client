@@ -362,26 +362,31 @@
         </div>
       </HubDialogPopup>
     </div>
-    <NavigationBtns class="pl-1 pr-1 pb-1 pt-1" btn="back" btn2="shop" btn2Disabled />
+    <NavigationBtns class="settingsView_navigationBtns" btn="back" btn2="shop" btn2Disabled />
   </div>
 </template>
 
 <style lang="scss" scoped>
   @import '@/assets/styles/variables';
   .settingsView {
-    min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
 
     .settings {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      flex-grow: 1;
+      overflow-y: auto;
+      flex: 1;
       gap: 12px;
       padding: 12px;
       background: $darkBackground;
+    }
+
+    &_navigationBtns {
+      padding: 4px;
+      background-color: $darkBackground;
     }
 
     .selectedFox {

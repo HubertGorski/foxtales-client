@@ -288,6 +288,11 @@
         isSelectedBold
         @click="selectAnswer(activeUser.userId)"
       />
+      <HubDivider
+        v-if="isDuoGame && isSubjectPlayer"
+        class="pt-6"
+        :text="$t('isGivenAnswerCorrect')"
+      />
       <UserListElement
         v-for="user in userList"
         :key="user.userId"

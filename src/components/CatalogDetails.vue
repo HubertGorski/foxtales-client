@@ -50,8 +50,8 @@
     <HubPopup v-model="isCatalogDetailsVisible">
       <div v-if="catalog" class="catalogDetails_card">
         <div class="catalogDetails_header">
-          <HubBtn :text="'back'" :action="goBack" ghost small />
-          <HubBtn :text="'accept'" :action="confirmSelection" isOrange small />
+          <HubBtn text="back" :action="goBack" ghost small />
+          <HubBtn text="continue" :action="confirmSelection" isOrange small />
         </div>
         <IsComingMask v-if="true" :isAbsolute="false" isComingText="isComingDetails" />
         <div v-else class="catalogDetails_content">
