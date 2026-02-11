@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <div class="hubDivider">
+  <div class="hubDivider" :class="{ 'pt-2 pb-2': !props.text }">
     <v-divider />
     <span v-if="props.text" class="hubDivider_text">{{ props.text }}</span>
     <v-divider />

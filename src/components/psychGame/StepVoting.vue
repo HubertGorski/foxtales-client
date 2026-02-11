@@ -62,7 +62,11 @@
     });
   });
 
-  onMounted(() => {
+  onMounted(async () => {
+    if (isQuietDaysMode.value && !showOwnersStep.value && !isSubjectPlayer.value) {
+      await selectAndConfirmEmptySelect();
+    }
+
     if (isUserReady.value) {
       return;
     }
@@ -96,16 +100,32 @@
       return;
     }
 
-    await signalRStore.chooseAnswer(currentUserId.value, selectedAnswerUserIds.value);
+    await confirmSelectedAnswers();
+  };
+
+  const selectAndConfirmEmptySelect = async () => {
+    await signalRStore.chooseAnswer(currentUserId.value, []);
+  };
+
+  const selectAndConfirmAllAnswers = async () => {
+    for (const user of userList.value) {
+      selectedAnswerUserIds.value.push(user.userId);
+    }
+
+    await confirmSelectedAnswers();
   };
 
   const confirmEmptySelectAnswer = async () => {
     showConfirmEmptySelectPanel.value = false;
+    await confirmSelectedAnswers();
+  };
+
+  const confirmSelectedAnswers = async () => {
     await signalRStore.chooseAnswer(currentUserId.value, selectedAnswerUserIds.value);
   };
 
   const selectAnswer = (userId: number | null) => {
-    if (isUserReady.value || showOwnersStep.value || !userId) {
+    if (isUserReady.value || showOwnersStep.value || !userId || isDuoGame.value) {
       return;
     }
 
@@ -129,6 +149,10 @@
   };
 
   const isSelected = (userId: number): boolean => {
+    if (isDuoGame.value) {
+      return false;
+    }
+
     return selectedAnswerUserIds.value.includes(userId);
   };
 
@@ -158,10 +182,20 @@
     }
 
     if (isSubjectPlayer.value) {
-      return isUserReady.value ? t('lobby.waitingForPlayers') : t('chooseCorrectAnswers');
+      const chooseAnswerText = isDuoGame.value ? '' : t('chooseCorrectAnswers');
+      return isUserReady.value ? t('lobby.waitingForPlayers') : chooseAnswerText;
     }
 
-    return isUserReady.value ? t('lobby.waitingForPlayers') : t('moveOn');
+    const waitingText = isDuoGame.value ? '' : t('lobby.waitingForPlayers');
+    return isUserReady.value ? waitingText : t('moveOn');
+  });
+
+  const isDuoGame = computed(() => {
+    if (!isQuietDaysMode.value) {
+      // TODO: na razie jest załóżenie że tylko dla tego trybu można grać w 2 osoby
+      return false;
+    }
+    return isSubjectPlayer.value ? userList.value.length === 1 : userList.value.length === 2;
   });
 
   const userList = computed(() => {
@@ -172,18 +206,21 @@
     return shuffledUsers.value.filter(u => u.userId !== currentUserId.value);
   });
 
+  const confirmBtnText = computed(() => {
+    if (timeLeft.value && isSubjectPlayer.value && isQuietDaysMode.value) {
+      return `${t('chooseCorrectAnswers')} (${timeLeft.value})`;
+    }
+
+    if (isQuietDaysMode.value && !isSubjectPlayer.value) {
+      return t('waitingForResults');
+    }
+
+    return isUserReady.value ? t('accepted') : t('accept');
+  });
+
   const confirmBtn = computed(() => {
     return {
-      text:
-        timeLeft.value && isSubjectPlayer.value && isQuietDaysMode.value
-          ? `${t('chooseCorrectAnswers')} (${timeLeft.value})`
-          : isQuietDaysMode.value && !isSubjectPlayer.value
-            ? isUserReady.value
-              ? t('lobby.waitingForPlayers')
-              : t('checkResults')
-            : isUserReady.value
-              ? t('accepted')
-              : t('accept'),
+      text: confirmBtnText.value,
       isOrange: true,
       action: confirmSelectedAnswer,
       disabled:
@@ -222,6 +259,11 @@
 
     return answer?.answer ?? '';
   };
+
+  const getAvatarLabel = (user: User): string => {
+    const username = currentUserId.value === user.userId ? t('you') : user.username;
+    return showOwnersStep.value || isDuoGame.value ? username : '';
+  };
 </script>
 
 <template>
@@ -242,7 +284,7 @@
         :avatarLabel="$t('you')"
         :label="showOwnersStep ? `${$t('correctAnswer')}` : ''"
         :imgSource="getAvatar(activeUser.avatar.id)"
-        isSelected
+        :isSelected="!isDuoGame"
         isSelectedBold
         @click="selectAnswer(activeUser.userId)"
       />
@@ -250,29 +292,41 @@
         v-for="user in userList"
         :key="user.userId"
         :text="getAnswerText(user.answer)"
-        :avatarLabel="showOwnersStep ? user.username : ''"
+        :avatarLabel="getAvatarLabel(user)"
         :label="getLabel(user)"
         :isSelected="isSelected(user.userId)"
-        :imgSource="showOwnersStep ? getAvatar(user.avatar.id) : getUnknownAvatar()"
+        :imgSource="showOwnersStep || isDuoGame ? getAvatar(user.avatar.id) : getUnknownAvatar()"
         isSelectedBold
         @click="selectAnswer(user.userId)"
       />
     </div>
-    <div v-if="!showOwnersStep" class="acceptPanel">
-      <HubTooltip
-        :tooltipText="isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
-        :tooltipDisabled="!confirmBtn.disabled || isQuietDaysMode"
-      >
-        <HubBtn
-          :action="confirmBtn.action"
-          :text="confirmBtn.text"
-          :isOrange="confirmBtn.isOrange"
-          :disabled="confirmBtn.disabled"
-          :useDicts="false"
-        />
-      </HubTooltip>
+    <div v-if="!showOwnersStep" class="w-100">
+      <div v-if="isDuoGame && isSubjectPlayer" class="trueFalsePanel">
+        <div class="trueFalsePanel_btn">
+          <img src="@/assets/imgs/psych/false.webp" alt="Lisek" class="fox" />
+          <HubBtn text="false" :action="selectAndConfirmEmptySelect" />
+        </div>
+        <div class="trueFalsePanel_btn">
+          <img src="@/assets/imgs/psych/true.webp" alt="Lisek" class="fox" />
+          <HubBtn text="true" isOrange :action="selectAndConfirmAllAnswers" />
+        </div>
+      </div>
+      <div v-else class="acceptPanel">
+        <HubTooltip
+          :tooltipText="isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
+          :tooltipDisabled="!confirmBtn.disabled || isQuietDaysMode"
+        >
+          <HubBtn
+            :action="confirmBtn.action"
+            :text="confirmBtn.text"
+            :isOrange="confirmBtn.isOrange"
+            :disabled="confirmBtn.disabled"
+            :useDicts="false"
+          />
+        </HubTooltip>
+      </div>
     </div>
-    <div v-else class="nextPageBtn">
+    <div v-else class="nextPageBtn acceptPanel">
       <HubBtn
         :action="nextPageBtn.action"
         :text="nextPageBtn.text"
@@ -318,6 +372,24 @@
       flex-direction: column;
       padding: 8px;
       width: 100%;
+    }
+
+    .trueFalsePanel {
+      display: flex;
+      justify-content: space-around;
+      gap: 12px;
+
+      &_btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+
+        img {
+          max-width: 152px;
+          transform: translateY(14px);
+        }
+      }
     }
 
     .acceptPanel {

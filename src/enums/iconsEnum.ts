@@ -31,4 +31,6 @@ export enum ICON {
   ERROR = 'mdi-alert-circle-outline',
   POINTS = 'mdi-star-circle-outline',
   CHECK = 'mdi-check-circle-outline',
+  CORRECT = 'mdi-check',
+  INCORRECT = 'mdi-close',
 }
