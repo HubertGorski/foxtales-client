@@ -24,8 +24,10 @@
   import HubDialogPopup from '@/components/hubComponents/HubDialogPopup.vue';
   import { emailService } from '@/api/services/EmailService';
   import { toggleWakeLock } from '@/libs/wakeLock';
+  import { useViewStore } from '@/stores/viewStore';
 
   const userStore = useUserStore();
+  const viewStore = useViewStore();
   const { t, locale } = useI18n();
 
   const currentUser = userStore.user;
@@ -322,7 +324,7 @@
         <template #wakeLock>
           <div class="accordionContent">
             <HubSwitch
-              v-model="userStore.user.useWakeLock"
+              v-model="viewStore.useWakeLock"
               label="wakeLockLabel"
               tooltipText="wakeLockTooltip"
               :inset="false"

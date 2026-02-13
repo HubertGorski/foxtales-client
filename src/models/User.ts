@@ -29,7 +29,6 @@ export class User {
   language: LANG = LANG.PL;
 
   useAiTranslations: boolean = false;
-  useWakeLock: boolean = false;
 
   invitedUsersToAppCount: number = 0;
   lastSign: Date = new Date();

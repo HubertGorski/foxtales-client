@@ -146,12 +146,14 @@
   "positive": "Positif",
   "negative": "Négatif",
   "tooltip": {
-    "toStartGameChooseQuestions": "Pour commencer le jeu, vous devez sélectionner un ensemble de questions.",
-    "startNewGame": "Tous les invités dans la salle doivent confirmer leur participation avant que le jeu puisse commencer.",
-    "privateQuestionsDescription": "Utilisez vos propres questions créées dans le jeu.",
-    "publicQuestionsDescription": "Utilisez des questions publiques créées par d'autres utilisateurs. Ces questions sont approuvées par l'administration.",
-    "roomOnListDescription": "Permettre à votre salle d'apparaître publiquement pour que d'autres puissent rejoindre sans code.",
-    "useDixitRules": "Ne laissez pas tous les joueurs choisir votre réponse. Vous gagnez des points en sélectionnant la réponse du joueur sur lequel la question est posée."
+    "hasSinglePlayerTeams": "Pour commencer le jeu, toutes les équipes doivent avoir au moins 2 joueurs",
+    "hasNoMinimumPlayers": "Pour démarrer le jeu dans ce mode, au moins 3 joueurs sont requis",
+    "toStartGameChooseQuestions": "Pour commencer le jeu, vous devez sélectionner un ensemble de questions",
+    "startNewGame": "Tous les invités dans la salle doivent confirmer leur participation avant que le jeu puisse commencer",
+    "privateQuestionsDescription": "Utilisez vos propres questions créées dans le jeu",
+    "publicQuestionsDescription": "Utilisez des questions publiques créées par d'autres utilisateurs. Ces questions sont approuvées par l'administration",
+    "roomOnListDescription": "Permettre à votre salle d'apparaître publiquement pour que d'autres puissent rejoindre sans code",
+    "useDixitRules": "Ne laissez pas tous les joueurs choisir votre réponse. Vous gagnez des points en sélectionnant la réponse du joueur sur lequel la question est posée"
   },
   "info": {
     "passwordRoom": "* Sans définir de mot de passe, n'importe qui peut rejoindre votre salle."
@@ -164,6 +166,9 @@
     "useDixitRules": "Choisir la réponse du joueur",
     "usePsychRules": "Choisir le plus drôle",
     "useQuietDaysRules": "Écrire la réponse du joueur",
+    "useDixitRulesDesc": "Lorem ipsum jeu dixit",
+    "usePsychRulesDesc": "Lorem ipsum jeu psych",
+    "useQuietDaysRulesDesc": "Lorem ipsum jeu quiet days",
     "createGame": "Créer le jeu",
     "inviteOtherPlayers": "Invitez d'autres personnes en leur donnant le code :",
     "entryPassword": "Mot de passe d'entrée",
@@ -173,11 +178,11 @@
     "accessCode": "Code d'accès :"
   },
   "languages": {
-    "polish": "Polonais",
-    "english": "Anglais",
-    "german": "Allemand",
+    "polish": "Polonais (Polski)",
+    "english": "Anglais (English)",
+    "german": "Allemand (Deutsch)",
     "french": "Français",
-    "spanish": "Espagnol"
+    "spanish": "Espagnol (Español)"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Aucun catalogue n'a encore été créé.",

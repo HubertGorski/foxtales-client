@@ -95,6 +95,21 @@ export class Game {
     return this.users.length;
   }
 
+  get hasMinimumPlayers(): boolean {
+    return this.currentRules === RULES.DIXIT ? this.usersCount >= 3 : true;
+  }
+
+  get hasSinglePlayerTeams(): boolean {
+    const counts = new Map<number, number>();
+
+    for (const { teamId } of this.users) {
+      if (teamId == null) continue;
+      counts.set(teamId, (counts.get(teamId) ?? 0) + 1);
+    }
+
+    return Array.from(counts.values()).includes(1);
+  }
+
   getReadyUsersCount(view: VIEW): number {
     return this.users.filter(user => user.isReadyForView === view).length;
   }

@@ -146,6 +146,8 @@
   "positive": "Positive",
   "negative": "Negative",
   "tooltip": {
+    "hasSinglePlayerTeams": "To start the game, all teams must have at least 2 players",
+    "hasNoMinimumPlayers": "To start the game in this mode, at least 3 players are required",
     "toStartGameChooseQuestions": "To start the game, you must select a set of questions.",
     "startNewGame": "All guests in the room must confirm participation before the game can start.",
     "privateQuestionsDescription": "Use your own created questions in the game.",
@@ -164,6 +166,9 @@
     "useDixitRules": "Choose the player's answer",
     "usePsychRules": "Choose the funniest",
     "useQuietDaysRules": "Write the player's answer",
+    "useDixitRulesDesc": "Lorem ipsum dixit game",
+    "usePsychRulesDesc": "Lorem ipsum psych game",
+    "useQuietDaysRulesDesc": "Lorem ipsum quiet days game",
     "createGame": "Create game",
     "inviteOtherPlayers": "Invite others by giving them the code:",
     "entryPassword": "Entry password",
@@ -173,11 +178,11 @@
     "accessCode": "Access code:"
   },
   "languages": {
-    "polish": "Polish",
+    "polish": "Polish (Polski)",
     "english": "English",
-    "german": "German",
-    "french": "French",
-    "spanish": "Spanish"
+    "german": "German (Deutsch)",
+    "french": "French (Français)",
+    "spanish": "Spanish (Español)"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "No catalog has been created yet.",

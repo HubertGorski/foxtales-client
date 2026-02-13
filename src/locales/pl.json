@@ -146,12 +146,14 @@
   "positive": "Pozytywna",
   "negative": "Negatywna",
   "tooltip": {
-    "toStartGameChooseQuestions": "By rozpocząć grę należy wybrać do niej zestaw pytań.",
+    "hasSinglePlayerTeams": "By rozpocząć grę, wszystkie drużyny muszą mieć co najmniej 2 graczy",
+    "hasNoMinimumPlayers": "By rozpocząć grę w tym trybie, potrzebnych jest co najmniej 3 graczy",
+    "toStartGameChooseQuestions": "By rozpocząć grę należy wybrać do niej zestaw pytań",
     "startNewGame": "By rozpocząć grę wszyscy goście w pokoju muszą potwierdzić udział",
-    "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań.",
-    "publicQuestionsDescription": "Korzystaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację.",
-    "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu.",
-    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie."
+    "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań",
+    "publicQuestionsDescription": "Korzystaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację",
+    "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu",
+    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie"
   },
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju."
@@ -177,10 +179,10 @@
   },
   "languages": {
     "polish": "Polski",
-    "english": "Angielski",
-    "german": "Niemiecki",
-    "french": "Francuski",
-    "spanish": "Hiszpański"
+    "english": "Angielski (English)",
+    "german": "Niemiecki (Deutsch)",
+    "french": "Francuski (Français)",
+    "spanish": "Hiszpański (Español)"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",

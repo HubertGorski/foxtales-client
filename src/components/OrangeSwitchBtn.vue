@@ -2,6 +2,10 @@
   import { ref } from 'vue';
 
   const props = defineProps({
+    initState: {
+      type: Boolean,
+      required: false,
+    },
     iconOff: {
       type: String,
       required: true,
@@ -20,7 +24,7 @@
     },
   });
 
-  const isActive = ref(false);
+  const isActive = ref(props.initState);
 
   const handleAction = () => {
     isActive.value = !isActive.value;

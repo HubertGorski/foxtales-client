@@ -146,7 +146,9 @@
   "positive": "Positivo",
   "negative": "Negativo",
   "tooltip": {
-    "toStartGameChooseQuestions": "Para comenzar el juego, debes seleccionar un conjunto de preguntas.",
+    "hasSinglePlayerTeams": "Para empezar el juego, todos los equipos deben tener al menos 2 jugadores",
+    "hasNoMinimumPlayers": "Para iniciar el juego en este modo, se requieren al menos 3 jugadores",
+    "toStartGameChooseQuestions": "Para comenzar el juego, debes seleccionar un conjunto de preguntas",
     "startNewGame": "Todos los invitados en la sala deben confirmar su participación antes de que el juego pueda comenzar.",
     "privateQuestionsDescription": "Usa tus propias preguntas creadas en el juego.",
     "publicQuestionsDescription": "Usa preguntas públicas creadas por otros usuarios. Estas preguntas están aprobadas por la administración.",
@@ -164,6 +166,9 @@
     "useDixitRules": "Elige la respuesta del jugador",
     "usePsychRules": "Elige lo más divertido",
     "useQuietDaysRules": "Escribe la respuesta del jugador",
+    "useDixitRulesDesc": "Lorem ipsum juego dixit",
+    "usePsychRulesDesc": "Lorem ipsum juego psych",
+    "useQuietDaysRulesDesc": "Lorem ipsum juego quiet days",
     "createGame": "Crear juego",
     "inviteOtherPlayers": "Invita a otros dándoles el código:",
     "entryPassword": "Contraseña de entrada",
@@ -173,10 +178,10 @@
     "accessCode": "Código de acceso:"
   },
   "languages": {
-    "polish": "Polaco",
-    "english": "Inglés",
-    "german": "Alemán",
-    "french": "Francés",
+    "polish": "Polaco (Polski)",
+    "english": "Inglés (English)",
+    "german": "Alemán (Deutsch)",
+    "french": "Francés (Français)",
     "spanish": "Español"
   },
   "psych": {
