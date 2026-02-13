@@ -146,6 +146,8 @@
   "positive": "Positiv",
   "negative": "Negativ",
   "tooltip": {
+    "hasSinglePlayerTeams": "Um das Spiel zu starten, müssen alle Teams mindestens 2 Spieler haben",
+    "hasNoMinimumPlayers": "Um das Spiel in diesem Modus zu starten, sind mindestens 3 Spieler erforderlich",
     "toStartGameChooseQuestions": "Um das Spiel zu starten, musst du einen Fragenkatalog auswählen.",
     "startNewGame": "Alle Gäste im Raum müssen ihre Teilnahme bestätigen, bevor das Spiel beginnt.",
     "privateQuestionsDescription": "Verwende deine eigenen erstellten Fragen im Spiel.",
@@ -164,6 +166,9 @@
     "useDixitRules": "Wählen Sie die Antwort des Spielers",
     "usePsychRules": "Wählen Sie das Lustigste",
     "useQuietDaysRules": "Schreiben Sie die Antwort des Spielers",
+    "useDixitRulesDesc": "Lorem ipsum Dixit-Spiel",
+    "usePsychRulesDesc": "Lorem ipsum Psych-Spiel",
+    "useQuietDaysRulesDesc": "Lorem ipsum Quiet-Days-Spiel",
     "createGame": "Spiel erstellen",
     "inviteOtherPlayers": "Lade andere ein, indem du ihnen den Code gibst:",
     "entryPassword": "Zugangspasswort",
@@ -173,11 +178,11 @@
     "accessCode": "Zugangscode:"
   },
   "languages": {
-    "polish": "Polnisch",
-    "english": "Englisch",
+    "polish": "Polnisch (Polski)",
+    "english": "Englisch (English)",
     "german": "Deutsch",
-    "french": "Französisch",
-    "spanish": "Spanisch"
+    "french": "Französisch (Français)",
+    "spanish": "Spanisch (Español)"
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Es wurde noch kein Katalog erstellt.",

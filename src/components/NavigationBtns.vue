@@ -160,7 +160,7 @@
     <HubTooltip
       v-if="selectedBtn2"
       :tooltipText="btn2TooltipText"
-      :tooltipDisabled="isTooltip2Visible"
+      :tooltipDisabled="!isTooltip2Visible"
       maxWidth
     >
       <HubBtn

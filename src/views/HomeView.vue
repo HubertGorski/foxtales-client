@@ -8,12 +8,19 @@
   import { useI18n } from 'vue-i18n';
   import { LANG } from '@/enums/languagesEnum';
   import { toggleWakeLock } from '@/libs/wakeLock';
+  import { useViewStore } from '@/stores/viewStore';
 
+  const viewStore = useViewStore();
   const router = useRouter();
   const { locale } = useI18n();
 
   const changeLanguage = () => {
     locale.value = locale.value === LANG.EN ? LANG.PL : LANG.EN;
+  };
+
+  const handleToggleWakeLock = () => {
+    viewStore.toggleWakeLock();
+    toggleWakeLock();
   };
 
   const handleFullscreen = () => {
@@ -66,7 +73,8 @@
         iconSize="34"
       />
       <OrangeSwitchBtn
-        :action="toggleWakeLock"
+        :initState="viewStore.useWakeLock"
+        :action="handleToggleWakeLock"
         :iconOff="ICON.WAKE_LOCK_OFF"
         :iconOn="ICON.WAKE_LOCK_ON"
         iconSize="34"

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 interface ViewState {
   isKeyboardOpen: boolean;
   isMobile: boolean;
+  useWakeLock: boolean;
 }
 
 export const useViewStore = defineStore({
@@ -10,6 +11,7 @@ export const useViewStore = defineStore({
   state: (): ViewState => ({
     isKeyboardOpen: false,
     isMobile: false,
+    useWakeLock: false,
   }),
 
   getters: {
@@ -23,6 +25,9 @@ export const useViewStore = defineStore({
     },
     setIsMobile(isMobile: boolean) {
       this.isMobile = isMobile;
+    },
+    toggleWakeLock() {
+      this.useWakeLock = !this.useWakeLock;
     },
   },
 });

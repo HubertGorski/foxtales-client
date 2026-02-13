@@ -142,6 +142,10 @@
     return game.value.owner.userId === userStore.user.userId;
   });
 
+  const hasQuestionsInGame = computed(() => {
+    return game.value.questions.length || game.value.usePublicQuestions;
+  });
+
   const optionBtn = computed(() => {
     return {
       text: isOwner.value ? 'settings' : 'back',
@@ -151,15 +155,42 @@
   });
 
   const tooltipText = computed(() => {
-    if (!game.value.questions.length && isOwner.value) {
+    if (!isOwner.value) {
+      return '';
+    }
+
+    if (game.value.hasSinglePlayerTeams) {
+      return 'tooltip.hasSinglePlayerTeams';
+    }
+
+    if (!game.value.hasMinimumPlayers) {
+      return 'tooltip.hasNoMinimumPlayers';
+    }
+
+    if (!hasQuestionsInGame.value) {
       return 'tooltip.toStartGameChooseQuestions';
     }
 
-    if (game.value.getAreUsersUnready(VIEW.ADD_ANSWER) && isOwner.value) {
+    if (game.value.getAreUsersUnready(VIEW.ADD_ANSWER)) {
       return 'tooltip.startNewGame';
     }
 
     return '';
+  });
+
+  const isStartBtnDisabled = computed(() => {
+    if (!isOwner.value) {
+      return false;
+    }
+
+    const hasUnreadyPlayers = game.value.getAreUsersUnready(VIEW.ADD_ANSWER);
+
+    return (
+      hasUnreadyPlayers ||
+      !hasQuestionsInGame.value ||
+      !game.value.hasMinimumPlayers ||
+      game.value.hasSinglePlayerTeams
+    );
   });
 
   const startBtn = computed(() => {
@@ -167,9 +198,7 @@
       text: isOwner.value ? 'start' : 'ready',
       action: startBtnAction,
       tooltipText: tooltipText.value,
-      disabled:
-        (game.value.getAreUsersUnready(VIEW.ADD_ANSWER) && isOwner.value) ||
-        (!game.value.questions.length && !game.value.usePublicQuestions && isOwner.value),
+      disabled: isStartBtnDisabled.value,
     };
   });
 
@@ -234,7 +263,7 @@
           v-if="isOwner && game.currentRules == RULES.QUIET_DAYS"
           class="settingsBtn"
           :action="() => (showTeamsPanel = true)"
-          :icon="ICON.ADD_TO_COLLECTION"
+          :icon="ICON.TEAM"
         />
       </div>
       <NavigationBtns
@@ -291,7 +320,7 @@
       padding: 12px;
       min-width: 360px;
       max-height: 90vh;
-      overflow-y: scroll;
+      overflow-y: auto;
 
       .userListElement_text {
         background-color: white;
