@@ -132,7 +132,7 @@
   const { handleSubmit, setFieldError } = useForm({
     validationSchema: schema,
   });
-  const { value: username, errorMessage: usernameError } = useField('username');
+  const { value: username, errorMessage: usernameError } = useField<string>('username');
   username.value = '';
 
   const changeUsername = handleSubmit(async values => {
@@ -369,7 +369,8 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
+
   .settingsView {
     display: flex;
     flex-direction: column;
@@ -394,6 +395,7 @@
     .selectedFox {
       display: flex;
       justify-content: center;
+
       &_img {
         height: 180px;
       }
@@ -437,7 +439,7 @@
           background-color: white;
           height: 56px;
           width: 56px;
-          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+          box-shadow: rgb(0, 0, 0, 0.24) 0 3px 8px;
           border-radius: 50%;
           padding: 2px;
 
@@ -474,10 +476,12 @@
       align-items: center;
       gap: 8px;
       padding: 8px;
+
       &_list {
         display: flex;
         gap: 8px;
       }
+
       &_btn {
         font-size: 12px;
         width: min-content;
@@ -486,11 +490,12 @@
         margin-left: auto;
       }
     }
+
     .achievement {
       background-color: white;
       height: 42px;
       width: 42px;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      box-shadow: rgb(0, 0, 0, 0.24) 0 3px 8px;
       border-radius: 50%;
       padding: 2px;
       filter: brightness(50%) grayscale(80%) contrast(90%);

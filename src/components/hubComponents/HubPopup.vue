@@ -12,7 +12,8 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
+
   .hubPopup {
     display: flex;
     justify-content: center;
@@ -38,6 +39,7 @@
       transform: scale(0.00001);
       z-index: 2;
       margin: 0 auto;
+
       &.isVisible {
         transition: transform 0.3s;
         transform: scale(1);

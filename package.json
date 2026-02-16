@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,12 +12,13 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
-    "lint:check": "eslint . --ext .vue,.js,.ts,.jsx,.tsx"
+    "lint:check": "eslint . --ext .vue,.js,.ts,.jsx,.tsx",
+    "lint:scss": "stylelint 'src/**/*.{scss,vue}'"
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.7",
     "@vuepic/vue-datepicker": "^8.3.1",
-    "apexcharts": "^3.47.0",
+    "apexcharts": "^4.0.0",
     "axios": "^1.9.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
@@ -48,13 +49,17 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-vue": "^10.5.1",
     "npm-run-all2": "^6.1.1",
+    "postcss-html": "^1.8.1",
     "prettier": "^3.6.2",
     "sass": "^1.75.0",
+    "stylelint": "^17.3.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "stylelint-scss": "^7.0.0",
     "typescript": "~5.3.0",
     "typescript-eslint": "^8.46.2",
-    "vite": "^5.0.11",
+    "vite": "^6.4.1",
     "vite-plugin-pwa": "^1.0.3",
     "vue-eslint-parser": "^10.2.0",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^3.2.4"
   }
 }

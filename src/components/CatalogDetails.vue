@@ -101,7 +101,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .catalogDetails {
     &_card {
@@ -110,8 +110,8 @@
       background: $background;
       width: 100%;
       box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.15),
-        0 2px 8px rgba(0, 0, 0, 0.1);
+        0 8px 32px rgb(0, 0, 0, 0.15),
+        0 2px 8px rgb(0, 0, 0, 0.1);
       border-radius: 16px;
       overflow: hidden;
     }
@@ -148,13 +148,14 @@
         max-height: 140px;
         border: 2px solid $lightBrownColor;
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
         object-fit: cover;
       }
     }
 
     &_questions {
       padding: 12px;
+
       span {
         display: block;
         text-align: start;

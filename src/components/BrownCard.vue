@@ -14,14 +14,14 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .brownCard {
     background: linear-gradient(135deg, #5a3f37, #8d5c52);
     padding: 12px 8px;
     margin: 8px 0;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
     text-align: center;
 
     .header {
@@ -34,16 +34,16 @@
 
     .v-divider {
       margin: 8px 0;
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgb(255, 255, 255, 0.3);
     }
 
-    ::v-deep > *:not(.header):not(.v-divider) {
-      background-color: rgba(255, 255, 255, 0.1);
+    ::v-deep > *:not(.header, .v-divider) {
+      background-color: rgb(255, 255, 255, 0.1);
       padding: 10px 14px;
       border-radius: 8px;
       margin-top: 8px;
       color: $whiteColor;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 6px rgb(0, 0, 0, 0.1);
       font-size: 14px;
       font-style: italic;
       letter-spacing: 0.5px;

@@ -263,7 +263,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .whiteSelectList {
     &_selectedCount {
@@ -285,13 +285,14 @@
         background: $background;
         border-radius: 12px;
         box-shadow:
-          0 4px 6px rgba(0, 0, 0, 0.1),
-          0 1px 3px rgba(0, 0, 0, 0.06);
+          0 4px 6px rgb(0, 0, 0, 0.1),
+          0 1px 3px rgb(0, 0, 0, 0.06);
       }
 
       img {
         width: 64px;
       }
+
       p {
         color: $mainBrownColor;
         font-weight: 600;
@@ -337,6 +338,7 @@
           overflow: hidden;
           white-space: nowrap;
           max-width: 242px;
+
           .elementsCount {
             font-size: 12px;
             display: inline-block;
@@ -370,6 +372,7 @@
         }
       }
     }
+
     .pagination {
       display: flex;
       justify-content: space-between;

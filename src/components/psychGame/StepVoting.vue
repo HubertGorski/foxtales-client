@@ -352,7 +352,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .stepVoting {
     overflow: hidden;
@@ -373,8 +373,7 @@
     }
 
     .answers {
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden auto;
       display: flex;
       flex-direction: column;
       padding: 8px;

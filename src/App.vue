@@ -19,7 +19,7 @@
 </template>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Story+Script&display=swap');
+  @import 'https://fonts.googleapis.com/css2?family=Story+Script&display=swap';
 
   * {
     user-select: none;
@@ -68,9 +68,8 @@
     width: 440px;
     max-width: 440px;
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: hidden auto;
+    box-shadow: rgb(0, 0, 0, 0.24) 0 3px 8px;
     position: relative;
   }
 

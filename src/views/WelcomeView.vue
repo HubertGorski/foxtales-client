@@ -14,8 +14,8 @@
 </template>
 
 <style lang="scss">
-  @import '@/assets/styles/variables';
-  @import '@/assets/styles/hubAnimations';
+  @use '@/assets/styles/variables' as *;
+  @use '@/assets/styles/hubAnimations' as *;
 
   .welcomeView {
     background: $mainBackground;
@@ -43,8 +43,8 @@
       font-weight: 600;
       color: $mainOrangeColor;
       text-shadow:
-        2px 2px 0px #ffdb58,
-        4px 4px 0px $mainBrownColor;
+        2px 2px 0 #ffdb58,
+        4px 4px 0 $mainBrownColor;
       line-height: 1;
     }
 

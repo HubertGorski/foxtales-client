@@ -183,7 +183,8 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
+
   .joinGameView {
     background: $mainBackground;
     padding: 46px 24px 24px 24px;

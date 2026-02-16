@@ -156,7 +156,9 @@
     "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie"
   },
   "info": {
-    "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju."
+    "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju.",
+    "wakeLockOff": "Wyłączono automatyczne wygaszanie ekranu",
+    "wakeLockOn": "Przywrócono automatyczne wygaszanie ekranu."
   },
   "lobby": {
     "usePrivateQuestions": "Używaj prywatnych pytań",

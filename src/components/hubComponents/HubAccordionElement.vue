@@ -82,7 +82,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .hubAccordionElement {
     overflow: hidden;
@@ -131,6 +131,7 @@
         }
       }
     }
+
     &_container {
       overflow: hidden;
       transition: height 0.4s;

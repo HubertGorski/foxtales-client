@@ -46,7 +46,8 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
+  @use 'sass:color';
 
   .hubBtn {
     display: flex;
@@ -69,20 +70,24 @@
     &--darkBrown {
       background: linear-gradient(
         135deg,
-        darken($mainBrownColor, 10%),
-        darken($lightBrownColor, 10%)
+        color.scale($mainBrownColor, $lightness: -10%),
+        color.scale($lightBrownColor, $lightness: -10%)
       );
     }
 
     &--orange {
-      background: linear-gradient(135deg, $mainOrangeColor, lighten($mainOrangeColor, 10%));
+      background: linear-gradient(
+        135deg,
+        $mainOrangeColor,
+        color.scale($mainOrangeColor, $lightness: 10%)
+      );
     }
 
     &--darkOrange {
       background: linear-gradient(
         135deg,
-        darken($mainOrangeColor, 10%),
-        darken($mainOrangeColor, 20%)
+        color.scale($mainOrangeColor, $lightness: -10%),
+        color.scale($mainOrangeColor, $lightness: -20%)
       );
     }
 
@@ -111,7 +116,7 @@
   .loader {
     width: 22px;
     height: 22px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
+    border: 3px solid rgb(255, 255, 255, 0.3);
     border-top-color: #fff;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;

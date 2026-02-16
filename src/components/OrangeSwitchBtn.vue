@@ -43,8 +43,8 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
-  @import '@/assets/styles/hubAnimations';
+  @use '@/assets/styles/variables' as *;
+  @use '@/assets/styles/hubAnimations' as *;
 
   .orangeSwitchBtn {
     cursor: pointer;
@@ -55,10 +55,9 @@
     align-items: center;
     justify-content: center;
     box-shadow:
-      0 4px 8px rgba(252, 152, 40, 0.3),
-      0 2px 4px rgba(0, 0, 0, 0.1);
-
-    border: 1px solid rgba(84, 50, 47, 0.15);
+      0 4px 8px rgb(252, 152, 40, 0.3),
+      0 2px 4px rgb(0, 0, 0, 0.1);
+    border: 1px solid rgb(84, 50, 47, 0.15);
     transition: all 0.2s;
     height: 48px;
     width: 48px;
