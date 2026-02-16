@@ -3,6 +3,7 @@
   import HubBtn from './hubComponents/HubBtn.vue';
   import { useRouter } from 'vue-router';
   import HubTooltip from './hubComponents/HubTooltip.vue';
+  import { computed } from 'vue';
   const router = useRouter();
 
   const props = defineProps({
@@ -124,26 +125,36 @@
     },
   ];
 
-  const selectedBtn = allBtns.find(btn => btn.text === props.btn)!;
-  if (typeof props.btnCustomAction === 'function') {
-    selectedBtn.action = () => props.btnCustomAction!();
-  }
+  const selectedBtn = computed(() => {
+    const btn = allBtns.find(btn => btn.text === props.btn);
+    if (!btn) return { text: '', isOrange: false, action: () => {} };
 
-  const selectedBtn2 = props.btn2 ? allBtns.find(btn => btn.text === props.btn2)! : null;
+    const result = { ...btn };
+    if (typeof props.btnCustomAction === 'function') {
+      result.action = () => props.btnCustomAction!();
+    }
+    if (props.btnIsOrange != null) {
+      result.isOrange = props.btnIsOrange;
+    }
+    return result;
+  });
 
-  if (selectedBtn2 && typeof props.btn2CustomAction === 'function') {
-    selectedBtn2.action = () => props.btn2CustomAction!();
-  }
+  const selectedBtn2 = computed(() => {
+    if (!props.btn2) return null;
+    const btn = allBtns.find(btn => btn.text === props.btn2);
+    if (!btn) return null;
 
-  if (props.btnIsOrange != null) {
-    selectedBtn.isOrange = props.btnIsOrange;
-  }
+    const result = { ...btn };
+    if (typeof props.btn2CustomAction === 'function') {
+      result.action = () => props.btn2CustomAction!();
+    }
+    if (props.btn2isOrange != null) {
+      result.isOrange = props.btn2isOrange;
+    }
+    return result;
+  });
 
-  if (props.btn2isOrange != null && selectedBtn2) {
-    selectedBtn2.isOrange = props.btn2isOrange;
-  }
-
-  const isTooltip2Visible = !!selectedBtn2 && !props.btn2Disabled;
+  const isTooltip2Visible = computed(() => !!selectedBtn2.value && props.btn2Disabled);
 </script>
 
 <template>

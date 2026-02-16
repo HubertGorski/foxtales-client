@@ -1,9 +1,15 @@
 import { defineStore } from 'pinia';
 
+interface InfoMessage {
+  id: number;
+  text: string;
+}
+
 interface ViewState {
   isKeyboardOpen: boolean;
   isMobile: boolean;
   useWakeLock: boolean;
+  infos: InfoMessage[];
 }
 
 export const useViewStore = defineStore({
@@ -12,6 +18,7 @@ export const useViewStore = defineStore({
     isKeyboardOpen: false,
     isMobile: false,
     useWakeLock: false,
+    infos: [],
   }),
 
   getters: {
@@ -25,6 +32,16 @@ export const useViewStore = defineStore({
     },
     setIsMobile(isMobile: boolean) {
       this.isMobile = isMobile;
+    },
+    setInfo(info: string) {
+      if (!info) return;
+
+      const id = Date.now() + Math.random();
+      this.infos.push({ id, text: info });
+
+      setTimeout(() => {
+        this.infos = this.infos.filter(i => i.id !== id);
+      }, 4000);
     },
     toggleWakeLock() {
       this.useWakeLock = !this.useWakeLock;

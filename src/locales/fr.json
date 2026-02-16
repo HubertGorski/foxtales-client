@@ -156,7 +156,9 @@
     "useDixitRules": "Ne laissez pas tous les joueurs choisir votre réponse. Vous gagnez des points en sélectionnant la réponse du joueur sur lequel la question est posée"
   },
   "info": {
-    "passwordRoom": "* Sans définir de mot de passe, n'importe qui peut rejoindre votre salle."
+    "passwordRoom": "* Sans définir de mot de passe, n'importe qui peut rejoindre votre salle.",
+    "wakeLockOff": "La mise en veille automatique de l'écran a été désactivée",
+    "wakeLockOn": "La mise en veille automatique de l'écran a été restaurée."
   },
   "lobby": {
     "usePrivateQuestions": "Utiliser des questions privées",

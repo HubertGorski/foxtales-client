@@ -3,7 +3,6 @@
   import { useRouter } from 'vue-router';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import { ICON } from '@/enums/iconsEnum';
-  import { toggleFullscreen } from '@/libs/fullscreenToggle';
   import OrangeSwitchBtn from '@/components/OrangeSwitchBtn.vue';
   import { useI18n } from 'vue-i18n';
   import { LANG } from '@/enums/languagesEnum';
@@ -19,13 +18,10 @@
   };
 
   const handleToggleWakeLock = () => {
-    viewStore.toggleWakeLock();
     toggleWakeLock();
-  };
-
-  const handleFullscreen = () => {
-    // TODO: przemyslec sprawe znikajacych przyciskow
-    toggleFullscreen();
+    viewStore.toggleWakeLock();
+    const message = viewStore.useWakeLock ? 'info.wakeLockOff' : 'info.wakeLockOn';
+    viewStore.setInfo(message);
   };
 
   const btns = [
@@ -78,12 +74,6 @@
         :iconOff="ICON.WAKE_LOCK_OFF"
         :iconOn="ICON.WAKE_LOCK_ON"
         iconSize="34"
-      />
-      <OrangeSwitchBtn
-        v-if="false"
-        :action="handleFullscreen"
-        :iconOff="ICON.FULLSCREEN_OFF"
-        :iconOn="ICON.FULLSCREEN_ON"
       />
     </div>
     <img src="@/assets/imgs/foxes.webp" alt="Lisek" class="homeView_img" />
