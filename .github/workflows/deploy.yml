@@ -122,3 +122,6 @@ jobs:
         run: |
           npm version ${{ inputs.release_type }} -m "release: %s"
           git push origin ${{ env.TO_BRANCH }} --follow-tags
+
+      - name: Set Vite version env
+        run: echo "VITE_APP_VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
