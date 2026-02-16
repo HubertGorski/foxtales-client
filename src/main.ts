@@ -27,3 +27,19 @@ setupInterceptors(
 );
 
 app.mount('#app');
+
+// Service Worker Unregistration (Kill switch for old PWA)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    for (const registration of registrations) {
+      registration.unregister();
+    }
+  });
+
+  // Optional: clear caches
+  caches.keys().then(names => {
+    for (const name of names) {
+      caches.delete(name);
+    }
+  });
+}
