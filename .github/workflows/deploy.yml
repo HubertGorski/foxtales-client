@@ -7,10 +7,20 @@ on:
         description: 'Type DEPLOY to confirm'
         required: true
         type: string
+      release_type:
+        description: 'major | minor | patch'
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 env:
   FROM_BRANCH: dev
   TO_BRANCH: main
+  NODE_VERSION: '20'
 
 permissions:
   contents: write
@@ -98,3 +108,17 @@ jobs:
 
       - name: Deployment triggered
         run: echo "✅ Merged ${{ env.FROM_BRANCH }} → ${{ env.TO_BRANCH }}"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Bump version
+        id: version
+        run: |
+          npm version ${{ inputs.release_type }} -m "release: %s"
+          git push origin ${{ env.TO_BRANCH }} --follow-tags
