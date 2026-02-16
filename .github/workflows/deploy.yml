@@ -88,10 +88,9 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Checkout Target Branch
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.TO_BRANCH }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -99,15 +98,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Merge branch
-        run: |
-          git fetch origin ${{ env.FROM_BRANCH }}
-          git merge --no-ff origin/${{ env.FROM_BRANCH }} -m "Merge ${{ env.FROM_BRANCH }} into ${{ env.TO_BRANCH }}"
-          git push origin ${{ env.TO_BRANCH }}
-
-      - name: Deployment triggered
-        run: echo "✅ Merged ${{ env.FROM_BRANCH }} → ${{ env.TO_BRANCH }}"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -117,8 +107,18 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Bump version
+      - name: Bump version on Dev
         id: version
         run: |
+          git checkout ${{ env.FROM_BRANCH }}
           npm version ${{ inputs.release_type }} -m "release: %s"
-          git push origin ${{ env.TO_BRANCH }} --follow-tags
+          git push origin ${{ env.FROM_BRANCH }} --follow-tags
+
+      - name: Merge Dev to Main
+        run: |
+          git checkout ${{ env.TO_BRANCH }}
+          git merge --no-ff ${{ env.FROM_BRANCH }} -m "Merge ${{ env.FROM_BRANCH }} into ${{ env.TO_BRANCH }}"
+          git push origin ${{ env.TO_BRANCH }}
+
+      - name: Deployment triggered
+        run: echo "✅ Version bumped on ${{ env.FROM_BRANCH }} and merged to ${{ env.TO_BRANCH }}"
