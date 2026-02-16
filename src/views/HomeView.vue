@@ -13,7 +13,7 @@
   const router = useRouter();
   const { locale } = useI18n();
 
-  // const appVersion = import.meta.env.VITE_APP_VERSION;
+  const appVersion = import.meta.env.VITE_APP_VERSION;
 
   const changeLanguage = () => {
     locale.value = locale.value === LANG.EN ? LANG.PL : LANG.EN;
@@ -50,6 +50,7 @@
 
 <template>
   <div class="homeView">
+    <div class="homeView_version">v.{{ appVersion }}</div>
     <div>
       <p class="homeView_title">FOX TALES</p>
       <p class="homeView_subtitle">Be as sly as a fox!</p>
@@ -135,6 +136,15 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+    }
+
+    &_version {
+      position: absolute;
+      bottom: 0;
+      left: 4px;
+      color: $infoBackgroundColor;
+      font-size: 12px;
+      font-style: italic;
     }
   }
 </style>
