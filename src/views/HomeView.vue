@@ -13,6 +13,8 @@
   const router = useRouter();
   const { locale } = useI18n();
 
+  // const appVersion = import.meta.env.VITE_APP_VERSION;
+
   const changeLanguage = () => {
     locale.value = locale.value === LANG.EN ? LANG.PL : LANG.EN;
   };
