@@ -75,8 +75,8 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
-  @import '@/assets/styles/hubAnimations';
+  @use '@/assets/styles/variables' as *;
+  @use '@/assets/styles/hubAnimations' as *;
 
   .hubErrorPanelContainer {
     position: absolute;
@@ -125,6 +125,7 @@
   .list-leave-active {
     transition: all 0.5s ease;
   }
+
   .list-enter-from,
   .list-leave-to {
     opacity: 0;

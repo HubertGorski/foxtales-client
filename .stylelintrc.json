@@ -1,0 +1,31 @@
+{
+  "extends": "stylelint-config-standard-scss",
+  "plugins": ["stylelint-scss"],
+  "overrides": [
+    {
+      "files": ["**/*.vue"],
+      "customSyntax": "postcss-html"
+    }
+  ],
+  "rules": {
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9_-]+$",
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["v-deep"]
+      }
+    ],
+    "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "keyframes-name-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "custom-property-pattern": null,
+    "declaration-no-important": null,
+    "color-function-notation": null,
+    "color-function-alias-notation": null,
+    "alpha-value-notation": null,
+    "media-feature-range-notation": null,
+    "shorthand-property-no-redundant-values": null,
+    "number-max-precision": null,
+    "import-notation": null,
+    "length-zero-no-unit": null
+  }
+}

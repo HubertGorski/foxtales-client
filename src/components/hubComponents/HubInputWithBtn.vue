@@ -168,7 +168,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .hubInputWithBtn {
     display: flex;
@@ -183,6 +183,7 @@
         padding: 6px;
         margin-top: 12px;
         width: auto;
+
         &.mainBtn {
           flex-grow: 1;
         }

@@ -94,7 +94,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .scrollSelectList {
     position: relative;
@@ -106,10 +106,12 @@
       align-items: center;
       flex-direction: column;
       opacity: 0.9;
+
       img {
         padding: 16px 64px;
         max-height: 164px;
       }
+
       p {
         color: $mainBrownColor;
         font-weight: 600;
@@ -146,8 +148,8 @@
           margin: 4px;
           border-radius: 8px;
           box-shadow:
-            rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-            rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            rgb(0, 0, 0, 0.05) 0 6px 24px 0,
+            rgb(0, 0, 0, 0.08) 0 0 0 1px;
         }
       }
     }
@@ -161,6 +163,7 @@
       bottom: 0;
       width: 100%;
     }
+
     .controlPanel {
       height: 0;
       position: absolute;

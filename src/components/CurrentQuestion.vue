@@ -43,7 +43,8 @@
 </template>
 
 <style lang="scss">
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
+
   .currentQuestion {
     display: flex;
     flex-direction: column;
@@ -74,7 +75,7 @@
       background-color: white;
       height: 52px;
       width: 52px;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      box-shadow: rgb(0, 0, 0, 0.24) 0 3px 8px;
       border-radius: 50%;
       padding: 2px;
       position: absolute;

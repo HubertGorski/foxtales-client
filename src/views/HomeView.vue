@@ -81,7 +81,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .homeView {
     height: 100%;
@@ -97,8 +97,8 @@
       font-weight: 600;
       color: $mainOrangeColor;
       text-shadow:
-        2px 2px 0px #ffdb58,
-        4px 4px 0px $mainBrownColor;
+        2px 2px 0 #ffdb58,
+        4px 4px 0 $mainBrownColor;
       text-align: center;
       padding-top: 32px;
       line-height: 1;

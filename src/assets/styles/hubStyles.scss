@@ -1,4 +1,4 @@
-@import '@/assets/styles/variables';
+@use '@/assets/styles/variables' as *;
 
 .creamCard {
   display: flex;
@@ -16,11 +16,12 @@
   background-color: white;
   border-radius: 12px;
   box-shadow:
-    rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    rgb(0, 0, 0, 0.05) 0 6px 24px 0,
+    rgb(0, 0, 0, 0.08) 0 0 0 1px;
   margin: 8px 0;
   padding: 8px;
 }
+
 .whiteCardContent {
   text-align: center;
   font-size: 14px;
@@ -30,6 +31,7 @@
   height: 100%;
   overflow-y: auto;
 }
+
 .isBold {
   font-weight: 600;
 }

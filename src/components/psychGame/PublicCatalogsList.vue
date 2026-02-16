@@ -50,7 +50,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .publicCatalogs {
     flex-grow: 1;
@@ -62,7 +62,7 @@
     width: 100%;
 
     .publicCatalog {
-      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      box-shadow: rgb(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
       border-radius: 12px;
       background-color: $background;
       cursor: pointer;
@@ -84,6 +84,7 @@
 
       &_img {
         padding: 12px 12px 0 12px;
+
         img {
           max-width: 100%;
           border: 1px solid $lightBrownColor;

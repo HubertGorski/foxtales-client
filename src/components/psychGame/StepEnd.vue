@@ -116,8 +116,9 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
-  @import '@/assets/styles/hubAnimations';
+  @use '@/assets/styles/variables' as *;
+  @use '@/assets/styles/hubAnimations' as *;
+
   .tmpClass {
     height: 100%;
     width: 100%;

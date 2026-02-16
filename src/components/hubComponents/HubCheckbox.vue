@@ -27,7 +27,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .hubCheckbox {
     display: flex;
@@ -44,6 +44,7 @@
       }
     }
   }
+
   .error {
     width: 100%;
     font-size: 12px;

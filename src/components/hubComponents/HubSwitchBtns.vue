@@ -41,7 +41,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
+  @use '@/assets/styles/variables' as *;
 
   .hubSwitchBtns {
     display: flex;
@@ -51,7 +51,7 @@
 
     &_option {
       background-color: white;
-      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      box-shadow: rgb(0, 0, 0, 0.16) 0 1px 4px;
       border-radius: 8px;
       color: $grayColor;
       transition: all 0.2s;
@@ -60,7 +60,7 @@
 
       &.isSelected {
         transform: scale(1.1);
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 6px;
+        box-shadow: rgb(0, 0, 0, 0.3) 0 1px 6px;
         transition: all 0.2s;
 
         .title {
