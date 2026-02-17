@@ -39,7 +39,7 @@
       id: 2,
       text: 'tryWithoutAccount',
       isOrange: false,
-      action: () => router.push(isLoggedIn ? ROUTE_PATH.TRY_WITHOUT_ACCOUNT : ROUTE_PATH.MENU),
+      action: () => router.push(isLoggedIn ? ROUTE_PATH.MENU : ROUTE_PATH.TRY_WITHOUT_ACCOUNT),
     },
     {
       id: 3,
