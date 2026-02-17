@@ -22,7 +22,7 @@ export const userClient = {
     return apiClient.post('/user/login', { email, password });
   },
 
-  loginByToken(): Promise<{ data: IUserLoginResponse }> {
+  loginByToken(): Promise<{ data: IUserLoginResponse | null }> {
     return apiClient.post('/user/loginByToken');
   },
 

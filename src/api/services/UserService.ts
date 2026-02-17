@@ -86,8 +86,12 @@ export const userService = {
 
   async loginByToken(): Promise<boolean> {
     const response = await userClient.loginByToken();
-    this.setUserSession(response.data);
-    return !!response.data.user.userId;
+    if (response.data) {
+      this.setUserSession(response.data);
+      return true;
+    } else {
+      return false;
+    }
   },
 
   async registerTmpUser(username: string, termsAccepted: boolean): Promise<void> {
