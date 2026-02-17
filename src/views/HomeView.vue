@@ -8,8 +8,10 @@
   import { LANG } from '@/enums/languagesEnum';
   import { toggleWakeLock } from '@/libs/wakeLock';
   import { useViewStore } from '@/stores/viewStore';
+  import { useUserStore } from '@/stores/userStore';
 
   const viewStore = useViewStore();
+  const isLoggedIn = useUserStore().isLoggedIn();
   const router = useRouter();
   const { locale } = useI18n();
 
@@ -37,7 +39,7 @@
       id: 2,
       text: 'tryWithoutAccount',
       isOrange: false,
-      action: () => router.push(ROUTE_PATH.TRY_WITHOUT_ACCOUNT),
+      action: () => router.push(isLoggedIn ? ROUTE_PATH.TRY_WITHOUT_ACCOUNT : ROUTE_PATH.MENU),
     },
     {
       id: 3,
