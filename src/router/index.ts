@@ -9,12 +9,10 @@ import JoinGameViewVue from '@/views/JoinGameView.vue';
 import LobbyViewVue from '@/views/LobbyView.vue';
 import CreateGameViewVue from '@/views/CreateGameView.vue';
 import LibraryViewVue from '@/views/LibraryView.vue';
-import ChooseGameViewVue from '@/views/ChooseGameView.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ROLE } from '@/enums/rolesEnum';
 import NoAccessViewVue from '@/views/NoAccessView.vue';
 import { NO_ACCESS_REASON } from '@/enums/noAccessReasonEnum';
-import { SESSION_STORAGE } from '@/enums/sessionStorageEnum';
 import { PERMISSION_GAME } from '@/enums/permissions';
 import PsychGameView from '@/views/PsychGameView.vue';
 import WelcomeViewVue from '@/views/WelcomeView.vue';
@@ -103,11 +101,6 @@ function getRoutesWithAuth() {
       },
     },
     {
-      path: ROUTE_PATH.CHOOSE_GAME,
-      name: ROUTE_NAME.CHOOSE_GAME,
-      component: ChooseGameViewVue,
-    },
-    {
       path: ROUTE_PATH.NO_ACCESS,
       name: ROUTE_NAME.NO_ACCESS,
       component: NoAccessViewVue,
@@ -124,19 +117,14 @@ function getRoutesWithAuth() {
 }
 
 router.beforeEach((to, from, next) => {
-  // const isGameSelected = TODO: dodac tworzenie roznych typow gier
-  // sessionStorage.getItem(SESSION_STORAGE.IS_GAME_SELECTED) === "true";
-  // if (to.meta.requiredGameSelected && !isGameSelected) {
-  // sessionStorage.setItem(SESSION_STORAGE.URL_SELECTED_GAME, to.fullPath);
-  // next(ROUTE_PATH.CHOOSE_GAME);
-  // } else
   if (to.meta.requiresAdmin && !isAdmin()) {
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.ADMIN_ONLY },
     });
   } else if (to.meta.requiresAuth && !isAuthenticated()) {
-    sessionStorage.setItem(SESSION_STORAGE.REDIRECT_AFTER_LOGIN, to.fullPath);
+    console.log('!isAuthenticated');
+
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
@@ -147,7 +135,7 @@ router.beforeEach((to, from, next) => {
       query: { reason: NO_ACCESS_REASON.NO_PERMISSION_GAME },
     });
   } else {
-    // sessionStorage.removeItem(SESSION_STORAGE.IS_GAME_SELECTED);
+    console.log('wchodzi normalnie');
     next();
   }
 });
