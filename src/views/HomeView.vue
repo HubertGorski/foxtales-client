@@ -11,7 +11,6 @@
   import { useUserStore } from '@/stores/userStore';
 
   const viewStore = useViewStore();
-  const isLoggedIn = useUserStore().isLoggedIn();
   const router = useRouter();
   const { locale } = useI18n();
 
@@ -39,7 +38,8 @@
       id: 2,
       text: 'tryWithoutAccount',
       isOrange: false,
-      action: () => router.push(isLoggedIn ? ROUTE_PATH.MENU : ROUTE_PATH.TRY_WITHOUT_ACCOUNT),
+      action: () =>
+        router.push(useUserStore().user.userId ? ROUTE_PATH.MENU : ROUTE_PATH.TRY_WITHOUT_ACCOUNT),
     },
     {
       id: 3,

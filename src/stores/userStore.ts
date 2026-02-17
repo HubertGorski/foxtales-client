@@ -27,10 +27,6 @@ export const useUserStore = defineStore({
   }),
 
   getters: {
-    isLoggedIn: state => () => {
-      return !!state.user.userId;
-    },
-
     getAccessToken: state => () => {
       return state.user.accessToken;
     },
