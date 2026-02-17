@@ -17,6 +17,7 @@ import { PERMISSION_GAME } from '@/enums/permissions';
 import PsychGameView from '@/views/PsychGameView.vue';
 import WelcomeViewVue from '@/views/WelcomeView.vue';
 import TryWithoutAccountView from '@/views/TryWithoutAccountView.vue';
+import { userService } from '@/api/services/UserService';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -116,26 +117,28 @@ function getRoutesWithAuth() {
   });
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAdmin && !isAdmin()) {
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.ADMIN_ONLY },
     });
   } else if (to.meta.requiresAuth && !isAuthenticated()) {
-    console.log('!isAuthenticated');
-
-    next({
-      path: ROUTE_PATH.NO_ACCESS,
-      query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
-    });
+    const response = await userService.loginByToken();
+    if (!response) {
+      next({
+        path: ROUTE_PATH.NO_ACCESS,
+        query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
+      });
+    } else {
+      next();
+    }
   } else if (to.meta.permission && !hasAccessToGame(to.meta.permission as PERMISSION_GAME)) {
     next({
       path: ROUTE_PATH.NO_ACCESS,
       query: { reason: NO_ACCESS_REASON.NO_PERMISSION_GAME },
     });
   } else {
-    console.log('wchodzi normalnie');
     next();
   }
 });
