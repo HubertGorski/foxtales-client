@@ -32,7 +32,7 @@
       id: 1,
       text: 'login',
       isOrange: false,
-      action: () => router.push(ROUTE_PATH.LOGIN),
+      action: () => router.push(useUserStore().user.userId ? ROUTE_PATH.MENU : ROUTE_PATH.LOGIN),
     },
     {
       id: 2,
