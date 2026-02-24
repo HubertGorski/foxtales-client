@@ -3,6 +3,9 @@ import { Question } from './Question';
 import { CatalogType } from './CatalogType';
 import { RULES } from '@/enums/rulesEnum';
 import { IsEnum } from 'class-validator';
+import { CatalogTranslations } from './CatalogTranslations';
+import i18n from '@/configs/i18n';
+import { LANG } from '@/enums/languagesEnum';
 
 export class Catalog {
   catalogId: number | null;
@@ -10,11 +13,9 @@ export class Catalog {
   @Type(() => CatalogType)
   catalogType: CatalogType;
 
+  @Type(() => CatalogTranslations)
   @Expose()
-  title: string;
-
-  @Expose()
-  description: string;
+  translations: CatalogTranslations[] = [];
 
   @Expose()
   ownerId: number;
@@ -46,8 +47,6 @@ export class Catalog {
   constructor(
     id: number | null = null,
     catalogType: CatalogType = new CatalogType(),
-    title: string = '',
-    description: string = '',
     ownerId: number = 0,
     createdDate: Date = new Date(),
     usedCount: number = 0,
@@ -60,8 +59,6 @@ export class Catalog {
   ) {
     this.catalogId = id;
     this.catalogType = catalogType;
-    this.title = title;
-    this.description = description;
     this.ownerId = ownerId;
     this.createdDate = createdDate;
     this.usedCount = usedCount;
@@ -71,6 +68,36 @@ export class Catalog {
     this.recommendedGameRules = recommendedGameRules;
     this.questionsInCatalogCount = questionsInCatalogCount;
     this.photoId = photoId;
+  }
+
+  get title(): string {
+    return this.translations.find(tr => tr.language === i18n.global.locale.value)?.title ?? '';
+  }
+
+  set title(value: string) {
+    let translation = this.translations.find(tr => tr.language === i18n.global.locale.value);
+    if (!translation) {
+      translation = new CatalogTranslations();
+      translation.language = i18n.global.locale.value as LANG;
+      this.translations.push(translation);
+    }
+    translation.title = value;
+  }
+
+  get description(): string {
+    return (
+      this.translations.find(tr => tr.language === i18n.global.locale.value)?.description ?? ''
+    );
+  }
+
+  set description(value: string) {
+    let translation = this.translations.find(tr => tr.language === i18n.global.locale.value);
+    if (!translation) {
+      translation = new CatalogTranslations();
+      translation.language = i18n.global.locale.value as LANG;
+      this.translations.push(translation);
+    }
+    translation.description = value;
   }
 
   get questionsCount(): number {
