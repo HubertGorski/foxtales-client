@@ -139,6 +139,10 @@
   "gameClosed": "Właściciel gry zamknął swój pokój.",
   "chooseCatalogSize": "Wybierz wielkość katalogu",
   "title": "Tytuł",
+  "catalog": {
+    "sampleQuestions": "Przykładowe pytania",
+    "gameRules": "Zasady gry"
+  },
   "description": "Opis",
   "small": "Mały",
   "medium": "Średni",

@@ -139,6 +139,10 @@
   "gameClosed": "Der Spielleiter hat den Raum geschlossen.",
   "chooseCatalogSize": "Kataloggröße auswählen",
   "title": "Titel",
+  "catalog": {
+    "sampleQuestions": "Beispielfragen",
+    "gameRules": "Spielregeln"
+  },
   "description": "Beschreibung",
   "small": "Klein",
   "medium": "Mittel",
