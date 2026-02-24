@@ -139,6 +139,10 @@
   "gameClosed": "The game host has closed their room.",
   "chooseCatalogSize": "Choose catalog size",
   "title": "Title",
+  "catalog": {
+    "sampleQuestions": "Sample questions",
+    "gameRules": "Game rules"
+  },
   "description": "Description",
   "small": "Small",
   "medium": "Medium",

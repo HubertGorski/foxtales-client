@@ -139,6 +139,10 @@
   "gameClosed": "El anfitrión del juego ha cerrado su sala.",
   "chooseCatalogSize": "Elegir tamaño del catálogo",
   "title": "Título",
+  "catalog": {
+    "sampleQuestions": "Preguntas de ejemplo",
+    "gameRules": "Reglas del juego"
+  },
   "description": "Descripción",
   "small": "Pequeño",
   "medium": "Mediano",

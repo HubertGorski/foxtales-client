@@ -139,6 +139,10 @@
   "gameClosed": "L'hôte du jeu a fermé sa salle.",
   "chooseCatalogSize": "Choisir la taille du catalogue",
   "title": "Titre",
+  "catalog": {
+    "sampleQuestions": "Exemples de questions",
+    "gameRules": "Règles du jeu"
+  },
   "description": "Description",
   "small": "Petit",
   "medium": "Moyen",
