@@ -2,6 +2,7 @@
   import { computed } from 'vue';
   import HubBtn from './HubBtn.vue';
   import { useI18n } from 'vue-i18n';
+  import HubInput from './HubInput.vue';
 
   const props = defineProps({
     btnText: {
@@ -119,29 +120,15 @@
 
 <template>
   <div class="hubInputWithBtn">
-    <v-textarea
-      v-if="isTextarea"
+    <HubInput
       v-model="text"
-      :auto-grow="false"
-      :rows="textareaRows"
+      :isTextarea="isTextarea"
+      :textareaRows="textareaRows"
       :placeholder="actualTextPlaceholder"
-      :error-messages="errorMessages"
-      :hide-details="!errorMessages"
-      :disabled="inputDisabled"
-      no-resize
-      @keydown.enter="handleEnter"
-      @focus="handleFocus"
-      @blur="handleBlur"
-    />
-    <v-text-field
-      v-else
-      v-model="text"
-      :placeholder="actualTextPlaceholder"
-      :type="textType"
-      :error-messages="errorMessages"
-      :hide-details="!errorMessages"
-      :disabled="inputDisabled"
-      @keydown.enter="handleEnter"
+      :textType="textType"
+      :errorMessages="errorMessages"
+      :inputDisabled="inputDisabled"
+      @enter="handleEnter"
       @focus="handleFocus"
       @blur="handleBlur"
     />

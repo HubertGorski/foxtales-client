@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref, watch } from 'vue';
+  import { computed, nextTick, ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { userService } from '@/api/services/UserService';
@@ -34,7 +34,9 @@
   const { value: termsAccepted, errorMessage: termsAcceptedError } =
     useField<boolean>('termsaccepted');
 
+  const isLoading = ref<boolean>(false);
   const onSubmit = handleSubmit(async values => {
+    isLoading.value = true;
     try {
       await userService.register(
         values.email,
@@ -55,6 +57,7 @@
         });
       }
     }
+    isLoading.value = false;
   });
 
   const navigateBack = () => {
@@ -63,6 +66,22 @@
       return;
     }
     router.back();
+  };
+
+  const inputPasswordRef = ref<HTMLInputElement | null>(null);
+  const handleEnter = async () => {
+    if (step.value === 2 || step.value === 0) {
+      if (isCreateBtnDisabled.value) {
+        return;
+      }
+
+      onSubmit();
+      return;
+    }
+
+    step.value = 2;
+    await nextTick();
+    inputPasswordRef.value?.focus();
   };
 
   const areErrorExistInPart1 = computed(() => {
@@ -74,12 +93,12 @@
   });
 
   const areErrorExist = computed(() => {
-    return !!(areErrorExistInPart1.value || areErrorExistInPart2.value);
+    return !!(areErrorExistInPart1.value || termsAcceptedError.value || areErrorExistInPart2.value);
   });
 
-  const isCreateBtnDisabled = computed(() => {
-    return !!(!password.value || !confirmpassword.value || areErrorExist.value);
-  });
+  const isCreateBtnDisabled = computed(
+    () => !password.value || !confirmpassword.value || areErrorExist.value
+  );
 
   const isTooltipDisabled = computed(() => {
     return !!(
@@ -109,6 +128,7 @@
           class="registerView_input"
           :error-messages="usernameError"
           @focus="step = 1"
+          @keydown.enter="handleEnter"
         />
         <v-text-field
           v-model="email"
@@ -116,16 +136,19 @@
           class="registerView_input"
           :error-messages="emailError"
           @focus="step = 1"
+          @keydown.enter="handleEnter"
         />
       </div>
-      <div v-if="step === 2 || step === 0">
+      <div v-show="step === 2 || step === 0">
         <v-text-field
+          ref="inputPasswordRef"
           v-model="password"
           :label="$t('auth.password')"
           type="password"
           class="registerView_input"
           :error-messages="passwordError"
           @focus="step = 2"
+          @keydown.enter="handleEnter"
         />
         <v-text-field
           v-model="confirmpassword"
@@ -134,6 +157,7 @@
           class="registerView_input"
           :error-messages="confirmpasswordError"
           @focus="step = 2"
+          @keydown.enter="handleEnter"
         />
       </div>
       <HubCheckbox
@@ -144,14 +168,14 @@
         <Terms />
       </HubCheckbox>
       <div class="registerView_actions">
-        <HubBtn :text="$t('back2')" :action="navigateBack" />
+        <HubBtn text="back2" :action="navigateBack" />
         <HubTooltip
           v-if="step === 1"
-          :tooltipText="$t('auth.fillFormCorrectly')"
+          tooltipText="auth.fillFormCorrectly"
           :tooltipDisabled="!(!username || !email || areErrorExistInPart1)"
         >
           <HubBtn
-            :text="$t('next')"
+            text="next"
             :action="() => (step = 2)"
             :disabled="!username || !email || areErrorExistInPart1"
             isOrange
@@ -159,13 +183,14 @@
         </HubTooltip>
         <HubTooltip
           v-if="step === 2 || step === 0"
-          :tooltipText="$t('auth.fillFormCorrectly')"
+          tooltipText="auth.fillFormCorrectly"
           :tooltipDisabled="isTooltipDisabled"
         >
           <HubBtn
-            :text="$t('create')"
+            text="create"
             :action="onSubmit"
-            :disabled="isCreateBtnDisabled"
+            :disabled="isCreateBtnDisabled || isLoading"
+            :loading="isLoading"
             isOrange
           />
         </HubTooltip>
