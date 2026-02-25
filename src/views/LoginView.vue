@@ -3,34 +3,68 @@
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useForm, useField } from 'vee-validate';
   import * as yup from 'yup';
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import { userService } from '@/api/services/UserService';
   import { useI18n } from 'vue-i18n';
   import { useViewStore } from '@/stores/viewStore';
+  import HubBtn from '@/components/hubComponents/HubBtn.vue';
+  import HubInput from '@/components/hubComponents/HubInput.vue';
 
   const { t } = useI18n();
   const router = useRouter();
+
+  type FormFields = 'email' | 'password';
+  const isLoading = ref<boolean>(false);
 
   const schema = yup.object({
     email: yup.string().required(t('auth.emailIsRequired')).email(t('auth.emailFormatIsIncorrect')),
     password: yup.string().required(t('auth.passwordIsRequired')),
   });
 
-  const { handleSubmit } = useForm({ validationSchema: schema });
-  const { value: email, errorMessage: emailError } = useField('email');
-  const { value: password, errorMessage: passwordError } = useField('password');
+  const { handleSubmit, setFieldError } = useForm({
+    validationSchema: schema,
+    initialValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const { value: email, errorMessage: emailError } = useField<string>('email');
+  const { value: password, errorMessage: passwordError } = useField<string>('password');
 
   const navigateBack = () => {
     router.push(ROUTE_PATH.HOME);
   };
 
   const onSubmit = handleSubmit(async values => {
-    await userService.login(values.email, values.password);
-    router.push(ROUTE_PATH.MENU);
+    if (isLoading.value) {
+      return;
+    }
+
+    isLoading.value = true;
+    try {
+      await userService.login(values.email, values.password);
+      router.push(ROUTE_PATH.MENU);
+    } catch (err: any) {
+      const data = err?.response?.data;
+      if (data?.errors) {
+        Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
+          if (Array.isArray(messages)) {
+            setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
+          }
+        });
+      }
+    } finally {
+      isLoading.value = false;
+    }
   });
 
   const isKeyboardOpen = computed(() => {
     return useViewStore().getIsKeyboardOpen();
+  });
+
+  const isBtnDisabled = computed((): boolean => {
+    return isLoading.value || !!emailError.value || !!passwordError.value;
   });
 </script>
 
@@ -39,30 +73,30 @@
     <img src="@/assets/imgs/4.webp" alt="Lisek" class="loginView_fox" />
     <form class="creamCard" @submit.prevent="onSubmit">
       <h1 class="loginView_title">{{ $t('auth.loginTitle') }}</h1>
-      <v-text-field
+      <HubInput
         v-model="email"
-        :label="$t('auth.email')"
-        outlined
-        dense
+        :placeholder="$t('auth.email')"
         class="loginView_input"
-        :error-messages="emailError"
+        :errorMessages="emailError"
+        @enter="onSubmit"
       />
-      <v-text-field
+      <HubInput
         v-model="password"
-        :label="$t('auth.password')"
-        type="password"
-        outlined
-        dense
+        :placeholder="$t('auth.password')"
+        textType="password"
         class="loginView_input"
-        :error-messages="passwordError"
+        :errorMessages="passwordError"
+        @enter="onSubmit"
       />
       <div class="loginView_actions">
-        <button type="button" class="loginView_btn loginView_btn--back" @click="navigateBack">
-          {{ $t('back2') }}
-        </button>
-        <button type="submit" class="loginView_btn loginView_btn--submit">
-          {{ $t('auth.logIn') }}
-        </button>
+        <HubBtn text="back2" :action="navigateBack" />
+        <HubBtn
+          text="auth.logIn"
+          isOrange
+          :loading="isLoading"
+          :disabled="isBtnDisabled"
+          :action="onSubmit"
+        />
       </div>
     </form>
   </div>
@@ -73,12 +107,12 @@
 
   .loginView {
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     height: 100%;
-    background: $mainBackground;
     padding: 0 16px;
+    background: $mainBackground;
 
     &.isFocused {
       .loginView_fox {
@@ -115,29 +149,7 @@
       display: flex;
       justify-content: space-between;
       gap: 10px;
-    }
-
-    &_btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 12px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      text-transform: uppercase;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      color: white;
-
-      &--back {
-        background-color: $mainBrownColor;
-      }
-
-      &--submit {
-        background-color: $mainOrangeColor;
-      }
+      margin-top: 12px;
     }
   }
 </style>

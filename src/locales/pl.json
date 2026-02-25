@@ -118,6 +118,7 @@
   "nobodyChoseYourAnswer": "Nikt nie wybrał Twojej odpowiedzi",
   "haveFunAndEnjoyGame": "Baw się dobrze i miłej gry.",
   "yourAnswerWasChosen": "Twoją odpowiedź wybrali:",
+  "everyoneChoseYourAnswer": "Wszyscy wybrali Twoją odpowiedź!",
   "aiLiveTranslation": "Tłumaczenie na żywo z AI",
   "aiLiveTranslationTooltip": "Włącz, aby AI tłumaczyło pytania i odpowiedzi na Twój język w trakcie gry. Pozostaw wyłączone, aby grać w oryginalnym języku.",
   "confirmAvatar": "Czy chcesz wybrać tego liska?",
@@ -163,7 +164,9 @@
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju.",
     "wakeLockOff": "Wyłączono automatyczne wygaszanie ekranu",
-    "wakeLockOn": "Przywrócono automatyczne wygaszanie ekranu."
+    "wakeLockOn": "Przywrócono automatyczne wygaszanie ekranu.",
+    "translateAnswersOff": "Widzisz oryginalne odpowiedzi",
+    "translateAnswersOn": "Widzisz przetłumaczone odpowiedzi"
   },
   "lobby": {
     "usePrivateQuestions": "Używaj prywatnych pytań",

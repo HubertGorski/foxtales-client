@@ -118,6 +118,7 @@
   "nobodyChoseYourAnswer": "Niemand hat deine Antwort gewählt",
   "haveFunAndEnjoyGame": "Viel Spaß und gutes Spiel!",
   "yourAnswerWasChosen": "Deine Antwort wurde gewählt von:",
+  "everyoneChoseYourAnswer": "Alle haben deine Antwort gewählt!",
   "changeLanguage": "Spielsprache",
   "aiLiveTranslation": "KI-Live-Übersetzung",
   "aiLiveTranslationTooltip": "Aktivieren, damit die KI Fragen und Antworten während des Spiels in Ihre Sprache übersetzt. Deaktiviert spielen Sie in der Originalsprache.",
@@ -163,7 +164,9 @@
   "info": {
     "passwordRoom": "* Ohne Passwort kann jeder deinem Raum beitreten.",
     "wakeLockOff": "Automatisches Abdunkeln des Bildschirms wurde deaktiviert",
-    "wakeLockOn": "Automatisches Abdunkeln des Bildschirms wurde wiederhergestellt."
+    "wakeLockOn": "Automatisches Abdunkeln des Bildschirms wurde wiederhergestellt.",
+    "translateAnswersOff": "Originale Antworten anzeigen",
+    "translateAnswersOn": "Übersetzte Antworten anzeigen"
   },
   "lobby": {
     "usePrivateQuestions": "Private Fragen verwenden",

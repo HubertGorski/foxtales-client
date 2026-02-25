@@ -67,7 +67,7 @@
     }
 
     &.isActive {
-      background-color: $darkOrangeColor;
+      background-color: $darkerOrangeColor;
       transition: all 0.2s;
     }
   }

@@ -118,6 +118,7 @@
   "nobodyChoseYourAnswer": "Nobody chose your answer",
   "haveFunAndEnjoyGame": "Have fun and enjoy the game.",
   "yourAnswerWasChosen": "Your answer was chosen by:",
+  "everyoneChoseYourAnswer": "Everyone chose your answer!",
   "aiLiveTranslation": "AI live translation",
   "aiLiveTranslationTooltip": "Enable to have AI translate questions and answers into your language during the game. Leave disabled to play in the original language.",
   "confirmAvatar": "Do you want to choose this fox?",
@@ -163,7 +164,9 @@
   "info": {
     "passwordRoom": "* Without setting a password, anyone can join your room.",
     "wakeLockOff": "Automatic screen dimming has been disabled",
-    "wakeLockOn": "Automatic screen dimming has been restored."
+    "wakeLockOn": "Automatic screen dimming has been restored.",
+    "translateAnswersOff": "Viewing original answers",
+    "translateAnswersOn": "Viewing translated answers"
   },
   "lobby": {
     "usePrivateQuestions": "Use private questions",
