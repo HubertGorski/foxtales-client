@@ -164,7 +164,9 @@
   "info": {
     "passwordRoom": "* Ohne Passwort kann jeder deinem Raum beitreten.",
     "wakeLockOff": "Automatisches Abdunkeln des Bildschirms wurde deaktiviert",
-    "wakeLockOn": "Automatisches Abdunkeln des Bildschirms wurde wiederhergestellt."
+    "wakeLockOn": "Automatisches Abdunkeln des Bildschirms wurde wiederhergestellt.",
+    "translateAnswersOff": "Originale Antworten anzeigen",
+    "translateAnswersOn": "Übersetzte Antworten anzeigen"
   },
   "lobby": {
     "usePrivateQuestions": "Private Fragen verwenden",

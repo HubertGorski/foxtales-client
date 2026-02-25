@@ -16,10 +16,14 @@
   import { VIEW } from '@/enums/viewsEnum';
   import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
   import type { Answer } from '@/models/Answer';
+  import { ICON } from '@/enums/iconsEnum';
+  import OrangeSwitchBtn from '../OrangeSwitchBtn.vue';
+  import { useViewStore } from '@/stores/viewStore';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
+  const viewStore = useViewStore();
 
   const game = computed<Game>(() => toRef(signalRStore, 'game').value ?? new Game());
 
@@ -38,6 +42,7 @@
   );
 
   const showConfirmEmptySelectPanel = ref<boolean>(false);
+  const showOriginalAnswers = ref<boolean>(false);
 
   const timeLeft = ref(0);
   let timerId: number = 0;
@@ -252,8 +257,19 @@
     };
   });
 
+  const areSwitchLangAnswersVisible = computed((): boolean => {
+    return (
+      userStore.user.useAiTranslations &&
+      userList.value.some(user => Object.keys(user.answer?.answerInOtherLanguages ?? {}).length > 0)
+    );
+  });
+
   const getAnswerText = (answer: Answer | null): string => {
-    if (answer?.answerInOtherLanguages) {
+    if (
+      userStore.user.useAiTranslations &&
+      answer?.answerInOtherLanguages &&
+      !showOriginalAnswers.value
+    ) {
       return answer.answerInOtherLanguages[userStore.user.language] ?? answer.answer;
     }
 
@@ -263,6 +279,13 @@
   const getAvatarLabel = (user: User): string => {
     const username = currentUserId.value === user.userId ? t('you') : user.username;
     return showOwnersStep.value || isDuoGame.value ? username : '';
+  };
+
+  const switchLangAnswers = (): void => {
+    showOriginalAnswers.value = !showOriginalAnswers.value;
+    viewStore.setInfo(
+      showOriginalAnswers.value ? 'info.translateAnswersOff' : 'info.translateAnswersOn'
+    );
   };
 </script>
 
@@ -307,38 +330,48 @@
         @click="selectAnswer(user.userId)"
       />
     </div>
-    <div v-if="!showOwnersStep" class="w-100">
-      <div v-if="isDuoGame && isSubjectPlayer" class="trueFalsePanel">
-        <div class="trueFalsePanel_btn">
-          <img src="@/assets/imgs/psych/false.webp" alt="Lisek" class="fox" />
-          <HubBtn text="false" :action="selectAndConfirmEmptySelect" />
+    <div class="bottomPanelWithBtns" :class="{ translateBtnCenter: isDuoGame && isSubjectPlayer }">
+      <div v-if="!showOwnersStep" class="w-100">
+        <div v-if="isDuoGame && isSubjectPlayer" class="trueFalsePanel">
+          <div class="trueFalsePanel_btn">
+            <img src="@/assets/imgs/psych/false.webp" alt="Lisek" class="fox" />
+            <HubBtn text="false" :action="selectAndConfirmEmptySelect" />
+          </div>
+          <div class="trueFalsePanel_btn">
+            <img src="@/assets/imgs/psych/true.webp" alt="Lisek" class="fox" />
+            <HubBtn text="true" isOrange :action="selectAndConfirmAllAnswers" />
+          </div>
         </div>
-        <div class="trueFalsePanel_btn">
-          <img src="@/assets/imgs/psych/true.webp" alt="Lisek" class="fox" />
-          <HubBtn text="true" isOrange :action="selectAndConfirmAllAnswers" />
+        <div v-else class="acceptPanel">
+          <HubTooltip
+            :tooltipText="isUserReady ? 'isAnswerPicked' : 'selectFavAnswer'"
+            :tooltipDisabled="!confirmBtn.disabled || isQuietDaysMode"
+          >
+            <HubBtn
+              :action="confirmBtn.action"
+              :text="confirmBtn.text"
+              :isOrange="confirmBtn.isOrange"
+              :disabled="confirmBtn.disabled"
+              :useDicts="false"
+            />
+          </HubTooltip>
         </div>
       </div>
-      <div v-else class="acceptPanel">
-        <HubTooltip
-          :tooltipText="isUserReady ? $t('isAnswerPicked') : $t('selectFavAnswer')"
-          :tooltipDisabled="!confirmBtn.disabled || isQuietDaysMode"
-        >
-          <HubBtn
-            :action="confirmBtn.action"
-            :text="confirmBtn.text"
-            :isOrange="confirmBtn.isOrange"
-            :disabled="confirmBtn.disabled"
-            :useDicts="false"
-          />
-        </HubTooltip>
+      <div v-else class="nextPageBtn acceptPanel">
+        <HubBtn
+          :action="nextPageBtn.action"
+          :text="nextPageBtn.text"
+          :isOrange="nextPageBtn.isOrange"
+          :disabled="nextPageBtn.disabled"
+        />
       </div>
-    </div>
-    <div v-else class="nextPageBtn acceptPanel">
-      <HubBtn
-        :action="nextPageBtn.action"
-        :text="nextPageBtn.text"
-        :isOrange="nextPageBtn.isOrange"
-        :disabled="nextPageBtn.disabled"
+      <OrangeSwitchBtn
+        v-if="areSwitchLangAnswersVisible"
+        :initState="showOriginalAnswers"
+        :action="switchLangAnswers"
+        :iconOff="ICON.TRANSLATE_OFF"
+        :iconOn="ICON.TRANSLATE_ON"
+        iconSize="32"
       />
     </div>
     <HubDialogPopup
@@ -378,6 +411,22 @@
       flex-direction: column;
       padding: 8px;
       width: 100%;
+    }
+
+    .bottomPanelWithBtns {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      &.translateBtnCenter {
+        .orangeSwitchBtn {
+          position: absolute;
+          top: 32px;
+          right: 50%;
+          transform: translateX(50%);
+        }
+      }
     }
 
     .trueFalsePanel {

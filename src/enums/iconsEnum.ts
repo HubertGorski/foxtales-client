@@ -36,4 +36,6 @@ export enum ICON {
   WAKE_LOCK_ON = 'mdi-eye-outline',
   WAKE_LOCK_OFF = 'mdi-eye-off-outline',
   TEAM = 'mdi-account-group',
+  TRANSLATE_OFF = 'mdi-translate-off',
+  TRANSLATE_ON = 'mdi-translate',
 }

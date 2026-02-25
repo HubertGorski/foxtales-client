@@ -164,7 +164,9 @@
   "info": {
     "passwordRoom": "* Sin establecer una contraseña, cualquiera puede unirse a tu sala.",
     "wakeLockOff": "El apagado automático de la pantalla ha sido desactivado",
-    "wakeLockOn": "El apagado automático de la pantalla ha sido restaurado."
+    "wakeLockOn": "El apagado automático de la pantalla ha sido restaurado.",
+    "translateAnswersOff": "Viendo respuestas originales",
+    "translateAnswersOn": "Viendo respuestas traducidas"
   },
   "lobby": {
     "usePrivateQuestions": "Usar preguntas privadas",

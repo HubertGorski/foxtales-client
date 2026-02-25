@@ -295,7 +295,7 @@
       }
 
       .team-no {
-        color: $darkOrangeColor;
+        color: $darkerOrangeColor;
         font-weight: 700;
       }
 

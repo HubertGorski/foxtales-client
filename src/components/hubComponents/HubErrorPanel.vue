@@ -101,9 +101,10 @@
     overflow: hidden;
     pointer-events: auto;
     margin-bottom: 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
     &.isInfo {
-      background-color: $lightBrownColor;
+      background-color: $darkOrangeColor;
     }
 
     .v-icon {

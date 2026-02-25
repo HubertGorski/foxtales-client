@@ -164,7 +164,9 @@
   "info": {
     "passwordRoom": "* Sans définir de mot de passe, n'importe qui peut rejoindre votre salle.",
     "wakeLockOff": "La mise en veille automatique de l'écran a été désactivée",
-    "wakeLockOn": "La mise en veille automatique de l'écran a été restaurée."
+    "wakeLockOn": "La mise en veille automatique de l'écran a été restaurée.",
+    "translateAnswersOff": "Affichage des réponses originales",
+    "translateAnswersOn": "Affichage des réponses traduites"
   },
   "lobby": {
     "usePrivateQuestions": "Utiliser des questions privées",

@@ -164,7 +164,9 @@
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju.",
     "wakeLockOff": "Wyłączono automatyczne wygaszanie ekranu",
-    "wakeLockOn": "Przywrócono automatyczne wygaszanie ekranu."
+    "wakeLockOn": "Przywrócono automatyczne wygaszanie ekranu.",
+    "translateAnswersOff": "Widzisz oryginalne odpowiedzi",
+    "translateAnswersOn": "Widzisz przetłumaczone odpowiedzi"
   },
   "lobby": {
     "usePrivateQuestions": "Używaj prywatnych pytań",
