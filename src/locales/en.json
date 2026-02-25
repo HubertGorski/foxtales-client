@@ -101,6 +101,7 @@
   "manageLibrary": "Manage library",
   "beforeSelectedCatalogInfoText": "No catalog selected. Assigning the question to a catalog will make it easier to find later.",
   "selectedCatalogInfoText": "The question will be assigned to:",
+  "catalogAutomaticallyTranslated": "Your catalog will be automatically translated into all available languages.",
   "exampleQuestion": "If **** were invisible for one day, what would they do?",
   "questionTutorial": "Type **** to make the question about any player in the game",
   "changeName": "Change name",

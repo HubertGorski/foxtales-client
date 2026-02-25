@@ -167,6 +167,10 @@
     }
   };
   watch(visibleItems, () => {
+    if (!visibleItems.value.length) {
+      currentPage.value = 1;
+    }
+
     if (!props.selectVisibleItems) {
       return;
     }

@@ -148,7 +148,7 @@
 
   const optionBtn = computed(() => {
     return {
-      text: isOwner.value ? 'settings' : 'back',
+      text: isOwner.value ? 'back2' : 'back',
       isOrange: false,
       action: optionBtnAction,
     };
