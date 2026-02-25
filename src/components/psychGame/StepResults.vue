@@ -43,6 +43,22 @@
       .join(', ');
   });
 
+  const everyoneChoseYourAnswer = computed(() => {
+    const currentUser = game.value.users.find(user => user.userId === currentUserId.value);
+    const votersIds = currentUser?.votersIdsForHisAnswer ?? [];
+
+    const otherPlayersCount = game.value.users.length - 1;
+    const votersWithoutSelf = votersIds.filter(id => id !== currentUserId.value);
+
+    return otherPlayersCount > 0 && votersWithoutSelf.length === otherPlayersCount;
+  });
+
+  const votersTitle = computed(() => {
+    if (everyoneChoseYourAnswer.value) return t('everyoneChoseYourAnswer');
+    if (votersForHisAnswerString.value) return t('yourAnswerWasChosen');
+    return t('nobodyChoseYourAnswer');
+  });
+
   const nextPageBtn = computed(() => {
     return {
       text: isReadyForNewRound.value ? 'lobby.waitingForPlayers' : 'ready',
@@ -127,9 +143,7 @@
       <div v-if="!isQuietDaysMode" class="votersForHisAnswer">
         <img src="@/assets/imgs/fox13.webp" alt="Lisek" />
         <div class="whiteCard voters">
-          <div class="title">
-            {{ votersForHisAnswerString ? $t('yourAnswerWasChosen') : $t('nobodyChoseYourAnswer') }}
-          </div>
+          <div class="title">{{ votersTitle }}</div>
           <div v-if="votersForHisAnswerString" class="yourAnswerWasChosen">
             {{ votersForHisAnswerString }}
           </div>
