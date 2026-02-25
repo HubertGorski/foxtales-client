@@ -101,6 +101,7 @@
   "manageLibrary": "Gérer la bibliothèque",
   "beforeSelectedCatalogInfoText": "Aucun catalogue sélectionné. L'attribution de la question à un catalogue facilitera sa recherche ultérieure.",
   "selectedCatalogInfoText": "La question sera attribuée à :",
+  "catalogAutomaticallyTranslated": "Votre catalogue sera automatiquement traduit dans toutes les langues disponibles.",
   "exampleQuestion": "Si **** était invisible pendant une journée, que ferait-il ?",
   "questionTutorial": "Tapez **** pour poser la question sur n'importe quel joueur du jeu",
   "changeName": "Changer de nom",

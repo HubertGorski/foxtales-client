@@ -101,6 +101,7 @@
   "manageLibrary": "Bibliothek verwalten",
   "beforeSelectedCatalogInfoText": "Kein Katalog ausgewählt. Das Zuweisen der Frage zu einem Katalog erleichtert das spätere Wiederfinden.",
   "selectedCatalogInfoText": "Die Frage wird zugewiesen an:",
+  "catalogAutomaticallyTranslated": "Ihr Katalog wird automatisch in alle verfügbaren Sprachen übersetzt.",
   "exampleQuestion": "Wenn **** für einen Tag unsichtbar wäre, was würde er/sie tun?",
   "questionTutorial": "Schreibe ****, damit sich die Frage auf einen beliebigen Spieler bezieht",
   "changeName": "Name ändern",

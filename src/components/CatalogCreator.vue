@@ -27,6 +27,7 @@
 
   const initialTitle = ref(catalog.value.title);
   const initialDescription = ref(catalog.value.description);
+  const isBtnLoading = ref(false);
 
   const availableTypes: CatalogType[] = catalog.value.availableTypes.length
     ? catalog.value.availableTypes
@@ -42,16 +43,15 @@
       text: props.editMode ? 'accept' : 'add',
       isOrange: true,
       action: props.editMode ? editCatalog : addCatalog,
-      disabled:
-        catalog.value.title.length < 3 ||
-        !catalog.value.catalogType.size ||
-        !catalog.value.title.trim(),
+      disabled: catalog.value.title.length < 3 || !catalog.value.title.trim() || isBtnLoading.value,
     };
   });
 
   const addCatalog = async () => {
+    isBtnLoading.value = true;
     addSelectedQuestionsToCatalog();
     catalog.value.availableTypes = availableTypes;
+    catalog.value.catalogType = availableTypes[0];
     const data = await psychService.addCatalog(catalog.value);
     if (!data.catalogId) {
       return;
@@ -77,6 +77,7 @@
   };
 
   const editCatalog = async () => {
+    isBtnLoading.value = true;
     addSelectedQuestionsToCatalog();
     const data = await psychService.editCatalog(
       catalog.value,
@@ -95,6 +96,7 @@
 
   const closePopup = (refresh: boolean = true) => {
     clearPopup();
+    isBtnLoading.value = false;
     emit('closePopup', refresh);
   };
 
@@ -173,22 +175,9 @@
     </div>
     <v-text-field v-model="catalog.title" :label="$t('title')" hide-details />
     <v-textarea v-model="catalog.description" :label="$t('description')" :rows="2" hide-details />
-    <div class="catalogCreator_subtitle">{{ $t('chooseCatalogSize') }}</div>
-    <div class="selectSize">
-      <div
-        v-for="type in availableTypes"
-        :key="type.catalogTypeId"
-        class="selectSize_size"
-        :class="{
-          isSelected: catalog.catalogType.catalogTypeId === type.catalogTypeId,
-        }"
-        @click="catalog.catalogType = type"
-      >
-        <p class="catalogName">{{ $t(type.name.toLocaleLowerCase()) }}</p>
-        <p class="catalogSize">{{ `${$t('size')}: ${type.size}` }}</p>
-      </div>
-    </div>
+    <!-- <div class="infoBlock">{{ $t('catalogAutomaticallyTranslated') }}</div> TODO: -->
     <WhiteSelectList
+      v-if="actualQuestions.length"
       v-model="actualQuestions"
       customSelectedCountTitle="selectedQuestionsToCatalog"
       :fontSize="14"
@@ -202,6 +191,7 @@
       :text="formBtn.text"
       :disabled="formBtn.disabled"
       :isOrange="formBtn.isOrange"
+      :loading="isBtnLoading"
     />
   </div>
 </template>
@@ -234,40 +224,6 @@
       font-size: 18px;
       font-weight: 600;
       text-align: center;
-    }
-
-    .selectSize {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      gap: 8px;
-
-      &_size {
-        background-color: white;
-        box-shadow: rgb(0, 0, 0, 0.16) 0 1px 4px;
-        border-radius: 8px;
-        color: $grayColor;
-        transition: all 0.2s;
-        padding: 12px;
-        cursor: pointer;
-        flex-grow: 1;
-
-        &.isSelected {
-          font-weight: 600;
-          transform: scale(1.1);
-          box-shadow: rgb(0, 0, 0, 0.3) 0 1px 6px;
-          transition: all 0.2s;
-        }
-
-        .catalogName {
-          text-align: center;
-        }
-
-        .catalogSize {
-          text-align: center;
-          font-size: 12px;
-        }
-      }
     }
 
     &_btn {

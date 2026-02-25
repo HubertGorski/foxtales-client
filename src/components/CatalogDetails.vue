@@ -105,11 +105,7 @@
                 </span>
               </div>
               <div class="catalogDetails_questions">
-                <span
-                  v-for="question in catalog.questions"
-                  :key="question.text"
-                  class="catalogDetails_questionItem"
-                >
+                <span v-for="question in catalog.questions" :key="question.text" class="infoBlock">
                   „{{ question.text }}"
                 </span>
               </div>
@@ -252,18 +248,6 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-    }
-
-    &_questionItem {
-      display: block;
-      padding: 8px 12px;
-      background: rgba($darkBackground, 0.25);
-      border-radius: 8px;
-      font-size: 13px;
-      font-style: italic;
-      color: $lightGrayColor;
-      line-height: 1.45;
-      border-left: 3px solid $mainOrangeColor;
     }
 
     &_rules {
