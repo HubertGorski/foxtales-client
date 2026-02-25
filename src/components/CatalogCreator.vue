@@ -25,9 +25,17 @@
 
   const userStore = useUserStore();
 
+  const initialTitle = ref(catalog.value.title);
+  const initialDescription = ref(catalog.value.description);
+
   const availableTypes: CatalogType[] = catalog.value.availableTypes.length
     ? catalog.value.availableTypes
     : userStore.getAvailableCatalogTypes();
+
+  const hasTitleChanged = computed(() => catalog.value.title !== initialTitle.value);
+  const hasDescriptionChanged = computed(
+    () => catalog.value.description !== initialDescription.value
+  );
 
   const formBtn = computed(() => {
     return {
@@ -44,12 +52,13 @@
   const addCatalog = async () => {
     addSelectedQuestionsToCatalog();
     catalog.value.availableTypes = availableTypes;
-    const newCatalogId = await psychService.addCatalog(catalog.value);
-    if (!newCatalogId) {
+    const data = await psychService.addCatalog(catalog.value);
+    if (!data.catalogId) {
       return;
     }
 
-    catalog.value.catalogId = newCatalogId;
+    catalog.value.translations = data.translations;
+    catalog.value.catalogId = data.catalogId;
     userStore.addCatalog(catalog.value);
 
     const selectedQuestions = actualQuestions.value
@@ -61,7 +70,7 @@
     );
 
     questions.forEach(question => {
-      question.catalogIds.push(newCatalogId);
+      question.catalogIds.push(data.catalogId);
     });
 
     closePopup();
@@ -69,11 +78,17 @@
 
   const editCatalog = async () => {
     addSelectedQuestionsToCatalog();
-    const response = await psychService.editCatalog(catalog.value);
-    if (!response) {
+    const data = await psychService.editCatalog(
+      catalog.value,
+      hasTitleChanged.value,
+      hasDescriptionChanged.value,
+      userStore.user.language
+    );
+    if (!data.catalogId) {
       return;
     }
 
+    catalog.value.translations = data.translations;
     userStore.editCatalog(catalog.value);
     closePopup();
   };
@@ -136,6 +151,8 @@
 
   watch(catalog, () => {
     actualQuestions.value = getActualQuestions();
+    initialTitle.value = catalog.value.title;
+    initialDescription.value = catalog.value.description;
     if (catalog.value.questions.length) {
       initialQuestionsIds = catalog.value.questions.map(q => q.id).filter(q => q != null);
     }
