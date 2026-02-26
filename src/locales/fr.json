@@ -143,7 +143,25 @@
   "title": "Titre",
   "catalog": {
     "sampleQuestions": "Exemples de questions",
-    "gameRules": "Règles du jeu"
+    "gameRules": "Règles du jeu",
+    "players": "JOUEURS",
+    "mode": "MODE",
+    "solo": "Solo",
+    "noTeams": "Sans équipes",
+    "soloOrTeam": "Solo / Équipes",
+    "optionalTeams": "Optionnel",
+    "psych": {
+      "playersCount": "2 – ∞",
+      "bestWith": "Idéal 3+"
+    },
+    "dixit": {
+      "playersCount": "3 – ∞",
+      "bestWith": "Idéal 4-8"
+    },
+    "quietDays": {
+      "playersCount": "2 – 12",
+      "bestWith": "Idéal 2-8"
+    }
   },
   "description": "Description",
   "small": "Petit",

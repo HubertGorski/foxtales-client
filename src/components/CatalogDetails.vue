@@ -6,6 +6,7 @@
   import { getCatalogImg } from '@/utils/imgUtils';
   import { RULES, RULES_I18N_KEY } from '@/enums/rulesEnum';
   import { ICON } from '@/enums/iconsEnum';
+  import InfoGame from './InfoGame.vue';
 
   const selectedCatalogId = defineModel<number | null>({
     required: false,
@@ -48,6 +49,36 @@
     [RULES.PSYCH]: `rules/${userStore.user.language}/psych.html`,
     [RULES.DIXIT]: `rules/${userStore.user.language}/dixit.html`,
     [RULES.QUIET_DAYS]: `rules/${userStore.user.language}/quietDays.html`,
+  };
+
+  const RULES_PLAYERS_TEXT: Record<RULES, string> = {
+    [RULES.PSYCH]: 'catalog.psych.playersCount',
+    [RULES.DIXIT]: 'catalog.dixit.playersCount',
+    [RULES.QUIET_DAYS]: 'catalog.quietDays.playersCount',
+  };
+
+  const RULES_PLAYERS_SUBTEXT: Record<RULES, string> = {
+    [RULES.PSYCH]: 'catalog.psych.bestWith',
+    [RULES.DIXIT]: 'catalog.dixit.bestWith',
+    [RULES.QUIET_DAYS]: 'catalog.quietDays.bestWith',
+  };
+
+  const RULES_MODE_TEXT: Record<RULES, string> = {
+    [RULES.PSYCH]: 'catalog.solo',
+    [RULES.DIXIT]: 'catalog.solo',
+    [RULES.QUIET_DAYS]: 'catalog.soloOrTeam',
+  };
+
+  const RULES_MODE_SUBTEXT: Record<RULES, string> = {
+    [RULES.PSYCH]: 'catalog.noTeams',
+    [RULES.DIXIT]: 'catalog.noTeams',
+    [RULES.QUIET_DAYS]: 'catalog.optionalTeams',
+  };
+
+  const RULES_MODE_ICON: Record<RULES, ICON> = {
+    [RULES.PSYCH]: ICON.X,
+    [RULES.DIXIT]: ICON.X,
+    [RULES.QUIET_DAYS]: ICON.CHECK,
   };
 
   watch(
@@ -117,6 +148,21 @@
                 {{ $t('catalog.gameRules') }}:
                 {{ $t(RULES_I18N_KEY[catalog.recommendedGameRules]) }}
               </div>
+              <div class="infoGameBoxes">
+                <InfoGame
+                  :title="$t('catalog.players')"
+                  :mainIcon="ICON.USERS"
+                  :text="$t(RULES_PLAYERS_TEXT[catalog.recommendedGameRules])"
+                  :subtext="$t(RULES_PLAYERS_SUBTEXT[catalog.recommendedGameRules])"
+                />
+                <InfoGame
+                  :title="$t('catalog.mode')"
+                  :mainIcon="ICON.GAME"
+                  :text="$t(RULES_MODE_TEXT[catalog.recommendedGameRules])"
+                  :subtext="$t(RULES_MODE_SUBTEXT[catalog.recommendedGameRules])"
+                  :icon="RULES_MODE_ICON[catalog.recommendedGameRules]"
+                />
+              </div>
               <div class="catalogDetails_rules" v-html="rulesHtml" />
             </div>
           </div>
@@ -135,7 +181,7 @@
       flex-direction: column;
       background: $background;
       width: 100%;
-      max-width: 348px;
+      max-width: 356px;
       border-radius: 16px;
       overflow: hidden;
       box-shadow:
@@ -250,21 +296,18 @@
       gap: 6px;
     }
 
+    .infoGameBoxes {
+      display: grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
     &_rules {
       padding: 4px 0 0;
       font-size: 14px;
       line-height: 1.55;
       color: $grayColor;
-
-      h2 {
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: $mainBrownColor;
-        margin: 0 0 0.6rem;
-        padding-bottom: 0.35rem;
-        border-bottom: 2px solid $mainOrangeColor;
-        display: inline-block;
-      }
 
       h3 {
         font-size: 0.95rem;
