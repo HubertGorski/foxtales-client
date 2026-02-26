@@ -137,7 +137,7 @@
               </div>
               <div class="catalogDetails_questions">
                 <span v-for="question in catalog.questions" :key="question.text" class="infoBlock">
-                  „{{ question.text }}"
+                  „{{ question.text.split('****').join('Adam') }}"
                 </span>
               </div>
             </div>
