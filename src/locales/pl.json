@@ -143,7 +143,25 @@
   "title": "Tytuł",
   "catalog": {
     "sampleQuestions": "Przykładowe pytania",
-    "gameRules": "Zasady gry"
+    "gameRules": "Zasady gry",
+    "players": "GRACZE",
+    "mode": "TRYB",
+    "solo": "Solo",
+    "noTeams": "Bez drużyn",
+    "soloOrTeam": "Solo / Drużyny",
+    "optionalTeams": "Opcjonalnie",
+    "psych": {
+      "playersCount": "2 – ∞",
+      "bestWith": "Najlepiej 3+"
+    },
+    "dixit": {
+      "playersCount": "3 – ∞",
+      "bestWith": "Najlepiej 4-8"
+    },
+    "quietDays": {
+      "playersCount": "2 – 12",
+      "bestWith": "Najlepiej 2-8"
+    }
   },
   "description": "Opis",
   "small": "Mały",
