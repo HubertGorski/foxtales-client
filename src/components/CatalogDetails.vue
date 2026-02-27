@@ -72,14 +72,14 @@
   const RULES_MODE_SUBTEXT: Record<RULES, string> = {
     [RULES.PSYCH]: 'catalog.noTeams',
     [RULES.DIXIT]: 'catalog.noTeams',
-    [RULES.QUIET_DAYS]: 'catalog.optionalTeams',
+    [RULES.QUIET_DAYS]: 'catalog.availableModes',
   };
 
-  const RULES_MODE_ICON: Record<RULES, ICON> = {
-    [RULES.PSYCH]: ICON.X,
-    [RULES.DIXIT]: ICON.X,
-    [RULES.QUIET_DAYS]: ICON.CHECK,
-  };
+  // const RULES_MODE_ICON: Record<RULES, ICON> = {
+  //   [RULES.PSYCH]: ICON.X,
+  //   [RULES.DIXIT]: ICON.X,
+  //   [RULES.QUIET_DAYS]: ICON.CHECK,
+  // }; TODO: podjac decyzje czy z ikonką czy bez
 
   watch(
     () => catalog.value?.recommendedGameRules,
@@ -160,7 +160,6 @@
                   :mainIcon="ICON.GAME"
                   :text="$t(RULES_MODE_TEXT[catalog.recommendedGameRules])"
                   :subtext="$t(RULES_MODE_SUBTEXT[catalog.recommendedGameRules])"
-                  :icon="RULES_MODE_ICON[catalog.recommendedGameRules]"
                 />
               </div>
               <div class="catalogDetails_rules" v-html="rulesHtml" />
