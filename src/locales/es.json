@@ -241,6 +241,7 @@
     "selectedDecks": "Mazos seleccionados"
   },
   "auth": {
+    "serverBusy": "El servidor está temporalmente ocupado. Por favor, inténtelo de nuevo en unos minutos.",
     "tooManyRequests": "Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.",
     "unknownError": "Ocurrió un error inesperado",
     "unauthorized": "Sesión expirada. Por favor, inicia sesión de nuevo.",

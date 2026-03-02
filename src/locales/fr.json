@@ -241,6 +241,7 @@
     "selectedDecks": "Paquets sélectionnés"
   },
   "auth": {
+    "serverBusy": "Le serveur est temporairement occupé. Veuillez réessayer dans quelques minutes.",
     "tooManyRequests": "Trop de requêtes. Veuillez réessayer plus tard.",
     "unknownError": "Une erreur inattendue s'est produite",
     "unauthorized": "Session expirée. Veuillez vous reconnecter.",
