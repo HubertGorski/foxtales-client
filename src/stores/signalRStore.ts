@@ -13,6 +13,7 @@ import {
   HubConnectionState,
 } from '@microsoft/signalr';
 import { userService } from '@/api/services/UserService';
+import { isTokenExpired } from '@/composables/useTokenRefresh';
 
 async function safeSignalRInvoke<T>(
   hasRetried: boolean,
@@ -27,6 +28,11 @@ async function safeSignalRInvoke<T>(
 
     if (connection.state !== HubConnectionState.Connected) {
       await connection.start();
+    }
+
+    const token = useUserStore().getAccessToken();
+    if (isTokenExpired(token)) {
+      await userService.refreshToken();
     }
 
     const result = await connection.invoke<T>(methodName, ...args);

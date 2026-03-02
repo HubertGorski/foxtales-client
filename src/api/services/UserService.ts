@@ -11,9 +11,11 @@ import i18n from '@/configs/i18n';
 import type { LANG } from '@/enums/languagesEnum';
 import { Catalog } from '@/models/Catalog';
 import { useSignalRStore } from '@/stores/signalRStore';
+import { scheduleTokenRefresh, clearTokenRefresh } from '@/composables/useTokenRefresh';
 
 export const userService = {
   async logout(): Promise<void> {
+    clearTokenRefresh();
     await userClient.logout();
     await useSignalRStore().disconnect();
   },
@@ -76,6 +78,8 @@ export const userService = {
     userStore.setAvailableCatalogTypes(availableCatalogTypes);
     userStore.setPublicCatalogs(publicCatalogs);
 
+    scheduleTokenRefresh(user.accessToken);
+
     await signalRStore.connect();
   },
 
@@ -102,6 +106,7 @@ export const userService = {
   async refreshToken(): Promise<void> {
     const response = await userClient.refreshToken();
     useUserStore().setAccessToken(response.data);
+    scheduleTokenRefresh(response.data);
   },
 
   async register(
