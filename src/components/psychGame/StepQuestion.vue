@@ -131,6 +131,7 @@
             :btnIsDisabled="addAnswerBtn.isDisabled"
             :textareaRows="5"
             isTextarea
+            isEnterKeyDisabled
             @focus="isFoxVisible = false"
             @blur="isFoxVisible = false"
           />

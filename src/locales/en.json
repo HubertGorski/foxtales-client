@@ -241,6 +241,7 @@
     "selectedDecks": "Selected decks"
   },
   "auth": {
+    "serverBusy": "The server is temporarily busy. Please try again in a few minutes.",
     "tooManyRequests": "Too many requests. Please try again later.",
     "unknownError": "An unexpected error occurred",
     "unauthorized": "Session expired. Please log in again.",
