@@ -62,6 +62,10 @@
       type: Boolean,
       default: false,
     },
+    isEnterKeyDisabled: {
+      type: Boolean,
+      default: false,
+    },
     errorMessages: {
       type: String,
     },
@@ -110,7 +114,7 @@
   });
 
   const handleEnter = (e: KeyboardEvent) => {
-    if (!btnIsDisabled.value) {
+    if (!btnIsDisabled.value && !props.isEnterKeyDisabled) {
       props.btnAction(e);
     } else {
       e.preventDefault();
