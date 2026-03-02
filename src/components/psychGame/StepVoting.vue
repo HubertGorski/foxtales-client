@@ -318,7 +318,7 @@
         :text="$t('isGivenAnswerCorrect')"
       />
       <UserListElement
-        v-for="user in userList"
+        v-for="user in userList.filter(user => user.answer)"
         :key="user.userId"
         :text="getAnswerText(user.answer)"
         :avatarLabel="getAvatarLabel(user)"
