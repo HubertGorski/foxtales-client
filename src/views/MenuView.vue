@@ -5,7 +5,6 @@
   import HubAccordionElement from '@/components/hubComponents/HubAccordionElement.vue';
   import NavigationBtns from '@/components/NavigationBtns.vue';
   import { userService } from '@/api/services/UserService';
-  import { User } from '@/models/User';
   import { useSignalRStore } from '@/stores/signalRStore';
   import { Game } from '@/models/Game';
 
@@ -43,7 +42,6 @@
   const logout = async () => {
     router.push(ROUTE_PATH.HOME);
     await userService.logout();
-    userStore.setUserSession(new User());
   };
 </script>
 

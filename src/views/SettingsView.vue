@@ -126,6 +126,10 @@
     }
   };
 
+  const setUseAiTranslations = async () => {
+    await userService.setUseAiTranslations(userStore.user.useAiTranslations);
+  };
+
   const contact = async () => {
     isContactDisabled.value = true;
     await emailService.contact(mailContent.value, currentUser);
@@ -323,6 +327,7 @@
               tooltipText="aiLiveTranslationTooltip"
               :inset="false"
               color="brown"
+              @onSwitchChange="setUseAiTranslations"
             />
           </div>
         </template>

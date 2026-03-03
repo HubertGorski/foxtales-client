@@ -71,4 +71,8 @@ export const userClient = {
   setUsername(username: string): Promise<boolean> {
     return apiClient.post('/user/setUsername', { username });
   },
+
+  setUseAiTranslations(useAiTranslations: boolean): Promise<boolean> {
+    return apiClient.post('/user/setUseAiTranslations', { useAiTranslations });
+  },
 };

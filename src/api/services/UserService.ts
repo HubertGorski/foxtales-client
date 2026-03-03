@@ -20,6 +20,7 @@ import {
 export const userService = {
   async logout(): Promise<void> {
     clearTokenRefresh();
+    useUserStore().setUserSession(new User());
     await userClient.logout();
     await useSignalRStore().disconnect();
   },
@@ -146,5 +147,9 @@ export const userService = {
 
   async setUsername(username: string): Promise<boolean> {
     return await userClient.setUsername(username);
+  },
+
+  async setUseAiTranslations(useAiTranslations: boolean): Promise<boolean> {
+    return await userClient.setUseAiTranslations(useAiTranslations);
   },
 };
