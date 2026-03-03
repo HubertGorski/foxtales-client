@@ -5,7 +5,7 @@ import { Catalog } from './Catalog';
 import { Avatar } from './Avatar';
 import { Achievement } from './Achievement';
 import { Permission } from './Permission';
-import { LANG, LangToNumber } from '@/enums/languagesEnum';
+import { LANG, LangFromNumber, LangToNumber } from '@/enums/languagesEnum';
 import { Question } from './Question';
 import { DylematyCard } from './DylematyCard';
 import { Deck } from './Deck';
@@ -23,9 +23,9 @@ export class User {
   role: ROLE = ROLE.USER;
   email: string | null = null;
 
-  @Transform(({ value }) => (typeof value === 'string' ? LangToNumber[value as LANG] : value), {
-    toPlainOnly: true,
-  })
+  @Transform(({ value }) =>
+    typeof value === 'string' ? LangToNumber[value as LANG] : LangFromNumber[value]
+  )
   language: LANG = LANG.PL;
 
   useAiTranslations: boolean = false;

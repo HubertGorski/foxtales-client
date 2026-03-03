@@ -9,15 +9,20 @@
   import { toggleWakeLock } from '@/libs/wakeLock';
   import { useViewStore } from '@/stores/viewStore';
   import { useUserStore } from '@/stores/userStore';
+  import { userService } from '@/api/services/UserService';
 
   const viewStore = useViewStore();
   const router = useRouter();
   const { locale } = useI18n();
 
   const appVersion = import.meta.env.VITE_APP_VERSION;
+  const beforeLang = locale.value;
 
   const changeLanguage = () => {
-    locale.value = locale.value === LANG.EN ? LANG.PL : LANG.EN;
+    const lang = beforeLang === LANG.EN ? LANG.PL : beforeLang;
+    locale.value = locale.value === LANG.EN ? lang : LANG.EN;
+
+    userService.setLanguage(locale.value as LANG);
   };
 
   const handleToggleWakeLock = () => {

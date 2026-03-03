@@ -4,6 +4,7 @@ import type { User } from '@/models/User';
 import type { FoxGame } from '@/models/FoxGame';
 import type { CatalogType } from '@/models/CatalogType';
 import type { Catalog } from '@/models/Catalog';
+import { LangToNumber, type LANG } from '@/enums/languagesEnum';
 
 export interface IUserLoginResponse {
   user: User;
@@ -35,23 +36,36 @@ export const userClient = {
     username: string,
     password: string,
     confirmPassword: string,
-    termsAccepted: boolean
+    termsAccepted: boolean,
+    languageEnum: LANG
   ) {
+    const language = LangToNumber[languageEnum];
     return apiClient.post('/user/registerUser', {
       email,
       username,
       password,
       confirmPassword,
       termsAccepted,
+      language,
     });
   },
 
-  registerTmpUser(username: string, termsAccepted: boolean): Promise<{ data: IUserLoginResponse }> {
-    return apiClient.post('/user/registerTmpUser', { username, termsAccepted });
+  registerTmpUser(
+    username: string,
+    termsAccepted: boolean,
+    languageEnum: LANG
+  ): Promise<{ data: IUserLoginResponse }> {
+    const language = LangToNumber[languageEnum];
+    return apiClient.post('/user/registerTmpUser', { username, termsAccepted, language });
   },
 
   setAvatar(avatarId: number): Promise<boolean> {
     return apiClient.post('/user/setAvatar', { avatarId });
+  },
+
+  setLanguage(languageEnum: LANG): Promise<boolean> {
+    const language = LangToNumber[languageEnum];
+    return apiClient.post('/user/setLanguage', { language });
   },
 
   setUsername(username: string): Promise<boolean> {

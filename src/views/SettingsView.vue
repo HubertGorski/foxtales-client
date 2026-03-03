@@ -87,7 +87,12 @@
 
   const showAllAchievement = () => {};
 
-  const changeLanguage = () => {
+  const changeLanguage = async () => {
+    const response = await userService.setLanguage(selectedLanguage.value);
+    if (!response) {
+      return;
+    }
+
     userStore.setLanguage(selectedLanguage.value);
     locale.value = selectedLanguage.value;
     languages.value.forEach((lang, index) => {

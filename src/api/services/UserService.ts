@@ -11,7 +11,11 @@ import i18n from '@/configs/i18n';
 import type { LANG } from '@/enums/languagesEnum';
 import { Catalog } from '@/models/Catalog';
 import { useSignalRStore } from '@/stores/signalRStore';
-import { scheduleTokenRefresh, clearTokenRefresh } from '@/composables/useTokenRefresh';
+import {
+  scheduleTokenRefresh,
+  clearTokenRefresh,
+  isTokenExpired,
+} from '@/composables/useTokenRefresh';
 
 export const userService = {
   async logout(): Promise<void> {
@@ -71,8 +75,7 @@ export const userService = {
     const userStore = useUserStore();
     const signalRStore = useSignalRStore();
 
-    const currentLocale = i18n.global.locale.value;
-    user.language = currentLocale as LANG;
+    i18n.global.locale.value = user.language;
     userStore.setUserSession(user);
     userStore.setAvatars(avatars);
     userStore.setAvailableCatalogTypes(availableCatalogTypes);
@@ -99,7 +102,8 @@ export const userService = {
   },
 
   async registerTmpUser(username: string, termsAccepted: boolean): Promise<void> {
-    const response = await userClient.registerTmpUser(username, termsAccepted);
+    const language = i18n.global.locale.value;
+    const response = await userClient.registerTmpUser(username, termsAccepted, language as LANG);
     this.setUserSession(response.data);
   },
 
@@ -116,11 +120,28 @@ export const userService = {
     confirmPassword: string,
     termsAccepted: boolean
   ) {
-    return await userClient.register(email, username, password, confirmPassword, termsAccepted);
+    const language = i18n.global.locale.value;
+    return await userClient.register(
+      email,
+      username,
+      password,
+      confirmPassword,
+      termsAccepted,
+      language as LANG
+    );
   },
 
   async setAvatar(avatarId: number): Promise<boolean> {
     return await userClient.setAvatar(avatarId);
+  },
+
+  async setLanguage(language: LANG): Promise<boolean> {
+    const token = useUserStore().getAccessToken();
+    if (isTokenExpired(token)) {
+      return false;
+    }
+
+    return await userClient.setLanguage(language);
   },
 
   async setUsername(username: string): Promise<boolean> {
