@@ -87,7 +87,12 @@
 
   const showAllAchievement = () => {};
 
-  const changeLanguage = () => {
+  const changeLanguage = async () => {
+    const response = await userService.setLanguage(selectedLanguage.value);
+    if (!response) {
+      return;
+    }
+
     userStore.setLanguage(selectedLanguage.value);
     locale.value = selectedLanguage.value;
     languages.value.forEach((lang, index) => {
@@ -119,6 +124,10 @@
       userStore.setAvatar(selectedAvatar.value);
       closeConfirmAvatarDialog();
     }
+  };
+
+  const setUseAiTranslations = async () => {
+    await userService.setUseAiTranslations(userStore.user.useAiTranslations);
   };
 
   const contact = async () => {
@@ -318,6 +327,7 @@
               tooltipText="aiLiveTranslationTooltip"
               :inset="false"
               color="brown"
+              @onSwitchChange="setUseAiTranslations"
             />
           </div>
         </template>

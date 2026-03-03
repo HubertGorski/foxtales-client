@@ -182,6 +182,10 @@
     }
 
     userStore.removeCatalog(catalogIdToRemove);
+    actualSelectedCatalogs.value = actualSelectedCatalogs.value.filter(
+      catalog => catalog.catalogId !== catalogIdToRemove
+    );
+
     refreshCatalogList();
   };
 
