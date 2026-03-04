@@ -20,8 +20,8 @@ import {
 export const userService = {
   async logout(): Promise<void> {
     clearTokenRefresh();
-    useUserStore().setUserSession(new User());
     await userClient.logout();
+    useUserStore().setUserSession(new User());
     await useSignalRStore().disconnect();
   },
 

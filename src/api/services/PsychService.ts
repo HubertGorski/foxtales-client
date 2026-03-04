@@ -4,10 +4,18 @@ import { psychClient } from '../clients/PsychClient';
 import { plainToInstance } from 'class-transformer';
 import { CatalogTranslations } from '@/models/CatalogTranslations';
 import type { LANG } from '@/enums/languagesEnum';
+import { QuestionTranslations } from '@/models/QuestionTranslations';
 
 export const psychService = {
-  async addQuestion(question: Question): Promise<number> {
-    return (await psychClient.addQuestion(question)).data;
+  async addQuestion(
+    question: Question
+  ): Promise<{ translations: QuestionTranslations[]; questionId: number }> {
+    const response = (await psychClient.addQuestion(question)).data;
+
+    return {
+      ...response,
+      translations: plainToInstance(QuestionTranslations, response.translations),
+    };
   },
 
   async removeQuestion(questionId: number): Promise<boolean> {

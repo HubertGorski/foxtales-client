@@ -4,9 +4,12 @@ import type { Catalog } from '@/models/Catalog';
 import { instanceToPlain } from 'class-transformer';
 import type { CatalogTranslations } from '@/models/CatalogTranslations';
 import { LangToNumber, type LANG } from '@/enums/languagesEnum';
+import type { QuestionTranslations } from '@/models/QuestionTranslations';
 
 export const psychClient = {
-  addQuestion(newQuestion: Question): Promise<{ data: number }> {
+  addQuestion(
+    newQuestion: Question
+  ): Promise<{ data: { translations: QuestionTranslations[]; questionId: number } }> {
     const question = instanceToPlain(newQuestion);
     return apiClient.post('/psych/addQuestion', { question });
   },
