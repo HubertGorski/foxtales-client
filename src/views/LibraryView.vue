@@ -42,12 +42,8 @@
       return;
     }
 
-    const questionToStore = new Question(
-      null,
-      newQuestion.value,
-      userStore.user.userId,
-      userStore.user.language
-    );
+    const questionToStore = new Question(null, userStore.user.userId);
+    questionToStore.text = newQuestion.value;
 
     let catalogIds: number[] = [];
     if (actualSelectedCatalogs.value && actualSelectedCatalogs.value.length > 0) {
@@ -58,14 +54,15 @@
     }
 
     const response = await psychService.addQuestion(questionToStore);
-    if (!response) {
+    if (!response.questionId) {
       return;
     }
 
-    questionToStore.id = response;
+    questionToStore.id = response.questionId;
+    questionToStore.translations = response.translations;
     userStore.addQuestion(questionToStore);
     if (catalogIds.length) {
-      userStore.assignedQuestionsToCatalogs([response], catalogIds);
+      userStore.assignedQuestionsToCatalogs([response.questionId], catalogIds);
       refreshCatalogList();
     }
 

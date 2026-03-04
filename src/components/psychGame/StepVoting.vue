@@ -235,16 +235,7 @@
     };
   });
 
-  const questionText = computed((): string => {
-    if (game.value.currentQuestion?.textInOtherLanguages) {
-      return (
-        game.value.currentQuestion.textInOtherLanguages[userStore.user.language] ??
-        game.value.currentQuestion.text
-      );
-    }
-
-    return game.value.currentQuestion?.text ?? '';
-  });
+  const questionText = computed((): string => game.value.currentQuestion?.text ?? '');
 
   const nextPageBtn = computed(() => {
     return {

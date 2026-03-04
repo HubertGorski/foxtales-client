@@ -1,36 +1,17 @@
 import { GENDER } from '@/enums/userEnum';
-import { LANG, LangFromNumber, LangToNumber } from '@/enums/languagesEnum';
+import { LANG } from '@/enums/languagesEnum';
 import { User } from './User';
-import { Transform, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { QuestionTranslations } from './QuestionTranslations';
+import i18n from '@/configs/i18n';
 
 export class Question {
   id: number | null;
-  text: string;
-
-  @Transform(({ value }) => {
-    if (!value) return null;
-    return Object.fromEntries(
-      Object.entries(value).map(([key, val]) => [key.toLowerCase() as LANG, val])
-    );
-  })
-  textInOtherLanguages: Partial<Record<LANG, string>> | null = null;
   ownerId: number;
 
-  @Transform(
-    ({ value }) => {
-      if (typeof value === 'number') {
-        return LangFromNumber[value] ?? LANG.PL;
-      }
-
-      if (typeof value === 'string') {
-        return LangToNumber[value as LANG] ?? 1;
-      }
-
-      return value;
-    },
-    { toClassOnly: false }
-  )
-  language: LANG;
+  @Type(() => QuestionTranslations)
+  @Expose()
+  translations: QuestionTranslations[] = [];
 
   targetGender: GENDER;
   isPublic: boolean;
@@ -44,9 +25,7 @@ export class Question {
 
   constructor(
     id: number | null = null,
-    text: string = '',
     ownerId: number = 0,
-    language: LANG = LANG.PL,
     targetGender: GENDER = GENDER.ALL,
     isPublic: boolean = false,
     usedCount: number = 0,
@@ -55,10 +34,8 @@ export class Question {
     catalogIds = []
   ) {
     this.id = id;
-    this.text = text;
     this.isPublic = isPublic;
     this.ownerId = ownerId;
-    this.language = language;
     this.targetGender = targetGender;
     this.usedCount = usedCount;
     this.publicDate = publicDate;
@@ -68,5 +45,23 @@ export class Question {
 
   addCatalogs(catalogIds: number[]): void {
     this.catalogIds = catalogIds;
+  }
+
+  get text(): string {
+    return (
+      this.translations.find(tr => tr.language === i18n.global.locale.value)?.text ??
+      this.translations[0]?.text ??
+      ''
+    );
+  }
+
+  set text(value: string) {
+    let translation = this.translations.find(tr => tr.language === i18n.global.locale.value);
+    if (!translation) {
+      translation = new QuestionTranslations();
+      translation.language = i18n.global.locale.value as LANG;
+      this.translations.push(translation);
+    }
+    translation.text = value;
   }
 }
