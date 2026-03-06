@@ -32,7 +32,7 @@
   .hubCheckbox {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     padding-top: 4px;
 
     &_text {

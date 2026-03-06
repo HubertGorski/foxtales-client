@@ -39,6 +39,7 @@
       transform: scale(0.00001);
       z-index: 2;
       margin: 0 auto;
+      color: black;
 
       &.isVisible {
         transition: transform 0.3s;

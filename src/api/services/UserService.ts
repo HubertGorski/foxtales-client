@@ -87,8 +87,8 @@ export const userService = {
     await signalRStore.connect();
   },
 
-  async login(email: string, password: string): Promise<void> {
-    const response = await userClient.login(email, password);
+  async login(email: string, password: string, isProlongSessionEnabled: boolean): Promise<void> {
+    const response = await userClient.login(email, password, isProlongSessionEnabled);
     this.setUserSession(response.data);
   },
 

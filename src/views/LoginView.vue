@@ -9,12 +9,16 @@
   import { useViewStore } from '@/stores/viewStore';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import HubInput from '@/components/hubComponents/HubInput.vue';
+  import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
+  import { useUserStore } from '@/stores/userStore';
 
   const { t } = useI18n();
   const router = useRouter();
 
   type FormFields = 'email' | 'password';
   const isLoading = ref<boolean>(false);
+
+  const user = useUserStore().user;
 
   const schema = yup.object({
     email: yup.string().required(t('auth.emailIsRequired')).email(t('auth.emailFormatIsIncorrect')),
@@ -43,7 +47,7 @@
 
     isLoading.value = true;
     try {
-      await userService.login(values.email, values.password);
+      await userService.login(values.email, values.password, user.isProlongSessionEnabled);
       router.push(ROUTE_PATH.MENU);
     } catch (err: any) {
       const data = err?.response?.data;
@@ -88,6 +92,9 @@
         :errorMessages="passwordError"
         @enter="onSubmit"
       />
+      <HubCheckbox v-model="user.isProlongSessionEnabled">
+        {{ $t('auth.prolongSession') }}
+      </HubCheckbox>
       <div class="loginView_actions">
         <HubBtn text="back2" :action="navigateBack" />
         <HubBtn
