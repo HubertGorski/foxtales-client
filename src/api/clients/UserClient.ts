@@ -19,8 +19,12 @@ export const userClient = {
     return apiClient.post('/user/logout');
   },
 
-  login(email: string, password: string): Promise<{ data: IUserLoginResponse }> {
-    return apiClient.post('/user/login', { email, password });
+  login(
+    email: string,
+    password: string,
+    isProlongSessionEnabled: boolean
+  ): Promise<{ data: IUserLoginResponse }> {
+    return apiClient.post('/user/login', { email, password, isProlongSessionEnabled });
   },
 
   loginByToken(): Promise<{ data: IUserLoginResponse | null }> {

@@ -274,7 +274,8 @@
     "roomDoesntExist": "Le code fourni est invalide.",
     "wakeLockNotSupported": "Votre navigateur ne permet pas d'empêcher la mise en veille de l'écran.",
     "wakeLockReleaseError": "Erreur lors du rétablissement de la mise en veille",
-    "wakeLockRequestError": "Impossible d'activer le mode éveil de l'écran"
+    "wakeLockRequestError": "Impossible d'activer le mode éveil de l'écran",
+    "prolongSession": "Rester connecté"
   },
   "foxGame": {
     "psych": {

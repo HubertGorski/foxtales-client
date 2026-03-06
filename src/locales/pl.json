@@ -274,7 +274,8 @@
     "roomDoesntExist": "Podany kod jest nieprawidłowy.",
     "wakeLockNotSupported": "Twoja przeglądarka nie obsługuje funkcji zapobiegania wygaszania ekranu.",
     "wakeLockReleaseError": "Wystąpił błąd podczas przywracania wygaszania ekranu",
-    "wakeLockRequestError": "Nie udało się włączyć blokady wygaszania ekranu"
+    "wakeLockRequestError": "Nie udało się włączyć blokady wygaszania ekranu",
+    "prolongSession": "Nie wylogowuj mnie"
   },
   "foxGame": {
     "psych": {

@@ -274,7 +274,8 @@
     "roomDoesntExist": "El código proporcionado no es válido.",
     "wakeLockNotSupported": "Tu navegador no soporta evitar que la pantalla se apague.",
     "wakeLockReleaseError": "Error al restaurar el modo de suspensión de pantalla",
-    "wakeLockRequestError": "No se pudo mantener la pantalla activa"
+    "wakeLockRequestError": "No se pudo mantener la pantalla activa",
+    "prolongSession": "Mantener sesión iniciada"
   },
   "foxGame": {
     "psych": {
