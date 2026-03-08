@@ -152,12 +152,16 @@
   };
 
   const refreshCatalogList = () => {
-    actualCatalogs.value = userStore.user.catalogs.map(convertCatalogsToListElement);
+    actualCatalogs.value = userStore.user.catalogs
+      .map(convertCatalogsToListElement)
+      .sort((a, b) => b.id - a.id);
     setOpenTab.value = 'addQuestion';
   };
 
   const refreshQuestionsList = () => {
-    actualQuestions.value = userStore.user.questions.map(convertQuestionToListElement);
+    actualQuestions.value = userStore.user.questions
+      .map(convertQuestionToListElement)
+      .sort((a, b) => b.id - a.id);
     setOpenTab.value = 'addQuestion';
   };
 
@@ -196,12 +200,12 @@
   const editCatalogMode = ref<boolean>(true);
   const addManyQuestonsToCatalogs = ref<boolean>(false);
   const actualQuestions = ref<ListElement[]>(
-    userStore.user.questions.map(convertQuestionToListElement)
+    userStore.user.questions.map(convertQuestionToListElement).sort((a, b) => b.id - a.id)
   );
   const questionsToSelect = ref<ListElement[]>([]);
   const catalogsIdsFromSelectedQuestion = ref<number[]>([]);
   const actualCatalogs = ref<ListElement[]>(
-    userStore.user.catalogs.map(convertCatalogsToListElement)
+    userStore.user.catalogs.map(convertCatalogsToListElement).sort((a, b) => b.id - a.id)
   );
 
   const actualSelectedCatalogs = ref<Catalog[]>([]);

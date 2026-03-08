@@ -52,6 +52,7 @@
     addSelectedQuestionsToCatalog();
     catalog.value.availableTypes = availableTypes;
     catalog.value.catalogType = availableTypes[0];
+    catalog.value.ownerId = userStore.user.userId;
     const data = await psychService.addCatalog(catalog.value);
     if (!data.catalogId) {
       return;
