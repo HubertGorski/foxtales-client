@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
-  import { ref } from 'vue';
   import { useI18n } from 'vue-i18n';
   import WhiteCard from '@/components/WhiteCard.vue';
   import HubInputBox from '@/components/hubComponents/HubInputBox.vue';
@@ -10,12 +9,13 @@
   import { userService } from '@/api/services/UserService';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
+  import { useLoading } from '@/composables/useLoading';
 
   type FormFields = 'username' | 'termsaccepted';
 
   const { t } = useI18n();
   const router = useRouter();
-  const loading = ref<boolean>(false);
+  const { loading, withLoading } = useLoading();
 
   const { handleSubmit, setFieldError } = useForm({
     initialValues: {
@@ -29,9 +29,10 @@
 
   const onSubmit = handleSubmit(async values => {
     try {
-      loading.value = true;
-      await userService.registerTmpUser(values.username, values.termsaccepted);
-      router.push(ROUTE_PATH.MENU);
+      await withLoading(async () => {
+        await userService.registerTmpUser(values.username, values.termsaccepted);
+        router.push(ROUTE_PATH.MENU);
+      });
     } catch (err: any) {
       const data = err?.response?.data;
       if (data?.errors) {
@@ -41,8 +42,6 @@
           }
         });
       }
-
-      loading.value = false;
     }
   });
 

@@ -3,7 +3,7 @@
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useForm, useField } from 'vee-validate';
   import * as yup from 'yup';
-  import { computed, ref } from 'vue';
+  import { computed } from 'vue';
   import { userService } from '@/api/services/UserService';
   import { useI18n } from 'vue-i18n';
   import { useViewStore } from '@/stores/viewStore';
@@ -11,12 +11,13 @@
   import HubInput from '@/components/hubComponents/HubInput.vue';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import { useUserStore } from '@/stores/userStore';
+  import { useLoading } from '@/composables/useLoading';
 
   const { t } = useI18n();
   const router = useRouter();
 
   type FormFields = 'email' | 'password';
-  const isLoading = ref<boolean>(false);
+  const { loading: isLoading, withLoading } = useLoading();
 
   const user = useUserStore().user;
 
@@ -41,26 +42,21 @@
   };
 
   const onSubmit = handleSubmit(async values => {
-    if (isLoading.value) {
-      return;
-    }
-
-    isLoading.value = true;
-    try {
-      await userService.login(values.email, values.password, user.isProlongSessionEnabled);
-      router.push(ROUTE_PATH.MENU);
-    } catch (err: any) {
-      const data = err?.response?.data;
-      if (data?.errors) {
-        Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
-          if (Array.isArray(messages)) {
-            setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
-          }
-        });
+    await withLoading(async () => {
+      try {
+        await userService.login(values.email, values.password, user.isProlongSessionEnabled);
+        router.push(ROUTE_PATH.MENU);
+      } catch (err: any) {
+        const data = err?.response?.data;
+        if (data?.errors) {
+          Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
+            if (Array.isArray(messages)) {
+              setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
+            }
+          });
+        }
       }
-    } finally {
-      isLoading.value = false;
-    }
+    });
   });
 
   const isKeyboardOpen = computed(() => {

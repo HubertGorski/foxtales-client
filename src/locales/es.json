@@ -241,6 +241,7 @@
     "selectedDecks": "Mazos seleccionados"
   },
   "auth": {
+    "userNotFound": "Cuenta de usuario no encontrada.",
     "serverBusy": "El servidor está temporalmente ocupado. Por favor, inténtelo de nuevo en unos minutos.",
     "tooManyRequests": "Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.",
     "unknownError": "Ocurrió un error inesperado",
