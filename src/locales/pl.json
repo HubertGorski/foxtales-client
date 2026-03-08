@@ -241,6 +241,7 @@
     "selectedDecks": "Wybrane talie"
   },
   "auth": {
+    "userNotFound": "Nie znaleziono konta użytkownika.",
     "serverBusy": "Serwer jest chwilowo obciążony. Spróbuj za kilka minut.",
     "tooManyRequests": "Przekroczono limit zapytań. Spróbuj ponownie później.",
     "unknownError": "Wystąpił niespodziewany błąd",

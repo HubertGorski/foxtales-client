@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref } from 'vue';
 
 // Each call to useLoading() creates an independent ref — can be used multiple times in one view:
 //   const { loading: loadingA, withLoading: withLoadingA } = useLoading();
