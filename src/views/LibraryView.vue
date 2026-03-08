@@ -23,53 +23,55 @@
   import { useViewStore } from '@/stores/viewStore';
   import HubDivider from '@/components/hubComponents/HubDivider.vue';
   import { useI18n } from 'vue-i18n';
+  import { useLoading } from '@/composables/useLoading';
 
   const userStore = useUserStore();
   const { t } = useI18n();
 
-  const addQuestion = async (catalogs: Catalog[], fromDashboard: boolean = false) => {
-    event?.preventDefault();
-    if (addManyQuestonsToCatalogs.value && catalogs != null && catalogs.length) {
-      return assignedQuestionsToCatalogs(catalogs);
-    }
+  const addQuestion = async (catalogs: Catalog[], fromDashboard: boolean = false) =>
+    withLoading(async () => {
+      event?.preventDefault();
+      if (addManyQuestonsToCatalogs.value && catalogs != null && catalogs.length) {
+        return assignedQuestionsToCatalogs(catalogs);
+      }
 
-    if (!fromDashboard) {
-      actualSelectedCatalogs.value = catalogs;
-    }
+      if (!fromDashboard) {
+        actualSelectedCatalogs.value = catalogs;
+      }
 
-    if (!newQuestion.value) {
+      if (!newQuestion.value) {
+        isQuestionCreatorOpen.value = false;
+        return;
+      }
+
+      const questionToStore = new Question(null, userStore.user.userId);
+      questionToStore.text = newQuestion.value;
+
+      let catalogIds: number[] = [];
+      if (actualSelectedCatalogs.value && actualSelectedCatalogs.value.length > 0) {
+        catalogIds = actualSelectedCatalogs.value
+          .map(catalog => catalog.catalogId)
+          .filter((id): id is number => id !== null);
+        questionToStore.addCatalogs(catalogIds);
+      }
+
+      const response = await psychService.addQuestion(questionToStore);
+      if (!response.questionId) {
+        return;
+      }
+
+      questionToStore.id = response.questionId;
+      questionToStore.translations = response.translations;
+      userStore.addQuestion(questionToStore);
+      if (catalogIds.length) {
+        userStore.assignedQuestionsToCatalogs([response.questionId], catalogIds);
+        refreshCatalogList();
+      }
+
       isQuestionCreatorOpen.value = false;
-      return;
-    }
-
-    const questionToStore = new Question(null, userStore.user.userId);
-    questionToStore.text = newQuestion.value;
-
-    let catalogIds: number[] = [];
-    if (actualSelectedCatalogs.value && actualSelectedCatalogs.value.length > 0) {
-      catalogIds = actualSelectedCatalogs.value
-        .map(catalog => catalog.catalogId)
-        .filter((id): id is number => id !== null);
-      questionToStore.addCatalogs(catalogIds);
-    }
-
-    const response = await psychService.addQuestion(questionToStore);
-    if (!response.questionId) {
-      return;
-    }
-
-    questionToStore.id = response.questionId;
-    questionToStore.translations = response.translations;
-    userStore.addQuestion(questionToStore);
-    if (catalogIds.length) {
-      userStore.assignedQuestionsToCatalogs([response.questionId], catalogIds);
-      refreshCatalogList();
-    }
-
-    isQuestionCreatorOpen.value = false;
-    newQuestion.value = '';
-    refreshQuestionsList();
-  };
+      newQuestion.value = '';
+      refreshQuestionsList();
+    });
 
   const deleteQuestions = async (questions: ListElement[]) => {
     const questionsIds = questions.map(question => question.id);
@@ -210,12 +212,15 @@
 
   const actualSelectedCatalogs = ref<Catalog[]>([]);
 
+  const { loading: isBtnLoading, withLoading } = useLoading();
+
   const addQuestionBtn = computed(() => {
     return {
       text: 'add',
       isOrange: true,
       action: () => addQuestion([], true),
-      disabled: !newQuestion.value.trim(),
+      loading: isBtnLoading.value,
+      disabled: !newQuestion.value.trim() || isBtnLoading.value,
     };
   });
 
@@ -286,7 +291,9 @@
           v-model="newQuestion"
           class="addQuestionToLibrary"
           :btnAction="addQuestionBtn.action"
+          :btnLoading="addQuestionBtn.loading"
           :btnIsDisabled="addQuestionBtn.disabled"
+          :inputDisabled="isBtnLoading"
           :btnText="addQuestionBtn.text"
           :extraBtnIcon="ICON.ADD_TO_COLLECTION"
           :extraBtnAction="showCatalogsList"
