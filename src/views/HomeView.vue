@@ -5,7 +5,7 @@
   import { ICON } from '@/enums/iconsEnum';
   import OrangeSwitchBtn from '@/components/OrangeSwitchBtn.vue';
   import { useI18n } from 'vue-i18n';
-  import { LANG } from '@/enums/languagesEnum';
+  import { LANG, toLang } from '@/enums/languagesEnum';
   import { toggleWakeLock } from '@/libs/wakeLock';
   import { useViewStore } from '@/stores/viewStore';
   import { useUserStore } from '@/stores/userStore';
@@ -16,13 +16,12 @@
   const { locale } = useI18n();
 
   const appVersion = import.meta.env.VITE_APP_VERSION;
-  const beforeLang = locale.value;
+  const beforeLang = toLang(locale.value) === LANG.EN ? LANG.PL : toLang(locale.value);
 
   const changeLanguage = () => {
-    const lang = beforeLang === LANG.EN ? LANG.PL : beforeLang;
-    locale.value = locale.value === LANG.EN ? lang : LANG.EN;
-
-    userService.setLanguage(locale.value as LANG);
+    const newLang = toLang(locale.value) === LANG.EN ? beforeLang : LANG.EN;
+    locale.value = newLang;
+    userService.setLanguage(newLang);
   };
 
   const handleToggleWakeLock = () => {

@@ -8,6 +8,7 @@ import { CatalogType } from '@/models/CatalogType';
 import { userClient, type IUserLoginResponse } from '../clients/UserClient';
 import { useUserStore } from '@/stores/userStore';
 import i18n from '@/configs/i18n';
+import { toLang } from '@/enums/languagesEnum';
 import type { LANG } from '@/enums/languagesEnum';
 import { Catalog } from '@/models/Catalog';
 import { useSignalRStore } from '@/stores/signalRStore';
@@ -76,7 +77,7 @@ export const userService = {
     const userStore = useUserStore();
     const signalRStore = useSignalRStore();
 
-    i18n.global.locale.value = user.language;
+    i18n.global.locale.value = toLang(user.language);
     userStore.setUserSession(user);
     userStore.setAvatars(avatars);
     userStore.setAvailableCatalogTypes(availableCatalogTypes);
@@ -103,8 +104,8 @@ export const userService = {
   },
 
   async registerTmpUser(username: string, termsAccepted: boolean): Promise<void> {
-    const language = i18n.global.locale.value;
-    const response = await userClient.registerTmpUser(username, termsAccepted, language as LANG);
+    const language = toLang(i18n.global.locale.value);
+    const response = await userClient.registerTmpUser(username, termsAccepted, language);
     this.setUserSession(response.data);
   },
 
@@ -121,14 +122,14 @@ export const userService = {
     confirmPassword: string,
     termsAccepted: boolean
   ) {
-    const language = i18n.global.locale.value;
+    const language = toLang(i18n.global.locale.value);
     return await userClient.register(
       email,
       username,
       password,
       confirmPassword,
       termsAccepted,
-      language as LANG
+      language
     );
   },
 
