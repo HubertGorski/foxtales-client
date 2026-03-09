@@ -8,6 +8,7 @@
   import HubBtn from './hubComponents/HubBtn.vue';
   import type { CatalogType } from '@/models/CatalogType';
   import { psychService } from '@/api/services/PsychService';
+  import { useLoading } from '@/composables/useLoading';
 
   const props = defineProps({
     editMode: {
@@ -27,7 +28,7 @@
 
   const initialTitle = ref(catalog.value.title);
   const initialDescription = ref(catalog.value.description);
-  const isBtnLoading = ref(false);
+  const { loading: isBtnLoading, withLoading } = useLoading();
 
   const availableTypes: CatalogType[] = catalog.value.availableTypes.length
     ? catalog.value.availableTypes
@@ -47,56 +48,56 @@
     };
   });
 
-  const addCatalog = async () => {
-    isBtnLoading.value = true;
-    addSelectedQuestionsToCatalog();
-    catalog.value.availableTypes = availableTypes;
-    catalog.value.catalogType = availableTypes[0];
-    const data = await psychService.addCatalog(catalog.value);
-    if (!data.catalogId) {
-      return;
-    }
+  const addCatalog = () =>
+    withLoading(async () => {
+      addSelectedQuestionsToCatalog();
+      catalog.value.availableTypes = availableTypes;
+      catalog.value.catalogType = availableTypes[0];
+      catalog.value.ownerId = userStore.user.userId;
+      const data = await psychService.addCatalog(catalog.value);
+      if (!data.catalogId) {
+        return;
+      }
 
-    catalog.value.translations = data.translations;
-    catalog.value.catalogId = data.catalogId;
-    userStore.addCatalog(catalog.value);
+      catalog.value.translations = data.translations;
+      catalog.value.catalogId = data.catalogId;
+      userStore.addCatalog(catalog.value);
 
-    const selectedQuestions = actualQuestions.value
-      .filter(question => question.isSelected)
-      .map(question => question.id);
+      const selectedQuestions = actualQuestions.value
+        .filter(question => question.isSelected)
+        .map(question => question.id);
 
-    const questions = userStore.user.questions.filter(question =>
-      selectedQuestions.includes(question.id ?? 0)
-    );
+      const questions = userStore.user.questions.filter(question =>
+        selectedQuestions.includes(question.id ?? 0)
+      );
 
-    questions.forEach(question => {
-      question.catalogIds.push(data.catalogId);
+      questions.forEach(question => {
+        question.catalogIds.push(data.catalogId);
+      });
+
+      closePopup();
     });
 
-    closePopup();
-  };
+  const editCatalog = () =>
+    withLoading(async () => {
+      addSelectedQuestionsToCatalog();
+      const data = await psychService.editCatalog(
+        catalog.value,
+        hasTitleChanged.value,
+        hasDescriptionChanged.value,
+        userStore.user.language
+      );
+      if (!data.catalogId) {
+        return;
+      }
 
-  const editCatalog = async () => {
-    isBtnLoading.value = true;
-    addSelectedQuestionsToCatalog();
-    const data = await psychService.editCatalog(
-      catalog.value,
-      hasTitleChanged.value,
-      hasDescriptionChanged.value,
-      userStore.user.language
-    );
-    if (!data.catalogId) {
-      return;
-    }
-
-    catalog.value.translations = data.translations;
-    userStore.editCatalog(catalog.value);
-    closePopup();
-  };
+      catalog.value.translations = data.translations;
+      userStore.editCatalog(catalog.value);
+      closePopup();
+    });
 
   const closePopup = (refresh: boolean = true) => {
     clearPopup();
-    isBtnLoading.value = false;
     emit('closePopup', refresh);
   };
 

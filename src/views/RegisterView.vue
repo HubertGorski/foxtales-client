@@ -9,6 +9,7 @@
   import HubTooltip from '@/components/hubComponents/HubTooltip.vue';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
+  import { useLoading } from '@/composables/useLoading';
 
   type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsaccepted';
 
@@ -34,30 +35,30 @@
   const { value: termsAccepted, errorMessage: termsAcceptedError } =
     useField<boolean>('termsaccepted');
 
-  const isLoading = ref<boolean>(false);
+  const { loading: isLoading, withLoading } = useLoading();
   const onSubmit = handleSubmit(async values => {
-    isLoading.value = true;
-    try {
-      await userService.register(
-        values.email,
-        values.username,
-        values.password,
-        values.confirmpassword,
-        values.termsaccepted
-      );
-      router.push(ROUTE_PATH.WELCOME);
-    } catch (err: any) {
-      step.value = 0;
-      const data = err?.response?.data;
-      if (data?.errors) {
-        Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
-          if (Array.isArray(messages)) {
-            setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
-          }
-        });
+    await withLoading(async () => {
+      try {
+        await userService.register(
+          values.email,
+          values.username,
+          values.password,
+          values.confirmpassword,
+          values.termsaccepted
+        );
+        router.push(ROUTE_PATH.WELCOME);
+      } catch (err: any) {
+        step.value = 0;
+        const data = err?.response?.data;
+        if (data?.errors) {
+          Object.entries(data.errors).forEach(([field, messages]: [string, any]) => {
+            if (Array.isArray(messages)) {
+              setFieldError(field.toLowerCase() as FormFields, t(`auth.${messages[0]}`));
+            }
+          });
+        }
       }
-    }
-    isLoading.value = false;
+    });
   });
 
   const navigateBack = () => {
