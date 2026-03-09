@@ -50,7 +50,8 @@
   const addAnswerBtn = computed(() => ({
     text: skipTimeLeft.value
       ? t('questionHasBeenChanged', { skipTimeLeft: skipTimeLeft.value })
-      : 'add',
+      : t('add'),
+    useDicts: false,
     isOrange: true,
     isDisabled: skipTimeLeft.value > 0 || isReady.value,
     action: addAnswer,
@@ -58,7 +59,10 @@
 
   const skipBtn = computed(() => {
     return {
-      text: skipTimeLeft.value ? t('skipTimeLeft', { skipTimeLeft: skipTimeLeft.value }) : 'skip',
+      text: skipTimeLeft.value
+        ? t('skipTimeLeft', { skipTimeLeft: skipTimeLeft.value })
+        : t('skip'),
+      useDicts: false,
       isOrange: false,
       action: skipRound,
       disabled: game.value.getReadyUsersCount(VIEW.SELECT_ANSWER) > 0 || skipTimeLeft.value > 0,
@@ -111,6 +115,7 @@
               :disabled="skipBtn.disabled"
               :isOrange="skipBtn.isOrange"
               :icon="ICON.MINI_ARROW_RIGHT"
+              :useDicts="skipBtn.useDicts"
             />
           </div>
           <HubInputWithBtn
@@ -118,6 +123,7 @@
             class="whiteCard input"
             :btnAction="addAnswerBtn.action"
             :btnText="addAnswerBtn.text"
+            :btnUseDicts="addAnswerBtn.useDicts"
             :btnIsOrange="addAnswerBtn.isOrange"
             :btnIsDisabled="addAnswerBtn.isDisabled"
             :textareaRows="5"

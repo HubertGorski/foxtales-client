@@ -1,9 +1,13 @@
 <script setup lang="ts">
-  import { ROUTE_PATH } from '@/router/routeEnums';
+  import { CREATE_GAME, ROUTE_PATH } from '@/router/routeEnums';
   import HubBtn from './hubComponents/HubBtn.vue';
   import { useRouter } from 'vue-router';
   import HubTooltip from './hubComponents/HubTooltip.vue';
   import { computed } from 'vue';
+  import { userService } from '@/api/services/UserService';
+  import { useSignalRStore } from '@/stores/signalRStore';
+  import { Game } from '@/models/Game';
+  import { useUserStore } from '@/stores/userStore';
   const router = useRouter();
 
   const props = defineProps({
@@ -57,6 +61,25 @@
     },
   });
 
+  const logout = async () => {
+    await userService.logout();
+    router.push(ROUTE_PATH.HOME);
+  };
+
+  const navigateToCreateGame = async () => {
+    const success = await useSignalRStore().createRoom(new Game(useUserStore().user));
+    if (!success) {
+      return;
+    }
+
+    router.push({
+      path: ROUTE_PATH.CREATE_GAME,
+      query: {
+        catalog: CREATE_GAME.PUBLIC,
+      },
+    });
+  };
+
   const allBtns = [
     {
       text: 'back',
@@ -74,6 +97,11 @@
       action: () => router.push(ROUTE_PATH.MENU),
     },
     {
+      text: 'menu',
+      isOrange: false,
+      action: () => router.push(ROUTE_PATH.MENU),
+    },
+    {
       text: 'settings',
       isOrange: true,
       action: () => router.push(ROUTE_PATH.SETTINGS),
@@ -81,7 +109,12 @@
     {
       text: 'logout',
       isOrange: false,
-      action: () => router.push(ROUTE_PATH.HOME),
+      action: () => logout(),
+    },
+    {
+      text: 'lobby.createGame',
+      isOrange: true,
+      action: () => navigateToCreateGame(),
     },
     {
       text: 'goToLogin',

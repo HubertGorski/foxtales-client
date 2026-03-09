@@ -44,6 +44,7 @@
   const isContactDisabled = ref<boolean>(false);
   const isConfirmFoxPanelVisible = ref<boolean>(false);
   const selectedAvatar = ref<Avatar | null>(null);
+  const setOpenTab = ref<string>('accountStats');
 
   const languages = ref<ListElement[]>([
     new ListElement({
@@ -215,6 +216,7 @@
   <div class="settingsView">
     <div class="settings">
       <HubAccordion
+        v-model="setOpenTab"
         :slotNames="[
           { slotName: 'accountStats', isComing: true },
           { slotName: 'chooseFox', isComing: false },
@@ -223,7 +225,6 @@
           { slotName: 'wakeLock', isComing: false },
           { slotName: 'contact', isComing: false },
         ]"
-        setOpenTab="accountStats"
       >
         <template #accountStats>
           <div class="accordionContent">
