@@ -121,7 +121,7 @@
   "everyoneChoseYourAnswer": "Alle haben deine Antwort gewählt!",
   "changeLanguage": "Spielsprache",
   "aiLiveTranslation": "KI-Live-Übersetzung",
-  "aiLiveTranslationTooltip": "Aktivieren, damit die KI Fragen und Antworten während des Spiels in Ihre Sprache übersetzt. Deaktiviert spielen Sie in der Originalsprache.",
+  "aiLiveTranslationTooltip": "Aktivieren, damit die KI die Antworten anderer Spieler während des Spiels in Ihre Sprache übersetzt. Deaktiviert spielen Sie in der Originalsprache.",
   "confirmAvatar": "Möchtest du diesen Fuchs wählen?",
   "changeInterfaceLanguage": "Anwendungssprache",
   "advancedSettings": "Erweiterte Einstellungen",
