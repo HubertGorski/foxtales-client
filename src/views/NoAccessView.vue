@@ -26,8 +26,8 @@
     <HubImageWithText :text="alert" imageSrc="/imgs/fox6.webp" alt="Lisek" />
     <NavigationBtns
       v-if="reason === NO_ACCESS_REASON.ADMIN_ONLY || reason === NO_ACCESS_REASON.GAME_CLOSED"
-      btn="back2"
-      btn2="logout"
+      btn="back"
+      btn2="lobby.createGame"
     />
     <NavigationBtns v-else btn="logout" />
   </div>

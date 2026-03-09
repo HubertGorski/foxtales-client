@@ -23,3 +23,7 @@ export const LangToNumber: Record<LANG, number> = {
 };
 
 export const languagesMap = [LANG.PL, LANG.EN, LANG.DE, LANG.FR, LANG.ES];
+
+const validLangs = Object.values(LANG);
+export const toLang = (value: unknown, fallback: LANG = LANG.EN): LANG =>
+  validLangs.includes(value as LANG) ? (value as LANG) : fallback;

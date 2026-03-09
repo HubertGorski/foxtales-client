@@ -58,6 +58,10 @@
       type: Boolean,
       default: false,
     },
+    btnUseDicts: {
+      type: Boolean,
+      default: true,
+    },
     inputDisabled: {
       type: Boolean,
       default: false,
@@ -145,6 +149,7 @@
         :isOrange="btnIsOrange"
         :disabled="btnIsDisabled"
         :loading="btnLoading"
+        :useDicts="btnUseDicts"
       />
       <HubBtn
         v-if="extraBtnAction && extraBtnIcon"

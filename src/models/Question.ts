@@ -1,5 +1,5 @@
 import { GENDER } from '@/enums/userEnum';
-import { LANG } from '@/enums/languagesEnum';
+import { toLang } from '@/enums/languagesEnum';
 import { User } from './User';
 import { Expose, Type } from 'class-transformer';
 import { QuestionTranslations } from './QuestionTranslations';
@@ -59,7 +59,7 @@ export class Question {
     let translation = this.translations.find(tr => tr.language === i18n.global.locale.value);
     if (!translation) {
       translation = new QuestionTranslations();
-      translation.language = i18n.global.locale.value as LANG;
+      translation.language = toLang(i18n.global.locale.value);
       this.translations.push(translation);
     }
     translation.text = value;

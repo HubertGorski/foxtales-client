@@ -13,12 +13,14 @@
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import { VIEW } from '@/enums/viewsEnum';
   import NoAccessView from './NoAccessView.vue';
+  import CodeChip from '@/components/CodeChip.vue';
 
   const router = useRouter();
   const signalRStore = useSignalRStore();
   const userStore = useUserStore();
 
   const continueGameProces = ref(false);
+  const codeChipExpanded = ref(false);
   const currentUserId = computed(() => userStore.user.userId);
   const currentUser =
     computed(() => game.value.users.find(user => user.userId === currentUserId.value)) ?? null;
@@ -107,8 +109,11 @@
 <template>
   <div class="psychGameView">
     <div v-if="!game.hasGameEnded && !continueGameProces" class="psychGameView_header">
+      <CodeChip v-model:expanded="codeChipExpanded" :code="game.code" toggleable />
       <HubBtn :action="finishGameBtn.action" :text="finishGameBtn.text" />
-      <span class="roundInfo">{{ $t('round') }} {{ game.round }}</span>
+      <span class="roundInfo" :class="{ 'roundInfo--hidden': codeChipExpanded }">
+        {{ $t('round') }} {{ game.round }}
+      </span>
     </div>
     <StepEnd v-if="game.hasGameEnded || continueGameProces" @continueGame="continueGame" />
     <component :is="getCurrentStep" v-else :key="currentUser?.currentView ?? 0" />
@@ -128,21 +133,34 @@
 
     &_header {
       display: flex;
-      gap: 8px;
       align-items: center;
-      padding: 4px 12px;
+      padding: 8px 12px;
 
       .hubBtn {
         font-size: 16px;
         padding: 4px;
+        margin-left: 8px;
       }
 
       .roundInfo {
         white-space: nowrap;
         font-size: 20px;
         color: $mainBrownColor;
-        padding: 8px;
         font-weight: 600;
+        flex-shrink: 0;
+        max-width: 290px;
+        overflow: hidden;
+        opacity: 1;
+        margin-left: 8px;
+        transition:
+          max-width 0.25s ease,
+          opacity 0.2s ease;
+
+        &--hidden {
+          margin-left: 0;
+          max-width: 0;
+          opacity: 0;
+        }
       }
     }
   }

@@ -5,7 +5,7 @@ import { RULES } from '@/enums/rulesEnum';
 import { IsEnum } from 'class-validator';
 import { CatalogTranslations } from './CatalogTranslations';
 import i18n from '@/configs/i18n';
-import { LANG } from '@/enums/languagesEnum';
+import { toLang } from '@/enums/languagesEnum';
 
 export class Catalog {
   catalogId: number | null;
@@ -78,7 +78,7 @@ export class Catalog {
     let translation = this.translations.find(tr => tr.language === i18n.global.locale.value);
     if (!translation) {
       translation = new CatalogTranslations();
-      translation.language = i18n.global.locale.value as LANG;
+      translation.language = toLang(i18n.global.locale.value);
       this.translations.push(translation);
     }
     translation.title = value;
@@ -94,7 +94,7 @@ export class Catalog {
     let translation = this.translations.find(tr => tr.language === i18n.global.locale.value);
     if (!translation) {
       translation = new CatalogTranslations();
-      translation.language = i18n.global.locale.value as LANG;
+      translation.language = toLang(i18n.global.locale.value);
       this.translations.push(translation);
     }
     translation.description = value;
