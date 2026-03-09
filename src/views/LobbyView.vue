@@ -21,6 +21,7 @@
   import { RULES } from '@/enums/rulesEnum';
   import type { User } from '@/models/User';
   import { VIEW } from '@/enums/viewsEnum';
+  import CodeChip from '@/components/CodeChip.vue';
 
   const router = useRouter();
   const signalRStore = useSignalRStore();
@@ -247,10 +248,7 @@
     </div>
     <div class="buttons">
       <div class="buttons_settingsBtnWithCode">
-        <div>
-          <span class="icon">!</span>
-          <span class="code">{{ t('lobby.accessCode') }} {{ game.code }}</span>
-        </div>
+        <CodeChip :expanded="true" :code="game.code" />
         <HubBtn
           v-if="
             game.owner.userId !== userStore.user.userId && game.isQuestionsFromAnotherGamesAllowed
@@ -360,29 +358,6 @@
         align-items: end;
         width: 100%;
         padding: 12px 0;
-
-        .icon {
-          position: relative;
-          top: 4px;
-          right: 4px;
-          font-size: 32px;
-          font-weight: 900;
-          color: $mainBrownColor;
-        }
-
-        .code {
-          background-color: $background;
-          color: $mainBrownColor;
-          font-size: 24;
-          font-weight: 600;
-          text-align: center;
-          padding: 8px 20px;
-          border-radius: 12px;
-          border: 2px solid $mainBrownColor;
-          box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
-          margin: 10px auto;
-          width: fit-content;
-        }
 
         .settingsBtn {
           margin: 0 8px;

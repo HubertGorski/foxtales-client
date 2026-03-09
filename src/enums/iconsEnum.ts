@@ -9,6 +9,7 @@ export enum ICON {
   SELECT_ON = 'mdi-select-inverse',
   SELECT_OFF = 'mdi-select',
   LOCK = 'mdi-lock',
+  CODE = 'mdi-lock-question',
   USERS = 'mdi-account-multiple',
   ADD_TO_COLLECTION = 'mdi-shape-rectangle-plus',
   EDIT_COLLECTION = 'mdi-square-edit-outline',
