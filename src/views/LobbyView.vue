@@ -248,7 +248,7 @@
     </div>
     <div class="buttons">
       <div class="buttons_settingsBtnWithCode">
-        <CodeChip :expanded="true" :code="game.code" />
+        <CodeChip :expanded="true" :text="`${t('lobby.accessCode')} ${game.code}`" />
         <HubBtn
           v-if="
             game.owner.userId !== userStore.user.userId && game.isQuestionsFromAnotherGamesAllowed

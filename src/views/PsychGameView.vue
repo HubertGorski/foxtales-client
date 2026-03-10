@@ -109,7 +109,7 @@
 <template>
   <div class="psychGameView">
     <div v-if="!game.hasGameEnded && !continueGameProces" class="psychGameView_header">
-      <CodeChip v-model:expanded="codeChipExpanded" :code="game.code" toggleable />
+      <CodeChip v-model:expanded="codeChipExpanded" :text="game.code" toggleable />
       <HubBtn :action="finishGameBtn.action" :text="finishGameBtn.text" />
       <span class="roundInfo" :class="{ 'roundInfo--hidden': codeChipExpanded }">
         {{ $t('round') }} {{ game.round }}
