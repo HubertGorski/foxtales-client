@@ -3,11 +3,11 @@
   import { useI18n } from 'vue-i18n';
 
   const {
-    code,
+    text,
     expanded,
     toggleable = false,
   } = defineProps<{
-    code: string | null;
+    text: string | null;
     expanded: boolean;
     toggleable?: boolean;
   }>();
@@ -30,7 +30,7 @@
 <template>
   <div class="codeChip" :class="{ expanded }" @click="handleClick">
     <v-icon class="icon">{{ ICON.CODE }}</v-icon>
-    <span v-if="code" class="code">{{ t('lobby.accessCode') }} {{ code }}</span>
+    <span v-if="text" class="text">{{ t('lobby.accessCode') }} {{ text }}</span>
   </div>
 </template>
 
@@ -60,7 +60,7 @@
       color: $mainBrownColor;
     }
 
-    .code {
+    .text {
       color: $mainBrownColor;
       font-weight: 600;
       padding: 0 20px 0 8px;
@@ -77,7 +77,7 @@
       padding-left: 0;
     }
 
-    &.expanded .code {
+    &.expanded .text {
       max-width: 300px;
       opacity: 1;
       padding-right: 20px;
