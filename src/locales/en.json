@@ -276,7 +276,17 @@
     "wakeLockNotSupported": "Your browser does not support preventing screen sleep.",
     "wakeLockReleaseError": "Error while restoring screen sleep mode",
     "wakeLockRequestError": "Failed to keep the screen awake",
-    "prolongSession": "Keep me logged in"
+    "prolongSession": "Keep me logged in",
+    "titleCannotBeEmpty": "Title cannot be empty",
+    "titleIsTooLong": "Title is too long",
+    "descriptionIsTooLong": "Description is too long",
+    "translationsCannotBeEmpty": "Translations cannot be empty",
+    "textCannotBeEmpty": "Text cannot be empty",
+    "textIsTooLong": "Text is too long",
+    "subjectCannotBeEmpty": "Subject cannot be empty",
+    "subjectIsTooLong": "Subject is too long",
+    "messageCannotBeEmpty": "Message cannot be empty",
+    "messageIsTooLong": "Message is too long"
   },
   "foxGame": {
     "psych": {

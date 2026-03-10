@@ -3,16 +3,20 @@
     isTextarea = false,
     inputDisabled = false,
     textareaRows = 2,
-    placeholder,
     textType,
+    label,
+    placeholder,
     errorMessages,
+    noResize = true,
   } = defineProps<{
     isTextarea?: boolean;
     inputDisabled?: boolean;
     textareaRows?: number;
-    placeholder: string;
+    label?: string;
+    placeholder?: string;
     textType?: string;
     errorMessages?: string;
+    noResize?: boolean;
   }>();
 
   const text = defineModel({ type: String, required: true });
@@ -43,11 +47,12 @@
       v-model="text"
       :auto-grow="false"
       :rows="textareaRows"
+      :label="label"
       :placeholder="placeholder"
       :error-messages="errorMessages"
       :hide-details="!errorMessages"
       :disabled="inputDisabled"
-      no-resize
+      :no-resize="noResize"
       @keydown.enter="handleEnter"
       @focus="handleFocus"
       @blur="handleBlur"
@@ -55,6 +60,7 @@
     <v-text-field
       v-else
       v-model="text"
+      :label="label"
       :placeholder="placeholder"
       :type="textType"
       :error-messages="errorMessages"

@@ -9,6 +9,8 @@
   import type { CatalogType } from '@/models/CatalogType';
   import { psychService } from '@/api/services/PsychService';
   import { useLoading } from '@/composables/useLoading';
+  import HubInput from './hubComponents/HubInput.vue';
+  import { useI18n } from 'vue-i18n';
 
   const props = defineProps({
     editMode: {
@@ -23,9 +25,10 @@
   }>();
 
   const catalog = defineModel({ type: Catalog, required: true });
-
+  const { t } = useI18n();
   const userStore = useUserStore();
 
+  const formErrors = ref<Record<string, string[]>>({});
   const initialTitle = ref(catalog.value.title);
   const initialDescription = ref(catalog.value.description);
   const { loading: isBtnLoading, withLoading } = useLoading();
@@ -50,50 +53,64 @@
 
   const addCatalog = () =>
     withLoading(async () => {
-      addSelectedQuestionsToCatalog();
-      catalog.value.availableTypes = availableTypes;
-      catalog.value.catalogType = availableTypes[0];
-      catalog.value.ownerId = userStore.user.userId;
-      const data = await psychService.addCatalog(catalog.value);
-      if (!data.catalogId) {
-        return;
+      formErrors.value = {};
+      try {
+        addSelectedQuestionsToCatalog();
+        catalog.value.availableTypes = availableTypes;
+        catalog.value.catalogType = availableTypes[0];
+        catalog.value.ownerId = userStore.user.userId;
+        const data = await psychService.addCatalog(catalog.value);
+        if (!data.catalogId) {
+          return;
+        }
+
+        catalog.value.translations = data.translations;
+        catalog.value.catalogId = data.catalogId;
+        userStore.addCatalog(catalog.value);
+
+        const selectedQuestions = actualQuestions.value
+          .filter(question => question.isSelected)
+          .map(question => question.id);
+
+        const questions = userStore.user.questions.filter(question =>
+          selectedQuestions.includes(question.id ?? 0)
+        );
+
+        questions.forEach(question => {
+          question.catalogIds.push(data.catalogId);
+        });
+
+        closePopup();
+      } catch (error: any) {
+        if (error?.response?.data?.errors) {
+          formErrors.value = error.response.data.errors;
+        }
       }
-
-      catalog.value.translations = data.translations;
-      catalog.value.catalogId = data.catalogId;
-      userStore.addCatalog(catalog.value);
-
-      const selectedQuestions = actualQuestions.value
-        .filter(question => question.isSelected)
-        .map(question => question.id);
-
-      const questions = userStore.user.questions.filter(question =>
-        selectedQuestions.includes(question.id ?? 0)
-      );
-
-      questions.forEach(question => {
-        question.catalogIds.push(data.catalogId);
-      });
-
-      closePopup();
     });
 
   const editCatalog = () =>
     withLoading(async () => {
-      addSelectedQuestionsToCatalog();
-      const data = await psychService.editCatalog(
-        catalog.value,
-        hasTitleChanged.value,
-        hasDescriptionChanged.value,
-        userStore.user.language
-      );
-      if (!data.catalogId) {
-        return;
-      }
+      formErrors.value = {};
+      try {
+        addSelectedQuestionsToCatalog();
+        const data = await psychService.editCatalog(
+          catalog.value,
+          hasTitleChanged.value,
+          hasDescriptionChanged.value,
+          userStore.user.language
+        );
+        if (!data.catalogId) {
+          return;
+        }
 
-      catalog.value.translations = data.translations;
-      userStore.editCatalog(catalog.value);
-      closePopup();
+        catalog.value.translations = data.translations;
+        userStore.editCatalog(catalog.value);
+        closePopup();
+      } catch (error: any) {
+        if (error?.response?.data?.errors) {
+          formErrors.value = error.response.data.errors;
+        }
+      }
     });
 
   const closePopup = (refresh: boolean = true) => {
@@ -152,6 +169,12 @@
   const actualQuestions = ref<ListElement[]>(getActualQuestions());
   let initialQuestionsIds: (number | null)[] = [];
 
+  const getError = (field: string) => {
+    const key = field in formErrors.value ? field : `auth.${field}`;
+    const error = formErrors.value[key]?.[0] ?? '';
+    return error ? t(`auth.${error}`) : '';
+  };
+
   watch(catalog, () => {
     actualQuestions.value = getActualQuestions();
     initialTitle.value = catalog.value.title;
@@ -174,8 +197,23 @@
         <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
       </div>
     </div>
-    <v-text-field v-model="catalog.title" :label="$t('title')" hide-details />
-    <v-textarea v-model="catalog.description" :label="$t('description')" :rows="2" hide-details />
+    <div>
+      <HubInput
+        v-model="catalog.title"
+        :label="$t('title')"
+        :errorMessages="getError('Catalog.Translations[0].Title')"
+      />
+    </div>
+    <div>
+      <HubInput
+        v-model="catalog.description"
+        :label="$t('description')"
+        :textareaRows="2"
+        :errorMessages="getError('Catalog.Translations[0].Description')"
+        :noResize="false"
+        isTextarea
+      />
+    </div>
     <!-- <div class="infoBlock">{{ $t('catalogAutomaticallyTranslated') }}</div> TODO: -->
     <WhiteSelectList
       v-if="actualQuestions.length"
