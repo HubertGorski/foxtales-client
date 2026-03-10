@@ -259,6 +259,7 @@
     "usernameCannotBeEmpty": "Username cannot be empty",
     "usernameFormatIsIncorrect": "Username must contain between 2 and 21 characters",
     "usernameIsAlreadyTaken": "This username is already taken",
+    "usernameContainsInvalidCharacters": "Username contains invalid characters",
     "passwordIsRequired": "Password is required",
     "passwordIsTooShort": "Password is too short",
     "passwordsAreNotIdentical": "Passwords do not match",

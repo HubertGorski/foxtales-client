@@ -259,6 +259,7 @@
     "usernameCannotBeEmpty": "El nombre de usuario no puede estar vacío",
     "usernameFormatIsIncorrect": "El nombre de usuario debe tener entre 2 y 21 caracteres",
     "usernameIsAlreadyTaken": "Este nombre de usuario ya está ocupado",
+    "usernameContainsInvalidCharacters": "El nombre de usuario contiene caracteres no válidos",
     "passwordIsRequired": "La contraseña es obligatoria",
     "passwordIsTooShort": "La contraseña es demasiado corta",
     "passwordsAreNotIdentical": "Las contraseñas no coinciden",
