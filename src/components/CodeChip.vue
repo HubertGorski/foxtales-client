@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { ICON } from '@/enums/iconsEnum';
-  import { useI18n } from 'vue-i18n';
 
   const {
     text,
@@ -16,8 +15,6 @@
     'update:expanded': [value: boolean];
   }>();
 
-  const { t } = useI18n();
-
   const handleClick = () => {
     if (expanded && !toggleable) {
       return;
@@ -30,7 +27,7 @@
 <template>
   <div class="codeChip" :class="{ expanded }" @click="handleClick">
     <v-icon class="icon">{{ ICON.CODE }}</v-icon>
-    <span v-if="text" class="text">{{ t('lobby.accessCode') }} {{ text }}</span>
+    <span v-if="text" class="text">{{ text }}</span>
   </div>
 </template>
 
