@@ -276,7 +276,17 @@
     "wakeLockNotSupported": "Twoja przeglądarka nie obsługuje funkcji zapobiegania wygaszania ekranu.",
     "wakeLockReleaseError": "Wystąpił błąd podczas przywracania wygaszania ekranu",
     "wakeLockRequestError": "Nie udało się włączyć blokady wygaszania ekranu",
-    "prolongSession": "Nie wylogowuj mnie"
+    "prolongSession": "Nie wylogowuj mnie",
+    "titleCannotBeEmpty": "Tytuł nie może być pusty",
+    "titleIsTooLong": "Tytuł jest zbyt długi",
+    "descriptionIsTooLong": "Opis jest zbyt długi",
+    "translationsCannotBeEmpty": "Tłumaczenia nie mogą być puste",
+    "textCannotBeEmpty": "Tekst nie może być pusty",
+    "textIsTooLong": "Tekst jest zbyt długi",
+    "subjectCannotBeEmpty": "Temat nie może być pusty",
+    "subjectIsTooLong": "Temat jest zbyt długi",
+    "messageCannotBeEmpty": "Wiadomość nie może być pusta",
+    "messageIsTooLong": "Wiadomość jest zbyt długa"
   },
   "foxGame": {
     "psych": {

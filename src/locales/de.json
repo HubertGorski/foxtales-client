@@ -276,7 +276,17 @@
     "wakeLockNotSupported": "Dein Browser unterstützt das Verhindern des Bildschirm-Ruhemodus nicht.",
     "wakeLockReleaseError": "Fehler beim Wiederherstellen des Bildschirm-Ruhemodus",
     "wakeLockRequestError": "Der Bildschirm-Wachmodus konnte nicht aktiviert werden",
-    "prolongSession": "Angemeldet bleiben"
+    "prolongSession": "Angemeldet bleiben",
+    "titleCannotBeEmpty": "Titel darf nicht leer sein",
+    "titleIsTooLong": "Titel ist zu lang",
+    "descriptionIsTooLong": "Beschreibung ist zu lang",
+    "translationsCannotBeEmpty": "Übersetzungen dürfen nicht leer sein",
+    "textCannotBeEmpty": "Text darf nicht leer sein",
+    "textIsTooLong": "Text ist zu lang",
+    "subjectCannotBeEmpty": "Betreff darf nicht leer sein",
+    "subjectIsTooLong": "Betreff ist zu lang",
+    "messageCannotBeEmpty": "Nachricht darf nicht leer sein",
+    "messageIsTooLong": "Nachricht ist zu lang"
   },
   "foxGame": {
     "psych": {

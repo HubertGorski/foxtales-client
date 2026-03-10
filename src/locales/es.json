@@ -276,7 +276,17 @@
     "wakeLockNotSupported": "Tu navegador no soporta evitar que la pantalla se apague.",
     "wakeLockReleaseError": "Error al restaurar el modo de suspensión de pantalla",
     "wakeLockRequestError": "No se pudo mantener la pantalla activa",
-    "prolongSession": "Mantener sesión iniciada"
+    "prolongSession": "Mantener sesión iniciada",
+    "titleCannotBeEmpty": "El título no puede estar vacío",
+    "titleIsTooLong": "El título es demasiado largo",
+    "descriptionIsTooLong": "La descripción es demasiado larga",
+    "translationsCannotBeEmpty": "Las traducciones no pueden estar vacías",
+    "textCannotBeEmpty": "El texto no puede estar vacío",
+    "textIsTooLong": "El texto es demasiado largo",
+    "subjectCannotBeEmpty": "El asunto no puede estar vacío",
+    "subjectIsTooLong": "El asunto es demasiado largo",
+    "messageCannotBeEmpty": "El mensaje no puede estar vacío",
+    "messageIsTooLong": "El mensaje es demasiado largo"
   },
   "foxGame": {
     "psych": {

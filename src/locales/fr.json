@@ -276,7 +276,17 @@
     "wakeLockNotSupported": "Votre navigateur ne permet pas d'empêcher la mise en veille de l'écran.",
     "wakeLockReleaseError": "Erreur lors du rétablissement de la mise en veille",
     "wakeLockRequestError": "Impossible d'activer le mode éveil de l'écran",
-    "prolongSession": "Rester connecté"
+    "prolongSession": "Rester connecté",
+    "titleCannotBeEmpty": "Le titre ne peut pas être vide",
+    "titleIsTooLong": "Le titre est trop long",
+    "descriptionIsTooLong": "La description est trop longue",
+    "translationsCannotBeEmpty": "Les traductions ne peuvent pas être vides",
+    "textCannotBeEmpty": "Le texte ne peut pas être vide",
+    "textIsTooLong": "Le texte est trop long",
+    "subjectCannotBeEmpty": "Le sujet ne peut pas être vide",
+    "subjectIsTooLong": "Le sujet est trop long",
+    "messageCannotBeEmpty": "Le message ne peut pas être vide",
+    "messageIsTooLong": "Le message est trop long"
   },
   "foxGame": {
     "psych": {
