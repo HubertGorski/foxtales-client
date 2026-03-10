@@ -77,7 +77,7 @@
     &.expanded .text {
       max-width: 300px;
       opacity: 1;
-      padding-right: 20px;
+      padding-right: 12px;
     }
   }
 </style>
