@@ -14,6 +14,9 @@
   import { VIEW } from '@/enums/viewsEnum';
   import NoAccessView from './NoAccessView.vue';
   import CodeChip from '@/components/CodeChip.vue';
+  import HubPopup from '@/components/hubComponents/HubPopup.vue';
+  import { ICON } from '@/enums/iconsEnum';
+  import MockAdminPanel from '@/components/psychGame/MockAdminPanel.vue';
 
   const router = useRouter();
   const signalRStore = useSignalRStore();
@@ -21,6 +24,7 @@
 
   const continueGameProces = ref(false);
   const codeChipExpanded = ref(false);
+  const showAdminPanel = ref(false);
   const currentUserId = computed(() => userStore.user.userId);
   const currentUser =
     computed(() => game.value.users.find(user => user.userId === currentUserId.value)) ?? null;
@@ -108,6 +112,15 @@
 
 <template>
   <div class="psychGameView">
+    <HubBtn
+      v-if="false"
+      class="adminBtn"
+      :icon="ICON.ADMIN"
+      :action="() => (showAdminPanel = true)"
+    />
+    <HubPopup v-model="showAdminPanel">
+      <MockAdminPanel @closePopup="showAdminPanel = false" />
+    </HubPopup>
     <div v-if="!game.hasGameEnded && !continueGameProces" class="psychGameView_header">
       <CodeChip v-model:expanded="codeChipExpanded" :text="game.code" toggleable />
       <HubBtn :action="finishGameBtn.action" :text="finishGameBtn.text" />
@@ -125,6 +138,16 @@
   @use '@/assets/styles/hubAnimations' as *;
 
   .psychGameView {
+    .adminBtn {
+      position: absolute;
+      left: 12px;
+      height: 36px;
+      width: 36px;
+      top: 8px;
+      padding: 0;
+      z-index: 2;
+    }
+
     background: $mainBackground;
     height: 100%;
     display: flex;

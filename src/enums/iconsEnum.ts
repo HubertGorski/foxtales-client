@@ -39,4 +39,5 @@ export enum ICON {
   TEAM = 'mdi-account-group',
   TRANSLATE_OFF = 'mdi-translate-off',
   TRANSLATE_ON = 'mdi-translate',
+  ADMIN = 'mdi-shield-crown-outline',
 }

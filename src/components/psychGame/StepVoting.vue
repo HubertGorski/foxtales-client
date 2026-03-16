@@ -46,21 +46,20 @@
 
   const timeLeft = ref(0);
   let timerId: number = 0;
-  const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
-
   const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
   const isSubjectPlayer = computed(
     () => currentUserId.value === game.value.currentQuestion?.currentUser?.userId
   );
 
   onBeforeMount(() => {
-    if (!signalRStore.userIdsOrderList.length) {
-      signalRStore.userIdsOrderList = shuffledUsers.value.map(user => user.userId);
-      return;
+    if (!signalRStore.userIdsOrderList.length && game.value.users.length > 0) {
+      signalRStore.userIdsOrderList = shuffleArray(game.value.users).map(user => user.userId);
     }
+  });
 
+  const shuffledUsers = computed<User[]>(() => {
     const orderMap = new Map(signalRStore.userIdsOrderList.map((id, index) => [id, index]));
-    shuffledUsers.value.sort((a, b) => {
+    return [...game.value.users].sort((a, b) => {
       const aIndex = orderMap.get(a.userId) ?? Infinity;
       const bIndex = orderMap.get(b.userId) ?? Infinity;
       return aIndex - bIndex;
