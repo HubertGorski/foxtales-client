@@ -17,8 +17,8 @@
   import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
   import type { Answer } from '@/models/Answer';
   import { ICON } from '@/enums/iconsEnum';
-  import OrangeSwitchBtn from '../OrangeSwitchBtn.vue';
   import { useViewStore } from '@/stores/viewStore';
+  import HubSwitchBtn from '../hubComponents/HubSwitchBtn.vue';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
@@ -326,7 +326,7 @@
         @click="selectAnswer(user.userId)"
       />
     </div>
-    <div class="bottomPanelWithBtns" :class="{ translateBtnCenter: isDuoGame && isSubjectPlayer }">
+    <div class="bottomPanelWithBtns">
       <div v-if="!showOwnersStep" class="w-100">
         <div v-if="isDuoGame && isSubjectPlayer" class="trueFalsePanel">
           <div class="trueFalsePanel_btn">
@@ -361,14 +361,17 @@
           :disabled="nextPageBtn.disabled"
         />
       </div>
-      <OrangeSwitchBtn
-        v-if="areSwitchLangAnswersVisible"
-        :initState="showOriginalAnswers"
-        :action="switchLangAnswers"
-        :iconOff="ICON.TRANSLATE_OFF"
-        :iconOn="ICON.TRANSLATE_ON"
-        iconSize="32"
-      />
+      <div class="bottomPanelWithBtns_btns" :class="{ btnCenter: isDuoGame && isSubjectPlayer }">
+        <HubBtn :action="switchLangAnswers" :icon="ICON.MEMORIES" hubSwitchStyle />
+        <HubSwitchBtn
+          v-if="areSwitchLangAnswersVisible"
+          :initState="showOriginalAnswers"
+          :action="switchLangAnswers"
+          :iconOff="ICON.TRANSLATE_OFF"
+          :iconOn="ICON.TRANSLATE_ON"
+          iconSize="32"
+        />
+      </div>
     </div>
     <HubDialogPopup
       v-model="showConfirmEmptySelectPanel"
@@ -412,13 +415,18 @@
     .bottomPanelWithBtns {
       position: relative;
       display: flex;
-      align-items: center;
+      align-items: end;
       width: 100%;
 
-      &.translateBtnCenter {
-        .orangeSwitchBtn {
+      &_btns {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 0;
+
+        &.btnCenter {
           position: absolute;
-          top: 32px;
+          bottom: 58px;
           right: 50%;
           transform: translateX(50%);
         }
@@ -448,7 +456,7 @@
       width: 100%;
 
       .hubBtn {
-        padding: 8px;
+        padding: 12px;
         margin: 4px auto 0;
       }
     }

@@ -40,4 +40,5 @@ export enum ICON {
   TRANSLATE_OFF = 'mdi-translate-off',
   TRANSLATE_ON = 'mdi-translate',
   ADMIN = 'mdi-shield-crown-outline',
+  MEMORIES = 'mdi-image-album',
 }

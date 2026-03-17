@@ -22,6 +22,10 @@
       type: Function,
       required: true,
     },
+    isOrange: {
+      type: Boolean,
+      default: false,
+    },
   });
 
   const isActive = ref(props.initState);
@@ -33,7 +37,7 @@
 </script>
 
 <template>
-  <div class="orangeSwitchBtn" :class="{ isActive: isActive }" @click="handleAction">
+  <div class="hubSwitchBtn" :class="{ isActive, isOrange }" @click="handleAction">
     <transition name="fade2" mode="out-in">
       <v-icon :key="isActive ? 1 : 0" :style="{ fontSize: `${iconSize}px` }">
         {{ isActive ? iconOff : iconOn }}
@@ -46,16 +50,16 @@
   @use '@/assets/styles/variables' as *;
   @use '@/assets/styles/hubAnimations' as *;
 
-  .orangeSwitchBtn {
+  .hubSwitchBtn {
+    background-color: $mainBrownColor;
     cursor: pointer;
-    background-color: $mainOrangeColor;
     color: $whiteColor;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow:
-      0 4px 8px rgb(252, 152, 40, 0.3),
+      0 4px 8px rgba(0, 0, 0, 0.3),
       0 2px 4px rgb(0, 0, 0, 0.1);
     border: 1px solid rgb(84, 50, 47, 0.15);
     transition: all 0.2s;
@@ -66,9 +70,20 @@
       font-size: 48px;
     }
 
+    &.isOrange {
+      background-color: $mainOrangeColor;
+      box-shadow:
+        0 4px 8px rgb(252, 152, 40, 0.3),
+        0 2px 4px rgb(0, 0, 0, 0.1);
+    }
+
     &.isActive {
-      background-color: $darkerOrangeColor;
+      background-color: $lightBrownColor;
       transition: all 0.2s;
+
+      &.isOrange {
+        background-color: $darkerOrangeColor;
+      }
     }
   }
 </style>

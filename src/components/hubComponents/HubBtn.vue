@@ -8,6 +8,7 @@
     isClicked: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     small: { type: Boolean, default: false },
+    hubSwitchStyle: { type: Boolean, default: false },
     action: { type: Function, required: true },
     useDicts: { type: Boolean, default: true },
   });
@@ -26,7 +27,7 @@
     data-no-blur
     class="hubBtn"
     :class="[
-      { loading, disabled, small, ghost },
+      { loading, disabled, small, ghost, hubSwitchStyle },
       isClicked
         ? isOrange
           ? 'hubBtn--darkOrange'
@@ -111,6 +112,13 @@
   .small {
     max-height: 34px;
     font-size: 14px;
+  }
+
+  .hubSwitchStyle {
+    height: 48px;
+    padding: 8px;
+    width: 48px;
+    font-size: 22px;
   }
 
   .loader {
