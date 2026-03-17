@@ -25,10 +25,10 @@
   const newGameData = ref<Game>(new Game());
   const isOwner = ref<boolean>(true);
   const isSubjectPlayer = ref<boolean>(true);
-  const playersCount = ref<string>('4');
+  const playersCount = ref<string>('3');
   const userStore = useUserStore();
   const signalStore = useSignalRStore();
-  const currentView = ref<HubSwitchBtnsItem>({ id: VIEW.ADD_ANSWER, title: 'Dodawanie pytania' });
+  const currentView = ref<HubSwitchBtnsItem>({ id: VIEW.SELECT_ANSWER, title: 'Wybieranie' });
   const currentViewOptions: HubSwitchBtnsItem[] = [
     { id: VIEW.ADD_ANSWER, title: 'Dodawanie' },
     { id: VIEW.SELECT_ANSWER, title: 'Wybieranie' },
@@ -48,8 +48,10 @@
       pointsInGame: 120,
       newPoints: 15,
       round: 2,
-      answer: new Answer(1, 10, 1, 'Zdecydowanie tak'),
-      votersIdsForHisAnswer: [2, 5],
+      answer: new Answer(1, 10, 1, 'Zdecydowanie tak').setAnswerInOtherLanguages({
+        [LANG.PL]: 'Yes!',
+      }),
+      votersIdsForHisAnswer: [],
       votesReceived: [new Vote(2, 3), new Vote(5, 1)],
       votesGiven: [new Vote(3, 2)],
     }),
@@ -60,8 +62,8 @@
       pointsInGame: 85,
       newPoints: 10,
       round: 2,
-      answer: new Answer(2, 10, 2, 'Nie sądzę'),
-      votersIdsForHisAnswer: [1],
+      answer: new Answer(2, 10, 2, 'Nie sądzę').setAnswerInOtherLanguages({ [LANG.PL]: 'Nope.' }),
+      votersIdsForHisAnswer: [],
       votesReceived: [new Vote(1, 2)],
       votesGiven: [new Vote(1, 1)],
     }),
@@ -73,7 +75,7 @@
       newPoints: 30,
       round: 3,
       answer: new Answer(3, 10, 3, 'To zależy'),
-      votersIdsForHisAnswer: [4, 6, 7],
+      votersIdsForHisAnswer: [],
       votesReceived: [new Vote(4, 1), new Vote(6, 2)],
       votesGiven: [new Vote(4, 3)],
     }),
@@ -97,7 +99,7 @@
       newPoints: 50,
       round: 3,
       answer: new Answer(5, 10, 5, 'Absolutnie!'),
-      votersIdsForHisAnswer: [3, 8],
+      votersIdsForHisAnswer: [],
       votesReceived: [new Vote(3, 4), new Vote(8, 2)],
       votesGiven: [new Vote(2, 1)],
     }),
@@ -109,7 +111,7 @@
       newPoints: 20,
       round: 2,
       answer: new Answer(6, 10, 6, 'Nigdy w życiu'),
-      votersIdsForHisAnswer: [1, 3],
+      votersIdsForHisAnswer: [],
       votesReceived: [new Vote(1, 3)],
       votesGiven: [new Vote(8, 2)],
     }),
@@ -133,7 +135,7 @@
       newPoints: 40,
       round: 3,
       answer: new Answer(8, 10, 8, 'Oczywiście że tak'),
-      votersIdsForHisAnswer: [5, 6],
+      votersIdsForHisAnswer: [],
       votesReceived: [new Vote(5, 3), new Vote(6, 1)],
       votesGiven: [new Vote(5, 2)],
     }),

@@ -80,11 +80,12 @@
     }
 
     timerId = setInterval(() => {
-      timeLeft.value--;
-
       if (timeLeft.value <= 0) {
         clearInterval(timerId);
+        return;
       }
+
+      timeLeft.value--;
     }, 1000);
   });
 
@@ -202,6 +203,10 @@
     return isSubjectPlayer.value ? userList.value.length === 1 : userList.value.length === 2;
   });
 
+  const isWaitingForResults = computed(() => {
+    return isQuietDaysMode.value && !isSubjectPlayer.value;
+  });
+
   const userList = computed(() => {
     if (!isQuietDaysMode.value || !isSubjectPlayer.value) {
       return shuffledUsers.value;
@@ -215,7 +220,7 @@
       return `${t('chooseCorrectAnswers')} (${timeLeft.value})`;
     }
 
-    if (isQuietDaysMode.value && !isSubjectPlayer.value) {
+    if (isWaitingForResults.value) {
       return t('waitingForResults');
     }
 
@@ -230,6 +235,7 @@
       disabled:
         (!selectedAnswerUserIds.value.length && !isQuietDaysMode.value) ||
         isUserReady.value ||
+        isWaitingForResults.value ||
         (timeLeft.value > 0 && isSubjectPlayer.value && isQuietDaysMode.value),
     };
   });
