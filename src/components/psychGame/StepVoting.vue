@@ -19,6 +19,7 @@
   import { ICON } from '@/enums/iconsEnum';
   import { useViewStore } from '@/stores/viewStore';
   import HubSwitchBtn from '../hubComponents/HubSwitchBtn.vue';
+  import ShareMemoryPopup from './ShareMemoryPopup.vue';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
@@ -43,6 +44,7 @@
 
   const showConfirmEmptySelectPanel = ref<boolean>(false);
   const showOriginalAnswers = ref<boolean>(false);
+  const isMemoriesCardAvailable = ref<boolean>(false);
 
   const timeLeft = ref(0);
   let timerId: number = 0;
@@ -362,7 +364,11 @@
         />
       </div>
       <div class="bottomPanelWithBtns_btns" :class="{ btnCenter: isDuoGame && isSubjectPlayer }">
-        <HubBtn :action="switchLangAnswers" :icon="ICON.MEMORIES" hubSwitchStyle />
+        <HubBtn
+          :action="() => (isMemoriesCardAvailable = true)"
+          :icon="ICON.MEMORIES"
+          hubSwitchStyle
+        />
         <HubSwitchBtn
           v-if="areSwitchLangAnswersVisible"
           :initState="showOriginalAnswers"
@@ -380,6 +386,7 @@
       confirmBtnText="continue"
       :confirmAction="confirmEmptySelectAnswer"
     />
+    <ShareMemoryPopup v-model="isMemoriesCardAvailable" :game="game" />
   </div>
 </template>
 
@@ -456,7 +463,7 @@
       width: 100%;
 
       .hubBtn {
-        padding: 12px;
+        padding: 8px;
         margin: 4px auto 0;
       }
     }

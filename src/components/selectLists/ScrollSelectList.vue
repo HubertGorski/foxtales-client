@@ -2,18 +2,14 @@
   import { computed, ref, type PropType } from 'vue';
   import type { ListElement } from './ListElement';
   import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
-  import { ICON } from '@/enums/iconsEnum';
-  import { DYLEMATY_CARD_TYPE } from '@/models/DylematyCard';
 
   const {
     addCutomText,
     createdItemsText = 'createdItems',
-    isTypeAvailable = false,
     emptyDataText = 'emptyData',
   } = defineProps<{
     addCutomText: string;
     createdItemsText?: string;
-    isTypeAvailable?: boolean;
     emptyDataText?: string;
   }>();
 
@@ -68,9 +64,6 @@
         @click="item.setSelected(!item.isSelected)"
       >
         <div class="itemContent">
-          <v-icon v-if="isTypeAvailable" class="itemContent_typeIcon">
-            {{ item.type === DYLEMATY_CARD_TYPE.POSITIVE ? ICON.HAPPY : ICON.SAD }}
-          </v-icon>
           {{ item.description || item.title }}
         </div>
         <v-divider v-if="!item.isSelected" />

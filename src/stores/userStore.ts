@@ -5,7 +5,6 @@ import type { LANG } from '@/enums/languagesEnum';
 import type { Catalog } from '@/models/Catalog';
 import type { Question } from '@/models/Question';
 import type { PERMISSION, PERMISSION_GAME } from '@/enums/permissions';
-import type { Deck } from '@/models/Deck';
 import type { CatalogType } from '@/models/CatalogType';
 
 interface UserState {
@@ -95,23 +94,12 @@ export const useUserStore = defineStore({
       this.user.catalogs.push(newCatalog);
     },
 
-    addDeck(newDeck: Deck) {
-      this.user.decks.push(newDeck);
-    },
-
     editCatalog(catalog: Catalog) {
       const index = this.user.catalogs.findIndex(
         userCatalog => userCatalog.catalogId === catalog.catalogId
       );
       if (index !== -1) {
         this.user.catalogs[index] = catalog;
-      }
-    },
-
-    editDeck(deck: Deck) {
-      const index = this.user.decks.findIndex(userDeck => userDeck.id === deck.id);
-      if (index !== -1) {
-        this.user.decks[index] = deck;
       }
     },
 

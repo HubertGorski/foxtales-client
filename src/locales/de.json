@@ -5,6 +5,11 @@
     "statute": "die AGB",
     "privacyPolicy": "die Datenschutzerklärung"
   },
+  "save": "Speichern",
+  "share": "Teilen",
+  "copyLink": "Link kopieren",
+  "copied": "Kopiert!",
+  "captureMoment": "Den Moment einfangen",
   "privacyPolicy": "Datenschutzerklärung",
   "and": "und",
   "true": "Wahr",
