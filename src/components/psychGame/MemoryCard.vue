@@ -1,22 +1,18 @@
 <script setup lang="ts">
-  import { VIEW } from '@/enums/viewsEnum';
   import type { Memory } from '@/models/Memory';
-  import { computed } from 'vue';
 
   const { memory } = defineProps<{
     memory: Memory;
   }>();
-
-  const hidden = computed(() => memory.users.some(user => user.currentView === VIEW.SELECT_ANSWER));
 </script>
 
 <template>
   <div class="memoryCard">
     <div class="memoryCard_question">{{ memory.currentQuestion.text }}</div>
     <div class="memoryCard_answers">
-      <div v-for="user in memory.users" :key="user.userId" class="answer">
-        <div v-if="!hidden" class="answer_username">{{ user.username }}:</div>
-        <div class="answer_text">{{ user.answer?.answer }}</div>
+      <div v-for="(answer, index) in memory.memoryAnswers" :key="index" class="answer">
+        <div v-if="!memory.areUsersHidden" class="answer_username">{{ answer.ownerUsername }}:</div>
+        <div class="answer_text">{{ answer.text }}</div>
       </div>
     </div>
   </div>

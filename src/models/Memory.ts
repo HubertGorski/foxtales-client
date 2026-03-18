@@ -1,16 +1,23 @@
-import { Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Question } from './Question';
-import { User } from './User';
+import { MemoryAnswer } from './MemoryAnswer';
 
 export class Memory {
+  @Expose({ name: 'memoryId' })
+  id: number | null = null;
+
   @Type(() => Question)
   currentQuestion: Question;
 
-  @Type(() => User)
-  users: User[];
+  @Type(() => MemoryAnswer)
+  memoryAnswers: MemoryAnswer[];
 
-  constructor(currentQuestion: Question, users: User[]) {
+  @Type(() => Boolean)
+  areUsersHidden: boolean;
+
+  constructor(currentQuestion: Question, memoryAnswers: MemoryAnswer[], areUsersHidden: boolean) {
     this.currentQuestion = currentQuestion;
-    this.users = users;
+    this.memoryAnswers = memoryAnswers;
+    this.areUsersHidden = areUsersHidden;
   }
 }

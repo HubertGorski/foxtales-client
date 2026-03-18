@@ -7,13 +7,46 @@
   import type { Game } from '@/models/Game';
   import { computed } from 'vue';
   import { Memory } from '@/models/Memory';
+  import { VIEW } from '@/enums/viewsEnum';
+  import { MemoryAnswer } from '@/models/MemoryAnswer';
+  import { MemoryAnswerTranslation } from '@/models/MemoryAnswerTranslation';
+  import type { LANG } from '@/enums/languagesEnum';
+  import type { Answer } from '@/models/Answer';
 
   const { game } = defineProps<{
     game: Game;
   }>();
 
+  const mapAnswerToMemoryAnswer = (answer: Answer, ownerUsername: string, ownerLanguage: LANG) => {
+    const translations: MemoryAnswerTranslation[] = [];
+    translations.push(new MemoryAnswerTranslation(answer.answer, ownerLanguage));
+
+    if (answer.answerInOtherLanguages) {
+      for (const [lang, text] of Object.entries(answer.answerInOtherLanguages)) {
+        if (text) {
+          translations.push(new MemoryAnswerTranslation(text, lang as LANG));
+        }
+      }
+    }
+
+    return new MemoryAnswer(ownerUsername, translations);
+  };
+
   const isMemoriesCardAvailable = defineModel({ type: Boolean, required: true });
-  const memory = computed(() => new Memory(game.currentQuestion!, game.users));
+  const areUsersHidden = computed((): boolean =>
+    game.users.some(user => user.currentView === VIEW.SELECT_ANSWER)
+  );
+
+  const memory = computed(
+    () =>
+      new Memory(
+        game.currentQuestion!,
+        game.users
+          .filter(user => user.answer !== null)
+          .map(user => mapAnswerToMemoryAnswer(user.answer!, user.username, user.language)),
+        areUsersHidden.value
+      )
+  );
 </script>
 
 <template>
