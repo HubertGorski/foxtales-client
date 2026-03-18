@@ -12,10 +12,15 @@
   import { MemoryAnswerTranslation } from '@/models/MemoryAnswerTranslation';
   import type { LANG } from '@/enums/languagesEnum';
   import type { Answer } from '@/models/Answer';
+  import { psychService } from '@/api/services/PsychService';
 
   const { game } = defineProps<{
     game: Game;
   }>();
+
+  const addMemory = () => {
+    psychService.addMemory(memory.value);
+  };
 
   const mapAnswerToMemoryAnswer = (answer: Answer, ownerUsername: string, ownerLanguage: LANG) => {
     const translations: MemoryAnswerTranslation[] = [];
@@ -57,7 +62,7 @@
       <MemoryCard :memory="memory" />
       <div class="shareMemoryPopup_btns">
         <div class="btn">
-          <HubBtn text="save" :icon="ICON.ADD_TO_COLLECTION" small useGap :action="() => {}" />
+          <HubBtn text="save" :icon="ICON.ADD_TO_COLLECTION" small useGap :action="addMemory" />
         </div>
         <div class="btn">
           <HubShareBtn url="https://foxtales.cc" title="Fox Tales" text="Be as sly as a fox!" />

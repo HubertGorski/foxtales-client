@@ -5,8 +5,13 @@ import { plainToInstance } from 'class-transformer';
 import { CatalogTranslations } from '@/models/CatalogTranslations';
 import type { LANG } from '@/enums/languagesEnum';
 import { QuestionTranslations } from '@/models/QuestionTranslations';
+import type { Memory } from '@/models/Memory';
 
 export const psychService = {
+  async addMemory(memory: Memory): Promise<void> {
+    await psychClient.addMemory(memory);
+  },
+
   async addQuestion(
     question: Question
   ): Promise<{ translations: QuestionTranslations[]; questionId: number }> {

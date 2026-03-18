@@ -5,8 +5,14 @@ import { instanceToPlain } from 'class-transformer';
 import type { CatalogTranslations } from '@/models/CatalogTranslations';
 import { LangToNumber, type LANG } from '@/enums/languagesEnum';
 import type { QuestionTranslations } from '@/models/QuestionTranslations';
+import type { Memory } from '@/models/Memory';
 
 export const psychClient = {
+  addMemory(newMemory: Memory): Promise<void> {
+    const memory = instanceToPlain(newMemory);
+    return apiClient.post('/psych/addMemory', { memory });
+  },
+
   addQuestion(
     newQuestion: Question
   ): Promise<{ data: { translations: QuestionTranslations[]; questionId: number } }> {

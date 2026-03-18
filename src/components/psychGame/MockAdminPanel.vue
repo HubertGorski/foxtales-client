@@ -49,7 +49,7 @@
       newPoints: 15,
       round: 2,
       answer: new Answer(1, 10, 1, 'Zdecydowanie tak').setAnswerInOtherLanguages({
-        [LANG.PL]: 'Yes!',
+        [LANG.EN]: 'Yes!',
       }),
       votersIdsForHisAnswer: [],
       votesReceived: [new Vote(2, 3), new Vote(5, 1)],
@@ -62,7 +62,7 @@
       pointsInGame: 85,
       newPoints: 10,
       round: 2,
-      answer: new Answer(2, 10, 2, 'Nie sądzę').setAnswerInOtherLanguages({ [LANG.PL]: 'Nope.' }),
+      answer: new Answer(2, 10, 2, 'Nie sądzę').setAnswerInOtherLanguages({ [LANG.EN]: 'Nope.' }),
       votersIdsForHisAnswer: [],
       votesReceived: [new Vote(1, 2)],
       votesGiven: [new Vote(1, 1)],
