@@ -22,7 +22,12 @@
     psychService.addMemory(memory.value);
   };
 
-  const mapAnswerToMemoryAnswer = (answer: Answer, ownerUsername: string, ownerLanguage: LANG) => {
+  const mapAnswerToMemoryAnswer = (
+    answer: Answer,
+    ownerUsername: string,
+    ownerLanguage: LANG,
+    ownerId: number
+  ) => {
     const translations: MemoryAnswerTranslation[] = [];
     translations.push(new MemoryAnswerTranslation(answer.answer, ownerLanguage));
 
@@ -34,7 +39,7 @@
       }
     }
 
-    return new MemoryAnswer(ownerUsername, translations);
+    return new MemoryAnswer(ownerUsername, game.shareKey!, game.round, ownerId, translations);
   };
 
   const isMemoriesCardAvailable = defineModel({ type: Boolean, required: true });
@@ -48,8 +53,12 @@
         game.currentQuestion!,
         game.users
           .filter(user => user.answer !== null)
-          .map(user => mapAnswerToMemoryAnswer(user.answer!, user.username, user.language)),
-        areUsersHidden.value
+          .map(user =>
+            mapAnswerToMemoryAnswer(user.answer!, user.username, user.language, user.userId)
+          ),
+        areUsersHidden.value,
+        game.shareKey!,
+        game.round
       )
   );
 </script>

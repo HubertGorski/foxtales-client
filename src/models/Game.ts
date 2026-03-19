@@ -10,6 +10,9 @@ export class Game {
   @Type(() => String)
   code: string | null;
 
+  @Type(() => String)
+  shareKey: string | null = null;
+
   @Type(() => FoxGame)
   foxGame: FoxGame;
 

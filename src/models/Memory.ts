@@ -1,11 +1,8 @@
-import { Expose, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { Question } from './Question';
 import { MemoryAnswer } from './MemoryAnswer';
 
 export class Memory {
-  @Expose({ name: 'memoryId' })
-  id: number | null = null;
-
   @Type(() => Question)
   currentQuestion: Question;
 
@@ -15,9 +12,23 @@ export class Memory {
   @Type(() => Boolean)
   areUsersHidden: boolean;
 
-  constructor(currentQuestion: Question, memoryAnswers: MemoryAnswer[], areUsersHidden: boolean) {
+  @Type(() => String)
+  shareKey: string;
+
+  @Type(() => Number)
+  round: number;
+
+  constructor(
+    currentQuestion: Question,
+    memoryAnswers: MemoryAnswer[],
+    areUsersHidden: boolean,
+    shareKey: string,
+    round: number
+  ) {
     this.currentQuestion = currentQuestion;
     this.memoryAnswers = memoryAnswers;
     this.areUsersHidden = areUsersHidden;
+    this.shareKey = shareKey;
+    this.round = round;
   }
 }
