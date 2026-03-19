@@ -13,13 +13,37 @@
   import type { LANG } from '@/enums/languagesEnum';
   import type { Answer } from '@/models/Answer';
   import { psychService } from '@/api/services/PsychService';
+  import { useSignalRStore } from '@/stores/signalRStore';
+  import { useUserStore } from '@/stores/userStore';
+  import { useLoading } from '@/composables/useLoading';
 
   const { game } = defineProps<{
     game: Game;
   }>();
 
-  const addMemory = () => {
-    psychService.addMemory(memory.value);
+  const { loading: isSaveBtnLoading, withLoading } = useLoading();
+  const shareSaved = computed(
+    () => game.users.find(player => player.userId === useUserStore().user.userId)?.hasRoundSaved
+  );
+
+  const addMemoryToLibrary = () =>
+    withLoading(async () => {
+      if (!game.hasRoundShared) {
+        await addMemory();
+      }
+
+      const currentUserId = useUserStore().user.userId;
+      await psychService.addMemoryToLibrary(game.shareKey!, game.round, currentUserId);
+      useSignalRStore().setRoundSaved(currentUserId);
+    });
+
+  const addMemory = async () => {
+    if (game.hasRoundShared) {
+      return;
+    }
+
+    await psychService.addMemory(memory.value);
+    useSignalRStore().setRoundShared();
   };
 
   const mapAnswerToMemoryAnswer = (
@@ -71,9 +95,17 @@
       <MemoryCard :memory="memory" />
       <div class="shareMemoryPopup_btns">
         <div class="btn">
-          <HubBtn text="save" :icon="ICON.ADD_TO_COLLECTION" small useGap :action="addMemory" />
+          <HubBtn
+            :text="shareSaved ? $t('saved') : $t('save')"
+            :icon="shareSaved ? undefined : ICON.ADD_TO_COLLECTION"
+            :loading="isSaveBtnLoading"
+            :disabled="shareSaved || isSaveBtnLoading"
+            small
+            useGap
+            :action="addMemoryToLibrary"
+          />
         </div>
-        <div class="btn">
+        <div @click="addMemory" class="btn">
           <HubShareBtn url="https://foxtales.cc" title="Fox Tales" text="Be as sly as a fox!" />
         </div>
       </div>

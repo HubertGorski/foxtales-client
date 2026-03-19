@@ -11,6 +11,9 @@ export const psychService = {
   async addMemory(memory: Memory): Promise<void> {
     await psychClient.addMemory(memory);
   },
+  async addMemoryToLibrary(shareKey: string, round: number, userId: number): Promise<void> {
+    await psychClient.addMemoryToLibrary(shareKey, round, userId);
+  },
 
   async addQuestion(
     question: Question

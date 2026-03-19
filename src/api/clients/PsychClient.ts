@@ -13,6 +13,10 @@ export const psychClient = {
     return apiClient.post('/psych/addMemory', { memory });
   },
 
+  addMemoryToLibrary(shareKey: string, round: number, userId: number): Promise<void> {
+    return apiClient.post('/psych/addMemoryToLibrary', { shareKey, round, userId });
+  },
+
   addQuestion(
     newQuestion: Question
   ): Promise<{ data: { translations: QuestionTranslations[]; questionId: number } }> {

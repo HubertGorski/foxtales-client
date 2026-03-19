@@ -55,6 +55,9 @@ export class Game {
   @Type(() => Boolean)
   hasGameEnded: boolean;
 
+  @Type(() => Boolean)
+  hasRoundShared: boolean = false;
+
   @Type(() => Number)
   selectedPublicCatalogId: number | null;
 

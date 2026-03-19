@@ -113,6 +113,7 @@
 
 <style lang="scss" scoped>
   @use '@/assets/styles/variables' as *;
+
   .share-wrapper {
     position: relative;
     display: inline-block;

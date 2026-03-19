@@ -84,6 +84,7 @@ export class User {
   pointsInGame: number = 0;
   newPoints: number = 0;
   round: number = 1;
+  hasRoundSaved: boolean = false;
 
   // In Psych Game
   // ==== Lobby ====

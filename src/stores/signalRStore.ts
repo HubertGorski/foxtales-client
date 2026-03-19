@@ -362,6 +362,34 @@ export const useSignalRStore = defineStore({
       return !this.connectionError;
     },
 
+    async setRoundShared() {
+      if (!this.game) {
+        return;
+      }
+
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(false, connection, 'setRoundShared', this.game.code);
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
+    },
+
+    async setRoundSaved(playerId: number) {
+      if (!this.game) {
+        return;
+      }
+
+      const connection = this.connection as HubConnection | null;
+      const result = await safeSignalRInvoke(
+        false,
+        connection,
+        'setRoundSaved',
+        this.game.code,
+        playerId
+      );
+      this.connectionError = result.error ?? null;
+      return !this.connectionError;
+    },
+
     async chooseAnswer(playerId: number, selectedAnswerUserIds: number[]) {
       if (!this.game) {
         return;
