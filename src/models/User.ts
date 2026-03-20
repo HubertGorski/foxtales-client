@@ -13,6 +13,7 @@ import type { QUESTION_SOURCE } from '@/enums/questionSource';
 import { Answer } from './Answer';
 import { Vote } from './Vote';
 import type { VIEW } from '@/enums/viewsEnum';
+import { Memory } from './Memory';
 
 export class User {
   // Basic info
@@ -65,6 +66,9 @@ export class User {
 
   @Type(() => Question)
   questions: Question[] = [];
+
+  @Type(() => Memory)
+  memories: Memory[] = [];
 
   //Dylematy game
   totalDylematyGamesPlayed: number = 0;

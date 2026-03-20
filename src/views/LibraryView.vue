@@ -260,6 +260,7 @@
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
       />
     </HubPopup>
+    <HubAccordionElement title="yourMemory" isSmallerTitle @click="addNewCatalog" />
     <HubAccordionElement title="addCatalog" isSmallerTitle @click="addNewCatalog" />
     <HubAccordion
       v-model="setOpenTab"

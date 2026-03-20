@@ -17,6 +17,7 @@ import {
   clearTokenRefresh,
   isTokenExpired,
 } from '@/composables/useTokenRefresh';
+import { Memory } from '@/models/Memory';
 
 export const userService = {
   async logout(): Promise<void> {
@@ -46,12 +47,17 @@ export const userService = {
     }
 
     const avatars: Avatar[] = [];
+    const memories: Memory[] = [];
     const availableCatalogTypes: CatalogType[] = [];
     const foxGames: FoxGame[] = [];
     const publicCatalogs: Catalog[] = [];
 
     data.avatars.forEach(avatar => {
       avatars.push(plainToInstance(Avatar, avatar));
+    });
+
+    data.memories.forEach(memory => {
+      memories.push(plainToInstance(Memory, memory));
     });
 
     data.availableCatalogTypes.forEach(catalogType => {
@@ -80,6 +86,7 @@ export const userService = {
     i18n.global.locale.value = toLang(user.language);
     userStore.setUserSession(user);
     userStore.setAvatars(avatars);
+    userStore.setMemories(memories);
     userStore.setAvailableCatalogTypes(availableCatalogTypes);
     userStore.setPublicCatalogs(publicCatalogs);
 

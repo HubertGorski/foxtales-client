@@ -6,6 +6,7 @@ import type { Catalog } from '@/models/Catalog';
 import type { Question } from '@/models/Question';
 import type { PERMISSION, PERMISSION_GAME } from '@/enums/permissions';
 import type { CatalogType } from '@/models/CatalogType';
+import type { Memory } from '@/models/Memory';
 
 interface UserState {
   user: User;
@@ -64,6 +65,10 @@ export const useUserStore = defineStore({
 
     setAvatars(avatars: Avatar[]) {
       this.avatars = avatars;
+    },
+
+    setMemories(memories: Memory[]) {
+      this.user.memories = memories;
     },
 
     setUserSession(user: User) {
