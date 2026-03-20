@@ -2,8 +2,8 @@
   import { ICON } from '@/enums/iconsEnum';
   import { computed, ref, watch, type PropType } from 'vue';
   import HubTooltip from '../hubComponents/HubTooltip.vue';
-  import HubBtn from '../hubComponents/HubBtn.vue';
   import type { ListElement } from './ListElement';
+  import HubPagination from '../hubComponents/HubPagination.vue';
 
   const props = defineProps({
     showSelectedCount: {
@@ -107,21 +107,6 @@
     }
 
     return props.infinityPages ? false : currentPage.value >= totalPages.value;
-  });
-
-  const previousPageBtn = computed(() => {
-    return {
-      icon: ICON.ARROW_LEFT,
-      disabled: isPreviousPageBtnDisabled.value,
-      action: () => setPreviousPage(),
-    };
-  });
-  const nextPageBtn = computed(() => {
-    return {
-      icon: ICON.ARROW_RIGHT,
-      disabled: isNextPageBtnDisabled.value,
-      action: () => setNextPage(),
-    };
   });
 
   const totalPages = computed(() => Math.ceil(items.value.length / props.itemsPerPage));
@@ -242,27 +227,17 @@
       <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
       <p>{{ $t(emptyDataText) }}</p>
     </div>
-    <div
+    <HubPagination
       v-if="
         (!minimalView && showPagination && totalPages > 1) ||
         (minimalView && showPagination && totalPages > 0)
       "
-      class="pagination"
-    >
-      <HubBtn
-        class="pagination_btn"
-        :icon="previousPageBtn.icon"
-        :action="previousPageBtn.action"
-        :disabled="previousPageBtn.disabled"
-      />
-      <div class="pagination_data">{{ paginationText }}</div>
-      <HubBtn
-        class="pagination_btn"
-        :icon="nextPageBtn.icon"
-        :action="nextPageBtn.action"
-        :disabled="nextPageBtn.disabled"
-      />
-    </div>
+      :paginationText="paginationText"
+      :isPreviousPageBtnDisabled="isPreviousPageBtnDisabled"
+      :isNextPageBtnDisabled="isNextPageBtnDisabled"
+      @setPreviousPage="setPreviousPage"
+      @setNextPage="setNextPage"
+    />
   </div>
 </template>
 
@@ -374,27 +349,6 @@
           margin: 8px;
           color: $lightBrownColor;
         }
-      }
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #fffefd;
-      border: 1px $mainBrownColor solid;
-      border-radius: 12px;
-      margin-top: 4px;
-
-      &_btn {
-        font-size: 20px;
-        padding: 4px;
-        width: min-content;
-      }
-
-      &_data {
-        color: $mainBrownColor;
-        font-weight: 600;
       }
     }
   }

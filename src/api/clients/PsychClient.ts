@@ -17,6 +17,14 @@ export const psychClient = {
     return apiClient.post('/psych/addMemoryToLibrary', { shareKey, round, userId });
   },
 
+  removeMemoryFromLibrary(
+    shareKey: string,
+    round: number,
+    userId: number
+  ): Promise<{ data: boolean }> {
+    return apiClient.post('/psych/removeMemoryFromLibrary', { shareKey, round, userId });
+  },
+
   addQuestion(
     newQuestion: Question
   ): Promise<{ data: { translations: QuestionTranslations[]; questionId: number } }> {

@@ -171,5 +171,15 @@ export const useUserStore = defineStore({
       this.unassignCatalogFromAllQuestions(catalogId);
       this.user.catalogs = this.user.catalogs.filter(catalog => catalog.catalogId !== catalogId);
     },
+
+    removeMemory(shareKey: string, round: number) {
+      this.user.memories = this.user.memories.filter(
+        memory => memory.shareKey !== shareKey || memory.round !== round
+      );
+    },
+
+    addMemory(memory: Memory) {
+      this.user.memories.push(memory);
+    },
   },
 });

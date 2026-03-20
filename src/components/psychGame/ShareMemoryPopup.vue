@@ -34,6 +34,7 @@
 
       const currentUserId = useUserStore().user.userId;
       await psychService.addMemoryToLibrary(game.shareKey!, game.round, currentUserId);
+      useUserStore().addMemory(memory.value);
       useSignalRStore().setRoundSaved(currentUserId);
     });
 
@@ -106,7 +107,12 @@
           />
         </div>
         <div @click="addMemory" class="btn">
-          <HubShareBtn url="https://foxtales.cc" title="Fox Tales" text="Be as sly as a fox!" />
+          <HubShareBtn
+            url="https://foxtales.cc"
+            title="Fox Tales"
+            text="Be as sly as a fox!"
+            disabled
+          />
         </div>
       </div>
     </div>

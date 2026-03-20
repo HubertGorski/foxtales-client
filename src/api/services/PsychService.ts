@@ -11,8 +11,13 @@ export const psychService = {
   async addMemory(memory: Memory): Promise<void> {
     await psychClient.addMemory(memory);
   },
+
   async addMemoryToLibrary(shareKey: string, round: number, userId: number): Promise<void> {
     await psychClient.addMemoryToLibrary(shareKey, round, userId);
+  },
+
+  async removeMemoryFromLibrary(shareKey: string, round: number, userId: number): Promise<boolean> {
+    return (await psychClient.removeMemoryFromLibrary(shareKey, round, userId)).data;
   },
 
   async addQuestion(

@@ -17,6 +17,10 @@
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   });
 
   const isOpen = ref(false);
@@ -73,7 +77,15 @@
 
 <template>
   <div class="share-wrapper">
-    <HubBtn text="share" :icon="ICON.SHARE" small useGap isOrange :action="toggleMenu" />
+    <HubBtn
+      text="share"
+      :icon="ICON.SHARE"
+      :disabled="disabled"
+      small
+      useGap
+      isOrange
+      :action="toggleMenu"
+    />
     <Transition name="share-menu">
       <div v-if="isOpen" class="share-menu">
         <button

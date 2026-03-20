@@ -24,6 +24,7 @@
   import HubDivider from '@/components/hubComponents/HubDivider.vue';
   import { useI18n } from 'vue-i18n';
   import { useLoading } from '@/composables/useLoading';
+  import ShowMemoryPopup from '@/components/psychGame/ShowMemoryPopup.vue';
 
   const userStore = useUserStore();
   const { t } = useI18n();
@@ -196,6 +197,7 @@
   const isDeletePopupOpen = ref<boolean>(false);
   const isCatalogCreatorOpen = ref<boolean>(false);
   const isQuestionCreatorOpen = ref<boolean>(false);
+  const isMemoriesPopupAvailable = ref<boolean>(false);
   const setOpenTab = ref<string>('addQuestion');
   const newQuestion = ref<string>('');
   const currentCatalog = ref<Catalog>(new Catalog());
@@ -243,6 +245,7 @@
 
 <template>
   <div class="libraryView">
+    <ShowMemoryPopup v-model="isMemoriesPopupAvailable" />
     <HubPopup v-model="isQuestionCreatorOpen">
       <QuestionCreator
         :newQuestion="newQuestion"
@@ -260,7 +263,11 @@
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
       />
     </HubPopup>
-    <HubAccordionElement title="yourMemory" isSmallerTitle @click="addNewCatalog" />
+    <HubAccordionElement
+      title="yourMemory"
+      isSmallerTitle
+      @click="isMemoriesPopupAvailable = true"
+    />
     <HubAccordionElement title="addCatalog" isSmallerTitle @click="addNewCatalog" />
     <HubAccordion
       v-model="setOpenTab"
