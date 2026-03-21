@@ -9,6 +9,7 @@
   import { useLoading } from '@/composables/useLoading';
   import { useUserStore } from '@/stores/userStore';
   import HubPagination from '../hubComponents/HubPagination.vue';
+  import NoData from '../NoData.vue';
 
   const { loading: isDeleteBtnLoading, withLoading } = useLoading();
 
@@ -48,10 +49,7 @@
       <img class="shareMemoryPopup_img" src="@/assets/imgs/memory.webp" alt="Lisek" />
       <div class="shareMemoryPopup_title">{{ $t('yourMemory') }}</div>
       <MemoryCard v-if="currentMemory" :memory="currentMemory" />
-      <div v-else class="noData noData--minimalView">
-        <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
-        <p>{{ $t('emptyData') }}</p>
-      </div>
+      <NoData v-else boxShadow />
       <HubPagination @setPreviousPage="setPreviousPage" @setNextPage="setNextPage" />
       <div class="shareMemoryPopup_btns">
         <div class="btn">
@@ -80,34 +78,6 @@
 
 <style lang="scss" scoped>
   @use '@/assets/styles/variables' as *;
-
-  .noData {
-    // TODO: wydzielic komponent
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    padding: 4px 8px;
-    opacity: 0.9;
-
-    &--minimalView {
-      background: $background;
-      border-radius: 12px;
-      box-shadow:
-        0 4px 6px rgb(0, 0, 0, 0.1),
-        0 1px 3px rgb(0, 0, 0, 0.06);
-    }
-
-    img {
-      width: 64px;
-    }
-
-    p {
-      color: $mainBrownColor;
-      font-weight: 600;
-      font-style: italic;
-      font-size: 14px;
-    }
-  }
 
   .shareMemoryPopup {
     position: relative;

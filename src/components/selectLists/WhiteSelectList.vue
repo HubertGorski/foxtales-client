@@ -4,6 +4,7 @@
   import HubTooltip from '../hubComponents/HubTooltip.vue';
   import type { ListElement } from './ListElement';
   import HubPagination from '../hubComponents/HubPagination.vue';
+  import NoData from '../NoData.vue';
 
   const props = defineProps({
     showSelectedCount: {
@@ -185,10 +186,7 @@
       >
         {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} / {{ items.length }})
       </div>
-      <div v-if="visibleItems.length === 0" class="noData">
-        <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
-        <p>{{ $t(emptyDataText) }}</p>
-      </div>
+      <NoData v-if="visibleItems.length === 0" :emptyDataText="emptyDataText" />
       <div
         v-else
         class="whiteSelectList_data"
@@ -223,10 +221,11 @@
         </div>
       </div>
     </div>
-    <div v-if="visibleItems.length === 0 && minimalView" class="noData noData--minimalView">
-      <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
-      <p>{{ $t(emptyDataText) }}</p>
-    </div>
+    <NoData
+      v-if="visibleItems.length === 0 && minimalView"
+      :emptyDataText="emptyDataText"
+      boxShadow
+    />
     <HubPagination
       v-if="
         (!minimalView && showPagination && totalPages > 1) ||
@@ -251,33 +250,6 @@
       letter-spacing: 0.1px;
       text-align: end;
       padding-right: 4px;
-    }
-
-    .noData {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      padding: 4px 8px;
-      opacity: 0.9;
-
-      &--minimalView {
-        background: $background;
-        border-radius: 12px;
-        box-shadow:
-          0 4px 6px rgb(0, 0, 0, 0.1),
-          0 1px 3px rgb(0, 0, 0, 0.06);
-      }
-
-      img {
-        width: 64px;
-      }
-
-      p {
-        color: $mainBrownColor;
-        font-weight: 600;
-        font-style: italic;
-        font-size: 14px;
-      }
     }
 
     &_data {
