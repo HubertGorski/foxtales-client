@@ -4,18 +4,28 @@
   import HubShareBtn from '../hubComponents/HubShareBtn.vue';
   import MemoryCard from './MemoryCard.vue';
   import HubPopup from '../hubComponents/HubPopup.vue';
-  import { computed, ref } from 'vue';
+  import { computed } from 'vue';
   import { psychService } from '@/api/services/PsychService';
   import { useLoading } from '@/composables/useLoading';
   import { useUserStore } from '@/stores/userStore';
   import HubPagination from '../hubComponents/HubPagination.vue';
   import NoData from '../NoData.vue';
-
-  const { loading: isDeleteBtnLoading, withLoading } = useLoading();
+  import { usePagination } from '@/composables/usePagination';
 
   const userStore = useUserStore();
-  const currentIndex = ref(0);
-  const currentMemory = computed(() => userStore.user.memories[currentIndex.value]);
+  const { loading: isDeleteBtnLoading, withLoading } = useLoading();
+
+  const {
+    currentPage,
+    totalPages,
+    visibleItems,
+    isPreviousPageBtnDisabled,
+    isNextPageBtnDisabled,
+    setPreviousPage,
+    setNextPage,
+  } = usePagination(() => userStore.user.memories, 1, true);
+
+  const currentMemory = computed(() => visibleItems.value[0]);
 
   const removeMemoryFromLibrary = () =>
     withLoading(async () => {
@@ -33,14 +43,6 @@
     });
 
   const isMemoriesCardAvailable = defineModel({ type: Boolean, required: true });
-
-  const setPreviousPage = () => {
-    currentIndex.value--;
-  };
-
-  const setNextPage = () => {
-    currentIndex.value++;
-  };
 </script>
 
 <template>
@@ -50,7 +52,13 @@
       <div class="shareMemoryPopup_title">{{ $t('yourMemory') }}</div>
       <MemoryCard v-if="currentMemory" :memory="currentMemory" />
       <NoData v-else boxShadow />
-      <HubPagination @setPreviousPage="setPreviousPage" @setNextPage="setNextPage" />
+      <HubPagination
+        :paginationText="`${currentPage}/${totalPages}`"
+        :isPreviousPageBtnDisabled="isPreviousPageBtnDisabled"
+        :isNextPageBtnDisabled="isNextPageBtnDisabled"
+        @setPreviousPage="setPreviousPage"
+        @setNextPage="setNextPage"
+      />
       <div class="shareMemoryPopup_btns">
         <div class="btn">
           <HubBtn
