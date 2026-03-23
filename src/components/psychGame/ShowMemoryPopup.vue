@@ -53,6 +53,7 @@
       <MemoryCard v-if="currentMemory" :memory="currentMemory" />
       <NoData v-else boxShadow />
       <HubPagination
+        v-if="totalPages > 1"
         :paginationText="`${currentPage}/${totalPages}`"
         :isPreviousPageBtnDisabled="isPreviousPageBtnDisabled"
         :isNextPageBtnDisabled="isNextPageBtnDisabled"

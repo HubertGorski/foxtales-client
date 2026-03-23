@@ -96,7 +96,7 @@ export const useUserStore = defineStore({
     },
 
     addCatalog(newCatalog: Catalog) {
-      this.user.catalogs.push(newCatalog);
+      this.user.catalogs.unshift(newCatalog);
     },
 
     editCatalog(catalog: Catalog) {
@@ -127,7 +127,7 @@ export const useUserStore = defineStore({
     },
 
     addQuestion(newQuestion: Question) {
-      this.user.questions.push(newQuestion);
+      this.user.questions.unshift(newQuestion);
     },
 
     unassignQuestionFromCatalog(questionId: number, catalogId: number) {
@@ -179,7 +179,12 @@ export const useUserStore = defineStore({
     },
 
     addMemory(memory: Memory) {
-      this.user.memories.push(memory);
+      this.user.memories.unshift(memory);
+    },
+
+    revealUsersInMemory(shareKey: string, round: number) {
+      const memory = this.user.memories.find(m => m.shareKey === shareKey && m.round === round);
+      if (memory) memory.areUsersHidden = false;
     },
   },
 });

@@ -52,8 +52,20 @@
   const isSubjectPlayer = computed(
     () => currentUserId.value === game.value.currentQuestion?.currentUser?.userId
   );
+  const currentPlayer = computed(() =>
+    game.value.users.find(user => user.userId === currentUserId.value)
+  );
 
   onBeforeMount(() => {
+    if (
+      showOwnersStep.value &&
+      game.value.hasRoundShared &&
+      currentPlayer.value?.hasRoundSaved &&
+      game.value.shareKey
+    ) {
+      userStore.revealUsersInMemory(game.value.shareKey, game.value.round);
+    }
+
     if (!signalRStore.userIdsOrderList.length && game.value.users.length > 0) {
       signalRStore.userIdsOrderList = shuffleArray(game.value.users).map(user => user.userId);
     }

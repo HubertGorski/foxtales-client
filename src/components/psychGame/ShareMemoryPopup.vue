@@ -97,7 +97,7 @@
       <div class="shareMemoryPopup_btns">
         <div class="btn">
           <HubBtn
-            :text="shareSaved ? $t('saved') : $t('save')"
+            :text="shareSaved ? 'saved' : 'save'"
             :icon="shareSaved ? undefined : ICON.ADD_TO_COLLECTION"
             :loading="isSaveBtnLoading"
             :disabled="shareSaved || isSaveBtnLoading"
