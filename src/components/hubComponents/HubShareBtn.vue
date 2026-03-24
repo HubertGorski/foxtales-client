@@ -1,38 +1,47 @@
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted } from 'vue';
+  import { ref, onMounted, onUnmounted, computed } from 'vue';
   import HubBtn from './HubBtn.vue';
   import { ICON } from '@/enums/iconsEnum';
   import { platforms, type IPlatform } from '@/api/External';
+  import { DOMAIN } from '@/api/Client';
 
-  const props = defineProps({
-    url: {
-      type: String,
-      default: () => window.location.href,
-    },
-    title: {
-      type: String,
-      default: () => document.title,
-    },
-    text: {
-      type: String,
-      default: '',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const {
+    title,
+    shareKey,
+    round,
+    text = '',
+    disabled = false,
+  } = defineProps<{
+    title: string;
+    shareKey: string;
+    round: number;
+    text?: string;
+    disabled?: boolean;
+  }>();
 
   const isOpen = ref(false);
   const copied = ref(false);
+
+  const createShareUrl = (shareKey: string, round: number): string => {
+    if (!shareKey || round < 0) return '';
+
+    const lastDash = shareKey.lastIndexOf('-');
+    if (lastDash < 0) return '';
+
+    const prefix = shareKey.slice(0, lastDash);
+    const suffix = shareKey.slice(lastDash + 1);
+    const roundStr = round.toString();
+
+    return `${DOMAIN}/share/memory/${prefix}-${roundStr}${suffix}`;
+  };
 
   const toggleMenu = () => {
     if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
       navigator
         .share({
-          title: props.title,
-          text: props.text,
-          url: props.url,
+          title: title,
+          text: text,
+          url: url.value,
         })
         .catch(() => {});
       return;
@@ -41,21 +50,21 @@
   };
 
   const share = (platform: IPlatform) => {
-    const shareUrl = platform.getUrl(props.url, props.title);
+    const shareUrl = platform.getUrl(url.value, title);
     window.open(shareUrl, '_blank', 'width=600,height=500,noopener,noreferrer');
     isOpen.value = false;
   };
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(props.url);
+      await navigator.clipboard.writeText(url.value);
       copied.value = true;
       setTimeout(() => {
         copied.value = false;
       }, 2000);
     } catch {
       const el = document.createElement('textarea');
-      el.value = props.url;
+      el.value = url.value;
       document.body.appendChild(el);
       el.select();
       document.execCommand('copy');
@@ -70,6 +79,8 @@
   const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') isOpen.value = false;
   };
+
+  const url = computed(() => createShareUrl(shareKey, round));
 
   onMounted(() => document.addEventListener('keydown', handleKeydown));
   onUnmounted(() => document.removeEventListener('keydown', handleKeydown));
