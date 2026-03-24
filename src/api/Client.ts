@@ -6,7 +6,7 @@ const BASE_URL_HUB = import.meta.env.DEV ? 'http://localhost:5161' : 'https://ap
 const BASE_URL_API = `${BASE_URL}/api`;
 export const BASE_URL_PSYCH = `${BASE_URL_HUB}/psychhub`;
 
-export const DOMAIN = 'https://foxtales.cc';
+export const DOMAIN = 'https://www.foxtales.cc';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL_API,
