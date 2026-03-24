@@ -43,3 +43,8 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+
+// Prevent you from being prompted to install your PWA app
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+});
