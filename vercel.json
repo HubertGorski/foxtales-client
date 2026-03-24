@@ -39,11 +39,7 @@
       "destination": "https://api.foxtales.cc/api/:path*"
     },
     {
-      "source": "/psychhub/:path*",
-      "destination": "https://api.foxtales.cc/psychhub/:path*"
-    },
-    {
-      "source": "/((?!share/memory|api|psychhub|assets|.*\\..*).*)",
+      "source": "/((?!share/memory|api|assets|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]
