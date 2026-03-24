@@ -1,7 +1,7 @@
 import { next } from '@vercel/edge';
 
 export const config = {
-  matcher: ['/share/memory/:path*', '/api/:path*', '/psychhub/:path*'],
+  matcher: ['/share/memory/:path*', '/api/:path*'],
 };
 
 export default function middleware(request) {
