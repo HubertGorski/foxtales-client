@@ -113,7 +113,7 @@
 <template>
   <div class="psychGameView">
     <HubBtn
-      v-if="true"
+      v-if="false"
       class="adminBtn"
       :icon="ICON.ADMIN"
       :action="() => (showAdminPanel = true)"
