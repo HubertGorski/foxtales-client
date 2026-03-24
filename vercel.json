@@ -32,24 +32,15 @@
   "rewrites": [
     {
       "source": "/share/memory/:path*",
-      "destination": "https://api.foxtales.cc/share/memory/:path*",
-      "headers": {
-        "X-API-Key": "${VERCEL_API_KEY}"
-      }
+      "destination": "https://api.foxtales.cc/share/memory/:path*"
     },
     {
       "source": "/api/:path*",
-      "destination": "https://api.foxtales.cc/api/:path*",
-      "headers": {
-        "X-API-Key": "${VERCEL_API_KEY}"
-      }
+      "destination": "https://api.foxtales.cc/api/:path*"
     },
     {
       "source": "/psychhub/:path*",
-      "destination": "https://api.foxtales.cc/psychhub/:path*",
-      "headers": {
-        "X-API-Key": "${VERCEL_API_KEY}"
-      }
+      "destination": "https://api.foxtales.cc/psychhub/:path*"
     },
     {
       "source": "/((?!share/memory|api|psychhub|assets|.*\\..*).*)",
