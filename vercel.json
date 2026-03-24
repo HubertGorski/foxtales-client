@@ -31,7 +31,10 @@
   "rewrites": [
     {
       "source": "/share/memory/:path*",
-      "destination": "https://api.foxtales.cc/share/memory/:path*"
+      "destination": "https://api.foxtales.cc/share/memory/:path*",
+      "headers": {
+        "X-API-Key": "${VITE_VERCEL_API_KEY}"
+      }
     },
     {
       "source": "/((?!share/memory|api|assets|.*\\..*).*)",
