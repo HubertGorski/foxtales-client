@@ -108,10 +108,10 @@
         </div>
         <div @click="addMemory" class="btn">
           <HubShareBtn
-            url="https://foxtales.cc"
+            :shareKey="game.shareKey!"
+            :round="game.round"
             title="Fox Tales"
             text="Be as sly as a fox!"
-            disabled
           />
         </div>
       </div>

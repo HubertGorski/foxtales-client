@@ -22,7 +22,9 @@ import { Memory } from '@/models/Memory';
 export const userService = {
   async logout(): Promise<void> {
     clearTokenRefresh();
-    await userClient.logout();
+    try {
+      await userClient.logout();
+    } catch {}
     useUserStore().setUserSession(new User());
     await useSignalRStore().disconnect();
   },

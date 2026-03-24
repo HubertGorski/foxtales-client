@@ -5,7 +5,6 @@
   import type { Avatar } from '@/models/Avatar';
   import HubAccordion from '@/components/hubComponents/HubAccordion.vue';
   import HubInputWithBtn from '@/components/hubComponents/HubInputWithBtn.vue';
-  import LevelBar from '@/components/LevelBar.vue';
   import { ICON } from '@/enums/iconsEnum';
   import WhiteSelectList from '@/components/selectLists/WhiteSelectList.vue';
   import { useI18n } from 'vue-i18n';
@@ -44,7 +43,7 @@
   const isContactDisabled = ref<boolean>(false);
   const isConfirmFoxPanelVisible = ref<boolean>(false);
   const selectedAvatar = ref<Avatar | null>(null);
-  const setOpenTab = ref<string>('accountStats');
+  const setOpenTab = ref<string>('chooseFox');
 
   const languages = ref<ListElement[]>([
     new ListElement({
@@ -78,15 +77,6 @@
       isSelected: currentUser.language === LANG.ES,
     }),
   ]);
-
-  const allUserAchievements = currentUser.achievements.sort(
-    (a, b) => Number(b.isUnlocked) - Number(a.isUnlocked)
-  );
-  const unlockedAchievementsCount = allUserAchievements.filter(
-    achievement => achievement.isUnlocked
-  ).length;
-
-  const showAllAchievement = () => {};
 
   const changeLanguage = async () => {
     const response = await userService.setLanguage(selectedLanguage.value);
@@ -218,7 +208,6 @@
       <HubAccordion
         v-model="setOpenTab"
         :slotNames="[
-          { slotName: 'accountStats', isComing: true },
           { slotName: 'chooseFox', isComing: false },
           { slotName: 'changeName', isComing: false },
           { slotName: 'changeLanguage', isComing: false },
@@ -226,58 +215,6 @@
           { slotName: 'contact', isComing: false },
         ]"
       >
-        <template #accountStats>
-          <div class="accordionContent">
-            <LevelBar
-              :level="currentUser.level"
-              :points="currentUser.accountPoints"
-              :requiredPointsToNextLevel="currentUser.requiredAccountPointsToNextLevel"
-            />
-            <div class="stats">
-              <div class="stats_element">
-                <v-icon>{{ ICON.ANSWER }}</v-icon>
-                <span>{{ $t('stats.answers') }}: {{ currentUser.answersCountPsych }}</span>
-              </div>
-              <div class="stats_element">
-                <v-icon>{{ ICON.GAME }}</v-icon>
-                <span>{{ $t('stats.games') }}: {{ currentUser.totalGamesPlayed }}</span>
-              </div>
-              <div class="stats_element">
-                <v-icon>{{ ICON.QUESTION }}</v-icon>
-                <span>
-                  {{ $t('stats.publicQuestions') }}: {{ currentUser.publicQuestionsCount }}
-                </span>
-              </div>
-              <div class="stats_element">
-                <v-icon>{{ ICON.ACHIEVEMENT }}</v-icon>
-                <span>
-                  {{ $t('stats.achievements') }}: {{ unlockedAchievementsCount }} /
-                  {{ allUserAchievements.length }}
-                </span>
-              </div>
-              <div class="achievements">
-                <div class="achievements_list">
-                  <img
-                    v-for="achievement in allUserAchievements"
-                    :key="achievement.id"
-                    :class="{
-                      unlocked: achievement.isUnlocked,
-                    }"
-                    class="achievement"
-                    :src="achievement.icon"
-                    :alt="`${achievement.getUnlockedLevel}`"
-                  />
-                </div>
-              </div>
-            </div>
-            <HubBtn
-              class="achievements_btn"
-              text="seeMore"
-              :icon="ICON.MINI_ARROW_RIGHT"
-              :action="showAllAchievement"
-            />
-          </div>
-        </template>
         <template #chooseFox>
           <div class="avatars">
             <div v-for="avatar in sortedAvatars" :key="avatar.id" class="avatar">
