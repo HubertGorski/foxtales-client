@@ -5,8 +5,21 @@ import { plainToInstance } from 'class-transformer';
 import { CatalogTranslations } from '@/models/CatalogTranslations';
 import type { LANG } from '@/enums/languagesEnum';
 import { QuestionTranslations } from '@/models/QuestionTranslations';
+import type { Memory } from '@/models/Memory';
 
 export const psychService = {
+  async addMemory(memory: Memory): Promise<void> {
+    await psychClient.addMemory(memory);
+  },
+
+  async addMemoryToLibrary(shareKey: string, round: number, userId: number): Promise<void> {
+    await psychClient.addMemoryToLibrary(shareKey, round, userId);
+  },
+
+  async removeMemoryFromLibrary(shareKey: string, round: number, userId: number): Promise<boolean> {
+    return (await psychClient.removeMemoryFromLibrary(shareKey, round, userId)).data;
+  },
+
   async addQuestion(
     question: Question
   ): Promise<{ translations: QuestionTranslations[]; questionId: number }> {

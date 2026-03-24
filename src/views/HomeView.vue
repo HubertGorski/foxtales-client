@@ -3,13 +3,13 @@
   import { useRouter } from 'vue-router';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import { ICON } from '@/enums/iconsEnum';
-  import OrangeSwitchBtn from '@/components/OrangeSwitchBtn.vue';
   import { useI18n } from 'vue-i18n';
   import { LANG, toLang } from '@/enums/languagesEnum';
   import { toggleWakeLock } from '@/libs/wakeLock';
   import { useViewStore } from '@/stores/viewStore';
   import { useUserStore } from '@/stores/userStore';
   import { userService } from '@/api/services/UserService';
+  import HubSwitchBtn from '@/components/hubComponents/HubSwitchBtn.vue';
 
   const viewStore = useViewStore();
   const router = useRouter();
@@ -71,18 +71,20 @@
       />
     </div>
     <div class="homeView_settingsBtns">
-      <OrangeSwitchBtn
+      <HubSwitchBtn
         :action="changeLanguage"
         :iconOff="ICON.LANGUAGE"
         :iconOn="ICON.LANGUAGE"
         iconSize="34"
+        isOrange
       />
-      <OrangeSwitchBtn
+      <HubSwitchBtn
         :initState="viewStore.useWakeLock"
         :action="handleToggleWakeLock"
         :iconOff="ICON.WAKE_LOCK_OFF"
         :iconOn="ICON.WAKE_LOCK_ON"
         iconSize="34"
+        isOrange
       />
     </div>
     <img src="@/assets/imgs/foxes.webp" alt="Lisek" class="homeView_img" />

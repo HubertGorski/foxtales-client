@@ -17,8 +17,9 @@
   import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
   import type { Answer } from '@/models/Answer';
   import { ICON } from '@/enums/iconsEnum';
-  import OrangeSwitchBtn from '../OrangeSwitchBtn.vue';
   import { useViewStore } from '@/stores/viewStore';
+  import HubSwitchBtn from '../hubComponents/HubSwitchBtn.vue';
+  import ShareMemoryPopup from './ShareMemoryPopup.vue';
 
   const { t } = useI18n();
   const signalRStore = useSignalRStore();
@@ -43,24 +44,36 @@
 
   const showConfirmEmptySelectPanel = ref<boolean>(false);
   const showOriginalAnswers = ref<boolean>(false);
+  const isMemoriesCardAvailable = ref<boolean>(false);
 
   const timeLeft = ref(0);
   let timerId: number = 0;
-  const shuffledUsers = ref<User[]>(shuffleArray(game.value.users));
-
   const isQuietDaysMode = computed(() => game.value.currentRules === RULES.QUIET_DAYS);
   const isSubjectPlayer = computed(
     () => currentUserId.value === game.value.currentQuestion?.currentUser?.userId
   );
+  const currentPlayer = computed(() =>
+    game.value.users.find(user => user.userId === currentUserId.value)
+  );
 
   onBeforeMount(() => {
-    if (!signalRStore.userIdsOrderList.length) {
-      signalRStore.userIdsOrderList = shuffledUsers.value.map(user => user.userId);
-      return;
+    if (
+      showOwnersStep.value &&
+      game.value.hasRoundShared &&
+      currentPlayer.value?.hasRoundSaved &&
+      game.value.shareKey
+    ) {
+      userStore.revealUsersInMemory(game.value.shareKey, game.value.round);
     }
 
+    if (!signalRStore.userIdsOrderList.length && game.value.users.length > 0) {
+      signalRStore.userIdsOrderList = shuffleArray(game.value.users).map(user => user.userId);
+    }
+  });
+
+  const shuffledUsers = computed<User[]>(() => {
     const orderMap = new Map(signalRStore.userIdsOrderList.map((id, index) => [id, index]));
-    shuffledUsers.value.sort((a, b) => {
+    return [...game.value.users].sort((a, b) => {
       const aIndex = orderMap.get(a.userId) ?? Infinity;
       const bIndex = orderMap.get(b.userId) ?? Infinity;
       return aIndex - bIndex;
@@ -81,11 +94,12 @@
     }
 
     timerId = setInterval(() => {
-      timeLeft.value--;
-
       if (timeLeft.value <= 0) {
         clearInterval(timerId);
+        return;
       }
+
+      timeLeft.value--;
     }, 1000);
   });
 
@@ -203,6 +217,10 @@
     return isSubjectPlayer.value ? userList.value.length === 1 : userList.value.length === 2;
   });
 
+  const isWaitingForResults = computed(() => {
+    return isQuietDaysMode.value && !isSubjectPlayer.value;
+  });
+
   const userList = computed(() => {
     if (!isQuietDaysMode.value || !isSubjectPlayer.value) {
       return shuffledUsers.value;
@@ -216,7 +234,7 @@
       return `${t('chooseCorrectAnswers')} (${timeLeft.value})`;
     }
 
-    if (isQuietDaysMode.value && !isSubjectPlayer.value) {
+    if (isWaitingForResults.value) {
       return t('waitingForResults');
     }
 
@@ -231,6 +249,7 @@
       disabled:
         (!selectedAnswerUserIds.value.length && !isQuietDaysMode.value) ||
         isUserReady.value ||
+        isWaitingForResults.value ||
         (timeLeft.value > 0 && isSubjectPlayer.value && isQuietDaysMode.value),
     };
   });
@@ -321,7 +340,7 @@
         @click="selectAnswer(user.userId)"
       />
     </div>
-    <div class="bottomPanelWithBtns" :class="{ translateBtnCenter: isDuoGame && isSubjectPlayer }">
+    <div class="bottomPanelWithBtns">
       <div v-if="!showOwnersStep" class="w-100">
         <div v-if="isDuoGame && isSubjectPlayer" class="trueFalsePanel">
           <div class="trueFalsePanel_btn">
@@ -356,14 +375,21 @@
           :disabled="nextPageBtn.disabled"
         />
       </div>
-      <OrangeSwitchBtn
-        v-if="areSwitchLangAnswersVisible"
-        :initState="showOriginalAnswers"
-        :action="switchLangAnswers"
-        :iconOff="ICON.TRANSLATE_OFF"
-        :iconOn="ICON.TRANSLATE_ON"
-        iconSize="32"
-      />
+      <div class="bottomPanelWithBtns_btns" :class="{ btnCenter: isDuoGame && isSubjectPlayer }">
+        <HubBtn
+          :action="() => (isMemoriesCardAvailable = true)"
+          :icon="ICON.MEMORIES"
+          hubSwitchStyle
+        />
+        <HubSwitchBtn
+          v-if="areSwitchLangAnswersVisible"
+          :initState="showOriginalAnswers"
+          :action="switchLangAnswers"
+          :iconOff="ICON.TRANSLATE_OFF"
+          :iconOn="ICON.TRANSLATE_ON"
+          iconSize="32"
+        />
+      </div>
     </div>
     <HubDialogPopup
       v-model="showConfirmEmptySelectPanel"
@@ -372,6 +398,7 @@
       confirmBtnText="continue"
       :confirmAction="confirmEmptySelectAnswer"
     />
+    <ShareMemoryPopup v-model="isMemoriesCardAvailable" :game="game" />
   </div>
 </template>
 
@@ -407,13 +434,18 @@
     .bottomPanelWithBtns {
       position: relative;
       display: flex;
-      align-items: center;
+      align-items: end;
       width: 100%;
 
-      &.translateBtnCenter {
-        .orangeSwitchBtn {
+      &_btns {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 0;
+
+        &.btnCenter {
           position: absolute;
-          top: 32px;
+          bottom: 58px;
           right: 50%;
           transform: translateX(50%);
         }

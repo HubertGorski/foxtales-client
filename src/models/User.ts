@@ -7,14 +7,13 @@ import { Achievement } from './Achievement';
 import { Permission } from './Permission';
 import { LANG, LangFromNumber, LangToNumber } from '@/enums/languagesEnum';
 import { Question } from './Question';
-import { DylematyCard } from './DylematyCard';
-import { Deck } from './Deck';
 import { UserLimit } from './UserLimit';
 import { Transform, Type } from 'class-transformer';
 import type { QUESTION_SOURCE } from '@/enums/questionSource';
 import { Answer } from './Answer';
 import { Vote } from './Vote';
 import type { VIEW } from '@/enums/viewsEnum';
+import { Memory } from './Memory';
 
 export class User {
   // Basic info
@@ -68,14 +67,11 @@ export class User {
   @Type(() => Question)
   questions: Question[] = [];
 
+  @Type(() => Memory)
+  memories: Memory[] = [];
+
   //Dylematy game
   totalDylematyGamesPlayed: number = 0;
-
-  @Type(() => Deck)
-  decks: Deck[] = [];
-
-  @Type(() => DylematyCard)
-  dylematyCards: DylematyCard[] = [];
 
   answersInDylematyCount: number = 0;
   correctAnswersInDylematyCount: number = 0;
@@ -92,6 +88,7 @@ export class User {
   pointsInGame: number = 0;
   newPoints: number = 0;
   round: number = 1;
+  hasRoundSaved: boolean = false;
 
   // In Psych Game
   // ==== Lobby ====
@@ -144,23 +141,6 @@ export class User {
 
   get publicQuestionsCount(): number {
     return this.questions.filter(question => question.isPublic).length;
-  }
-
-  //DYLEMATY
-  get decksCount(): number {
-    return this.decks.length;
-  }
-
-  get dylematyCardsCount(): number {
-    return this.dylematyCards.length;
-  }
-
-  get negativeCards(): DylematyCard[] {
-    return this.dylematyCards.filter(card => card.isNegativeCard);
-  }
-
-  get positiveCards(): DylematyCard[] {
-    return this.dylematyCards.filter(card => card.isPositiveCard);
   }
 
   getPermission(permissionName: PERMISSION): Permission | undefined {

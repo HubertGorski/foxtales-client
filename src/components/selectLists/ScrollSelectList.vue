@@ -2,18 +2,15 @@
   import { computed, ref, type PropType } from 'vue';
   import type { ListElement } from './ListElement';
   import HubDialogPopup from '../hubComponents/HubDialogPopup.vue';
-  import { ICON } from '@/enums/iconsEnum';
-  import { DYLEMATY_CARD_TYPE } from '@/models/DylematyCard';
+  import NoData from '../NoData.vue';
 
   const {
     addCutomText,
     createdItemsText = 'createdItems',
-    isTypeAvailable = false,
     emptyDataText = 'emptyData',
   } = defineProps<{
     addCutomText: string;
     createdItemsText?: string;
-    isTypeAvailable?: boolean;
     emptyDataText?: string;
   }>();
 
@@ -56,10 +53,7 @@
 <template>
   <div class="scrollSelectList">
     <div class="items" :class="{ isPaddingBottom: isControlPanelVisible }">
-      <div v-if="items.length === 0" class="noData">
-        <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
-        <p>{{ $t(emptyDataText) }}</p>
-      </div>
+      <NoData v-if="items.length === 0" :emptyDataText="emptyDataText" big />
       <div
         v-for="item in items"
         :key="item.id"
@@ -68,9 +62,6 @@
         @click="item.setSelected(!item.isSelected)"
       >
         <div class="itemContent">
-          <v-icon v-if="isTypeAvailable" class="itemContent_typeIcon">
-            {{ item.type === DYLEMATY_CARD_TYPE.POSITIVE ? ICON.HAPPY : ICON.SAD }}
-          </v-icon>
           {{ item.description || item.title }}
         </div>
         <v-divider v-if="!item.isSelected" />
@@ -100,25 +91,6 @@
     position: relative;
     height: 100%;
     width: 100%;
-
-    .noData {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      opacity: 0.9;
-
-      img {
-        padding: 16px 64px;
-        max-height: 164px;
-      }
-
-      p {
-        color: $mainBrownColor;
-        font-weight: 600;
-        font-style: italic;
-        font-size: 14px;
-      }
-    }
 
     .items {
       height: 100%;

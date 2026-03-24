@@ -23,4 +23,9 @@ export class Answer {
     this.ownerId = ownerId;
     this.answer = answer;
   }
+
+  setAnswerInOtherLanguages(answerInOtherLanguages: Partial<Record<LANG, string>>): this {
+    this.answerInOtherLanguages = answerInOtherLanguages;
+    return this;
+  }
 }

@@ -8,8 +8,10 @@
     isClicked: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     small: { type: Boolean, default: false },
+    hubSwitchStyle: { type: Boolean, default: false },
     action: { type: Function, required: true },
     useDicts: { type: Boolean, default: true },
+    useGap: { type: Boolean, default: false },
   });
 
   const handleAction = () => {
@@ -26,7 +28,7 @@
     data-no-blur
     class="hubBtn"
     :class="[
-      { loading, disabled, small, ghost },
+      { loading, disabled, small, ghost, hubSwitchStyle, useGap },
       isClicked
         ? isOrange
           ? 'hubBtn--darkOrange'
@@ -108,9 +110,20 @@
     color: $whiteColor;
   }
 
+  .useGap {
+    gap: 8px;
+  }
+
   .small {
     max-height: 34px;
     font-size: 14px;
+  }
+
+  .hubSwitchStyle {
+    height: 42px;
+    padding: 8px;
+    width: 48px;
+    font-size: 20px;
   }
 
   .loader {

@@ -5,10 +5,12 @@ import type { FoxGame } from '@/models/FoxGame';
 import type { CatalogType } from '@/models/CatalogType';
 import type { Catalog } from '@/models/Catalog';
 import { LangToNumber, type LANG } from '@/enums/languagesEnum';
+import type { Memory } from '@/models/Memory';
 
 export interface IUserLoginResponse {
   user: User;
   avatars: Avatar[];
+  memories: Memory[];
   foxGames: FoxGame[];
   availableCatalogTypes: CatalogType[];
   publicCatalogs: Catalog[];

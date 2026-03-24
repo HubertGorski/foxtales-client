@@ -5,8 +5,8 @@ import type { LANG } from '@/enums/languagesEnum';
 import type { Catalog } from '@/models/Catalog';
 import type { Question } from '@/models/Question';
 import type { PERMISSION, PERMISSION_GAME } from '@/enums/permissions';
-import type { Deck } from '@/models/Deck';
 import type { CatalogType } from '@/models/CatalogType';
+import type { Memory } from '@/models/Memory';
 
 interface UserState {
   user: User;
@@ -67,6 +67,10 @@ export const useUserStore = defineStore({
       this.avatars = avatars;
     },
 
+    setMemories(memories: Memory[]) {
+      this.user.memories = memories;
+    },
+
     setUserSession(user: User) {
       this.user = user;
     },
@@ -92,11 +96,7 @@ export const useUserStore = defineStore({
     },
 
     addCatalog(newCatalog: Catalog) {
-      this.user.catalogs.push(newCatalog);
-    },
-
-    addDeck(newDeck: Deck) {
-      this.user.decks.push(newDeck);
+      this.user.catalogs.unshift(newCatalog);
     },
 
     editCatalog(catalog: Catalog) {
@@ -105,13 +105,6 @@ export const useUserStore = defineStore({
       );
       if (index !== -1) {
         this.user.catalogs[index] = catalog;
-      }
-    },
-
-    editDeck(deck: Deck) {
-      const index = this.user.decks.findIndex(userDeck => userDeck.id === deck.id);
-      if (index !== -1) {
-        this.user.decks[index] = deck;
       }
     },
 
@@ -134,7 +127,7 @@ export const useUserStore = defineStore({
     },
 
     addQuestion(newQuestion: Question) {
-      this.user.questions.push(newQuestion);
+      this.user.questions.unshift(newQuestion);
     },
 
     unassignQuestionFromCatalog(questionId: number, catalogId: number) {
@@ -177,6 +170,21 @@ export const useUserStore = defineStore({
     removeCatalog(catalogId: number) {
       this.unassignCatalogFromAllQuestions(catalogId);
       this.user.catalogs = this.user.catalogs.filter(catalog => catalog.catalogId !== catalogId);
+    },
+
+    removeMemory(shareKey: string, round: number) {
+      this.user.memories = this.user.memories.filter(
+        memory => memory.shareKey !== shareKey || memory.round !== round
+      );
+    },
+
+    addMemory(memory: Memory) {
+      this.user.memories.unshift(memory);
+    },
+
+    revealUsersInMemory(shareKey: string, round: number) {
+      const memory = this.user.memories.find(m => m.shareKey === shareKey && m.round === round);
+      if (memory) memory.areUsersHidden = false;
     },
   },
 });

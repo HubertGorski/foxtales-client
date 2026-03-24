@@ -1,68 +1,43 @@
 <script setup lang="ts">
   import { ICON } from '@/enums/iconsEnum';
-  import { computed, ref, watch, type PropType } from 'vue';
+  import { computed, watch, type PropType } from 'vue';
   import HubTooltip from '../hubComponents/HubTooltip.vue';
-  import HubBtn from '../hubComponents/HubBtn.vue';
   import type { ListElement } from './ListElement';
+  import HubPagination from '../hubComponents/HubPagination.vue';
+  import NoData from '../NoData.vue';
+  import { usePagination } from '@/composables/usePagination';
 
-  const props = defineProps({
-    showSelectedCount: {
-      type: Boolean,
-      default: false,
-    },
-    customSelectedCountTitle: {
-      type: String,
-      default: 'selectedItems',
-    },
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
-    showPagination: {
-      type: Boolean,
-      default: false,
-    },
-    showElementsCountInItem: {
-      type: Boolean,
-      default: false,
-    },
-    height: {
-      type: Number,
-      required: false,
-    },
-    itemsPerPage: {
-      type: Number,
-      default: 4,
-    },
-    showItemDetailsBtn: {
-      type: Boolean,
-      default: false,
-    },
-    emptyDataText: {
-      type: String,
-      default: 'emptyData',
-    },
-    selectVisibleItems: {
-      type: Boolean,
-      default: false,
-    },
-    moveToSelectedItem: {
-      type: Boolean,
-      default: false,
-    },
-    minimalView: {
-      type: Boolean,
-      default: false,
-    },
-    selectItemId: {
-      type: Number,
-      required: false,
-    },
-    infinityPages: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const {
+    showSelectedCount = false,
+    customSelectedCountTitle = 'selectedItems',
+    multiple = false,
+    showPagination = false,
+    showElementsCountInItem = false,
+    height,
+    itemsPerPage = 4,
+    showItemDetailsBtn = false,
+    emptyDataText = 'emptyData',
+    selectVisibleItems = false,
+    moveToSelectedItem = false,
+    minimalView = false,
+    selectItemId,
+    infinityPages = false,
+  } = defineProps<{
+    showSelectedCount?: boolean;
+    customSelectedCountTitle?: string;
+    multiple?: boolean;
+    showPagination?: boolean;
+    showElementsCountInItem?: boolean;
+    height?: number;
+    itemsPerPage?: number;
+    showItemDetailsBtn?: boolean;
+    emptyDataText?: string;
+    selectVisibleItems?: boolean;
+    moveToSelectedItem?: boolean;
+    minimalView?: boolean;
+    selectItemId?: number;
+    infinityPages?: boolean;
+  }>();
 
   const emit = defineEmits<{
     (e: 'showDetails', item: ListElement): void;
@@ -72,94 +47,45 @@
     type: Array as PropType<Array<ListElement>>,
     required: true,
   });
-  const currentPage = ref<number>(1);
 
-  if (props.selectItemId) {
-    const selectItem = items.value.find(i => i.id === props.selectItemId);
+  const {
+    currentPage,
+    totalPages,
+    visibleItems,
+    isPreviousPageBtnDisabled,
+    isNextPageBtnDisabled,
+    setPreviousPage,
+    setNextPage,
+    moveToItem,
+  } = usePagination(() => items.value, itemsPerPage, infinityPages);
+
+  if (selectItemId) {
+    const selectItem = items.value.find(i => i.id === selectItemId);
     if (selectItem) {
       selectItem.isSelected = true;
     }
   }
 
-  if (props.moveToSelectedItem) {
-    const firstSelectedIndex = items.value.findIndex(i => i.isSelected);
-    if (firstSelectedIndex !== -1) {
-      currentPage.value = Math.floor(firstSelectedIndex / props.itemsPerPage) + 1;
-    }
+  if (moveToSelectedItem) {
+    moveToItem(items.value.findIndex(i => i.isSelected));
   }
-
-  const visibleItems = computed(() => {
-    const startIndex = currentPage.value * props.itemsPerPage - props.itemsPerPage;
-    return items.value.slice(startIndex, startIndex + props.itemsPerPage);
-  });
-
-  const isPreviousPageBtnDisabled = computed(() => {
-    if (totalPages.value < 2) {
-      return true;
-    }
-
-    return props.infinityPages ? false : currentPage.value === 1;
-  });
-
-  const isNextPageBtnDisabled = computed(() => {
-    if (totalPages.value < 2) {
-      return true;
-    }
-
-    return props.infinityPages ? false : currentPage.value >= totalPages.value;
-  });
-
-  const previousPageBtn = computed(() => {
-    return {
-      icon: ICON.ARROW_LEFT,
-      disabled: isPreviousPageBtnDisabled.value,
-      action: () => setPreviousPage(),
-    };
-  });
-  const nextPageBtn = computed(() => {
-    return {
-      icon: ICON.ARROW_RIGHT,
-      disabled: isNextPageBtnDisabled.value,
-      action: () => setNextPage(),
-    };
-  });
-
-  const totalPages = computed(() => Math.ceil(items.value.length / props.itemsPerPage));
 
   const selectedItems = computed(() => items.value.filter(item => item.isSelected));
 
   const paginationText = computed(() => {
-    if (props.minimalView) {
+    if (minimalView) {
       return visibleItems.value.length > 0 ? visibleItems.value[0].title : '';
     }
 
     return `${currentPage.value} / ${totalPages.value}`;
   });
 
-  const setPreviousPage = () => {
-    if (currentPage.value === 1) {
-      currentPage.value = totalPages.value;
-      return;
-    }
-
-    currentPage.value = currentPage.value - 1;
-  };
-
-  const setNextPage = () => {
-    if (currentPage.value === totalPages.value) {
-      currentPage.value = 1;
-      return;
-    }
-
-    currentPage.value = currentPage.value + 1;
-  };
-
   const showDetails = (item: ListElement) => {
     emit('showDetails', item);
   };
 
   const selectItem = (item: ListElement) => {
-    if (props.multiple) {
+    if (multiple) {
       item.isSelected = !item.isSelected;
     } else {
       items.value.map(item => (item.isSelected = false));
@@ -167,11 +93,7 @@
     }
   };
   watch(visibleItems, () => {
-    if (!visibleItems.value.length) {
-      currentPage.value = 1;
-    }
-
-    if (!props.selectVisibleItems) {
+    if (!selectVisibleItems) {
       return;
     }
 
@@ -184,7 +106,7 @@
     });
   });
 
-  if (props.selectVisibleItems) {
+  if (selectVisibleItems) {
     visibleItems.value.forEach(item => {
       item.isSelected = true;
     });
@@ -200,10 +122,7 @@
       >
         {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} / {{ items.length }})
       </div>
-      <div v-if="visibleItems.length === 0" class="noData">
-        <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
-        <p>{{ $t(emptyDataText) }}</p>
-      </div>
+      <NoData v-if="visibleItems.length === 0" :emptyDataText="emptyDataText" />
       <div
         v-else
         class="whiteSelectList_data"
@@ -238,31 +157,22 @@
         </div>
       </div>
     </div>
-    <div v-if="visibleItems.length === 0 && minimalView" class="noData noData--minimalView">
-      <img src="@/assets/imgs/fox-icon.webp" alt="Lisek" />
-      <p>{{ $t(emptyDataText) }}</p>
-    </div>
-    <div
+    <NoData
+      v-if="visibleItems.length === 0 && minimalView"
+      :emptyDataText="emptyDataText"
+      boxShadow
+    />
+    <HubPagination
       v-if="
         (!minimalView && showPagination && totalPages > 1) ||
         (minimalView && showPagination && totalPages > 0)
       "
-      class="pagination"
-    >
-      <HubBtn
-        class="pagination_btn"
-        :icon="previousPageBtn.icon"
-        :action="previousPageBtn.action"
-        :disabled="previousPageBtn.disabled"
-      />
-      <div class="pagination_data">{{ paginationText }}</div>
-      <HubBtn
-        class="pagination_btn"
-        :icon="nextPageBtn.icon"
-        :action="nextPageBtn.action"
-        :disabled="nextPageBtn.disabled"
-      />
-    </div>
+      :paginationText="paginationText"
+      :isPreviousPageBtnDisabled="isPreviousPageBtnDisabled"
+      :isNextPageBtnDisabled="isNextPageBtnDisabled"
+      @setPreviousPage="setPreviousPage"
+      @setNextPage="setNextPage"
+    />
   </div>
 </template>
 
@@ -276,33 +186,6 @@
       letter-spacing: 0.1px;
       text-align: end;
       padding-right: 4px;
-    }
-
-    .noData {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      padding: 4px 8px;
-      opacity: 0.9;
-
-      &--minimalView {
-        background: $background;
-        border-radius: 12px;
-        box-shadow:
-          0 4px 6px rgb(0, 0, 0, 0.1),
-          0 1px 3px rgb(0, 0, 0, 0.06);
-      }
-
-      img {
-        width: 64px;
-      }
-
-      p {
-        color: $mainBrownColor;
-        font-weight: 600;
-        font-style: italic;
-        font-size: 14px;
-      }
     }
 
     &_data {
@@ -374,27 +257,6 @@
           margin: 8px;
           color: $lightBrownColor;
         }
-      }
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #fffefd;
-      border: 1px $mainBrownColor solid;
-      border-radius: 12px;
-      margin-top: 4px;
-
-      &_btn {
-        font-size: 20px;
-        padding: 4px;
-        width: min-content;
-      }
-
-      &_data {
-        color: $mainBrownColor;
-        font-weight: 600;
       }
     }
   }

@@ -5,8 +5,26 @@ import { instanceToPlain } from 'class-transformer';
 import type { CatalogTranslations } from '@/models/CatalogTranslations';
 import { LangToNumber, type LANG } from '@/enums/languagesEnum';
 import type { QuestionTranslations } from '@/models/QuestionTranslations';
+import type { Memory } from '@/models/Memory';
 
 export const psychClient = {
+  addMemory(newMemory: Memory): Promise<void> {
+    const memory = instanceToPlain(newMemory);
+    return apiClient.post('/psych/addMemory', { memory });
+  },
+
+  addMemoryToLibrary(shareKey: string, round: number, userId: number): Promise<void> {
+    return apiClient.post('/psych/addMemoryToLibrary', { shareKey, round, userId });
+  },
+
+  removeMemoryFromLibrary(
+    shareKey: string,
+    round: number,
+    userId: number
+  ): Promise<{ data: boolean }> {
+    return apiClient.post('/psych/removeMemoryFromLibrary', { shareKey, round, userId });
+  },
+
   addQuestion(
     newQuestion: Question
   ): Promise<{ data: { translations: QuestionTranslations[]; questionId: number } }> {

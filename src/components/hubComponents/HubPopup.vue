@@ -29,7 +29,7 @@
       height: 100%;
       background-color: black;
       z-index: 1;
-      opacity: 0.2;
+      opacity: 0.3;
     }
 
     &_content {

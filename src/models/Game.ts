@@ -10,6 +10,9 @@ export class Game {
   @Type(() => String)
   code: string | null;
 
+  @Type(() => String)
+  shareKey: string | null = null;
+
   @Type(() => FoxGame)
   foxGame: FoxGame;
 
@@ -51,6 +54,9 @@ export class Game {
 
   @Type(() => Boolean)
   hasGameEnded: boolean;
+
+  @Type(() => Boolean)
+  hasRoundShared: boolean = false;
 
   @Type(() => Number)
   selectedPublicCatalogId: number | null;

@@ -2,7 +2,7 @@
   import { isEqual } from 'lodash';
 
   export interface HubSwitchBtnsItem {
-    id: number;
+    id: any;
     title: string;
     subtitle?: string;
   }
