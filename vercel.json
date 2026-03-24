@@ -30,7 +30,11 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/share/memory/:path*",
+      "destination": "https://api.foxtales.cc/share/memory/:path*"
+    },
+    {
+      "source": "/((?!share/memory|api|assets|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]
