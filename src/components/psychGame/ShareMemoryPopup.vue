@@ -107,12 +107,7 @@
           />
         </div>
         <div @click="addMemory" class="btn">
-          <HubShareBtn
-            :shareKey="game.shareKey!"
-            :round="game.round"
-            title="Fox Tales"
-            text="Be as sly as a fox!"
-          />
+          <HubShareBtn :shareKey="game.shareKey!" :round="game.round" title="Fox Tales" />
         </div>
       </div>
     </div>
