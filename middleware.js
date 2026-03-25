@@ -1,4 +1,4 @@
-import { next, rewrite } from '@vercel/edge';
+import { next, redirect } from '@vercel/edge';
 
 export const config = {
   matcher: ['/share/memory/:path*', '/api/:path*'],
@@ -7,7 +7,6 @@ export const config = {
 export default function middleware(request) {
   const apiKey = process.env.VERCEL_API_KEY;
   const ua = request.headers.get('user-agent') || '';
-
   const isBot =
     ua.includes('facebookexternalhit') ||
     ua.includes('Facebot') ||
@@ -19,17 +18,7 @@ export default function middleware(request) {
 
   if (isBot && url.pathname.startsWith('/share/memory/')) {
     const apiUrl = `https://api.foxtales.cc${url.pathname}`;
-
-    const headers = new Headers(request.headers);
-    if (apiKey) {
-      headers.set('X-API-Key', apiKey);
-    }
-
-    return rewrite(apiUrl, {
-      request: {
-        headers,
-      },
-    });
+    return redirect(apiUrl, 301);
   }
 
   if (apiKey) {
