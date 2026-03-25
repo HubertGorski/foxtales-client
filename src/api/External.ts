@@ -13,7 +13,7 @@ export const platforms: IPlatform[] = [
     color: '#0099ff',
     icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="#0099ff"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.627 0 12-4.974 12-11.111S18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/></svg>`,
     getUrl: (url: string) =>
-      `https://www.facebook.com/dialog/send?link=${encodeURIComponent(url)}&app_id=291494419107518&redirect_uri=${DOMAIN}`,
+      `https://www.facebook.com/dialog/send?link=${encodeURIComponent(url)}&app_id=977130461549729&redirect_uri=${DOMAIN}`,
   },
   {
     name: 'Facebook',
