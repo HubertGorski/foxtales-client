@@ -77,7 +77,6 @@
             :shareKey="currentMemory?.shareKey"
             :round="currentMemory?.round"
             title="Fox Tales"
-            text="Be as sly as a fox!"
           />
         </div>
       </div>
