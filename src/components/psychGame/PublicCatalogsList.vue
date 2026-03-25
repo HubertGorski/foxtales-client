@@ -73,7 +73,7 @@
       &_title {
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
-        background-color: $mainBrownColor;
+        background-color: $lightBrownColor;
         color: $whiteColor;
         padding: 4px 12px;
         font-size: 12px;

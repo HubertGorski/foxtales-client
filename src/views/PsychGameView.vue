@@ -148,6 +148,7 @@
       z-index: 2;
     }
 
+    overflow-y: auto;
     background: $mainBackground;
     height: 100%;
     display: flex;

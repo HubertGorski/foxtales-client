@@ -6,7 +6,9 @@
 
   const props = defineProps({
     slotNames: {
-      type: Array as PropType<Array<{ slotName: string; isComing: boolean }>>,
+      type: Array as PropType<
+        Array<{ slotName: string; isComing: boolean; darkBackground: boolean }>
+      >,
       required: true,
     },
     isSmallerTitle: {
@@ -36,6 +38,7 @@
       :title="slot.slotName"
       :isOpen="setOpenTab === slot.slotName"
       :isSmallerTitle="isSmallerTitle"
+      :darkBackground="slot.darkBackground"
       withStatusIcon
       @toggleAccordion="toggleAccordion(slot.slotName)"
     >

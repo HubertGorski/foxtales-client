@@ -424,7 +424,7 @@
     }
 
     .answers {
-      overflow: hidden auto;
+      overflow: scroll;
       display: flex;
       flex-direction: column;
       padding: 8px;

@@ -63,11 +63,13 @@
   <HubPopup v-model="showTerms">
     <div v-if="doc" class="terms creamCard" v-html="termsHtml"></div>
     <div v-else class="creamCard">
-      <v-tabs v-model="tab" slider-color="var(--grayColor)">
-        <v-tab value="statute">{{ $t('terms.statute') }}</v-tab>
-        <v-tab value="privacy">{{ $t('privacyPolicy') }}</v-tab>
+      <div class="tabs">
+        <v-tabs v-model="tab" slider-color="var(--grayColor)">
+          <v-tab value="statute">{{ $t('terms.statute') }}</v-tab>
+          <v-tab value="privacy">{{ $t('privacyPolicy') }}</v-tab>
+        </v-tabs>
         <v-icon class="closePopup" @click="showTerms = false">{{ ICON.X }}</v-icon>
-      </v-tabs>
+      </div>
       <v-divider></v-divider>
       <v-window class="terms" v-model="tab">
         <v-window-item value="statute">
@@ -95,11 +97,18 @@
     position: relative;
   }
 
-  .closePopup {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    font-size: 32px;
-    color: $grayColor;
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+
+    .v-btn {
+      font-size: 12px !important;
+    }
+
+    .closePopup {
+      font-size: 28px;
+      color: $grayColor;
+      margin: 12px 0;
+    }
   }
 </style>

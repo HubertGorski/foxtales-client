@@ -1,6 +1,7 @@
 <script setup lang="ts">
+  import { useAutoHeight } from '@/composables/useAutoHeight';
   import { ICON } from '@/enums/iconsEnum';
-  import { nextTick, ref, watchEffect } from 'vue';
+  import { ref, toRef } from 'vue';
 
   const props = defineProps({
     title: {
@@ -27,25 +28,14 @@
       type: Boolean,
       default: false,
     },
+    darkBackground: {
+      type: Boolean,
+      default: true,
+    },
   });
 
-  const containerRef = ref<HTMLElement | null>(null);
-  const currentHeight = ref<string>('0px');
-
-  const setHeight = async () => {
-    await nextTick();
-    if (containerRef.value) {
-      currentHeight.value = props.centerContent ? '100%' : `${containerRef.value.scrollHeight}px`;
-    }
-  };
-
-  watchEffect(() => {
-    if (props.isOpen) {
-      setHeight();
-    } else {
-      currentHeight.value = '0px';
-    }
-  });
+  const contentRef = ref<HTMLElement | null>(null);
+  const { currentHeight } = useAutoHeight(contentRef, toRef(props, 'isOpen'));
 
   const emit = defineEmits<{
     (e: 'toggleAccordion'): void;
@@ -69,14 +59,15 @@
       <v-icon v-if="withStatusIcon">{{ ICON.CHEVRON_UP }}</v-icon>
     </div>
     <div
-      ref="containerRef"
       class="hubAccordionElement_container"
-      :class="{ centerContent: centerContent }"
+      :class="{ centerContent, darkBackground }"
       :style="{
         height: isOpen ? currentHeight : '0px',
       }"
     >
-      <slot></slot>
+      <div ref="contentRef" style="display: flow-root">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -121,7 +112,7 @@
         transition:
           background-color,
           padding 0.4s;
-        background-color: $mainBrownColor;
+        background-color: $lightBrownColor;
         color: white;
         border-radius: 4px;
 
@@ -140,6 +131,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+
+      &.darkBackground {
+        background-color: $lightBrownColor;
       }
     }
   }

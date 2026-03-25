@@ -22,10 +22,16 @@
   const answerText = ref<string>('');
   const isFoxVisible = ref<boolean>(true);
   const skipTimeLeft = ref<number>(0);
+  const questionRef = ref<HTMLElement | null>(null);
 
   const skipRound = async () => {
     event?.preventDefault();
     await signalRStore.skipRound();
+  };
+
+  const onInputFocus = () => {
+    isFoxVisible.value = false;
+    questionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const addAnswer = async () => {
@@ -101,7 +107,7 @@
     <div class="stepQuestion_gameSection">
       <transition name="fade" mode="out-in" appear>
         <div v-if="!isReady" key="stepAnswer">
-          <div class="question" :class="{ 'pb-4': isOwner }">
+          <div ref="questionRef" class="question" :class="{ 'pb-4': isOwner }">
             <CurrentQuestion
               :isFoxVisible="isFoxVisible"
               :question="questionText"
@@ -129,7 +135,7 @@
             :textareaRows="5"
             isTextarea
             isEnterKeyDisabled
-            @focus="isFoxVisible = false"
+            @focus="onInputFocus"
             @blur="isFoxVisible = false"
           />
         </div>
