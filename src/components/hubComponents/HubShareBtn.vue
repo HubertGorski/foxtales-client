@@ -3,7 +3,7 @@
   import HubBtn from './HubBtn.vue';
   import { ICON } from '@/enums/iconsEnum';
   import { platforms, type IPlatform } from '@/api/External';
-  import { DOMAIN } from '@/api/Client';
+  import { API_DOMAIN } from '@/api/Client';
 
   const {
     title,
@@ -32,7 +32,7 @@
     const suffix = shareKey.slice(lastDash + 1);
     const roundStr = round.toString();
 
-    return `${DOMAIN}/share/memory/${prefix}-${roundStr}${suffix}`;
+    return `${API_DOMAIN}/share/memory/${prefix}-${roundStr}${suffix}`;
   };
 
   const toggleMenu = () => {
