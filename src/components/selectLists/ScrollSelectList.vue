@@ -52,7 +52,7 @@
 
 <template>
   <div class="scrollSelectList">
-    <div class="items" :class="{ isPaddingBottom: isControlPanelVisible }">
+    <div class="items">
       <NoData v-if="items.length === 0" :emptyDataText="emptyDataText" big />
       <div
         v-for="item in items"
@@ -67,13 +67,15 @@
         <v-divider v-if="!item.isSelected" />
       </div>
     </div>
-    <div class="infoPanel">{{ $t(createdItemsText) }}: {{ items.length }}</div>
-    <div class="controlPanel" :class="{ isVisible: isControlPanelVisible }">
-      <div @click="deleteSelectedItems">
-        {{ $t('delete') }}
-      </div>
-      <div @click="addItems">
-        {{ $t(addCutomText) }}
+    <div class="panelsWrapper">
+      <div class="panel infoPanel">{{ $t(createdItemsText) }}: {{ items.length }}</div>
+      <div class="panel controlPanel" :class="{ isVisible: isControlPanelVisible }">
+        <div class="action-item" @click="deleteSelectedItems">
+          {{ $t('delete') }}
+        </div>
+        <div class="action-item" @click="addItems">
+          {{ $t(addCutomText) }}
+        </div>
       </div>
     </div>
     <HubDialogPopup
@@ -89,16 +91,15 @@
 
   .scrollSelectList {
     position: relative;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    width: 100%;
 
     .items {
-      height: 100%;
+      flex: 1;
       overflow-y: auto;
-
-      &.isPaddingBottom {
-        padding-bottom: 46px;
-      }
+      transition: padding-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background-color: $background;
 
       .item {
         font-size: 14px;
@@ -126,32 +127,47 @@
       }
     }
 
-    .infoPanel {
-      background-color: $lightBrownColor;
-      color: $whiteColor;
-      padding: 4px 8px;
-      font-size: 14px;
-      position: absolute;
-      bottom: 0;
+    .panelsWrapper {
+      position: sticky;
       width: 100%;
+      background-color: $lightBrownColor;
+      z-index: 2;
+      box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .panel {
+      color: $whiteColor;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 4px 16px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .infoPanel {
+      font-size: 13px;
+      justify-content: center;
+      min-height: 28px;
     }
 
     .controlPanel {
       height: 0;
-      position: absolute;
-      bottom: 0;
-      background-color: $lightBrownColor;
-      width: 100%;
-      padding: 0;
-      color: $whiteColor;
-      display: flex;
-      justify-content: space-between;
+      opacity: 0;
       overflow: hidden;
-      transition: all 0.4s;
+      justify-content: space-between;
+      padding: 0 48px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
 
       &.isVisible {
-        height: 40px;
+        height: 46px;
         padding: 8px 48px;
+        opacity: 1;
+      }
+
+      .action-item {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
       }
     }
   }

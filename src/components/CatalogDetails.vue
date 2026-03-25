@@ -193,7 +193,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 10px 12px;
-      background: linear-gradient(135deg, $mainBrownColor, $lightBrownColor);
+      background: $lightBrownColor;
       gap: 8px;
     }
 

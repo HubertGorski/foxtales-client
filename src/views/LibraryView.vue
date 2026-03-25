@@ -20,7 +20,6 @@
   import { Question } from '@/models/Question';
   import HubDialogPopup from '@/components/hubComponents/HubDialogPopup.vue';
   import { psychService } from '@/api/services/PsychService';
-  import { useViewStore } from '@/stores/viewStore';
   import HubDivider from '@/components/hubComponents/HubDivider.vue';
   import { useI18n } from 'vue-i18n';
   import { useLoading } from '@/composables/useLoading';
@@ -236,15 +235,83 @@
       : t('beforeSelectedCatalogInfoText');
   });
 
-  const isKeyboardOpen = computed(() => {
-    return useViewStore().getIsKeyboardOpen();
-  });
-
   //TODO: jak jest jedno pytanie zaznaczone to dac mozliwosc wypisywania go z katalogu.
 </script>
 
 <template>
   <div class="libraryView">
+    <div class="libraryView_content">
+      <HubAccordionElement
+        title="yourMemory"
+        isSmallerTitle
+        @click="isMemoriesPopupAvailable = true"
+      />
+      <HubAccordionElement title="addCatalog" isSmallerTitle @click="addNewCatalog" />
+      <HubAccordion
+        v-model="setOpenTab"
+        :slotNames="[
+          { slotName: 'yourCatalogs', isComing: false, darkBackground: false },
+          { slotName: 'addQuestion', isComing: false, darkBackground: false },
+          { slotName: 'yourQuestions', isComing: false, darkBackground: true },
+        ]"
+        isSmallerTitle
+      >
+        <template #yourCatalogs>
+          <WhiteSelectList
+            v-model="actualCatalogs"
+            class="yourCatalogs"
+            :height="146"
+            :itemsPerPage="3"
+            :fontSize="14"
+            emptyDataText="psych.noDirectoryHasBeenCreatedYet"
+            multiple
+            showPagination
+            showElementsCountInItem
+            showItemDetailsBtn
+            @showDetails="showCatalogDetails"
+          />
+        </template>
+        <template #addQuestion>
+          <div class="selectedCatalogs">{{ selectedCatalogsInfoText }}</div>
+          <HubDivider />
+          <HubInputWithBtn
+            v-model="newQuestion"
+            class="addQuestionToLibrary"
+            :btnAction="addQuestionBtn.action"
+            :btnLoading="addQuestionBtn.loading"
+            :btnIsDisabled="addQuestionBtn.disabled"
+            :inputDisabled="isBtnLoading"
+            :btnText="addQuestionBtn.text"
+            :extraBtnIcon="ICON.ADD_TO_COLLECTION"
+            :extraBtnAction="showCatalogsList"
+            :btnIsOrange="addQuestionBtn.isOrange"
+            textPlaceholder="exampleQuestion"
+            isTextarea
+          >
+            <div class="addQuestionTutorial">
+              {{ $t('questionTutorial') }}
+            </div>
+          </HubInputWithBtn>
+        </template>
+        <template #yourQuestions>
+          <ScrollSelectList
+            v-model="actualQuestions"
+            addCutomText="psych.addToCatalog"
+            emptyDataText="psych.noQuestionsHasBeenCreatedYet"
+            @addItems="addQuestionsToCatalog"
+            @deleteItems="deleteQuestions"
+          />
+        </template>
+      </HubAccordion>
+    </div>
+    <NavigationBtns btn="back" btn2="shop" btn2Disabled />
+
+    <!-- POPUPS -->
+    <HubDialogPopup
+      v-model="isDeletePopupOpen"
+      :textPopup="$t('confirmDeleteCatalogTextPopup')"
+      :confirmAction="() => deleteCatalog()"
+    />
     <ShowMemoryPopup v-model="isMemoriesPopupAvailable" />
     <HubPopup v-model="isQuestionCreatorOpen">
       <QuestionCreator
@@ -263,83 +330,6 @@
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
       />
     </HubPopup>
-    <HubAccordionElement
-      title="yourMemory"
-      isSmallerTitle
-      @click="isMemoriesPopupAvailable = true"
-    />
-    <HubAccordionElement title="addCatalog" isSmallerTitle @click="addNewCatalog" />
-    <HubAccordion
-      v-model="setOpenTab"
-      :slotNames="[
-        { slotName: 'yourCatalogs', isComing: false },
-        { slotName: 'addQuestion', isComing: false },
-      ]"
-      isSmallerTitle
-    >
-      <template #yourCatalogs>
-        <WhiteSelectList
-          v-model="actualCatalogs"
-          class="yourCatalogs"
-          :height="146"
-          :itemsPerPage="3"
-          :fontSize="14"
-          emptyDataText="psych.noDirectoryHasBeenCreatedYet"
-          multiple
-          showPagination
-          showElementsCountInItem
-          showItemDetailsBtn
-          @showDetails="showCatalogDetails"
-        />
-      </template>
-      <template #addQuestion>
-        <div class="selectedCatalogs">{{ selectedCatalogsInfoText }}</div>
-        <HubDivider />
-        <HubInputWithBtn
-          v-model="newQuestion"
-          class="addQuestionToLibrary"
-          :btnAction="addQuestionBtn.action"
-          :btnLoading="addQuestionBtn.loading"
-          :btnIsDisabled="addQuestionBtn.disabled"
-          :inputDisabled="isBtnLoading"
-          :btnText="addQuestionBtn.text"
-          :extraBtnIcon="ICON.ADD_TO_COLLECTION"
-          :extraBtnAction="showCatalogsList"
-          :btnIsOrange="addQuestionBtn.isOrange"
-          textPlaceholder="exampleQuestion"
-          isTextarea
-        >
-          <div class="addQuestionTutorial">
-            {{ $t('questionTutorial') }}
-          </div>
-        </HubInputWithBtn>
-      </template>
-    </HubAccordion>
-    <HubAccordionElement
-      class="manageLibrary"
-      :class="{
-        isHidden: setOpenTab === 'addQuestion' && isKeyboardOpen,
-      }"
-      title="yourQuestions"
-      :isOpen="setOpenTab != 'addQuestion' || !isKeyboardOpen"
-      isSmallerTitle
-      centerContent
-      @click="setOpenTab = ''"
-    >
-      <ScrollSelectList
-        v-model="actualQuestions"
-        addCutomText="psych.addToCatalog"
-        emptyDataText="psych.noQuestionsHasBeenCreatedYet"
-        @addItems="addQuestionsToCatalog"
-        @deleteItems="deleteQuestions"
-      />
-    </HubAccordionElement>
-    <NavigationBtns btn="back" btn2="shop" btn2Disabled />
-    <HubDialogPopup
-      v-model="isDeletePopupOpen"
-      :textPopup="$t('confirmDeleteCatalogTextPopup')"
-      :confirmAction="() => deleteCatalog()"
-    />
   </div>
 </template>
 
@@ -352,37 +342,38 @@
     padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    justify-content: space-between;
 
-    .yourCatalogs {
-      padding: 8px;
-    }
+    &_content {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      flex: 1;
+      gap: 12px;
+      margin-bottom: 12px;
 
-    .addQuestionToLibrary {
-      padding: 12px;
-    }
+      .yourCatalogs {
+        padding: 8px;
+      }
 
-    .selectedCatalogs {
-      margin: 8px 12px 0 12px;
-      font-style: italic;
-      color: $mainBrownColor;
-      overflow-x: scroll;
-      text-align: center;
-      white-space: nowrap;
-    }
+      .addQuestionToLibrary {
+        padding: 12px;
+      }
 
-    .addQuestionTutorial {
-      font-size: 14px;
-      font-style: italic;
-      color: $lightGrayColor;
-      padding: 4px 4px 0 4px;
-    }
+      .selectedCatalogs {
+        margin: 8px 12px 0 12px;
+        font-style: italic;
+        color: $mainBrownColor;
+        overflow-x: scroll;
+        text-align: center;
+        white-space: nowrap;
+      }
 
-    .manageLibrary {
-      flex-grow: 1;
-
-      &.isHidden {
-        flex-grow: 0;
+      .addQuestionTutorial {
+        font-size: 14px;
+        font-style: italic;
+        color: $lightGrayColor;
+        padding: 4px 4px 0 4px;
       }
     }
   }

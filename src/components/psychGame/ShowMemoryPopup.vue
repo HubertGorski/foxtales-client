@@ -25,13 +25,13 @@
     setNextPage,
   } = usePagination(() => userStore.user.memories, 1, true);
 
-  const currentMemory = computed(() => visibleItems.value[0]);
+  const currentMemory = computed(() => visibleItems.value[0] ?? null);
 
   const removeMemoryFromLibrary = () =>
     withLoading(async () => {
       const result = await psychService.removeMemoryFromLibrary(
-        currentMemory.value.shareKey,
-        currentMemory.value.round,
+        currentMemory.value?.shareKey,
+        currentMemory.value?.round,
         userStore.user.userId
       );
 
@@ -39,7 +39,7 @@
         return;
       }
 
-      userStore.removeMemory(currentMemory.value.shareKey, currentMemory.value.round);
+      userStore.removeMemory(currentMemory.value?.shareKey, currentMemory.value?.round);
     });
 
   const isMemoriesCardAvailable = defineModel({ type: Boolean, required: true });
@@ -49,7 +49,7 @@
   <HubPopup v-model="isMemoriesCardAvailable">
     <div class="shareMemoryPopup">
       <img class="shareMemoryPopup_img" src="@/assets/imgs/memory.webp" alt="Lisek" />
-      <div class="shareMemoryPopup_title">{{ $t('yourMemory') }}</div>
+      <p class="shareMemoryPopup_title">{{ $t('yourMemory') }}</p>
       <MemoryCard v-if="currentMemory" :memory="currentMemory" />
       <NoData v-else boxShadow />
       <HubPagination
@@ -74,8 +74,8 @@
         </div>
         <div class="btn">
           <HubShareBtn
-            :shareKey="currentMemory.shareKey"
-            :round="currentMemory.round"
+            :shareKey="currentMemory?.shareKey"
+            :round="currentMemory?.round"
             title="Fox Tales"
             text="Be as sly as a fox!"
           />
@@ -96,7 +96,7 @@
     gap: 12px;
     background: $background;
     border-radius: 16px;
-    min-width: 416px;
+    min-width: 360px;
     max-width: 416px;
     box-shadow:
       0 12px 40px rgb(0, 0, 0, 0.18),

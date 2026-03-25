@@ -208,11 +208,11 @@
       <HubAccordion
         v-model="setOpenTab"
         :slotNames="[
-          { slotName: 'chooseFox', isComing: false },
-          { slotName: 'changeName', isComing: false },
-          { slotName: 'changeLanguage', isComing: false },
-          { slotName: 'wakeLock', isComing: false },
-          { slotName: 'contact', isComing: false },
+          { slotName: 'chooseFox', isComing: false, darkBackground: false },
+          { slotName: 'changeName', isComing: false, darkBackground: false },
+          { slotName: 'changeLanguage', isComing: false, darkBackground: false },
+          { slotName: 'wakeLock', isComing: false, darkBackground: false },
+          { slotName: 'contact', isComing: false, darkBackground: false },
         ]"
       >
         <template #chooseFox>

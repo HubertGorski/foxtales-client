@@ -152,71 +152,75 @@
     <div v-else class="createGameView_card">
       <div class="creamCard">
         <img src="@/assets/imgs/fox7.webp" alt="Lisek" class="fox" />
-        <p class="title">{{ $t('lobby.createGame') }}</p>
-        <div class="customGameMode">
-          <HubSwitch
-            v-model="newGame.usePublicQuestions"
-            label="lobby.usePublicQuestions"
-            tooltipText="tooltip.publicQuestionsDescription"
-            withIcon
-          />
-          <WhiteSelectList
-            v-if="newGame.usePublicQuestions"
-            v-model="publicCatalogs"
-            :itemsPerPage="1"
-            :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
-            showPagination
-            selectVisibleItems
-            moveToSelectedItem
-            minimalView
-            infinityPages
-          />
-          <SelectQuestionsPanel
-            v-model:usePrivateQuestions="newGame.usePrivateQuestions"
-            @setQuestions="setCurrentQuestions"
-          />
-          <HubSwitch
-            v-model="newGame.isQuestionsFromAnotherGamesAllowed"
-            label="lobby.isQuestionsFromAnotherGamesAllowed"
-          />
-          <span class="chooseRules">{{ $t('chooseRulesGame') }}</span>
-          <WhiteSelectList
-            v-model="gameRules"
-            class="rulesGameList"
-            :itemsPerPage="1"
-            :selectItemId="newGame.currentRules"
-            showPagination
-            selectVisibleItems
-            moveToSelectedItem
-            minimalView
-            infinityPages
-          />
-        </div>
-        <HubSwitch
-          v-model="newGame.isPublic"
-          label="lobby.gameVisibleOnList"
-          tooltipText="tooltip.roomOnListDescription"
-          withIcon
-        />
-        <div v-if="!newGame.isPublic" class="customCodeSection">
-          <p class="customCodeSection_description">
-            {{ $t('lobby.inviteOtherPlayers') }}
-          </p>
-          <p class="customCodeSection_code">{{ newGame.code }}</p>
-        </div>
-        <div v-else class="publicSection">
-          <v-text-field
-            v-model="newGame.password"
-            class="publicSection_input"
-            :label="$t('lobby.entryPassword')"
-            type="password"
-            outlined
-            dense
-            hide-details
-          />
-          <span class="publicSection_info">{{ $t('info.passwordRoom') }}</span>
+        <div class="customGamePanel">
+          <p class="title">{{ $t('lobby.createGame') }}</p>
+          <div class="customGameMode">
+            <HubSwitch
+              v-model="newGame.usePublicQuestions"
+              label="lobby.usePublicQuestions"
+              tooltipText="tooltip.publicQuestionsDescription"
+              withIcon
+            />
+            <WhiteSelectList
+              v-if="newGame.usePublicQuestions"
+              v-model="publicCatalogs"
+              :itemsPerPage="1"
+              :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
+              showPagination
+              selectVisibleItems
+              moveToSelectedItem
+              minimalView
+              infinityPages
+            />
+            <SelectQuestionsPanel
+              v-model:usePrivateQuestions="newGame.usePrivateQuestions"
+              @setQuestions="setCurrentQuestions"
+            />
+            <HubSwitch
+              v-model="newGame.isQuestionsFromAnotherGamesAllowed"
+              label="lobby.isQuestionsFromAnotherGamesAllowed"
+            />
+            <span class="chooseRules">{{ $t('chooseRulesGame') }}</span>
+            <WhiteSelectList
+              v-model="gameRules"
+              class="rulesGameList"
+              :itemsPerPage="1"
+              :selectItemId="newGame.currentRules"
+              showPagination
+              selectVisibleItems
+              moveToSelectedItem
+              minimalView
+              infinityPages
+            />
+
+            <HubSwitch
+              v-model="newGame.isPublic"
+              label="lobby.gameVisibleOnList"
+              tooltipText="tooltip.roomOnListDescription"
+              withIcon
+            />
+            <div v-if="!newGame.isPublic" class="customCodeSection">
+              <p class="customCodeSection_description">
+                {{ $t('lobby.inviteOtherPlayers') }}
+              </p>
+              <p class="customCodeSection_code">{{ newGame.code }}</p>
+            </div>
+            <div v-else class="publicSection">
+              <v-text-field
+                v-model="newGame.password"
+                class="publicSection_input"
+                :label="$t('lobby.entryPassword')"
+                type="password"
+                outlined
+                dense
+                hide-details
+              />
+              <span class="publicSection_info">{{ $t('info.passwordRoom') }}</span>
+            </div>
+          </div>
         </div>
         <NavigationBtns
+          class="pb-3 px-3"
           btn="closeGame"
           btn2="accept"
           :btnCustomAction="leaveRoom"
@@ -252,11 +256,16 @@
       display: flex;
       justify-content: center;
       z-index: 3;
+      position: relative;
     }
 
     .creamCard {
-      padding: 14px;
       position: relative;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+      padding: 0;
     }
 
     &_card {
@@ -265,6 +274,11 @@
       flex-grow: 1;
       display: flex;
       align-items: center;
+      justify-content: center;
+      min-height: 0;
+      z-index: 4;
+      box-sizing: border-box;
+      position: relative;
 
       .chooseRules {
         padding-top: 8px;
@@ -283,10 +297,40 @@
         z-index: 4;
       }
 
+      .customGamePanel {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .hubSwitchBtns_option {
+        padding: 0;
+
+        p {
+          padding: 8px;
+        }
+      }
+
+      .customGameMode {
+        padding: 0 12px 8px 12px;
+        flex: 1;
+        overflow: hidden auto;
+        min-height: 0;
+        margin-bottom: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
       .title {
         color: $grayColor;
         font-size: 24px;
         font-weight: 600;
+        padding: 12px;
       }
 
       .hubSwitch_content {
@@ -294,7 +338,8 @@
       }
 
       .customCodeSection {
-        height: 128px;
+        padding: 0 12px;
+        height: 116px;
         padding-bottom: 24px;
 
         &_description {
@@ -314,7 +359,7 @@
       }
 
       .publicSection {
-        margin-bottom: 12px;
+        padding: 0 12px;
 
         &_input {
           margin-bottom: 12px;
