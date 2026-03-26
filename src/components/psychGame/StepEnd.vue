@@ -120,7 +120,7 @@
   @use '@/assets/styles/hubAnimations' as *;
 
   .tmpClass {
-    height: 100%;
+    flex-grow: 1;
     width: 100%;
     display: flex;
     align-items: center;

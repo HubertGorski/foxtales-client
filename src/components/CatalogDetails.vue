@@ -105,11 +105,6 @@
   <div class="catalogDetails">
     <HubPopup v-model="isCatalogDetailsVisible">
       <div v-if="catalog" class="catalogDetails_card">
-        <div class="catalogDetails_header">
-          <HubBtn text="back" :action="goBack" ghost small />
-          <span class="catalogDetails_headerTitle">{{ catalog.title }}</span>
-          <HubBtn text="continue" :action="confirmSelection" isOrange small />
-        </div>
         <div class="catalogDetails_content">
           <div class="catalogDetails_imgWrapper">
             <img :src="getCatalogImg(catalog.photoId)" alt="Lisek" />
@@ -166,6 +161,11 @@
             </div>
           </div>
         </div>
+        <div class="catalogDetails_footer">
+          <HubBtn text="back" :action="goBack" ghost small />
+          <span class="catalogDetails_footerTitle">{{ catalog.title }}</span>
+          <HubBtn text="continue" :action="confirmSelection" isOrange small />
+        </div>
       </div>
     </HubPopup>
   </div>
@@ -188,7 +188,7 @@
         0 2px 8px rgb(0, 0, 0, 0.08);
     }
 
-    &_header {
+    &_footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -197,7 +197,7 @@
       gap: 8px;
     }
 
-    &_headerTitle {
+    &_footerTitle {
       color: $whiteColor;
       font-size: 16px;
       font-weight: 700;

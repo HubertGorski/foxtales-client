@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import HubBtn from './hubComponents/HubBtn.vue';
+
   const props = defineProps({
     textBtn: { type: String, required: true },
     textInfo: { type: String, required: true },
@@ -8,7 +10,9 @@
 
 <template>
   <div class="brownNavigation">
-    <div class="brownNavigation_btn" @click="() => props.action()">{{ textBtn }}</div>
+    <div>
+      <HubBtn :action="() => props.action()" :text="textBtn" isOrange small />
+    </div>
     <div class="brownNavigation_info">{{ textInfo }}</div>
   </div>
 </template>
@@ -20,17 +24,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: $mainBrownColor;
+    background-color: $lightBrownColor;
     color: $whiteColor;
     width: 100%;
     padding: 4px 8px;
     gap: 8px;
-
-    &_btn {
-      padding: 4px 12px;
-      cursor: pointer;
-      text-wrap: nowrap;
-    }
 
     &_info {
       font-style: italic;
