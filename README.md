@@ -17,7 +17,7 @@
 ## 🎮 Overview
 
 FoxTales is a browser-based social party game that requires no installation — simply visit
-https://foxtales.cc and start playing.
+https://www.app.foxtales.cc and start playing.
 
 Designed with simplicity and fun in mind, it's perfect for parties, online gatherings, or
 team-building events.
@@ -128,4 +128,4 @@ _FoxTales was created out of passion for technology and social games._
 
 ---
 
-Ready to play? Visit https://foxtales.cc and start your adventure!
+Ready to play? Visit https://www.app.foxtales.cc and start your adventure!

@@ -156,6 +156,7 @@
     flex-direction: column;
     height: 100%;
     padding: 0 12px;
+    flex-grow: 1;
 
     &_gameSection {
       height: 100%;
@@ -163,6 +164,7 @@
       flex-direction: column;
       justify-content: center;
       padding: 12px;
+      flex-grow: 1;
 
       .question {
         display: flex;
