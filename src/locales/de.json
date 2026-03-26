@@ -320,5 +320,9 @@
     "games": "Gespielte Spiele",
     "publicQuestions": "Öffentliche Fragen",
     "achievements": "Errungenschaften"
-  }
+  },
+  "messengerTitle": "Im Browser öffnen",
+  "messengerSub": "Begib dich auf das wahre Fox Tales-Abenteuer",
+  "messengerStep1": "1. Klicken Sie auf die <b>3 Punkte</b> (oben rechts)",
+  "messengerStep2": "2. Wählen Sie <b>\"Im Browser öffnen\"</b>"
 }

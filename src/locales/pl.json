@@ -320,5 +320,9 @@
     "games": "Rozegrane gry",
     "publicQuestions": "Publiczne pytania",
     "achievements": "Osiągnięcia"
-  }
+  },
+  "messengerTitle": "Otwórz w przeglądarce",
+  "messengerSub": "Przenieś się do prawdziwej przygody <b>Fox Tales</b>",
+  "messengerStep1": "1. Kliknij <b>3 kropki</b> (prawy górny róg)",
+  "messengerStep2": "2. Wybierz <b>\"Otwórz w przeglądarce\"</b>"
 }

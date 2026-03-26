@@ -5,11 +5,15 @@
   import { useDevice } from './libs/useDevice';
   import { useKeyboardScrollControl } from './libs/useKeyboardScrollControl';
   import HubErrorPanel from './components/hubComponents/HubErrorPanel.vue';
+  import HubMessengerBlock from './components/hubComponents/HubMessengerBlock.vue';
 
   useDevice();
   useKeyboardScrollControl();
 
   const { isLandscape } = useOrientation();
+
+  const ua = navigator.userAgent || '';
+  const isMessenger = ua.includes('FBAN') || ua.includes('FBAV') || ua.includes('Messenger');
 </script>
 
 <template>
@@ -18,6 +22,7 @@
     <RouterView />
   </div>
   <OrientationOverlay v-if="isLandscape" />
+  <HubMessengerBlock v-if="isMessenger" />
 </template>
 
 <style>
