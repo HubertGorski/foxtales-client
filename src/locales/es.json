@@ -320,5 +320,9 @@
     "games": "Juegos jugados",
     "publicQuestions": "Preguntas públicas",
     "achievements": "Logros"
-  }
+  },
+  "messengerTitle": "Abrir en el navegador",
+  "messengerSub": "Entra en la verdadera aventura de Fox Tales",
+  "messengerStep1": "1. Haz clic en los <b>3 puntos</b> (esquina superior derecha)",
+  "messengerStep2": "2. Selecciona <b>\"Abrir en el navegador\"</b>"
 }

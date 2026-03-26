@@ -320,5 +320,9 @@
     "games": "Games played",
     "publicQuestions": "Public questions",
     "achievements": "Achievements"
-  }
+  },
+  "messengerTitle": "Open in browser",
+  "messengerSub": "Experience the real Fox Tales adventure",
+  "messengerStep1": "1. Click <b>3 dots</b> (top right corner)",
+  "messengerStep2": "2. Select <b>\"Open in browser\"</b>"
 }
