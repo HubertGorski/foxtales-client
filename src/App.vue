@@ -46,7 +46,7 @@
     height: 100dvh;
     overscroll-behavior: none;
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
     -webkit-tap-highlight-color: transparent;
     background-color: #d3b39d;
   }
@@ -64,14 +64,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: visible;
-    overscroll-behavior: none;
+    overflow: auto;
+    overscroll-behavior: auto;
     height: 100%;
   }
 
   .foxTales {
     margin: 0 auto;
-    width: 440px;
+    width: 100%;
     max-width: 440px;
     height: 100%;
     overflow: hidden auto;
