@@ -172,6 +172,7 @@
     height: 100%;
     padding: 12px;
     padding-top: 0;
+    flex-grow: 1;
 
     .content {
       flex-grow: 1;

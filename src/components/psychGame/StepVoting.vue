@@ -414,6 +414,7 @@
     align-items: center;
     padding: 12px;
     padding-top: 0;
+    flex-grow: 1;
 
     .header {
       width: 100%;
