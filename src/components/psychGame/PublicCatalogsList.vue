@@ -58,7 +58,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 8px;
     padding: 12px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    min-height: 0;
     width: 100%;
 
     .publicCatalog {
