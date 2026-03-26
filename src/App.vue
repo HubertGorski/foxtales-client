@@ -3,9 +3,11 @@
   import { useOrientation } from './libs/useOrientation';
   import OrientationOverlay from './components/OrientationOverlay.vue';
   import { useDevice } from './libs/useDevice';
+  import { useKeyboardScrollControl } from './libs/useKeyboardScrollControl';
   import HubErrorPanel from './components/hubComponents/HubErrorPanel.vue';
 
   useDevice();
+  useKeyboardScrollControl();
 
   const { isLandscape } = useOrientation();
 </script>
@@ -27,6 +29,11 @@
     scrollbar-color: #654744 #f1e3d3;
   }
 
+  input,
+  textarea {
+    user-select: text !important;
+  }
+
   *,
   *::before,
   *::after {
@@ -37,17 +44,15 @@
   body {
     height: 100%;
     height: 100dvh;
-    height: var(--real-vh, 100dvh);
     overscroll-behavior: none;
     margin: 0;
-    overflow: hidden !important;
+    overflow: hidden;
     -webkit-tap-highlight-color: transparent;
     background-color: #d3b39d;
   }
 
   body {
-    position: fixed;
-    inset: 0;
+    position: relative;
   }
 
   ul,
@@ -57,8 +62,9 @@
 
   #app {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    overflow: visible;
     overscroll-behavior: none;
     height: 100%;
   }
