@@ -7,22 +7,34 @@ export function useOrientation() {
   const { isMobile } = storeToRefs(viewStore);
   const isLandscapeRaw = ref(false);
 
-  const checkOrientation = () => {
-    isLandscapeRaw.value = window.innerWidth > window.innerHeight;
-  };
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  const mediaQuery = window.matchMedia('(orientation: landscape)');
 
-  const isLandscape = computed(() => isMobile.value && isLandscapeRaw.value);
+  const checkOrientation = () => {
+    if (timeout) clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      const orientation = window.screen?.orientation?.type;
+
+      isLandscapeRaw.value = orientation ? orientation.startsWith('landscape') : mediaQuery.matches;
+    }, 100);
+  };
 
   onMounted(() => {
     checkOrientation();
-    window.addEventListener('resize', checkOrientation);
-    window.addEventListener('orientationchange', checkOrientation);
+
+    window.screen?.orientation?.addEventListener('change', checkOrientation);
+    mediaQuery.addEventListener('change', checkOrientation);
   });
 
   onUnmounted(() => {
-    window.removeEventListener('resize', checkOrientation);
-    window.removeEventListener('orientationchange', checkOrientation);
+    if (timeout) clearTimeout(timeout);
+
+    window.screen?.orientation?.removeEventListener('change', checkOrientation);
+    mediaQuery.removeEventListener('change', checkOrientation);
   });
+
+  const isLandscape = computed(() => isMobile.value && isLandscapeRaw.value);
 
   return { isLandscape, isMobile };
 }
