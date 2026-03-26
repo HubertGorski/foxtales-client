@@ -247,7 +247,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    overflow: hidden;
     height: 100%;
 
     &_controlBtns {
