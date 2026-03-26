@@ -148,9 +148,8 @@
       z-index: 2;
     }
 
-    overflow-y: auto;
+    min-height: 100%;
     background: $mainBackground;
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

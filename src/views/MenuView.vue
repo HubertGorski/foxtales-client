@@ -77,10 +77,10 @@
   .menuView {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
     background: $mainBackground;
     padding: 16px 16px 0 16px;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
 
     .menu {

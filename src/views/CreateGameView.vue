@@ -247,7 +247,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
+    min-height: 100%;
 
     &_controlBtns {
       background: $mainBackground;

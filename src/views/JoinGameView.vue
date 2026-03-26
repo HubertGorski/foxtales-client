@@ -183,7 +183,7 @@
   .joinGameView {
     background: $mainBackground;
     padding: 46px 24px 24px 24px;
-    height: 100%;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     gap: 12px;
