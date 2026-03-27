@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useI18n } from 'vue-i18n';
@@ -26,6 +27,13 @@
   const { value: username, errorMessage: usernameError } = useField<string>('username');
   const { value: termsAccepted, errorMessage: termsAcceptedError } =
     useField<boolean>('termsaccepted');
+  const inputRef = ref<any>(null);
+
+  const scrollToInput = () => {
+    setTimeout(() => {
+      inputRef.value?.$el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  };
 
   const onSubmit = handleSubmit(async values => {
     try {
@@ -52,22 +60,26 @@
 
 <template>
   <div class="tryWithoutAccountView">
-    <WhiteCard :header="t('attention')">
-      <p class="alert">{{ t('tryWithoutAccountView.alert') }}</p>
-    </WhiteCard>
-    <HubInputBox
-      v-model="username"
-      :error-messages="usernameError"
-      title="auth.username"
-      btnText="tryWithoutAccount"
-      :btnAction="onSubmit"
-      :btnLoading="loading"
-      withFoxImg
-    >
-      <HubCheckbox v-model="termsAccepted" :error-messages="termsAcceptedError">
-        <Terms />
-      </HubCheckbox>
-    </HubInputBox>
+    <div class="tryWithoutAccountView_content">
+      <WhiteCard :header="t('attention')">
+        <p class="alert">{{ t('tryWithoutAccountView.alert') }}</p>
+      </WhiteCard>
+      <HubInputBox
+        ref="inputRef"
+        v-model="username"
+        :error-messages="usernameError"
+        title="auth.username"
+        btnText="tryWithoutAccount"
+        :btnAction="onSubmit"
+        :btnLoading="loading"
+        withFoxImg
+        @focus="scrollToInput"
+      >
+        <HubCheckbox v-model="termsAccepted" :error-messages="termsAcceptedError">
+          <Terms />
+        </HubCheckbox>
+      </HubInputBox>
+    </div>
     <NavigationBtns class="navBtns" btn="back" btn2="register" :btnCustomAction="back" />
   </div>
 </template>
@@ -76,16 +88,23 @@
   @use '@/assets/styles/variables' as *;
 
   .tryWithoutAccountView {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 36px;
-    height: 100%;
+    min-height: 100%;
     background: $mainBackground;
-    padding: 24px;
-    padding-bottom: 92px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    overflow: visible;
+
+    &_content {
+      padding: 0 24px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 36px;
+    }
 
     .alert {
       font-size: 14px;
@@ -95,9 +114,8 @@
     }
 
     .navBtns {
-      position: absolute;
-      padding: 8px;
-      bottom: 0;
+      width: 100%;
+      padding: 8px 12px;
     }
   }
 </style>

@@ -186,17 +186,21 @@
     min-height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 12px;
     position: relative;
+    overflow: visible;
 
     &_gameDetailsPopup {
       width: 310px;
     }
 
     &_chooseRoom {
-      flex-grow: 1;
+      flex: 1;
       padding: 24px;
       transition: all 0.4s;
+      overflow: hidden;
+      min-height: 0;
 
       .emptyGamesList {
         padding-top: 18px;
@@ -218,8 +222,8 @@
       }
 
       .gamesList {
+        flex: 1;
         overflow-y: auto;
-        max-height: 284px;
 
         .details {
           font-size: 14px;

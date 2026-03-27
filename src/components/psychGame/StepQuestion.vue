@@ -30,8 +30,14 @@
   };
 
   const onInputFocus = () => {
+    const wasFoxVisible = isFoxVisible.value;
     isFoxVisible.value = false;
-    questionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(
+      () => {
+        questionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      },
+      wasFoxVisible ? 450 : 100
+    );
   };
 
   const addAnswer = async () => {
@@ -154,12 +160,12 @@
   .stepQuestion {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
     padding: 0 12px;
     flex-grow: 1;
 
     &_gameSection {
-      height: 100%;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;

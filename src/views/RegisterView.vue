@@ -208,9 +208,8 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
+    min-height: 100%;
     background: $mainBackground;
-    padding: 80px 16px;
 
     .creamCard {
       padding: 24px;
