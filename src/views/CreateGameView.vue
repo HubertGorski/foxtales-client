@@ -231,7 +231,7 @@
     </div>
     <BrownNavigation
       v-if="!isCustomMode"
-      :textBtn="$t('closeGame')"
+      textBtn="closeGame"
       :action="leaveRoom"
       :textInfo="$t('lobby.inviteOtherPlayers') + ' ' + newGame.code"
     />

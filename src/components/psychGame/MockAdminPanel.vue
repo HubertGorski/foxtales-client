@@ -241,8 +241,18 @@
     <HubCheckbox v-model="isOwner">Właściciel gry</HubCheckbox>
     <HubCheckbox v-model="isSubjectPlayer">Pytanie o Tobie</HubCheckbox>
     <HubCheckbox v-model="userStore.user.useAiTranslations">Tłumaczenia AI</HubCheckbox>
-    <HubSwitchBtns v-model="currentView" :items="currentViewOptions" :fontSize="14" />
-    <HubSwitchBtns v-model="currentRules" :items="currentRulesOptions" :fontSize="14" />
+    <HubSwitchBtns
+      v-model="currentView"
+      :items="currentViewOptions"
+      :fontSize="14"
+      :useDicts="false"
+    />
+    <HubSwitchBtns
+      v-model="currentRules"
+      :items="currentRulesOptions"
+      :fontSize="14"
+      :useDicts="false"
+    />
     <HubInput v-model="playersCount" textType="number" label="Liczba graczy" />
     <HubBtn text="accept" :action="save" />
   </div>
