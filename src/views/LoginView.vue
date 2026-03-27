@@ -113,9 +113,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    padding: 0 16px;
+    min-height: 100%;
+    padding: 24px 16px;
     background: $mainBackground;
+    overflow: visible;
 
     &.isFocused {
       .loginView_fox {
