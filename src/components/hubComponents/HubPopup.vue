@@ -19,10 +19,12 @@
     justify-content: center;
     align-items: center;
     position: fixed;
+    width: 100%;
     height: 100%;
     top: 0;
     left: 0;
     z-index: 4;
+    pointer-events: none;
 
     &_mask {
       width: 100vw;
@@ -30,6 +32,7 @@
       background-color: black;
       z-index: 1;
       opacity: 0.3;
+      pointer-events: auto;
     }
 
     &_content {
@@ -40,10 +43,12 @@
       z-index: 2;
       margin: 0 auto;
       color: black;
+      pointer-events: none;
 
       &.isVisible {
         transition: transform 0.3s;
         transform: scale(1);
+        pointer-events: auto;
       }
     }
   }
