@@ -31,7 +31,7 @@
         {{ publicCatalog.title }}
       </div>
       <div v-if="publicCatalog.photoId" class="publicCatalog_img">
-        <img :src="getCatalogImg(publicCatalog.photoId)" alt="Lisek" />
+        <img :src="getCatalogImg(publicCatalog.photoId)" alt="Lisek" loading="lazy" />
       </div>
       <div v-if="publicCatalog.recommendedGameRules != null" class="publicCatalog_type">
         <v-icon>{{ ICON.POINTS }}</v-icon>

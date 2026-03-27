@@ -26,8 +26,6 @@
 </template>
 
 <style>
-  @import 'https://fonts.googleapis.com/css2?family=Story+Script&display=swap';
-
   * {
     user-select: none;
     scrollbar-width: thin;
