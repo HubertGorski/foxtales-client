@@ -7,9 +7,14 @@
     subtitle?: string;
   }
 
-  const { items, fontSize = 24 } = defineProps<{
+  const {
+    items,
+    fontSize = 24,
+    useDicts = true,
+  } = defineProps<{
     items?: HubSwitchBtnsItem[];
     fontSize?: number;
+    useDicts?: boolean;
   }>();
 
   const selectedItem = defineModel<HubSwitchBtnsItem | null>({
@@ -31,7 +36,7 @@
       @click="selectedItem = item"
     >
       <p class="title" :style="{ fontSize: fontSize + 'px' }">
-        {{ $t(item.title) }}
+        {{ useDicts ? $t(item.title) : item.title }}
       </p>
       <p v-if="item.subtitle" class="subtitle">
         {{ `${$t('size')}: ${item.subtitle}` }}

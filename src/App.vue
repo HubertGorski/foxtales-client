@@ -49,11 +49,12 @@
     height: 100dvh;
     overscroll-behavior: none;
     margin: 0;
-    overflow: auto;
+    overflow: hidden;
     -webkit-tap-highlight-color: transparent;
     background-color: #d3b39d;
   }
 
+  /* Ensure body stays relative for popups */
   body {
     position: relative;
   }
@@ -67,9 +68,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: auto;
-    overscroll-behavior: auto;
     height: 100%;
+    overflow: hidden;
   }
 
   .foxTales {

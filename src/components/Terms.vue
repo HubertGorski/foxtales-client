@@ -16,18 +16,26 @@
   const doc = ref('');
   const showTerms = ref(false);
 
+  const cleanHtml = (html: string) => {
+    const match = html.match(/<body[^>]*>([\s\S]*)<\/body>/im);
+    return match ? match[1] : html;
+  };
+
   watch(showTerms, async value => {
     if (!value) {
       return;
     }
     if (doc.value) {
       const res = await fetch(`/legal/${doc.value}.${locale.value}.html`);
-      termsHtml.value = await res.text();
+      const text = await res.text();
+      termsHtml.value = cleanHtml(text);
     } else {
       const privacy = await fetch(`/legal/privacy.${locale.value}.html`);
       const statute = await fetch(`/legal/statute.${locale.value}.html`);
-      privacyHtml.value = await privacy.text();
-      statuteHtml.value = await statute.text();
+      const privacyText = await privacy.text();
+      const statuteText = await statute.text();
+      privacyHtml.value = cleanHtml(privacyText);
+      statuteHtml.value = cleanHtml(statuteText);
     }
   });
 </script>
