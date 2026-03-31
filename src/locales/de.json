@@ -157,6 +157,11 @@
     "noTeams": "Ohne Teams",
     "soloOrTeam": "Solo / Teams",
     "availableModes": "Verfügbar",
+    "shareViaLink": "Über Link teilen",
+    "shareLinkTooltip": "Sie können diesen Link jederzeit ungültig machen, indem Sie einen neuen generieren oder diese Option deaktivieren.",
+    "linkCopied": "Link in die Zwischenablage kopiert!",
+    "savedInCollections": "In Sammlungen gespeichert",
+    "noFollowers": "Niemand hat diesen Katalog bisher gespeichert",
     "psych": {
       "playersCount": "2 – ∞",
       "bestWith": "Am besten 3+"

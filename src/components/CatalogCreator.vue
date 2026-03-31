@@ -11,6 +11,8 @@
   import { useLoading } from '@/composables/useLoading';
   import HubInput from './hubComponents/HubInput.vue';
   import { useI18n } from 'vue-i18n';
+  import CatalogShareLink from './CatalogShareLink.vue';
+  import CatalogFollowers from './CatalogFollowers.vue';
 
   const props = defineProps({
     editMode: {
@@ -214,7 +216,12 @@
         isTextarea
       />
     </div>
-    <!-- <div class="infoBlock">{{ $t('catalogAutomaticallyTranslated') }}</div> TODO: -->
+    <CatalogShareLink
+      v-model:hasPublicLink="catalog.hasPublicLink"
+      v-model:shareKey="catalog.shareKey"
+      :catalogId="catalog.catalogId"
+    />
+    <CatalogFollowers v-if="catalog.catalogId" :catalogId="catalog.catalogId" />
     <WhiteSelectList
       v-if="actualQuestions.length"
       v-model="actualQuestions"
@@ -239,7 +246,7 @@
   @use '@/assets/styles/variables' as *;
 
   .catalogCreator {
-    width: 324px;
+    width: 370px;
     padding: 12px;
     display: flex;
     flex-direction: column;

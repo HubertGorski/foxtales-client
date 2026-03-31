@@ -33,6 +33,12 @@ export class Catalog {
   @Expose()
   photoId: number;
 
+  @Expose()
+  hasPublicLink: boolean;
+
+  @Expose()
+  shareKey: string;
+
   @Type(() => CatalogType)
   @Expose()
   availableTypes: CatalogType[];
@@ -55,7 +61,9 @@ export class Catalog {
     availableTypes: CatalogType[] = [],
     recommendedGameRules: RULES = RULES.DIXIT,
     questionsInCatalogCount: number = 0,
-    photoId: number = 0
+    photoId: number = 0,
+    hasPublicLink: boolean = false,
+    shareKey: string = ''
   ) {
     this.catalogId = id;
     this.catalogType = catalogType;
@@ -68,6 +76,8 @@ export class Catalog {
     this.recommendedGameRules = recommendedGameRules;
     this.questionsInCatalogCount = questionsInCatalogCount;
     this.photoId = photoId;
+    this.hasPublicLink = hasPublicLink;
+    this.shareKey = shareKey;
   }
 
   get title(): string {

@@ -1,0 +1,229 @@
+<script setup lang="ts">
+  import { ref, watch } from 'vue';
+  import { ICON } from '@/enums/iconsEnum';
+  import { psychService } from '@/api/services/PsychService';
+  import { CatalogFollower } from '@/models/CatalogFollower';
+
+  const props = defineProps<{
+    catalogId: number;
+  }>();
+
+  const followers = ref<CatalogFollower[]>([]);
+  const isLoadingFollowers = ref(false);
+  const showFollowers = ref(false);
+  const removingFollowerUserId = ref<number | null>(null);
+
+  watch(
+    () => props.catalogId,
+    () => {
+      followers.value = [];
+      showFollowers.value = false;
+    }
+  );
+
+  const loadFollowers = async () => {
+    showFollowers.value = !showFollowers.value;
+    if (!showFollowers.value || followers.value.length) return;
+
+    isLoadingFollowers.value = true;
+    try {
+      // followers.value = await psychService.getCatalogFollowers(props.catalogId);
+      followers.value = [];
+    } finally {
+      isLoadingFollowers.value = false;
+    }
+  };
+
+  const removeFollower = async (userId: number) => {
+    if (removingFollowerUserId.value) return;
+
+    removingFollowerUserId.value = userId;
+    try {
+      await psychService.removeCatalogFollower(props.catalogId, userId);
+      followers.value = followers.value.filter(f => f.userId !== userId);
+    } finally {
+      removingFollowerUserId.value = null;
+    }
+  };
+</script>
+
+<template>
+  <div class="catalogFollowers">
+    <div class="catalogFollowers_header" @click="loadFollowers">
+      <span>{{ $t('catalog.savedInCollections') }}</span>
+      <v-icon :class="{ rotated: showFollowers }">{{ ICON.CHEVRON_UP }}</v-icon>
+    </div>
+    <Transition name="followers">
+      <div v-if="showFollowers" class="catalogFollowers_list">
+        <div v-if="isLoadingFollowers" class="catalogFollowers_loader">
+          <div class="spinner" />
+        </div>
+        <template v-else-if="followers.length">
+          <div v-for="follower in followers" :key="follower.userId" class="catalogFollowers_item">
+            <div class="catalogFollowers_item_user">
+              <div class="catalogFollowers_item_avatar">
+                {{ follower.username.charAt(0).toUpperCase() }}
+              </div>
+              <span>{{ follower.username }}</span>
+            </div>
+            <v-icon
+              class="catalogFollowers_item_remove"
+              :class="{ spinning: removingFollowerUserId === follower.userId }"
+              @click="removeFollower(follower.userId)"
+            >
+              {{ ICON.DELETE }}
+            </v-icon>
+          </div>
+        </template>
+        <div v-else class="catalogFollowers_empty">
+          {{ $t('catalog.noFollowers') }}
+        </div>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+  @use '@/assets/styles/variables' as *;
+
+  .catalogFollowers {
+    border-radius: 12px;
+    background: rgba($lightBackground, 0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba($darkBackground, 0.4);
+    box-shadow: 0 2px 12px rgba($mainBrownColor, 0.06);
+    overflow: hidden;
+
+    &_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: $grayColor;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: rgba($darkBackground, 0.15);
+      }
+
+      .v-icon {
+        font-size: 18px;
+        color: $lightGrayColor;
+        transition: transform 0.2s ease;
+
+        &.rotated {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    &_list {
+      border-top: 1px solid rgba($darkBackground, 0.3);
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    &_loader {
+      display: flex;
+      justify-content: center;
+      padding: 12px;
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba($darkBackground, 0.4);
+        border-top-color: $mainOrangeColor;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+    }
+
+    &_item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: rgba($darkBackground, 0.15);
+      }
+
+      &_user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      &_avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, $mainOrangeColor, $darkOrangeColor);
+        color: $whiteColor;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      span {
+        font-size: 14px;
+        color: $grayColor;
+      }
+
+      &_remove {
+        font-size: 18px;
+        color: $lightGrayColor;
+        cursor: pointer;
+        transition: color 0.15s ease;
+
+        &:hover {
+          color: $errorColor;
+        }
+
+        &.spinning {
+          animation: spin 0.7s linear infinite;
+        }
+      }
+    }
+
+    &_empty {
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 13px;
+      color: $lightGrayColor;
+    }
+  }
+
+  .followers-enter-active,
+  .followers-leave-active {
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    transform-origin: top;
+  }
+
+  .followers-enter-from,
+  .followers-leave-to {
+    opacity: 0;
+    transform: scaleY(0.9) translateY(-4px);
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

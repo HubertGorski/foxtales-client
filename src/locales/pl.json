@@ -157,6 +157,11 @@
     "noTeams": "Bez drużyn",
     "soloOrTeam": "Solo / Drużyny",
     "availableModes": "Do wyboru",
+    "shareViaLink": "Udostępnij za pomocą linku",
+    "shareLinkTooltip": "W dowolnym momencie możesz unieważnić ten link, generując nowy lub wyłączając tę opcję.",
+    "linkCopied": "Link skopiowany do schowka!",
+    "savedInCollections": "Zapisano w kolekcjach",
+    "noFollowers": "Nikt jeszcze nie zapisał tego katalogu",
     "psych": {
       "playersCount": "2 – ∞",
       "bestWith": "Najlepiej 3+"

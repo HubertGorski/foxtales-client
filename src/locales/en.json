@@ -157,6 +157,11 @@
     "noTeams": "No teams",
     "soloOrTeam": "Solo / Teams",
     "availableModes": "Available",
+    "shareViaLink": "Share via link",
+    "shareLinkTooltip": "You can invalidate this link at any time by generating a new one or disabling this option.",
+    "linkCopied": "Link copied to clipboard!",
+    "savedInCollections": "Saved in collections",
+    "noFollowers": "No one has saved this catalog yet",
     "psych": {
       "playersCount": "2 – ∞",
       "bestWith": "Best 3+"

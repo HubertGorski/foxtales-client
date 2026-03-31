@@ -43,6 +43,8 @@ import {
   mdiImageAlbum,
   mdiShareVariantOutline,
   mdiDownload,
+  mdiContentCopy,
+  mdiRefresh,
 } from '@mdi/js';
 
 export const ICON = {
@@ -90,6 +92,8 @@ export const ICON = {
   MEMORIES: mdiImageAlbum,
   SHARE: mdiShareVariantOutline,
   SAVE: mdiDownload,
+  COPY: mdiContentCopy,
+  REFRESH: mdiRefresh,
 } as const;
 
 export type ICON_TYPE = (typeof ICON)[keyof typeof ICON];

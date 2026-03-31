@@ -2,19 +2,20 @@
   import HubTooltip from './HubTooltip.vue';
   import { ICON } from '@/enums/iconsEnum';
 
-  const {
-    label,
-    tooltipText = '',
-    withIcon = false,
-    inset = true,
-    color = 'orange',
-  } = defineProps<{
-    label?: string;
-    tooltipText?: string;
-    withIcon?: boolean;
-    inset?: boolean;
-    color?: string;
-  }>();
+  const props = withDefaults(
+    defineProps<{
+      label?: string;
+      tooltipText?: string;
+      withIcon?: boolean;
+      inset?: boolean;
+      color?: string;
+    }>(),
+    {
+      tooltipText: '',
+      inset: true,
+      color: 'orange',
+    }
+  );
 
   const value = defineModel({ type: Boolean, required: true });
 
@@ -28,20 +29,20 @@
 </script>
 
 <template>
-  <div class="hubSwitch" :class="{ noInset: !inset }">
-    <HubTooltip :tooltipText="tooltipText" :tooltipDisabled="!tooltipText">
+  <div class="hubSwitch" :class="{ noInset: !props.inset }">
+    <HubTooltip :tooltipText="props.tooltipText" :tooltipDisabled="!props.tooltipText">
       <div class="hubSwitch_content">
-        <span v-if="label">{{ $t(label) }}</span>
-        <div class="iconContainer">
-          <v-icon v-if="withIcon">{{ ICON.INFO }}</v-icon>
+        <span v-if="props.label">{{ $t(props.label) }}</span>
+        <div v-if="props.withIcon" class="iconContainer">
+          <v-icon>{{ ICON.INFO }}</v-icon>
         </div>
       </div>
     </HubTooltip>
     <v-switch
       v-model="value"
-      :inset="inset"
+      :inset="props.inset"
       hide-details
-      :color="color"
+      :color="props.color"
       @update:model-value="onSwitchChange"
     />
   </div>
@@ -58,6 +59,9 @@
     max-height: 50px;
 
     &_content {
+      display: flex;
+      align-items: center;
+      gap: 4px;
       position: relative;
     }
 
@@ -66,14 +70,19 @@
     }
 
     .iconContainer {
-      display: inline;
+      display: flex;
+      align-items: center;
 
       .v-icon {
-        padding-bottom: 12px;
-        margin: 2px;
-        font-size: 12px;
+        font-size: 16px;
         color: $lightGrayColor;
         cursor: help;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 1;
+        }
       }
     }
   }

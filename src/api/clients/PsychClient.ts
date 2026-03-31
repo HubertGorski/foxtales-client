@@ -77,4 +77,12 @@ export const psychClient = {
       catalogsIds,
     });
   },
+
+  regenerateShareKey(catalogId: number): Promise<{ data: string }> {
+    return apiClient.post('/psych/regenerateShareKey', { catalogId });
+  },
+
+  removeCatalogFollower(catalogId: number, userId: number): Promise<{ data: boolean }> {
+    return apiClient.post('/psych/removeCatalogFollower', { catalogId, userId });
+  },
 };
