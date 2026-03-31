@@ -202,6 +202,7 @@
   const currentCatalog = ref<Catalog>(new Catalog());
   const editCatalogMode = ref<boolean>(true);
   const addManyQuestonsToCatalogs = ref<boolean>(false);
+  const questionRef = ref<HTMLElement | null>(null);
   const actualQuestions = ref<ListElement[]>(
     userStore.user.questions.map(convertQuestionToListElement).sort((a, b) => b.id - a.id)
   );
@@ -235,6 +236,12 @@
       : t('beforeSelectedCatalogInfoText');
   });
 
+  const scrollToInput = () => {
+    setTimeout(() => {
+      questionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  };
+
   //TODO: jak jest jedno pytanie zaznaczone to dac mozliwosc wypisywania go z katalogu.
 </script>
 
@@ -266,13 +273,12 @@
             emptyDataText="psych.noDirectoryHasBeenCreatedYet"
             multiple
             showPagination
-            showElementsCountInItem
             showItemDetailsBtn
             @showDetails="showCatalogDetails"
           />
         </template>
         <template #addQuestion>
-          <div class="selectedCatalogs">{{ selectedCatalogsInfoText }}</div>
+          <div ref="questionRef" class="selectedCatalogs">{{ selectedCatalogsInfoText }}</div>
           <HubDivider />
           <HubInputWithBtn
             v-model="newQuestion"
@@ -287,6 +293,7 @@
             :btnIsOrange="addQuestionBtn.isOrange"
             textPlaceholder="exampleQuestion"
             isTextarea
+            @focus="scrollToInput"
           >
             <div class="addQuestionTutorial">
               {{ $t('questionTutorial') }}

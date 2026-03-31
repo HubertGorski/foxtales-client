@@ -81,6 +81,10 @@ export const psychService = {
     return (await psychClient.regenerateShareKey(catalogId)).data;
   },
 
+  async generateShareKey(): Promise<string> {
+    return (await psychClient.generateShareKey()).data;
+  },
+
   async removeCatalogFollower(catalogId: number, userId: number): Promise<boolean> {
     return (await psychClient.removeCatalogFollower(catalogId, userId)).data;
   },

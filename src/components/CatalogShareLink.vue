@@ -6,17 +6,11 @@
 
   const props = defineProps<{
     catalogId: number | null;
-    shareKey: string;
-    hasPublicLink: boolean;
   }>();
 
-  const emit = defineEmits<{
-    (e: 'update:hasPublicLink', value: boolean): void;
-    (e: 'update:shareKey', value: string): void;
-  }>();
+  const hasPublicLink = defineModel<boolean>('hasPublicLink', { default: false });
+  const shareKey = defineModel<string>('shareKey', { default: '' });
 
-  const hasPublicLink = ref(props.hasPublicLink);
-  const shareKey = ref(props.shareKey);
   const linkCopied = ref(false);
   const isRegenerating = ref(false);
 
@@ -27,21 +21,20 @@
   };
 
   const regenerateShareKey = async () => {
-    if (!props.catalogId || isRegenerating.value) return;
+    if (isRegenerating.value) return;
 
     isRegenerating.value = true;
     try {
-      const newShareKey = await psychService.regenerateShareKey(props.catalogId);
-      shareKey.value = newShareKey;
-      emit('update:shareKey', newShareKey);
+      shareKey.value = await psychService.regenerateShareKey(props.catalogId ?? 0);
     } finally {
       isRegenerating.value = false;
     }
   };
 
-  const onSwitchChange = (value: boolean | null) => {
-    hasPublicLink.value = value ?? false;
-    emit('update:hasPublicLink', value ?? false);
+  const onSwitchChange = async (value: boolean | null) => {
+    if (value && !props.catalogId) {
+      shareKey.value = await psychService.generateShareKey();
+    }
   };
 </script>
 

@@ -82,6 +82,10 @@ export const psychClient = {
     return apiClient.post('/psych/regenerateShareKey', { catalogId });
   },
 
+  generateShareKey(): Promise<{ data: string }> {
+    return apiClient.post('/psych/generateShareKey');
+  },
+
   removeCatalogFollower(catalogId: number, userId: number): Promise<{ data: boolean }> {
     return apiClient.post('/psych/removeCatalogFollower', { catalogId, userId });
   },
