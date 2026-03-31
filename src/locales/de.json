@@ -158,7 +158,7 @@
     "soloOrTeam": "Solo / Teams",
     "availableModes": "Verfügbar",
     "shareViaLink": "Über Link teilen",
-    "shareLinkTooltip": "Sie können diesen Link jederzeit ungültig machen, indem Sie einen neuen generieren oder diese Option deaktivieren.",
+    "shareLinkTooltip": "Sie können diesen Link jederzeit ungültig machen, indem Sie einen neuen generieren oder diese Option deaktivieren. Jeder mit einem aktiven Link kann diesen Katalog zu seinen Sammlungen hinzufügen.",
     "linkCopied": "Link in die Zwischenablage kopiert!",
     "savedInCollections": "In Sammlungen gespeichert",
     "noFollowers": "Niemand hat diesen Katalog bisher gespeichert",

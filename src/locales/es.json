@@ -158,7 +158,7 @@
     "soloOrTeam": "Solo / Equipos",
     "availableModes": "Disponible",
     "shareViaLink": "Compartir mediante enlace",
-    "shareLinkTooltip": "Puedes invalidar este enlace en cualquier momento generando uno nuevo o desactivando esta opción.",
+    "shareLinkTooltip": "Puedes invalidar este enlace en cualquier momento generando uno nuevo o desactivando esta opción. Cualquier persona con un enlace activo podrá añadir este catálogo a sus colecciones.",
     "linkCopied": "¡Enlace copiado al portapapeles!",
     "savedInCollections": "Guardado en colecciones",
     "noFollowers": "Nadie ha guardado este catálogo todavía",

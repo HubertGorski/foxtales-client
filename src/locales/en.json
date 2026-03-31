@@ -158,7 +158,7 @@
     "soloOrTeam": "Solo / Teams",
     "availableModes": "Available",
     "shareViaLink": "Share via link",
-    "shareLinkTooltip": "You can invalidate this link at any time by generating a new one or disabling this option.",
+    "shareLinkTooltip": "You can invalidate this link at any time by generating a new one or disabling this option. Anyone with an active link will be able to add this catalog to their collections.",
     "linkCopied": "Link copied to clipboard!",
     "savedInCollections": "Saved in collections",
     "noFollowers": "No one has saved this catalog yet",

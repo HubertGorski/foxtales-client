@@ -7,14 +7,14 @@
 
   const {
     title,
-    shareKey,
-    round,
+    shareKey = '',
+    round = 0,
     text = '',
     disabled = false,
   } = defineProps<{
     title: string;
-    shareKey: string;
-    round: number;
+    shareKey?: string;
+    round?: number;
     text?: string;
     disabled?: boolean;
   }>();

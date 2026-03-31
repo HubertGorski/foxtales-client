@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import { ICON } from '@/enums/iconsEnum';
   import HubSwitch from '@/components/hubComponents/HubSwitch.vue';
   import { psychService } from '@/api/services/PsychService';
+  import { API_DOMAIN } from '@/api/Client';
 
   const props = defineProps<{
     catalogId: number | null;
@@ -14,8 +15,12 @@
   const linkCopied = ref(false);
   const isRegenerating = ref(false);
 
+  const shareLink = computed(() => {
+    return `${API_DOMAIN}/${shareKey.value}`;
+  });
+
   const copyLink = async () => {
-    await navigator.clipboard.writeText(shareKey.value);
+    await navigator.clipboard.writeText(shareLink.value);
     linkCopied.value = true;
     setTimeout(() => (linkCopied.value = false), 2000);
   };
@@ -42,13 +47,13 @@
   <div class="catalogShareLink">
     <HubSwitch
       v-model="hasPublicLink"
-      :tooltipText="$t('catalog.shareLinkTooltip')"
-      :label="$t('catalog.shareViaLink')"
+      tooltipText="catalog.shareLinkTooltip"
+      label="catalog.shareViaLink"
       withIcon
       @onSwitchChange="onSwitchChange"
     />
     <div v-if="hasPublicLink" class="catalogShareLink_link" @click="copyLink">
-      <div class="catalogShareLink_link_key">{{ shareKey }}</div>
+      <div class="catalogShareLink_link_key">{{ shareLink }}</div>
       <div class="catalogShareLink_link_actions">
         <v-icon
           v-if="catalogId"
