@@ -22,6 +22,7 @@
     minimalView = false,
     selectItemId,
     infinityPages = false,
+    readOnly = false,
   } = defineProps<{
     showSelectedCount?: boolean;
     customSelectedCountTitle?: string;
@@ -37,6 +38,7 @@
     minimalView?: boolean;
     selectItemId?: number;
     infinityPages?: boolean;
+    readOnly?: boolean;
   }>();
 
   const emit = defineEmits<{
@@ -85,6 +87,7 @@
   };
 
   const selectItem = (item: ListElement) => {
+    if (readOnly) return;
     if (multiple) {
       item.isSelected = !item.isSelected;
     } else {
@@ -117,7 +120,7 @@
   <div class="whiteSelectList">
     <div v-if="!minimalView">
       <div
-        v-if="showSelectedCount && visibleItems.length > 0"
+        v-if="showSelectedCount && visibleItems.length > 0 && !readOnly"
         class="whiteSelectList_selectedCount"
       >
         {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} / {{ items.length }})
@@ -132,7 +135,7 @@
           v-for="item in visibleItems"
           :key="item.id"
           class="item"
-          :class="{ isSelected: item.isSelected }"
+          :class="{ isSelected: item.isSelected, isReadOnly: readOnly }"
         >
           <HubTooltip
             :tooltipText="item.description"
@@ -250,6 +253,21 @@
           color: $lightGrayColor;
           margin: 8px;
           font-size: 20px;
+        }
+
+        &.isReadOnly {
+          .item_icon {
+            opacity: 0;
+            pointer-events: none;
+          }
+
+          .item_name {
+            max-width: 100%;
+          }
+
+          &::before {
+            width: 94%;
+          }
         }
 
         &_actionIcon {

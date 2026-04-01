@@ -45,6 +45,7 @@ import {
   mdiDownload,
   mdiContentCopy,
   mdiRefresh,
+  mdiMinusCircleOutline,
 } from '@mdi/js';
 
 export const ICON = {
@@ -94,6 +95,7 @@ export const ICON = {
   SAVE: mdiDownload,
   COPY: mdiContentCopy,
   REFRESH: mdiRefresh,
+  ABANDON: mdiMinusCircleOutline,
 } as const;
 
 export type ICON_TYPE = (typeof ICON)[keyof typeof ICON];

@@ -116,6 +116,7 @@
     editCatalogMode.value = false;
     isCatalogCreatorOpen.value = true;
     currentCatalog.value = new Catalog();
+    isReadCatalogMode.value = false;
   };
 
   const addQuestionsToCatalog = (questions: ListElement[]) => {
@@ -138,12 +139,23 @@
     isQuestionCreatorOpen.value = true;
   };
 
+  const isReadCatalogMode = ref(false);
   const showCatalogDetails = (catalog: ListElement) => {
+    const isReceived = userStore.user.receivedCatalogs.some(c => c.catalogId === catalog.id);
+
     currentCatalog.value = [...userStore.user.catalogs, ...userStore.user.receivedCatalogs].find(
       actualCatalog => actualCatalog.catalogId === catalog.id
     )!;
-    editCatalogMode.value = true;
-    isCatalogCreatorOpen.value = true;
+
+    if (isReceived) {
+      isReadCatalogMode.value = true;
+      editCatalogMode.value = false;
+      isCatalogCreatorOpen.value = true;
+    } else {
+      isReadCatalogMode.value = false;
+      editCatalogMode.value = true;
+      isCatalogCreatorOpen.value = true;
+    }
   };
 
   const closePopup = (refresh: boolean = false) => {
@@ -177,6 +189,12 @@
     catalogIdToRemove = catalogId;
   };
 
+  const showAbandonCatalogPopup = (catalogId: number) => {
+    isCatalogCreatorOpen.value = false;
+    isAbandonPopupOpen.value = true;
+    catalogIdToAbandon = catalogId;
+  };
+
   const deleteCatalog = async () => {
     if (!catalogIdToRemove) {
       return;
@@ -196,15 +214,36 @@
     refreshCatalogList();
   };
 
+  const abandonCatalog = async () => {
+    if (!catalogIdToAbandon) {
+      return;
+    }
+
+    isAbandonPopupOpen.value = false;
+    const response = await psychService.removeCatalogFollower(
+      catalogIdToAbandon,
+      userStore.user.userId
+    );
+
+    if (!response) {
+      return;
+    }
+
+    userStore.removeReceivedCatalog(catalogIdToAbandon);
+    refreshCatalogList();
+  };
+
   let catalogIdToRemove: number | null = null;
+  let catalogIdToAbandon: number | null = null;
   const isDeletePopupOpen = ref<boolean>(false);
+  const isAbandonPopupOpen = ref<boolean>(false);
   const isCatalogCreatorOpen = ref<boolean>(false);
   const isQuestionCreatorOpen = ref<boolean>(false);
   const isMemoriesPopupAvailable = ref<boolean>(false);
   const setOpenTab = ref<string>('addQuestion');
   const newQuestion = ref<string>('');
   const currentCatalog = ref<Catalog>(new Catalog());
-  const editCatalogMode = ref<boolean>(true);
+  const editCatalogMode = ref<boolean>(false);
   const addManyQuestonsToCatalogs = ref<boolean>(false);
   const questionRef = ref<HTMLElement | null>(null);
   const actualQuestions = ref<ListElement[]>(
@@ -355,10 +394,17 @@
       <CatalogCreator
         v-model="currentCatalog"
         :editMode="editCatalogMode"
+        :readMode="isReadCatalogMode"
         @closePopup="closePopup"
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
+        @showAbandonCatalogPopup="showAbandonCatalogPopup"
       />
     </HubPopup>
+    <HubDialogPopup
+      v-model="isAbandonPopupOpen"
+      :textPopup="$t('confirmAbandonCatalogTextPopup')"
+      :confirmAction="() => abandonCatalog()"
+    />
     <CatalogByShareKeyPopup :refreshListAction="refreshCatalogList" />
   </div>
 </template>

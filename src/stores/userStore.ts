@@ -176,6 +176,12 @@ export const useUserStore = defineStore({
       this.user.catalogs = this.user.catalogs.filter(catalog => catalog.catalogId !== catalogId);
     },
 
+    removeReceivedCatalog(catalogId: number) {
+      this.user.receivedCatalogs = this.user.receivedCatalogs.filter(
+        catalog => catalog.catalogId !== catalogId
+      );
+    },
+
     removeMemory(shareKey: string, round: number) {
       this.user.memories = this.user.memories.filter(
         memory => memory.shareKey !== shareKey || memory.round !== round

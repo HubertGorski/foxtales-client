@@ -11,11 +11,15 @@
   import { useLoading } from '@/composables/useLoading';
   import HubInput from './hubComponents/HubInput.vue';
   import { useI18n } from 'vue-i18n';
-  import CatalogShareLink from './CatalogShareLink.vue';
   import CatalogFollowers from './CatalogFollowers.vue';
+  import CatalogShareLink from './CatalogShareLink.vue';
 
   const props = defineProps({
     editMode: {
+      type: Boolean,
+      default: false,
+    },
+    readMode: {
       type: Boolean,
       default: false,
     },
@@ -24,6 +28,7 @@
   const emit = defineEmits<{
     (e: 'closePopup', refresh: boolean): void;
     (e: 'showDeleteCatalogPopup', catalogId: number): void;
+    (e: 'showAbandonCatalogPopup', catalogId: number): void;
   }>();
 
   const catalog = defineModel({ type: Catalog, required: true });
@@ -134,6 +139,10 @@
   };
 
   const getActualQuestions = () => {
+    if (props.readMode) {
+      return catalog.value.questions.map(q => convertQuestionToListElement(q));
+    }
+
     const items = userStore.user.questions.map(convertQuestionToListElement);
     items.forEach(item => {
       if (catalog.value.questions.map(question => question.id).includes(item.id)) {
@@ -191,47 +200,63 @@
   <div class="catalogCreator creamCard">
     <div class="catalogCreator_title">
       <div v-if="editMode">{{ $t('editCatalog') }}</div>
+      <div v-else-if="readMode">{{ catalog.title }}</div>
       <div v-else>{{ $t('createCatalog') }}</div>
       <div class="catalogCreator_controlBtns">
-        <v-icon v-if="editMode" @click="showDeleteCatalogPopup(catalog.catalogId)">
-          {{ ICON.DELETE }}
+        <v-icon
+          v-if="editMode || readMode"
+          @click="
+            readMode
+              ? emit('showAbandonCatalogPopup', catalog.catalogId!)
+              : showDeleteCatalogPopup(catalog.catalogId)
+          "
+        >
+          {{ readMode ? ICON.ABANDON : ICON.DELETE }}
         </v-icon>
         <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
       </div>
     </div>
-    <div>
+    <div v-if="readMode && catalog.author" class="catalogCreator_author">
+      <span>{{ $t('catalog.author') }}:</span>
+      <strong>{{ catalog.author }}</strong>
+    </div>
+    <div v-if="!readMode">
       <HubInput
         v-model="catalog.title"
         :label="$t('title')"
         :errorMessages="getError('Catalog.Translations[0].Title')"
       />
     </div>
-    <div>
+    <div v-if="!readMode || catalog.description">
       <HubInput
         v-model="catalog.description"
         :label="$t('description')"
         :textareaRows="2"
         :errorMessages="getError('Catalog.Translations[0].Description')"
         :noResize="false"
+        :readonly="readMode"
         isTextarea
       />
     </div>
     <CatalogShareLink
+      v-if="!readMode"
       v-model:hasPublicLink="catalog.hasPublicLink"
       v-model:shareKey="catalog.shareKey"
       :catalogId="catalog.catalogId"
     />
-    <CatalogFollowers v-if="catalog.catalogId" :catalogId="catalog.catalogId" />
+    <CatalogFollowers v-if="catalog.catalogId && !readMode" :catalogId="catalog.catalogId" />
     <WhiteSelectList
       v-if="actualQuestions.length"
       v-model="actualQuestions"
       customSelectedCountTitle="selectedQuestionsToCatalog"
       :fontSize="14"
       showSelectedCount
-      multiple
+      :multiple="!readMode"
+      :readOnly="readMode"
       showPagination
     />
     <HubBtn
+      v-if="!readMode"
       class="catalogCreator_btn"
       :action="formBtn.action"
       :text="formBtn.text"
@@ -262,7 +287,17 @@
 
     &_controlBtns {
       display: flex;
-      gap: 8px;
+      gap: 6px;
+    }
+
+    &_author {
+      font-size: 14px;
+      color: $lightBrownColor;
+      margin-top: -14px;
+      strong {
+        color: $mainOrangeColor;
+        margin-left: 4px;
+      }
     }
 
     &_subtitle {
