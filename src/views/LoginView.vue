@@ -50,7 +50,9 @@
     await withLoading(async () => {
       try {
         await userService.login(values.email, values.password, user.isProlongSessionEnabled);
-        router.push(ROUTE_PATH.MENU);
+        const { redirectPath, setRedirectPath } = useViewStore();
+        router.push(redirectPath || ROUTE_PATH.MENU);
+        setRedirectPath(null);
       } catch (err: any) {
         const data = err?.response?.data;
         if (data?.errors) {

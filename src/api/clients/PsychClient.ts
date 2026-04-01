@@ -89,4 +89,12 @@ export const psychClient = {
   removeCatalogFollower(catalogId: number, userId: number): Promise<{ data: boolean }> {
     return apiClient.post('/psych/removeCatalogFollower', { catalogId, userId });
   },
+
+  addCatalogFollower(shareKey: string, userId: number): Promise<{ data: boolean }> {
+    return apiClient.post('/psych/addCatalogFollower', { shareKey, userId });
+  },
+
+  getCatalogForShare(shareKey: string): Promise<{ data: Catalog }> {
+    return apiClient.get(`/psych/getCatalogForShare/${shareKey}`);
+  },
 };

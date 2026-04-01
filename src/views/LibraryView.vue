@@ -24,6 +24,7 @@
   import { useI18n } from 'vue-i18n';
   import { useLoading } from '@/composables/useLoading';
   import ShowMemoryPopup from '@/components/psychGame/ShowMemoryPopup.vue';
+  import CatalogByShareKeyPopup from '@/components/CatalogByShareKeyPopup.vue';
 
   const userStore = useUserStore();
   const { t } = useI18n();
@@ -337,6 +338,7 @@
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
       />
     </HubPopup>
+    <CatalogByShareKeyPopup :refreshListAction="refreshCatalogList" />
   </div>
 </template>
 

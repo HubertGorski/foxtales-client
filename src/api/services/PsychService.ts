@@ -88,4 +88,13 @@ export const psychService = {
   async removeCatalogFollower(catalogId: number, userId: number): Promise<boolean> {
     return (await psychClient.removeCatalogFollower(catalogId, userId)).data;
   },
+
+  async addCatalogFollower(shareKey: string, userId: number): Promise<boolean> {
+    return (await psychClient.addCatalogFollower(shareKey, userId)).data;
+  },
+
+  async getCatalogForShare(shareKey: string): Promise<Catalog> {
+    const response = (await psychClient.getCatalogForShare(shareKey)).data;
+    return plainToInstance(Catalog, response);
+  },
 };

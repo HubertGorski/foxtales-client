@@ -10,6 +10,7 @@ interface ViewState {
   isMobile: boolean;
   useWakeLock: boolean;
   infos: InfoMessage[];
+  redirectPath: string | null;
 }
 
 export const useViewStore = defineStore({
@@ -19,6 +20,7 @@ export const useViewStore = defineStore({
     isMobile: false,
     useWakeLock: false,
     infos: [],
+    redirectPath: null,
   }),
 
   getters: {
@@ -45,6 +47,9 @@ export const useViewStore = defineStore({
     },
     toggleWakeLock() {
       this.useWakeLock = !this.useWakeLock;
+    },
+    setRedirectPath(path: string | null) {
+      this.redirectPath = path;
     },
   },
 });

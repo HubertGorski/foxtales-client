@@ -20,6 +20,9 @@ export class Catalog {
   @Expose()
   ownerId: number;
 
+  @Expose({ name: 'ownerUsername' })
+  author: string;
+
   @Expose()
   questionsInCatalogCount: number;
 
@@ -63,7 +66,8 @@ export class Catalog {
     questionsInCatalogCount: number = 0,
     photoId: number = 0,
     hasPublicLink: boolean = false,
-    shareKey: string = ''
+    shareKey: string = '',
+    author: string = ''
   ) {
     this.catalogId = id;
     this.catalogType = catalogType;
@@ -78,6 +82,7 @@ export class Catalog {
     this.photoId = photoId;
     this.hasPublicLink = hasPublicLink;
     this.shareKey = shareKey;
+    this.author = author;
   }
 
   get title(): string {
