@@ -100,6 +100,7 @@
   "editCatalog": "Edit catalog",
   "createCatalog": "Create catalog",
   "yourCatalogs": "Your catalogs",
+  "receivedCatalogs": "Received catalogs",
   "yourMemory": "Saved memories",
   "yourQuestions": "Your questions",
   "messageHasBeenSent": "Message has been sent!",
@@ -228,6 +229,7 @@
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "No catalog has been created yet.",
+    "noReceivedCatalogsYet": "You haven't received any catalogs yet.",
     "noQuestionsHasBeenCreatedYet": "No questions have been created yet.",
     "addToCatalog": "Add to catalog",
     "createdQuestion": "Created question:",

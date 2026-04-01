@@ -139,7 +139,7 @@
   };
 
   const showCatalogDetails = (catalog: ListElement) => {
-    currentCatalog.value = userStore.user.catalogs.find(
+    currentCatalog.value = [...userStore.user.catalogs, ...userStore.user.receivedCatalogs].find(
       actualCatalog => actualCatalog.catalogId === catalog.id
     )!;
     editCatalogMode.value = true;
@@ -156,6 +156,9 @@
 
   const refreshCatalogList = () => {
     actualCatalogs.value = userStore.user.catalogs
+      .map(convertCatalogsToListElement)
+      .sort((a, b) => b.id - a.id);
+    actualReceivedCatalogs.value = userStore.user.receivedCatalogs
       .map(convertCatalogsToListElement)
       .sort((a, b) => b.id - a.id);
     setOpenTab.value = 'addQuestion';
@@ -212,6 +215,9 @@
   const actualCatalogs = ref<ListElement[]>(
     userStore.user.catalogs.map(convertCatalogsToListElement).sort((a, b) => b.id - a.id)
   );
+  const actualReceivedCatalogs = ref<ListElement[]>(
+    userStore.user.receivedCatalogs.map(convertCatalogsToListElement).sort((a, b) => b.id - a.id)
+  );
 
   const actualSelectedCatalogs = ref<Catalog[]>([]);
 
@@ -259,6 +265,7 @@
         v-model="setOpenTab"
         :slotNames="[
           { slotName: 'yourCatalogs', isComing: false, darkBackground: false },
+          { slotName: 'receivedCatalogs', isComing: false, darkBackground: false },
           { slotName: 'addQuestion', isComing: false, darkBackground: false },
           { slotName: 'yourQuestions', isComing: false, darkBackground: true },
         ]"
@@ -272,6 +279,20 @@
             :itemsPerPage="3"
             :fontSize="14"
             emptyDataText="psych.noDirectoryHasBeenCreatedYet"
+            multiple
+            showPagination
+            showItemDetailsBtn
+            @showDetails="showCatalogDetails"
+          />
+        </template>
+        <template #receivedCatalogs>
+          <WhiteSelectList
+            v-model="actualReceivedCatalogs"
+            class="yourCatalogs"
+            :height="146"
+            :itemsPerPage="3"
+            :fontSize="14"
+            emptyDataText="psych.noReceivedCatalogsYet"
             multiple
             showPagination
             showItemDetailsBtn

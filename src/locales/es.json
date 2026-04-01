@@ -100,6 +100,7 @@
   "editCatalog": "Editar catálogo",
   "createCatalog": "Crear catálogo",
   "yourCatalogs": "Tus catálogos",
+  "receivedCatalogs": "Catálogos recibidos",
   "yourMemory": "Recuerdos guardados",
   "yourQuestions": "Tus preguntas",
   "messageHasBeenSent": "¡Mensaje enviado!",
@@ -228,6 +229,7 @@
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Aún no se ha creado ningún catálogo.",
+    "noReceivedCatalogsYet": "Aún no has recibido ningún catálogo.",
     "noQuestionsHasBeenCreatedYet": "Aún no se han creado preguntas.",
     "addToCatalog": "Añadir al catálogo",
     "createdQuestion": "Pregunta creada:",

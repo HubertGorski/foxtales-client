@@ -64,6 +64,9 @@ export class User {
   @Type(() => Catalog)
   catalogs: Catalog[] = [];
 
+  @Type(() => Catalog)
+  receivedCatalogs: Catalog[] = [];
+
   @Type(() => Question)
   questions: Question[] = [];
 

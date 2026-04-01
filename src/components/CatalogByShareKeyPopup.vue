@@ -31,12 +31,12 @@
 
     await withLoading(async () => {
       try {
-        const success = await psychService.addCatalogFollower(
-          catalog.value?.shareKey ?? '',
-          userStore.user.userId
-        );
-        if (success && catalog.value) {
-          userStore.addCatalog(catalog.value);
+        if (catalog.value) {
+          await psychService.addCatalogFollower(
+            catalog.value.shareKey ?? '',
+            userStore.user.userId
+          );
+          userStore.addReceivedCatalog(catalog.value);
           props.refreshListAction?.();
           goBack();
         }

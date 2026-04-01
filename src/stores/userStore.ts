@@ -99,6 +99,10 @@ export const useUserStore = defineStore({
       this.user.catalogs.unshift(newCatalog);
     },
 
+    addReceivedCatalog(newCatalog: Catalog) {
+      this.user.receivedCatalogs.unshift(newCatalog);
+    },
+
     editCatalog(catalog: Catalog) {
       const index = this.user.catalogs.findIndex(
         userCatalog => userCatalog.catalogId === catalog.catalogId

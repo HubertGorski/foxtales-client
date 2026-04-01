@@ -89,8 +89,8 @@ export const psychService = {
     return (await psychClient.removeCatalogFollower(catalogId, userId)).data;
   },
 
-  async addCatalogFollower(shareKey: string, userId: number): Promise<boolean> {
-    return (await psychClient.addCatalogFollower(shareKey, userId)).data;
+  async addCatalogFollower(shareKey: string, userId: number): Promise<void> {
+    return await psychClient.addCatalogFollower(shareKey, userId);
   },
 
   async getCatalogForShare(shareKey: string): Promise<Catalog> {
