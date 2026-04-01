@@ -11,8 +11,13 @@
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
   import { useLoading } from '@/composables/useLoading';
+  import { generateFoxNick } from '@/utils/nicknameGenerator';
+  import { toLang } from '@/enums/languagesEnum';
+  import i18n from '@/configs/i18n';
 
   type FormFields = 'username' | 'termsaccepted';
+
+  const exampleNickname = generateFoxNick(toLang(i18n.global.locale.value));
 
   const { t } = useI18n();
   const router = useRouter();
@@ -38,7 +43,8 @@
   const onSubmit = handleSubmit(async values => {
     try {
       await withLoading(async () => {
-        await userService.registerTmpUser(values.username, values.termsaccepted);
+        const finalUsername = username.value?.trim() || exampleNickname;
+        await userService.registerTmpUser(finalUsername ?? exampleNickname, values.termsaccepted);
         router.push(ROUTE_PATH.MENU);
       });
     } catch (err: any) {
@@ -76,7 +82,10 @@
         btnText="tryWithoutAccount"
         :btnAction="onSubmit"
         :btnLoading="loading"
+        :textPlaceholder="exampleNickname"
         withFoxImg
+        allowEmpty
+        dictsDisabled
         @focus="scrollToInput"
       >
         <HubCheckbox v-model="termsAccepted" :error-messages="termsAcceptedError">
@@ -107,6 +116,10 @@
     gap: 24px;
     position: relative;
     overflow: visible;
+
+    .creamCard {
+      padding: 24px 24px 12px;
+    }
 
     &_content {
       padding: 0 24px;

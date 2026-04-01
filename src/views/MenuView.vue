@@ -128,6 +128,7 @@
           bottom: 0;
           left: 0;
           border-radius: 12px;
+          z-index: 2;
         }
       }
     }

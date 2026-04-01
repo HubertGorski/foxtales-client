@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, nextTick, ref, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { userService } from '@/api/services/UserService';
@@ -277,7 +277,7 @@
     &_terms {
       padding: 8px 0;
     }
- 
+
     &_footer {
       margin-top: 12px;
       padding-top: 12px;
@@ -286,7 +286,7 @@
       justify-content: center;
       width: 100%;
     }
- 
+
     &_footerText {
       font-size: 15px;
       color: rgba($mainBrownColor, 0.7);
@@ -295,7 +295,7 @@
       display: flex;
       align-items: center;
     }
- 
+
     &_footerLink {
       color: $mainOrangeColor;
       font-weight: 800;
@@ -305,7 +305,7 @@
       display: inline-block;
       position: relative;
       padding: 2px 4px;
- 
+
       &::after {
         content: '';
         position: absolute;
@@ -319,17 +319,7 @@
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         border-radius: 2px;
       }
- 
-      &:hover {
-        transform: translateY(-2px) scale(1.05);
-        filter: drop-shadow(0 4px 8px rgba($mainOrangeColor, 0.2));
- 
-        &::after {
-          transform: scaleX(1);
-          transform-origin: left;
-        }
-      }
- 
+
       &:active {
         transform: scale(0.95);
       }

@@ -28,7 +28,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 12px;
-    padding-top: 12px;
+    padding-top: 8px;
     border-top: 1px solid rgba($mainBrownColor, 0.05);
     width: 100%;
 
