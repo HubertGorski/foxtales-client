@@ -216,45 +216,49 @@
         <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
       </div>
     </div>
-    <div v-if="readMode && catalog.author" class="catalogCreator_author">
-      <span>{{ $t('catalog.author') }}:</span>
-      <strong>{{ catalog.author }}</strong>
-    </div>
-    <div v-if="!readMode">
-      <HubInput
-        v-model="catalog.title"
-        :label="$t('title')"
-        :errorMessages="getError('Catalog.Translations[0].Title')"
+    <div class="catalogCreator_body scrollbar">
+      <div v-if="readMode && catalog.author" class="catalogCreator_author">
+        <span>{{ $t('catalog.author') }}:</span>
+        <strong>{{ catalog.author }}</strong>
+      </div>
+      <div v-if="!readMode">
+        <HubInput
+          v-model="catalog.title"
+          :label="$t('title')"
+          :errorMessages="getError('Catalog.Translations[0].Title')"
+        />
+      </div>
+      <div v-if="!readMode || catalog.description">
+        <HubInput
+          v-model="catalog.description"
+          :label="$t('description')"
+          :textareaRows="2"
+          :errorMessages="getError('Catalog.Translations[0].Description')"
+          :noResize="false"
+          :readonly="readMode"
+          isTextarea
+        />
+      </div>
+      <CatalogShareLink
+        v-if="!readMode"
+        v-model:hasPublicLink="catalog.hasPublicLink"
+        v-model:shareKey="catalog.shareKey"
+        :catalogId="catalog.catalogId"
+      />
+      <CatalogFollowers v-if="catalog.catalogId && !readMode" :catalog="catalog" />
+      <WhiteSelectList
+        v-if="actualQuestions.length"
+        v-model="actualQuestions"
+        customSelectedCountTitle="selectedQuestionsToCatalog"
+        :fontSize="14"
+        :itemsPerPage="3"
+        showSelectedCount
+        :multiple="!readMode"
+        :readOnly="readMode"
+        showPagination
+        infinityPages
       />
     </div>
-    <div v-if="!readMode || catalog.description">
-      <HubInput
-        v-model="catalog.description"
-        :label="$t('description')"
-        :textareaRows="2"
-        :errorMessages="getError('Catalog.Translations[0].Description')"
-        :noResize="false"
-        :readonly="readMode"
-        isTextarea
-      />
-    </div>
-    <CatalogShareLink
-      v-if="!readMode"
-      v-model:hasPublicLink="catalog.hasPublicLink"
-      v-model:shareKey="catalog.shareKey"
-      :catalogId="catalog.catalogId"
-    />
-    <CatalogFollowers v-if="catalog.catalogId && !readMode" :catalog="catalog" />
-    <WhiteSelectList
-      v-if="actualQuestions.length"
-      v-model="actualQuestions"
-      customSelectedCountTitle="selectedQuestionsToCatalog"
-      :fontSize="14"
-      showSelectedCount
-      :multiple="!readMode"
-      :readOnly="readMode"
-      showPagination
-    />
     <HubBtn
       v-if="!readMode"
       class="catalogCreator_btn"
@@ -276,6 +280,8 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    max-height: 90vh;
+    overflow: hidden;
 
     &_title {
       color: $grayColor;
@@ -283,6 +289,27 @@
       font-weight: 600;
       display: flex;
       justify-content: space-between;
+      margin-bottom: 4px;
+    }
+ 
+    &_body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 4px;
+ 
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba($mainBrownColor, 0.2);
+        border-radius: 10px;
+      }
     }
 
     &_controlBtns {
@@ -293,7 +320,6 @@
     &_author {
       font-size: 14px;
       color: $lightBrownColor;
-      margin-top: -14px;
       strong {
         color: $mainOrangeColor;
         margin-left: 4px;

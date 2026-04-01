@@ -3,10 +3,14 @@
   import { ICON } from '@/enums/iconsEnum';
   import { psychService } from '@/api/services/PsychService';
   import { Catalog } from '@/models/Catalog';
+  import { useUserStore } from '@/stores/userStore';
+  import { getAvatar } from '@/utils/imgUtils';
 
   const props = defineProps<{
     catalog: Catalog;
   }>();
+
+  const userStore = useUserStore();
 
   const followers = computed(() => props.catalog.followers);
   const showFollowers = ref(false);
@@ -18,6 +22,14 @@
       showFollowers.value = false;
     }
   );
+
+  const getAvatarUrl = (avatarId: number) => {
+    const avatar = userStore.avatars.find(a => a.id === avatarId);
+    if (avatar) {
+      return getAvatar(avatarId);
+    }
+    return null;
+  };
 
   const removeFollower = async (userId: number) => {
     if (removingFollowerUserId.value) return;
@@ -36,15 +48,30 @@
   <div class="catalogFollowers">
     <div class="catalogFollowers_header" @click="showFollowers = !showFollowers">
       <span>{{ $t('catalog.savedInCollections') }}</span>
-      <v-icon :class="{ rotated: showFollowers }">{{ ICON.CHEVRON_UP }}</v-icon>
+      <div class="catalogFollowers_header_right">
+        <div class="catalogFollowers_badge">
+          {{ followers.length ?? 0 }}
+        </div>
+        <v-icon :class="{ rotated: showFollowers }">{{ ICON.CHEVRON_UP }}</v-icon>
+      </div>
     </div>
     <Transition name="followers">
       <div v-if="showFollowers" class="catalogFollowers_list">
         <template v-if="followers.length">
           <div v-for="follower in followers" :key="follower.userId" class="catalogFollowers_item">
             <div class="catalogFollowers_item_user">
-              <div class="catalogFollowers_item_avatar">
-                {{ follower.username.charAt(0).toUpperCase() }}
+              <div
+                class="catalogFollowers_item_avatar"
+                :class="{ hasAvatar: getAvatarUrl(follower.avatarId) }"
+              >
+                <img
+                  v-if="getAvatarUrl(follower.avatarId)"
+                  :src="getAvatarUrl(follower.avatarId)!"
+                  :alt="follower.username"
+                />
+                <template v-else>
+                  {{ follower.username.charAt(0).toUpperCase() }}
+                </template>
               </div>
               <span>{{ follower.username }}</span>
             </div>
@@ -74,7 +101,6 @@
     backdrop-filter: blur(8px);
     border: 1px solid rgba($darkBackground, 0.4);
     box-shadow: 0 2px 12px rgba($mainBrownColor, 0.06);
-    overflow: hidden;
 
     &_header {
       display: flex;
@@ -103,14 +129,32 @@
       }
     }
 
+    &_header_right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &_badge {
+      background: $mainBrownColor;
+      color: $whiteColor;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+    }
+
     &_list {
       border-top: 1px solid rgba($darkBackground, 0.3);
       padding: 6px 8px;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      max-height: 180px;
-      overflow-y: auto;
     }
 
     &_loader {
@@ -158,6 +202,20 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        overflow: hidden;
+
+        &.hasAvatar {
+          background: $whiteColor;
+          padding: 1px;
+          box-shadow: rgba(0, 0, 0, 0.24) 0 2px 6px;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: contain;
+        }
       }
 
       span {
