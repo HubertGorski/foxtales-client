@@ -10,6 +10,7 @@
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import HubInput from '@/components/hubComponents/HubInput.vue';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
+  import HubSubActions from '@/components/hubComponents/HubSubActions.vue';
   import { useUserStore } from '@/stores/userStore';
   import { useLoading } from '@/composables/useLoading';
 
@@ -39,6 +40,10 @@
 
   const navigateBack = () => {
     router.push(ROUTE_PATH.HOME);
+  };
+
+  const navigateToRegister = () => {
+    router.push(ROUTE_PATH.REGISTER);
   };
 
   const onSubmit = handleSubmit(async values => {
@@ -92,7 +97,6 @@
         {{ $t('auth.prolongSession') }}
       </HubCheckbox>
       <div class="loginView_actions">
-        <HubBtn text="back2" :action="navigateBack" />
         <HubBtn
           text="auth.logIn"
           isOrange
@@ -101,6 +105,12 @@
           :action="onSubmit"
         />
       </div>
+      <HubSubActions
+        :actions="[
+          { text: 'back2', action: navigateBack },
+          { text: 'auth.registerNow', action: navigateToRegister },
+        ]"
+      />
     </form>
   </div>
 </template>
@@ -127,32 +137,31 @@
     }
 
     .creamCard {
-      padding: 24px;
+      padding: 32px 32px 12px;
     }
 
     &_fox {
       position: relative;
       top: 8px;
-      height: 285px;
+      height: 180px;
+      z-index: 1;
     }
 
     &_title {
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 26px;
+      font-weight: 800;
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
       color: $mainBrownColor;
+      letter-spacing: -0.5px;
     }
 
     &_input {
       width: 100%;
-      padding: 8px 0;
+      padding: 4px 0;
     }
 
     &_actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
       margin-top: 12px;
     }
   }

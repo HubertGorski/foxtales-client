@@ -299,7 +299,10 @@
     "subjectCannotBeEmpty": "Subject cannot be empty",
     "subjectIsTooLong": "Subject is too long",
     "messageCannotBeEmpty": "Message cannot be empty",
-    "messageIsTooLong": "Message is too long"
+    "messageIsTooLong": "Message is too long",
+    "noAccountYet": "Don't have an account yet?",
+    "registerNow": "Sign up now",
+    "alreadyHaveAccount": "Already have an account?"
   },
   "foxGame": {
     "psych": {

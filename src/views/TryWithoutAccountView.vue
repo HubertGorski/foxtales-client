@@ -5,7 +5,7 @@
   import { useI18n } from 'vue-i18n';
   import WhiteCard from '@/components/WhiteCard.vue';
   import HubInputBox from '@/components/hubComponents/HubInputBox.vue';
-  import NavigationBtns from '@/components/NavigationBtns.vue';
+  import HubSubActions from '@/components/hubComponents/HubSubActions.vue';
   import { useField, useForm } from 'vee-validate';
   import { userService } from '@/api/services/UserService';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
@@ -56,6 +56,10 @@
   const back = () => {
     router.push(ROUTE_PATH.HOME);
   };
+
+  const navigateToRegister = () => {
+    router.push(ROUTE_PATH.REGISTER);
+  };
 </script>
 
 <template>
@@ -78,9 +82,16 @@
         <HubCheckbox v-model="termsAccepted" :error-messages="termsAcceptedError">
           <Terms />
         </HubCheckbox>
+        <template #actions>
+          <HubSubActions
+            :actions="[
+              { text: 'back2', action: back },
+              { text: 'auth.registerNow', action: navigateToRegister },
+            ]"
+          />
+        </template>
       </HubInputBox>
     </div>
-    <NavigationBtns class="navBtns" btn="back" btn2="register" :btnCustomAction="back" />
   </div>
 </template>
 
@@ -111,11 +122,6 @@
       font-style: italic;
       color: $lightGrayColor;
       letter-spacing: 0.5px;
-    }
-
-    .navBtns {
-      width: 100%;
-      padding: 8px 12px;
     }
   }
 </style>

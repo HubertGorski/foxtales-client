@@ -69,6 +69,7 @@
     >
       <slot></slot>
     </HubInputWithBtn>
+    <slot name="actions"></slot>
   </div>
 </template>
 

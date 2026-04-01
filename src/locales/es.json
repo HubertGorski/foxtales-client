@@ -299,7 +299,10 @@
     "subjectCannotBeEmpty": "El asunto no puede estar vacío",
     "subjectIsTooLong": "El asunto es demasiado largo",
     "messageCannotBeEmpty": "El mensaje no puede estar vacío",
-    "messageIsTooLong": "El mensaje es demasiado largo"
+    "messageIsTooLong": "El mensaje es demasiado largo",
+    "noAccountYet": "¿Aún nie tienes cuenta?",
+    "registerNow": "Regístrate ahora",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?"
   },
   "foxGame": {
     "psych": {

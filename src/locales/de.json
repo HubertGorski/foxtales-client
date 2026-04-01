@@ -299,7 +299,10 @@
     "subjectCannotBeEmpty": "Betreff darf nicht leer sein",
     "subjectIsTooLong": "Betreff ist zu lang",
     "messageCannotBeEmpty": "Nachricht darf nicht leer sein",
-    "messageIsTooLong": "Nachricht ist zu lang"
+    "messageIsTooLong": "Nachricht ist zu lang",
+    "noAccountYet": "Noch kein Konto?",
+    "registerNow": "Jetzt registrieren",
+    "alreadyHaveAccount": "Hast du schon ein Konto?"
   },
   "foxGame": {
     "psych": {
