@@ -244,7 +244,7 @@
       v-model:shareKey="catalog.shareKey"
       :catalogId="catalog.catalogId"
     />
-    <CatalogFollowers v-if="catalog.catalogId && !readMode" :catalogId="catalog.catalogId" />
+    <CatalogFollowers v-if="catalog.catalogId && !readMode" :catalog="catalog" />
     <WhiteSelectList
       v-if="actualQuestions.length"
       v-model="actualQuestions"

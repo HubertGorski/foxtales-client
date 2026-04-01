@@ -6,6 +6,7 @@ import { IsEnum } from 'class-validator';
 import { CatalogTranslations } from './CatalogTranslations';
 import i18n from '@/configs/i18n';
 import { toLang } from '@/enums/languagesEnum';
+import { CatalogFollower } from './CatalogFollower';
 
 export class Catalog {
   catalogId: number | null;
@@ -53,6 +54,10 @@ export class Catalog {
 
   isSelected: boolean;
 
+  @Type(() => CatalogFollower)
+  @Expose()
+  followers: CatalogFollower[];
+
   constructor(
     id: number | null = null,
     catalogType: CatalogType = new CatalogType(),
@@ -67,7 +72,8 @@ export class Catalog {
     photoId: number = 0,
     hasPublicLink: boolean = false,
     shareKey: string = '',
-    author: string = ''
+    author: string = '',
+    followers: CatalogFollower[] = []
   ) {
     this.catalogId = id;
     this.catalogType = catalogType;
@@ -83,6 +89,7 @@ export class Catalog {
     this.hasPublicLink = hasPublicLink;
     this.shareKey = shareKey;
     this.author = author;
+    this.followers = followers;
   }
 
   get title(): string {

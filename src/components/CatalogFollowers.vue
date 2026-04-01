@@ -1,46 +1,31 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
+  import { ref, watch, computed } from 'vue';
   import { ICON } from '@/enums/iconsEnum';
   import { psychService } from '@/api/services/PsychService';
-  import { CatalogFollower } from '@/models/CatalogFollower';
+  import { Catalog } from '@/models/Catalog';
 
   const props = defineProps<{
-    catalogId: number;
+    catalog: Catalog;
   }>();
 
-  const followers = ref<CatalogFollower[]>([]);
-  const isLoadingFollowers = ref(false);
+  const followers = computed(() => props.catalog.followers);
   const showFollowers = ref(false);
   const removingFollowerUserId = ref<number | null>(null);
 
   watch(
-    () => props.catalogId,
+    () => props.catalog.catalogId,
     () => {
-      followers.value = [];
       showFollowers.value = false;
     }
   );
-
-  const loadFollowers = async () => {
-    showFollowers.value = !showFollowers.value;
-    if (!showFollowers.value || followers.value.length) return;
-
-    isLoadingFollowers.value = true;
-    try {
-      // followers.value = await psychService.getCatalogFollowers(props.catalogId);
-      followers.value = [];
-    } finally {
-      isLoadingFollowers.value = false;
-    }
-  };
 
   const removeFollower = async (userId: number) => {
     if (removingFollowerUserId.value) return;
 
     removingFollowerUserId.value = userId;
     try {
-      await psychService.removeCatalogFollower(props.catalogId, userId);
-      followers.value = followers.value.filter(f => f.userId !== userId);
+      await psychService.removeCatalogFollower(props.catalog.catalogId!, userId);
+      props.catalog.followers = props.catalog.followers.filter(f => f.userId !== userId);
     } finally {
       removingFollowerUserId.value = null;
     }
@@ -49,16 +34,13 @@
 
 <template>
   <div class="catalogFollowers">
-    <div class="catalogFollowers_header" @click="loadFollowers">
+    <div class="catalogFollowers_header" @click="showFollowers = !showFollowers">
       <span>{{ $t('catalog.savedInCollections') }}</span>
       <v-icon :class="{ rotated: showFollowers }">{{ ICON.CHEVRON_UP }}</v-icon>
     </div>
     <Transition name="followers">
       <div v-if="showFollowers" class="catalogFollowers_list">
-        <div v-if="isLoadingFollowers" class="catalogFollowers_loader">
-          <div class="spinner" />
-        </div>
-        <template v-else-if="followers.length">
+        <template v-if="followers.length">
           <div v-for="follower in followers" :key="follower.userId" class="catalogFollowers_item">
             <div class="catalogFollowers_item_user">
               <div class="catalogFollowers_item_avatar">
