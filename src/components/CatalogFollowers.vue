@@ -1,13 +1,17 @@
 <script setup lang="ts">
   import { ref, watch, computed } from 'vue';
   import { ICON } from '@/enums/iconsEnum';
-  import { psychService } from '@/api/services/PsychService';
   import { Catalog } from '@/models/Catalog';
   import { useUserStore } from '@/stores/userStore';
   import { getAvatar } from '@/utils/imgUtils';
 
   const props = defineProps<{
     catalog: Catalog;
+  }>();
+
+  const emit = defineEmits<{
+    (e: 'removeFollower', userId: number): void;
+    (e: 'showRemoveFollowerPopup', userId: number): void;
   }>();
 
   const userStore = useUserStore();
@@ -31,17 +35,13 @@
     return null;
   };
 
-  const removeFollower = async (userId: number) => {
-    if (removingFollowerUserId.value) return;
-
-    removingFollowerUserId.value = userId;
-    try {
-      await psychService.removeCatalogFollower(props.catalog.catalogId!, userId);
-      props.catalog.followers = props.catalog.followers.filter(f => f.userId !== userId);
-    } finally {
-      removingFollowerUserId.value = null;
-    }
+  const requestRemoveFollower = (userId: number) => {
+    emit('showRemoveFollowerPopup', userId);
   };
+
+  defineExpose({
+    removingFollowerUserId,
+  });
 </script>
 
 <template>
@@ -78,7 +78,7 @@
             <v-icon
               class="catalogFollowers_item_remove"
               :class="{ spinning: removingFollowerUserId === follower.userId }"
-              @click="removeFollower(follower.userId)"
+              @click="requestRemoveFollower(follower.userId)"
             >
               {{ ICON.DELETE }}
             </v-icon>

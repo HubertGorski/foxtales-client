@@ -21,6 +21,7 @@
   "confirmDeleteItemsTextPopup": "Are you sure you want to delete the selected items?",
   "confirmDeleteCatalogTextPopup": "Are you sure you want to delete the selected catalog?",
   "confirmAbandonCatalogTextPopup": "Are you sure you want to abandon this catalog?",
+  "confirmRemoveFollower": "Are you sure you want to revoke this user's access to this catalog?",
   "delete": "Delete",
   "login": "Log in",
   "tryWithoutAccount": "Try without an account",

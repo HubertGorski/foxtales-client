@@ -21,6 +21,7 @@
   "confirmDeleteItemsTextPopup": "¿Está seguro de que desea eliminar los elementos seleccionados?",
   "confirmDeleteCatalogTextPopup": "¿Está seguro de que desea eliminar el catálogo seleccionado?",
   "confirmAbandonCatalogTextPopup": "¿Estás seguro de que quieres abandonar este catálogo?",
+  "confirmRemoveFollower": "¿Estás seguro de que deseas revocar el acceso de este usuario a este catálogo?",
   "delete": "Eliminar",
   "login": "Iniciar sesión",
   "tryWithoutAccount": "Probar sin cuenta",

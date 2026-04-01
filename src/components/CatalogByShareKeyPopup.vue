@@ -93,7 +93,7 @@
             <div class="catalogByShareKeyPopup_section">
               <div class="catalogByShareKeyPopup_sectionTitle">
                 <v-icon>{{ ICON.QUESTION_OUTLINE }}</v-icon>
-                <span>{{ $t('catalog.sampleQuestions') }}</span>
+                <span>{{ $t('questions') }}</span>
                 <span class="catalogByShareKeyPopup_questionsBadge">
                   {{ catalog.questionsInCatalogCount ?? 0 }}
                 </span>

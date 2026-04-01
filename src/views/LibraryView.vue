@@ -233,10 +233,36 @@
     refreshCatalogList();
   };
 
+  const showRemoveFollowerPopup = (userId: number) => {
+    isCatalogCreatorOpen.value = false;
+    isRemoveFollowerPopupOpen.value = true;
+    userIdToRemove = userId;
+  };
+
+  const removeFollower = async () => {
+    if (!userIdToRemove || !currentCatalog.value.catalogId) {
+      return;
+    }
+
+    isRemoveFollowerPopupOpen.value = false;
+    await psychService.removeCatalogFollower(currentCatalog.value.catalogId, userIdToRemove);
+
+    if (currentCatalog.value.followers) {
+      currentCatalog.value.followers = currentCatalog.value.followers.filter(
+        f => f.userId !== userIdToRemove
+      );
+    }
+
+    userIdToRemove = null;
+    isCatalogCreatorOpen.value = true;
+  };
+
   let catalogIdToRemove: number | null = null;
   let catalogIdToAbandon: number | null = null;
+  let userIdToRemove: number | null = null;
   const isDeletePopupOpen = ref<boolean>(false);
   const isAbandonPopupOpen = ref<boolean>(false);
+  const isRemoveFollowerPopupOpen = ref<boolean>(false);
   const isCatalogCreatorOpen = ref<boolean>(false);
   const isQuestionCreatorOpen = ref<boolean>(false);
   const isMemoriesPopupAvailable = ref<boolean>(false);
@@ -398,8 +424,15 @@
         @closePopup="closePopup"
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
         @showAbandonCatalogPopup="showAbandonCatalogPopup"
+        @showRemoveFollowerPopup="showRemoveFollowerPopup"
       />
     </HubPopup>
+    <HubDialogPopup
+      v-model="isRemoveFollowerPopupOpen"
+      :textPopup="$t('confirmRemoveFollower')"
+      :confirmAction="() => removeFollower()"
+      :backAction="() => (isCatalogCreatorOpen = true)"
+    />
     <HubDialogPopup
       v-model="isAbandonPopupOpen"
       :textPopup="$t('confirmAbandonCatalogTextPopup')"

@@ -16,7 +16,7 @@
   const isRegenerating = ref(false);
 
   const shareLink = computed(() => {
-    return `${API_DOMAIN}/${shareKey.value}`;
+    return `${API_DOMAIN}/share/catalog/${shareKey.value}`;
   });
 
   const copyLink = async () => {

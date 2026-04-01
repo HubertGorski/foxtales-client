@@ -29,6 +29,7 @@
     (e: 'closePopup', refresh: boolean): void;
     (e: 'showDeleteCatalogPopup', catalogId: number): void;
     (e: 'showAbandonCatalogPopup', catalogId: number): void;
+    (e: 'showRemoveFollowerPopup', userId: number): void;
   }>();
 
   const catalog = defineModel({ type: Catalog, required: true });
@@ -200,8 +201,8 @@
   <div class="catalogCreator creamCard">
     <div class="catalogCreator_title">
       <div v-if="editMode">{{ $t('editCatalog') }}</div>
-      <div v-else-if="readMode">{{ catalog.title }}</div>
-      <div v-else>{{ $t('createCatalog') }}</div>
+      <div v-else-if="!readMode">{{ $t('createCatalog') }}</div>
+      <div v-else></div>
       <div class="catalogCreator_controlBtns">
         <v-icon
           v-if="editMode || readMode"
@@ -217,9 +218,13 @@
       </div>
     </div>
     <div class="catalogCreator_body scrollbar">
-      <div v-if="readMode && catalog.author" class="catalogCreator_author">
-        <span>{{ $t('catalog.author') }}:</span>
-        <strong>{{ catalog.author }}</strong>
+      <div v-if="readMode" class="catalogCreator_readHeader">
+        <h1 class="catalogCreator_readTitle">{{ catalog.title }}</h1>
+        <div v-if="catalog.author" class="catalogCreator_author">
+          <v-icon>{{ ICON.USERS }}</v-icon>
+          <span>{{ $t('catalog.author') }}:</span>
+          <strong>{{ catalog.author }}</strong>
+        </div>
       </div>
       <div v-if="!readMode">
         <HubInput
@@ -228,16 +233,17 @@
           :errorMessages="getError('Catalog.Translations[0].Title')"
         />
       </div>
-      <div v-if="!readMode || catalog.description">
-        <HubInput
-          v-model="catalog.description"
-          :label="$t('description')"
-          :textareaRows="2"
-          :errorMessages="getError('Catalog.Translations[0].Description')"
-          :noResize="false"
-          :readonly="readMode"
-          isTextarea
-        />
+      <HubInput
+        v-if="!readMode"
+        v-model="catalog.description"
+        :label="$t('description')"
+        :textareaRows="2"
+        :errorMessages="getError('Catalog.Translations[0].Description')"
+        :noResize="false"
+        isTextarea
+      />
+      <div v-else-if="catalog.description" class="catalogCreator_description">
+        {{ catalog.description }}
       </div>
       <CatalogShareLink
         v-if="!readMode"
@@ -245,7 +251,11 @@
         v-model:shareKey="catalog.shareKey"
         :catalogId="catalog.catalogId"
       />
-      <CatalogFollowers v-if="catalog.catalogId && !readMode" :catalog="catalog" />
+      <CatalogFollowers
+        v-if="catalog.catalogId && !readMode"
+        :catalog="catalog"
+        @showRemoveFollowerPopup="userId => emit('showRemoveFollowerPopup', userId)"
+      />
       <WhiteSelectList
         v-if="actualQuestions.length"
         v-model="actualQuestions"
@@ -291,7 +301,7 @@
       justify-content: space-between;
       margin-bottom: 4px;
     }
- 
+
     &_body {
       display: flex;
       flex-direction: column;
@@ -299,7 +309,7 @@
       max-height: 70vh;
       overflow-y: auto;
       padding-right: 4px;
- 
+
       &::-webkit-scrollbar {
         width: 4px;
       }
@@ -318,19 +328,52 @@
     }
 
     &_author {
-      font-size: 14px;
-      color: $lightBrownColor;
+      font-size: 13px;
+      color: $lightGrayColor;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+
       strong {
+        color: $mainBrownColor;
+      }
+
+      .v-icon {
+        font-size: 16px;
         color: $mainOrangeColor;
-        margin-left: 4px;
       }
     }
 
-    &_subtitle {
+    &_readHeader {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      padding: 8px 0 12px 0;
+      border-bottom: 2px solid rgba($mainBrownColor, 0.08);
+      margin-bottom: 8px;
+    }
+
+    &_readTitle {
+      font-size: 26px;
+      font-weight: 900;
+      color: $mainBrownColor;
+      line-height: 1.1;
+      margin-bottom: 2px;
+      letter-spacing: -0.8px;
+    }
+
+    &_description {
       color: $grayColor;
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
+      font-size: 15px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      background: rgba($whiteColor, 0.4);
+      padding: 12px 16px;
+      border-radius: 12px;
+      border-left: 4px solid $mainOrangeColor;
+      font-style: italic;
     }
 
     &_btn {

@@ -21,6 +21,7 @@
   "confirmDeleteItemsTextPopup": "Czy na pewno chcesz usunąć wybrane elementy?",
   "confirmDeleteCatalogTextPopup": "Czy na pewno chcesz usunąć wybrany katalog?",
   "confirmAbandonCatalogTextPopup": "Czy na pewno chcesz porzucić ten katalog?",
+  "confirmRemoveFollower": "Czy na pewno chcesz odebrać temu użytkownikowi dostęp do katalogu?",
   "delete": "Usuń",
   "login": "Zaloguj się",
   "tryWithoutAccount": "Wypróbuj bez konta",
