@@ -13,7 +13,6 @@
   import { useI18n } from 'vue-i18n';
   import CatalogFollowers from './CatalogFollowers.vue';
   import CatalogShareLink from './CatalogShareLink.vue';
-import HubDivider from './hubComponents/HubDivider.vue';
 
   const props = defineProps({
     editMode: {
@@ -200,7 +199,12 @@ import HubDivider from './hubComponents/HubDivider.vue';
 
 <template>
   <div class="catalogCreator creamCard" :class="{ isReadMode: readMode }">
-    <img v-if="readMode" src="@/assets/imgs/library3fox.webp" class="catalogCreator_fox" alt="Lisek" />
+    <img
+      v-if="readMode"
+      src="@/assets/imgs/library3fox.webp"
+      class="catalogCreator_fox"
+      alt="Lisek"
+    />
     <div class="catalogCreator_title">
       <div v-if="editMode">{{ $t('editCatalog') }}</div>
       <div v-else-if="!readMode">{{ $t('createCatalog') }}</div>
@@ -323,17 +327,6 @@ import HubDivider from './hubComponents/HubDivider.vue';
       max-height: 70vh;
       overflow-y: auto;
       padding-right: 4px;
-
-      &::-webkit-scrollbar {
-        width: 4px;
-      }
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      &::-webkit-scrollbar-thumb {
-        background: rgba($mainBrownColor, 0.2);
-        border-radius: 10px;
-      }
     }
 
     &_controlBtns {
