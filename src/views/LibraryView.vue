@@ -429,7 +429,8 @@
     </HubPopup>
     <HubDialogPopup
       v-model="isRemoveFollowerPopupOpen"
-      :textPopup="$t('confirmRemoveFollower')"
+      :titlePopup="$t('confirmRemoveFollowerTitle')"
+      :textPopup="$t('confirmRemoveFollowerSubtitle')"
       :confirmAction="() => removeFollower()"
       :backAction="() => (isCatalogCreatorOpen = true)"
     />

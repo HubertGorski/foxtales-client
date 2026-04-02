@@ -37,8 +37,11 @@
   };
 
   const onSwitchChange = async (value: boolean | null) => {
-    if (value && !props.catalogId) {
-      shareKey.value = await psychService.generateShareKey();
+    const shouldGenerateKeyForNewCatalog = value && !props.catalogId;
+    const shouldGenerateKeyForExistingCatalog = value && props.catalogId && !shareKey.value;
+
+    if (shouldGenerateKeyForNewCatalog || shouldGenerateKeyForExistingCatalog) {
+      shareKey.value = await psychService.regenerateShareKey(props.catalogId ?? 0);
     }
   };
 </script>
