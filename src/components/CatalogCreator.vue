@@ -199,12 +199,12 @@ import HubDivider from './hubComponents/HubDivider.vue';
 </script>
 
 <template>
-  <div class="catalogCreator creamCard">
+  <div class="catalogCreator creamCard" :class="{ isReadMode: readMode }">
     <img v-if="readMode" src="@/assets/imgs/library3fox.webp" class="catalogCreator_fox" alt="Lisek" />
     <div class="catalogCreator_title">
       <div v-if="editMode">{{ $t('editCatalog') }}</div>
       <div v-else-if="!readMode">{{ $t('createCatalog') }}</div>
-      <div v-else></div>
+      <div v-else>{{ $t('previewCatalog') }}</div>
       <div class="catalogCreator_controlBtns">
         <v-icon
           v-if="editMode || readMode"
@@ -295,10 +295,14 @@ import HubDivider from './hubComponents/HubDivider.vue';
     max-height: 90vh;
     overflow: hidden;
 
+    &.isReadMode {
+      gap: 0;
+    }
+
     &_fox {
       width: 226px;
       position: absolute;
-      top: -10px;
+      top: -64px;
       left: 42px;
       z-index: 1;
     }
