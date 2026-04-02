@@ -77,4 +77,24 @@ export const psychClient = {
       catalogsIds,
     });
   },
+
+  regenerateShareKey(catalogId: number): Promise<{ data: string }> {
+    return apiClient.post('/psych/regenerateShareKey', { catalogId });
+  },
+
+  generateShareKey(): Promise<{ data: string }> {
+    return apiClient.post('/psych/generateShareKey');
+  },
+
+  removeCatalogFollower(catalogId: number, userId: number): Promise<{ data: boolean }> {
+    return apiClient.post('/psych/removeCatalogFollower', { catalogId, userId });
+  },
+
+  addCatalogFollower(shareKey: string, userId: number): Promise<void> {
+    return apiClient.post('/psych/addCatalogFollower', { shareKey, userId });
+  },
+
+  getCatalogForShare(shareKey: string): Promise<{ data: Catalog }> {
+    return apiClient.get(`/psych/getCatalogForShare/${shareKey}`);
+  },
 };

@@ -3,6 +3,10 @@
   import HubPopup from './HubPopup.vue';
 
   const props = defineProps({
+    titlePopup: {
+      type: String,
+      default: '',
+    },
     backBtnText: {
       type: String,
       default: 'reject',
@@ -55,7 +59,8 @@
     <div class="creamCard">
       <img v-if="showDefaultImg" class="fox" src="/imgs/fox6.webp" alt="Lisek" />
       <slot></slot>
-      <p>{{ textPopup }}</p>
+      <h3 v-if="titlePopup" class="title">{{ titlePopup }}</h3>
+      <p :class="{ hasTitle: titlePopup }">{{ textPopup }}</p>
       <div class="btns">
         <HubBtn :action="backBtn.action" :text="backBtn.text" :isOrange="backBtn.isOrange" />
         <HubBtn
@@ -82,11 +87,26 @@
       margin: 0 auto;
     }
 
+    .title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: $mainBrownColor;
+      padding: 16px 0 8px 0;
+    }
+
     p {
       text-align: center;
       padding: 24px 0;
       font-size: 18px;
       color: $grayColor;
+
+      &.hasTitle {
+        padding-top: 8px;
+        padding-bottom: 24px;
+        font-size: 16px;
+        opacity: 0.9;
+      }
     }
 
     .btns {

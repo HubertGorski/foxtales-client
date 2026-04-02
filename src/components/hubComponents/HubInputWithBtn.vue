@@ -70,6 +70,10 @@
       type: Boolean,
       default: false,
     },
+    allowEmpty: {
+      type: Boolean,
+      default: false,
+    },
     errorMessages: {
       type: String,
     },
@@ -102,11 +106,11 @@
   };
 
   const btnIsDisabled = computed(() => {
-    if (!text.value) {
+    if (!text.value && !props.allowEmpty) {
       return true;
     }
 
-    return text.value.length === 0 || props.btnIsDisabled;
+    return (text.value.length === 0 && !props.allowEmpty) || props.btnIsDisabled;
   });
 
   const actualTextPlaceholder = computed(() => {

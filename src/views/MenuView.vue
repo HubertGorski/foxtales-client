@@ -50,7 +50,12 @@
     <div class="menu">
       <div class="welcomeMessage">
         <span class="welcomeMessage_greeting">{{ $t('hi') }}</span>
-        <span class="welcomeMessage_name">{{ userStore.user.username }}!</span>
+        <span
+          class="welcomeMessage_name"
+          :style="{ '--char-count': userStore.user.username.length + 1 }"
+        >
+          {{ userStore.user.username }}!
+        </span>
         <p class="welcomeMessage_text">{{ $t('haveFunAndEnjoyGame') }}</p>
       </div>
       <HubAccordionElement title="createNewGame" @click="navigateToCreateGame" />
@@ -93,6 +98,7 @@
         font-weight: 600;
         margin-bottom: 36px;
         white-space: nowrap;
+        container-type: inline-size;
 
         &_greeting {
           font-size: 56px;
@@ -103,11 +109,10 @@
         &_name {
           display: block;
           width: 100%;
-          font-size: 3em;
-          max-height: 148px;
-          line-height: 64px;
+          font-size: min(3.8rem, calc(160cqw / var(--char-count)));
+          line-height: normal;
           color: $mainOrangeColor;
-          overflow-x: auto;
+          overflow: hidden;
         }
 
         &_text {
@@ -128,6 +133,7 @@
           bottom: 0;
           left: 0;
           border-radius: 12px;
+          z-index: 2;
         }
       }
     }

@@ -144,7 +144,11 @@
   });
 
   const hasQuestionsInGame = computed(() => {
-    return game.value.questions.length || game.value.usePublicQuestions;
+    return (
+      game.value.questions.length ||
+      game.value.usePublicQuestions ||
+      game.value.useReceivedQuestions
+    );
   });
 
   const optionBtn = computed(() => {

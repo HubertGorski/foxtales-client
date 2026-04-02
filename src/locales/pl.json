@@ -20,6 +20,9 @@
   "confirmEmptySelectAnswerPopup": "Nie zaznaczono żadnej poprawnej odpowiedzi. Czy chcesz kontynuować mimo to?",
   "confirmDeleteItemsTextPopup": "Czy na pewno chcesz usunąć wybrane elementy?",
   "confirmDeleteCatalogTextPopup": "Czy na pewno chcesz usunąć wybrany katalog?",
+  "confirmAbandonCatalogTextPopup": "Czy na pewno chcesz porzucić ten katalog?",
+  "confirmRemoveFollowerTitle": "Cofnąć dostęp do katalogu?",
+  "confirmRemoveFollowerSubtitle": "Użytkownik straci go natychmiast po zatwierdzeniu.",
   "delete": "Usuń",
   "login": "Zaloguj się",
   "tryWithoutAccount": "Wypróbuj bez konta",
@@ -74,6 +77,7 @@
   "questionHasBeenChanged": "Pytanie zostało zmienione ({skipTimeLeft})",
   "or": "lub",
   "add": "Dodaj",
+  "addToLibrary": "Dodaj do biblioteki",
   "ready": "Gotowy",
   "password": "Hasło",
   "accept": "Zatwierdź",
@@ -98,7 +102,10 @@
   "addCatalog": "Dodaj katalog",
   "editCatalog": "Edytuj katalog",
   "createCatalog": "Utwórz katalog",
+  "previewCatalog": "Podgląd katalogu",
+  "abandonCatalog": "Porzuć katalog",
   "yourCatalogs": "Twoje katalogi",
+  "receivedCatalogs": "Otrzymane katalogi",
   "yourMemory": "Zapisane wspomnienia",
   "yourQuestions": "Twoje pytania",
   "messageHasBeenSent": "Wiadomość została wysłana!",
@@ -108,6 +115,8 @@
   "manageLibrary": "Zarządzaj biblioteką",
   "beforeSelectedCatalogInfoText": "Nie wybrano katalogu. Przypisanie pytania do katalogu ułatwi jego późniejsze odnalezienie.",
   "selectedCatalogInfoText": "Pytanie zostanie przypisane do:",
+  "author": "Autor",
+  "questions": "Pytania",
   "catalogAutomaticallyTranslated": "Twój katalog zostanie automatycznie przetłumaczony na wszystkie pozostałe dostępne języki.",
   "exampleQuestion": "Gdyby **** przez jeden dzień był niewidzialny, co by zrobił?",
   "questionTutorial": "Wpisz **** by pytanie dotyczyło dowolnego gracza w grze",
@@ -143,7 +152,7 @@
   "selectFavAnswer": "By kontynuować wybierz odpowiedź z listy",
   "isAnswerPicked": "Dokonano wyboru. Oczekiwanie na innych graczy",
   "chooseGameType": "Wybierz typ gry",
-  "emptyData": "Brak danych",
+  "emptyData": "Jeszcze nic tu nie ma...",
   "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",
   "gameClosed": "Właściciel gry zamknął swój pokój.",
   "chooseCatalogSize": "Wybierz wielkość katalogu",
@@ -157,6 +166,12 @@
     "noTeams": "Bez drużyn",
     "soloOrTeam": "Solo / Drużyny",
     "availableModes": "Do wyboru",
+    "shareViaLink": "Udostępnij za pomocą linku",
+    "author": "Autor",
+    "shareLinkTooltip": "W dowolnym momencie możesz unieważnić ten link, generując nowy lub wyłączając tę opcję. Każdy, kto ma aktywny link, będzie mógł dodać ten katalog do swoich kolekcji.",
+    "linkCopied": "Link skopiowany do schowka!",
+    "savedInCollections": "Zapisano w kolekcjach",
+    "noFollowers": "Nikt jeszcze nie zapisał tego katalogu",
     "psych": {
       "playersCount": "2 – ∞",
       "bestWith": "Najlepiej 3+"
@@ -168,7 +183,8 @@
     "quietDays": {
       "playersCount": "2 – 12",
       "bestWith": "Najlepiej 2-8"
-    }
+    },
+    "ownerLibraryWarning": "To Twój katalog – masz już do niego pełny dostęp w swojej bibliotece."
   },
   "description": "Opis",
   "small": "Mały",
@@ -184,7 +200,8 @@
     "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań",
     "publicQuestionsDescription": "Korzystaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację",
     "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu",
-    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie"
+    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie",
+    "receivedQuestionsDescription": "Korzystaj w grze z katalogów udostępnionych Ci przez innych graczy"
   },
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju.",
@@ -196,6 +213,7 @@
   "lobby": {
     "usePrivateQuestions": "Używaj prywatnych pytań",
     "usePublicQuestions": "Używaj publicznych pytań",
+    "useReceivedQuestions": "Używaj udostępnionych Tobie pytań",
     "gameVisibleOnList": "Gra widoczna na liście",
     "isQuestionsFromAnotherGamesAllowed": "Zezwól innym graczom na dodawanie własnych pytań",
     "useDixitRules": "Wybierz odpowiedź gracza",
@@ -221,6 +239,7 @@
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Jeszcze nie utworzono żadnego katalogu.",
+    "noReceivedCatalogsYet": "Nie otrzymano jeszcze żadnego katalogu",
     "noQuestionsHasBeenCreatedYet": "Jeszcze nie utworzono żadnych pytań.",
     "addToCatalog": "Dodaj do katalogu",
     "createdQuestion": "Utworzone pytanie:",
@@ -294,7 +313,10 @@
     "subjectCannotBeEmpty": "Temat nie może być pusty",
     "subjectIsTooLong": "Temat jest zbyt długi",
     "messageCannotBeEmpty": "Wiadomość nie może być pusta",
-    "messageIsTooLong": "Wiadomość jest zbyt długa"
+    "messageIsTooLong": "Wiadomość jest zbyt długa",
+    "noAccountYet": "Nie masz jeszcze konta?",
+    "registerNow": "Zarejestruj się teraz",
+    "alreadyHaveAccount": "Masz już konto?"
   },
   "foxGame": {
     "psych": {

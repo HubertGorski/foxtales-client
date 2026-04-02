@@ -40,6 +40,9 @@ export class Game {
   @Type(() => Boolean)
   isQuestionsFromAnotherGamesAllowed: boolean;
 
+  @Type(() => Boolean)
+  useReceivedQuestions: boolean;
+
   @Type(() => Question)
   questions: Question[];
 
@@ -61,6 +64,9 @@ export class Game {
   @Type(() => Number)
   selectedPublicCatalogId: number | null;
 
+  @Type(() => Number)
+  selectedReceivedCatalogId: number | null;
+
   constructor(
     owner: User = new User(),
     users: User[] = [],
@@ -77,7 +83,9 @@ export class Game {
     isGameStarted = false,
     hasGameEnded = false,
     currentRules = RULES.PSYCH,
-    selectedPublicCatalogId = null
+    selectedPublicCatalogId = null,
+    useReceivedQuestions = false,
+    selectedReceivedCatalogId = null
   ) {
     this.code = code;
     this.foxGame = foxGame;
@@ -95,6 +103,8 @@ export class Game {
     this.hasGameEnded = hasGameEnded;
     this.currentRules = currentRules;
     this.selectedPublicCatalogId = selectedPublicCatalogId;
+    this.useReceivedQuestions = useReceivedQuestions;
+    this.selectedReceivedCatalogId = selectedReceivedCatalogId;
   }
 
   get usersCount(): number {

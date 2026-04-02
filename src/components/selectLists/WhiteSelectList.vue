@@ -1,43 +1,69 @@
 <script setup lang="ts">
   import { ICON } from '@/enums/iconsEnum';
-  import { computed, watch, type PropType } from 'vue';
+  import { computed, watch, type PropType, toRefs } from 'vue';
   import HubTooltip from '../hubComponents/HubTooltip.vue';
   import type { ListElement } from './ListElement';
   import HubPagination from '../hubComponents/HubPagination.vue';
   import NoData from '../NoData.vue';
   import { usePagination } from '@/composables/usePagination';
 
+  const props = withDefaults(
+    defineProps<{
+      showSelectedCount?: boolean;
+      customSelectedCountTitle?: string;
+      multiple?: boolean;
+      showPagination?: boolean;
+      showElementsCountInItem?: boolean;
+      height?: number;
+      itemsPerPage?: number;
+      showItemDetailsBtn?: boolean;
+      itemDetailsIcon?: string;
+      emptyDataText?: string;
+      selectVisibleItems?: boolean;
+      moveToSelectedItem?: boolean;
+      minimalView?: boolean;
+      selectItemId?: number;
+      infinityPages?: boolean;
+      readOnly?: boolean;
+    }>(),
+    {
+      showSelectedCount: false,
+      customSelectedCountTitle: 'selectedItems',
+      multiple: false,
+      showPagination: false,
+      showElementsCountInItem: false,
+      height: undefined,
+      itemsPerPage: 4,
+      showItemDetailsBtn: false,
+      itemDetailsIcon: ICON.EDIT_COLLECTION,
+      emptyDataText: 'emptyData',
+      selectVisibleItems: false,
+      moveToSelectedItem: false,
+      minimalView: false,
+      selectItemId: undefined,
+      infinityPages: false,
+      readOnly: false,
+    }
+  );
+
   const {
-    showSelectedCount = false,
-    customSelectedCountTitle = 'selectedItems',
-    multiple = false,
-    showPagination = false,
-    showElementsCountInItem = false,
+    showSelectedCount,
+    customSelectedCountTitle,
+    multiple,
+    showPagination,
+    showElementsCountInItem,
     height,
-    itemsPerPage = 4,
-    showItemDetailsBtn = false,
-    emptyDataText = 'emptyData',
-    selectVisibleItems = false,
-    moveToSelectedItem = false,
-    minimalView = false,
+    itemsPerPage,
+    showItemDetailsBtn,
+    itemDetailsIcon,
+    emptyDataText,
+    selectVisibleItems,
+    moveToSelectedItem,
+    minimalView,
     selectItemId,
-    infinityPages = false,
-  } = defineProps<{
-    showSelectedCount?: boolean;
-    customSelectedCountTitle?: string;
-    multiple?: boolean;
-    showPagination?: boolean;
-    showElementsCountInItem?: boolean;
-    height?: number;
-    itemsPerPage?: number;
-    showItemDetailsBtn?: boolean;
-    emptyDataText?: string;
-    selectVisibleItems?: boolean;
-    moveToSelectedItem?: boolean;
-    minimalView?: boolean;
-    selectItemId?: number;
-    infinityPages?: boolean;
-  }>();
+    infinityPages,
+    readOnly,
+  } = toRefs(props);
 
   const emit = defineEmits<{
     (e: 'showDetails', item: ListElement): void;
@@ -57,23 +83,23 @@
     setPreviousPage,
     setNextPage,
     moveToItem,
-  } = usePagination(() => items.value, itemsPerPage, infinityPages);
+  } = usePagination(() => items.value, itemsPerPage.value, infinityPages.value);
 
-  if (selectItemId) {
-    const selectItem = items.value.find(i => i.id === selectItemId);
+  if (selectItemId.value) {
+    const selectItem = items.value.find(i => i.id === selectItemId.value);
     if (selectItem) {
       selectItem.isSelected = true;
     }
   }
 
-  if (moveToSelectedItem) {
+  if (moveToSelectedItem.value) {
     moveToItem(items.value.findIndex(i => i.isSelected));
   }
 
   const selectedItems = computed(() => items.value.filter(item => item.isSelected));
 
   const paginationText = computed(() => {
-    if (minimalView) {
+    if (minimalView.value) {
       return visibleItems.value.length > 0 ? visibleItems.value[0].title : '';
     }
 
@@ -85,7 +111,8 @@
   };
 
   const selectItem = (item: ListElement) => {
-    if (multiple) {
+    if (readOnly.value) return;
+    if (multiple.value) {
       item.isSelected = !item.isSelected;
     } else {
       items.value.map(item => (item.isSelected = false));
@@ -93,7 +120,7 @@
     }
   };
   watch(visibleItems, () => {
-    if (!selectVisibleItems) {
+    if (!selectVisibleItems.value) {
       return;
     }
 
@@ -106,7 +133,7 @@
     });
   });
 
-  if (selectVisibleItems) {
+  if (selectVisibleItems.value) {
     visibleItems.value.forEach(item => {
       item.isSelected = true;
     });
@@ -117,7 +144,7 @@
   <div class="whiteSelectList">
     <div v-if="!minimalView">
       <div
-        v-if="showSelectedCount && visibleItems.length > 0"
+        v-if="showSelectedCount && visibleItems.length > 0 && !readOnly"
         class="whiteSelectList_selectedCount"
       >
         {{ $t(customSelectedCountTitle) }} ({{ selectedItems.length }} / {{ items.length }})
@@ -132,7 +159,7 @@
           v-for="item in visibleItems"
           :key="item.id"
           class="item"
-          :class="{ isSelected: item.isSelected }"
+          :class="{ isSelected: item.isSelected, isReadOnly: readOnly }"
         >
           <HubTooltip
             :tooltipText="item.description"
@@ -148,7 +175,7 @@
             </div>
           </HubTooltip>
           <div v-if="showItemDetailsBtn" class="item_actionIcon" @click="showDetails(item)">
-            <v-icon>{{ ICON.EDIT_COLLECTION }}</v-icon>
+            <v-icon>{{ itemDetailsIcon }}</v-icon>
           </div>
           <div v-else class="item_icon" @click="selectItem(item)">
             <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>
@@ -250,6 +277,21 @@
           color: $lightGrayColor;
           margin: 8px;
           font-size: 20px;
+        }
+
+        &.isReadOnly {
+          .item_icon {
+            opacity: 0;
+            pointer-events: none;
+          }
+
+          .item_name {
+            max-width: 100%;
+          }
+
+          &::before {
+            width: 94%;
+          }
         }
 
         &_actionIcon {

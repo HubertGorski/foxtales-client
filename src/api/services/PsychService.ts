@@ -76,4 +76,25 @@ export const psychService = {
   ): Promise<boolean> {
     return (await psychClient.assignedQuestionsToCatalogs(questionsIds, catalogsIds)).data;
   },
+
+  async regenerateShareKey(catalogId: number): Promise<string> {
+    return (await psychClient.regenerateShareKey(catalogId)).data;
+  },
+
+  async generateShareKey(): Promise<string> {
+    return (await psychClient.generateShareKey()).data;
+  },
+
+  async removeCatalogFollower(catalogId: number, userId: number): Promise<boolean> {
+    return (await psychClient.removeCatalogFollower(catalogId, userId)).data;
+  },
+
+  async addCatalogFollower(shareKey: string, userId: number): Promise<void> {
+    return await psychClient.addCatalogFollower(shareKey, userId);
+  },
+
+  async getCatalogForShare(shareKey: string): Promise<Catalog> {
+    const response = (await psychClient.getCatalogForShare(shareKey)).data;
+    return plainToInstance(Catalog, response);
+  },
 };

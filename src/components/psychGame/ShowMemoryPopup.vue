@@ -77,6 +77,7 @@
             :shareKey="currentMemory?.shareKey"
             :round="currentMemory?.round"
             title="Fox Tales"
+            :disabled="!currentMemory"
           />
         </div>
       </div>

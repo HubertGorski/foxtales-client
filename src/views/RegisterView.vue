@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, nextTick, ref, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { userService } from '@/api/services/UserService';
@@ -8,8 +8,10 @@
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import HubTooltip from '@/components/hubComponents/HubTooltip.vue';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
+  import HubInput from '@/components/hubComponents/HubInput.vue';
   import Terms from '@/components/Terms.vue';
   import { useLoading } from '@/composables/useLoading';
+  import { useViewStore } from '@/stores/viewStore';
 
   type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsaccepted';
 
@@ -27,11 +29,11 @@
       username: '',
     },
   });
-  const { value: email, errorMessage: emailError } = useField('email');
+  const { value: email, errorMessage: emailError } = useField<string>('email');
   const { value: confirmpassword, errorMessage: confirmpasswordError } =
-    useField('confirmpassword');
-  const { value: password, errorMessage: passwordError } = useField('password');
-  const { value: username, errorMessage: usernameError } = useField('username');
+    useField<string>('confirmpassword');
+  const { value: password, errorMessage: passwordError } = useField<string>('password');
+  const { value: username, errorMessage: usernameError } = useField<string>('username');
   const { value: termsAccepted, errorMessage: termsAcceptedError } =
     useField<boolean>('termsaccepted');
 
@@ -66,10 +68,17 @@
       step.value = 1;
       return;
     }
-    router.back();
+    router.push(ROUTE_PATH.HOME);
   };
 
-  const inputPasswordRef = ref<HTMLInputElement | null>(null);
+  const navigateToLogin = () => {
+    router.push(ROUTE_PATH.LOGIN);
+  };
+
+  const isKeyboardOpen = computed(() => {
+    return useViewStore().getIsKeyboardOpen();
+  });
+
   const handleEnter = async () => {
     if (step.value === 2 || step.value === 0) {
       if (isCreateBtnDisabled.value) {
@@ -81,8 +90,6 @@
     }
 
     step.value = 2;
-    await nextTick();
-    inputPasswordRef.value?.focus();
   };
 
   const areErrorExistInPart1 = computed(() => {
@@ -119,46 +126,46 @@
 </script>
 
 <template>
-  <div class="registerView">
+  <div class="registerView" :class="{ isFocused: isKeyboardOpen }">
+    <img src="@/assets/imgs/4.webp" alt="Lisek" class="registerView_fox" />
     <form class="creamCard" @submit.prevent="onSubmit">
       <h1 class="registerView_title">{{ $t('registerTitle') }}</h1>
       <div v-if="step === 1 || step === 0">
-        <v-text-field
+        <HubInput
           v-model="username"
           :label="$t('auth.username')"
           class="registerView_input"
-          :error-messages="usernameError"
+          :errorMessages="usernameError"
           @focus="step = 1"
-          @keydown.enter="handleEnter"
+          @enter="handleEnter"
         />
-        <v-text-field
+        <HubInput
           v-model="email"
           :label="$t('auth.email')"
           class="registerView_input"
-          :error-messages="emailError"
+          :errorMessages="emailError"
           @focus="step = 1"
-          @keydown.enter="handleEnter"
+          @enter="handleEnter"
         />
       </div>
       <div v-show="step === 2 || step === 0">
-        <v-text-field
-          ref="inputPasswordRef"
+        <HubInput
           v-model="password"
           :label="$t('auth.password')"
-          type="password"
+          textType="password"
           class="registerView_input"
-          :error-messages="passwordError"
+          :errorMessages="passwordError"
           @focus="step = 2"
-          @keydown.enter="handleEnter"
+          @enter="handleEnter"
         />
-        <v-text-field
+        <HubInput
           v-model="confirmpassword"
           :label="$t('auth.repeatPassword')"
-          type="password"
+          textType="password"
           class="registerView_input"
-          :error-messages="confirmpasswordError"
+          :errorMessages="confirmpasswordError"
           @focus="step = 2"
-          @keydown.enter="handleEnter"
+          @enter="handleEnter"
         />
       </div>
       <HubCheckbox
@@ -196,6 +203,15 @@
           />
         </HubTooltip>
       </div>
+
+      <div class="registerView_footer">
+        <p class="registerView_footerText">
+          {{ $t('auth.alreadyHaveAccount') }}
+          <span class="registerView_footerLink" @click="navigateToLogin">
+            {{ $t('login') }}
+          </span>
+        </p>
+      </div>
     </form>
   </div>
 </template>
@@ -210,39 +226,103 @@
     justify-content: center;
     min-height: 100%;
     background: $mainBackground;
+    padding: 24px 16px;
+    overflow: visible;
+
+    &.isFocused {
+      .registerView_fox {
+        transition: all 0.4s ease-in-out;
+        height: 0;
+        top: -4px;
+      }
+    }
 
     .creamCard {
-      padding: 24px;
+      padding: 32px 32px 12px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    &_fox {
+      position: relative;
+      top: 8px;
+      height: 180px;
+      z-index: 1;
     }
 
     &_title {
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 26px;
+      font-weight: 800;
       text-align: center;
       margin-bottom: 20px;
       color: $mainBrownColor;
+      letter-spacing: -0.5px;
     }
 
     &_input {
       width: 100%;
-      padding-bottom: 8px;
+      padding-bottom: 4px;
     }
 
     &_actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr;
-      gap: 10px;
+      gap: 12px;
+      margin-top: 12px;
     }
 
     &_terms {
-      margin-top: -18px;
-      padding-bottom: 8px;
+      padding: 8px 0;
     }
 
-    .hubBtn {
-      padding: 12px;
-      font-size: 16px;
+    &_footer {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba($mainBrownColor, 0.08);
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    &_footerText {
+      font-size: 15px;
+      color: rgba($mainBrownColor, 0.7);
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+    }
+
+    &_footerLink {
+      color: $mainOrangeColor;
+      font-weight: 800;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-block;
+      position: relative;
+      padding: 2px 4px;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: $mainOrangeColor;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border-radius: 2px;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
     }
   }
 </style>

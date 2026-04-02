@@ -20,6 +20,9 @@
   "confirmEmptySelectAnswerPopup": "No se seleccionó ninguna respuesta correcta. ¿Desea continuar de todos modos?",
   "confirmDeleteItemsTextPopup": "¿Está seguro de que desea eliminar los elementos seleccionados?",
   "confirmDeleteCatalogTextPopup": "¿Está seguro de que desea eliminar el catálogo seleccionado?",
+  "confirmAbandonCatalogTextPopup": "¿Estás seguro de que quieres abandonar este catálogo?",
+  "confirmRemoveFollowerTitle": "¿Revocar el acceso al catálogo?",
+  "confirmRemoveFollowerSubtitle": "El usuario perderá el acceso inmediatamente después de la confirmación.",
   "delete": "Eliminar",
   "login": "Iniciar sesión",
   "tryWithoutAccount": "Probar sin cuenta",
@@ -74,6 +77,7 @@
   "questionHasBeenChanged": "La pregunta ha sido cambiada ({skipTimeLeft})",
   "or": "o",
   "add": "Añadir",
+  "addToLibrary": "Añadir a la biblioteca",
   "ready": "Listo",
   "password": "Contraseña",
   "accept": "Aceptar",
@@ -98,7 +102,10 @@
   "addCatalog": "Añadir catálogo",
   "editCatalog": "Editar catálogo",
   "createCatalog": "Crear catálogo",
+  "previewCatalog": "Vista previa del catálogo",
+  "abandonCatalog": "Abandonar catálogo",
   "yourCatalogs": "Tus catálogos",
+  "receivedCatalogs": "Catálogos recibidos",
   "yourMemory": "Recuerdos guardados",
   "yourQuestions": "Tus preguntas",
   "messageHasBeenSent": "¡Mensaje enviado!",
@@ -108,6 +115,8 @@
   "manageLibrary": "Gestionar biblioteca",
   "beforeSelectedCatalogInfoText": "No se ha seleccionado ningún catálogo. Asignar la pregunta a un catálogo facilitará encontrarla más tarde.",
   "selectedCatalogInfoText": "La pregunta se asignará a:",
+  "author": "Autor",
+  "questions": "Preguntas",
   "catalogAutomaticallyTranslated": "Su catálogo se traducirá automáticamente a todos los idiomas disponibles.",
   "exampleQuestion": "Si **** fuera invisible por un día, ¿qué haría?",
   "questionTutorial": "Escribe **** para que la pregunta sea sobre cualquier jugador en el juego",
@@ -143,7 +152,7 @@
   "selectFavAnswer": "Selecciona una respuesta de la lista para continuar",
   "isAnswerPicked": "La elección ha sido hecha. Esperando a otros jugadores.",
   "chooseGameType": "Elegir tipo de juego",
-  "emptyData": "Sin datos",
+  "emptyData": "¡Aquí todavía no hay nada!",
   "requiredAdminRole": "Debes tener privilegios de administrador para continuar.",
   "gameClosed": "El anfitrión del juego ha cerrado su sala.",
   "chooseCatalogSize": "Elegir tamaño del catálogo",
@@ -157,6 +166,12 @@
     "noTeams": "Sin equipos",
     "soloOrTeam": "Solo / Equipos",
     "availableModes": "Disponible",
+    "shareViaLink": "Compartir mediante enlace",
+    "author": "Autor",
+    "shareLinkTooltip": "Puedes invalidar este enlace en cualquier momento generando uno nuevo o desactivando esta opción. Cualquier persona con un enlace activo podrá añadir este catálogo a sus colecciones.",
+    "linkCopied": "¡Enlace copiado al portapapeles!",
+    "savedInCollections": "Guardado en colecciones",
+    "noFollowers": "Nadie ha guardado este catálogo todavía",
     "psych": {
       "playersCount": "2 – ∞",
       "bestWith": "Mejor 3+"
@@ -168,7 +183,8 @@
     "quietDays": {
       "playersCount": "2 – 12",
       "bestWith": "Mejor 2-8"
-    }
+    },
+    "ownerLibraryWarning": "Este es tu catálogo – ya tienes acceso completo a él en tu biblioteca."
   },
   "description": "Descripción",
   "small": "Pequeño",
@@ -184,7 +200,8 @@
     "privateQuestionsDescription": "Usa tus propias preguntas creadas en el juego.",
     "publicQuestionsDescription": "Usa preguntas públicas creadas por otros usuarios. Estas preguntas están aprobadas por la administración.",
     "roomOnListDescription": "Permitir que tu sala aparezca públicamente para que otros puedan unirse sin código.",
-    "useDixitRules": "No dejes que todos los jugadores elijan tu respuesta. Ganas puntos seleccionando la respuesta del jugador sobre el cual se hace la pregunta."
+    "useDixitRules": "No dejes que todos los jugadores elijan tu respuesta. Ganas puntos seleccionando la respuesta del jugador sobre el cual se hace la pregunta.",
+    "receivedQuestionsDescription": "Usa catálogos compartidos contigo por otros jugadores en el juego."
   },
   "info": {
     "passwordRoom": "* Sin establecer una contraseña, cualquiera puede unirse a tu sala.",
@@ -196,6 +213,7 @@
   "lobby": {
     "usePrivateQuestions": "Usar preguntas privadas",
     "usePublicQuestions": "Usar preguntas públicas",
+    "useReceivedQuestions": "Usar preguntas compartidas",
     "gameVisibleOnList": "Juego visible en la lista",
     "isQuestionsFromAnotherGamesAllowed": "Permitir a otros jugadores añadir sus propias preguntas",
     "useDixitRules": "Elige la respuesta del jugador",
@@ -221,6 +239,7 @@
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Aún no se ha creado ningún catálogo.",
+    "noReceivedCatalogsYet": "Aún no has recibido ningún catálogo.",
     "noQuestionsHasBeenCreatedYet": "Aún no se han creado preguntas.",
     "addToCatalog": "Añadir al catálogo",
     "createdQuestion": "Pregunta creada:",
@@ -294,7 +313,10 @@
     "subjectCannotBeEmpty": "El asunto no puede estar vacío",
     "subjectIsTooLong": "El asunto es demasiado largo",
     "messageCannotBeEmpty": "El mensaje no puede estar vacío",
-    "messageIsTooLong": "El mensaje es demasiado largo"
+    "messageIsTooLong": "El mensaje es demasiado largo",
+    "noAccountYet": "¿Aún nie tienes cuenta?",
+    "registerNow": "Regístrate ahora",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?"
   },
   "foxGame": {
     "psych": {

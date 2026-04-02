@@ -20,6 +20,9 @@
   "confirmEmptySelectAnswerPopup": "Es wurde keine richtige Antwort ausgewählt. Möchten du trotzdem fortfahren?",
   "confirmDeleteItemsTextPopup": "Bist du sicher, dass du die ausgewählten Elemente löschen möchtest?",
   "confirmDeleteCatalogTextPopup": "Bist du sicher, dass du den ausgewählten Katalog löschen möchtest?",
+  "confirmAbandonCatalogTextPopup": "Möchten Sie diesen Katalog wirklich verlassen?",
+  "confirmRemoveFollowerTitle": "Zugriff auf den Katalog entziehen?",
+  "confirmRemoveFollowerSubtitle": "Der Benutzer verliert den Zugriff sofort nach der Bestätigung.",
   "delete": "Löschen",
   "login": "Anmelden",
   "tryWithoutAccount": "Ohne Konto ausprobieren",
@@ -74,6 +77,7 @@
   "questionHasBeenChanged": "Die Frage wurde geändert ({skipTimeLeft})",
   "or": "oder",
   "add": "Hinzufügen",
+  "addToLibrary": "Zur Bibliothek hinzufügen",
   "ready": "Bereit",
   "password": "Passwort",
   "accept": "Bestätigen",
@@ -98,7 +102,10 @@
   "addCatalog": "Katalog hinzufügen",
   "editCatalog": "Katalog bearbeiten",
   "createCatalog": "Katalog erstellen",
+  "previewCatalog": "Katalogvorschau",
+  "abandonCatalog": "Katalog verlassen",
   "yourCatalogs": "Deine Kataloge",
+  "receivedCatalogs": "Erhaltene Kataloge",
   "yourMemory": "Gespeicherte Erinnerungen",
   "yourQuestions": "Deine Fragen",
   "messageHasBeenSent": "Nachricht wurde gesendet!",
@@ -108,6 +115,8 @@
   "manageLibrary": "Bibliothek verwalten",
   "beforeSelectedCatalogInfoText": "Kein Katalog ausgewählt. Das Zuweisen der Frage zu einem Katalog erleichtert das spätere Wiederfinden.",
   "selectedCatalogInfoText": "Die Frage wird zugewiesen an:",
+  "author": "Autor",
+  "questions": "Fragen",
   "catalogAutomaticallyTranslated": "Ihr Katalog wird automatisch in alle verfügbaren Sprachen übersetzt.",
   "exampleQuestion": "Wenn **** für einen Tag unsichtbar wäre, was würde er/sie tun?",
   "questionTutorial": "Schreibe ****, damit sich die Frage auf einen beliebigen Spieler bezieht",
@@ -143,7 +152,7 @@
   "selectFavAnswer": "Wähle eine Antwort aus der Liste, um fortzufahren",
   "isAnswerPicked": "Die Wahl ist getroffen. Warten auf andere Spieler.",
   "chooseGameType": "Spieltyp auswählen",
-  "emptyData": "Keine Daten",
+  "emptyData": "Hier ist noch nichts...",
   "requiredAdminRole": "Du musst Administratorrechte besitzen, um fortzufahren.",
   "gameClosed": "Der Spielleiter hat den Raum geschlossen.",
   "chooseCatalogSize": "Kataloggröße auswählen",
@@ -157,6 +166,12 @@
     "noTeams": "Ohne Teams",
     "soloOrTeam": "Solo / Teams",
     "availableModes": "Verfügbar",
+    "shareViaLink": "Über Link teilen",
+    "author": "Autor",
+    "shareLinkTooltip": "Sie können diesen Link jederzeit ungültig machen, indem Sie einen neuen generieren oder diese Option deaktivieren. Jeder mit einem aktiven Link kann diesen Katalog zu seinen Sammlungen hinzufügen.",
+    "linkCopied": "Link in die Zwischenablage kopiert!",
+    "savedInCollections": "In Sammlungen gespeichert",
+    "noFollowers": "Niemand hat diesen Katalog bisher gespeichert",
     "psych": {
       "playersCount": "2 – ∞",
       "bestWith": "Am besten 3+"
@@ -168,7 +183,8 @@
     "quietDays": {
       "playersCount": "2 – 12",
       "bestWith": "Am besten 2-8"
-    }
+    },
+    "ownerLibraryWarning": "Dies ist dein Katalog – du hast bereits vollen Zugriff darauf in deiner Bibliothek."
   },
   "description": "Beschreibung",
   "small": "Klein",
@@ -184,7 +200,8 @@
     "privateQuestionsDescription": "Verwende deine eigenen erstellten Fragen im Spiel.",
     "publicQuestionsDescription": "Verwende öffentliche Fragen, die von anderen Benutzern erstellt und von der Administration genehmigt wurden.",
     "roomOnListDescription": "Erlaube, dass dein Raum öffentlich sichtbar ist, damit andere ohne Code beitreten können.",
-    "useDixitRules": "Lassen Sie nicht alle Spieler Ihre Antwort wählen. Sie erhalten Punkte, indem Sie die Antwort des Spielers auswählen, zu dem die Frage gestellt wird."
+    "useDixitRules": "Lassen Sie nicht alle Spieler Ihre Antwort wählen. Sie erhalten Punkte, indem Sie die Antwort des Spielers auswählen, zu dem die Frage gestellt wird.",
+    "receivedQuestionsDescription": "Verwende im Spiel Kataloge, die von anderen Spielern mit dir geteilt wurden."
   },
   "info": {
     "passwordRoom": "* Ohne Passwort kann jeder deinem Raum beitreten.",
@@ -196,6 +213,7 @@
   "lobby": {
     "usePrivateQuestions": "Private Fragen verwenden",
     "usePublicQuestions": "Öffentliche Fragen verwenden",
+    "useReceivedQuestions": "Geteilte Fragen verwenden",
     "gameVisibleOnList": "Spiel in der Liste sichtbar",
     "isQuestionsFromAnotherGamesAllowed": "Anderen Spielern erlauben, eigene Fragen hinzuzufügen",
     "useDixitRules": "Wählen Sie die Antwort des Spielers",
@@ -221,6 +239,7 @@
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Es wurde noch kein Katalog erstellt.",
+    "noReceivedCatalogsYet": "Noch keine Kataloge erhalten.",
     "noQuestionsHasBeenCreatedYet": "Es wurden noch keine Fragen erstellt.",
     "addToCatalog": "Zum Katalog hinzufügen",
     "createdQuestion": "Erstellte Frage:",
@@ -294,7 +313,10 @@
     "subjectCannotBeEmpty": "Betreff darf nicht leer sein",
     "subjectIsTooLong": "Betreff ist zu lang",
     "messageCannotBeEmpty": "Nachricht darf nicht leer sein",
-    "messageIsTooLong": "Nachricht ist zu lang"
+    "messageIsTooLong": "Nachricht ist zu lang",
+    "noAccountYet": "Noch kein Konto?",
+    "registerNow": "Jetzt registrieren",
+    "alreadyHaveAccount": "Hast du schon ein Konto?"
   },
   "foxGame": {
     "psych": {

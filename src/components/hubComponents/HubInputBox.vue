@@ -15,6 +15,8 @@
     isTextarea = false,
     errorMessages,
     btnLoading = false,
+    allowEmpty = false,
+    dictsDisabled = false,
   } = defineProps<{
     title: string;
     btnText: string;
@@ -29,6 +31,8 @@
     isTextarea?: boolean;
     errorMessages?: string;
     btnLoading?: boolean;
+    allowEmpty?: boolean;
+    dictsDisabled?: boolean;
   }>();
 
   const text = defineModel({ type: String, required: true });
@@ -64,11 +68,14 @@
       :textPlaceholder="textPlaceholder"
       :error-messages="errorMessages"
       :btnLoading="btnLoading"
+      :allowEmpty="allowEmpty"
+      :dictsDisabled="dictsDisabled"
       @focus="handleFocus"
       @blur="handleBlur"
     >
       <slot></slot>
     </HubInputWithBtn>
+    <slot name="actions"></slot>
   </div>
 </template>
 

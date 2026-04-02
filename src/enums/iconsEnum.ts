@@ -43,6 +43,10 @@ import {
   mdiImageAlbum,
   mdiShareVariantOutline,
   mdiDownload,
+  mdiContentCopy,
+  mdiRefresh,
+  mdiMinusCircleOutline,
+  mdiMagnify,
 } from '@mdi/js';
 
 export const ICON = {
@@ -60,6 +64,7 @@ export const ICON = {
   USERS: mdiAccountMultiple,
   ADD_TO_COLLECTION: mdiShapeRectanglePlus,
   EDIT_COLLECTION: mdiSquareEditOutline,
+  VIEW_DETAILS: mdiMagnify,
   QUESTION: mdiHelpCircle,
   QUESTION_OUTLINE: mdiHelpCircleOutline,
   ANSWER: mdiComment,
@@ -90,6 +95,9 @@ export const ICON = {
   MEMORIES: mdiImageAlbum,
   SHARE: mdiShareVariantOutline,
   SAVE: mdiDownload,
+  COPY: mdiContentCopy,
+  REFRESH: mdiRefresh,
+  ABANDON: mdiMinusCircleOutline,
 } as const;
 
 export type ICON_TYPE = (typeof ICON)[keyof typeof ICON];

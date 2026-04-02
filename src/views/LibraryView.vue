@@ -24,6 +24,7 @@
   import { useI18n } from 'vue-i18n';
   import { useLoading } from '@/composables/useLoading';
   import ShowMemoryPopup from '@/components/psychGame/ShowMemoryPopup.vue';
+  import CatalogByShareKeyPopup from '@/components/CatalogByShareKeyPopup.vue';
 
   const userStore = useUserStore();
   const { t } = useI18n();
@@ -115,6 +116,7 @@
     editCatalogMode.value = false;
     isCatalogCreatorOpen.value = true;
     currentCatalog.value = new Catalog();
+    isReadCatalogMode.value = false;
   };
 
   const addQuestionsToCatalog = (questions: ListElement[]) => {
@@ -137,12 +139,23 @@
     isQuestionCreatorOpen.value = true;
   };
 
+  const isReadCatalogMode = ref(false);
   const showCatalogDetails = (catalog: ListElement) => {
-    currentCatalog.value = userStore.user.catalogs.find(
+    const isReceived = userStore.user.receivedCatalogs.some(c => c.catalogId === catalog.id);
+
+    currentCatalog.value = [...userStore.user.catalogs, ...userStore.user.receivedCatalogs].find(
       actualCatalog => actualCatalog.catalogId === catalog.id
     )!;
-    editCatalogMode.value = true;
-    isCatalogCreatorOpen.value = true;
+
+    if (isReceived) {
+      isReadCatalogMode.value = true;
+      editCatalogMode.value = false;
+      isCatalogCreatorOpen.value = true;
+    } else {
+      isReadCatalogMode.value = false;
+      editCatalogMode.value = true;
+      isCatalogCreatorOpen.value = true;
+    }
   };
 
   const closePopup = (refresh: boolean = false) => {
@@ -155,6 +168,9 @@
 
   const refreshCatalogList = () => {
     actualCatalogs.value = userStore.user.catalogs
+      .map(convertCatalogsToListElement)
+      .sort((a, b) => b.id - a.id);
+    actualReceivedCatalogs.value = userStore.user.receivedCatalogs
       .map(convertCatalogsToListElement)
       .sort((a, b) => b.id - a.id);
     setOpenTab.value = 'addQuestion';
@@ -171,6 +187,12 @@
     isCatalogCreatorOpen.value = false;
     isDeletePopupOpen.value = true;
     catalogIdToRemove = catalogId;
+  };
+
+  const showAbandonCatalogPopup = (catalogId: number) => {
+    isCatalogCreatorOpen.value = false;
+    isAbandonPopupOpen.value = true;
+    catalogIdToAbandon = catalogId;
   };
 
   const deleteCatalog = async () => {
@@ -192,16 +214,64 @@
     refreshCatalogList();
   };
 
+  const abandonCatalog = async () => {
+    if (!catalogIdToAbandon) {
+      return;
+    }
+
+    isAbandonPopupOpen.value = false;
+    const response = await psychService.removeCatalogFollower(
+      catalogIdToAbandon,
+      userStore.user.userId
+    );
+
+    if (!response) {
+      return;
+    }
+
+    userStore.removeReceivedCatalog(catalogIdToAbandon);
+    refreshCatalogList();
+  };
+
+  const showRemoveFollowerPopup = (userId: number) => {
+    isCatalogCreatorOpen.value = false;
+    isRemoveFollowerPopupOpen.value = true;
+    userIdToRemove = userId;
+  };
+
+  const removeFollower = async () => {
+    if (!userIdToRemove || !currentCatalog.value.catalogId) {
+      return;
+    }
+
+    isRemoveFollowerPopupOpen.value = false;
+    await psychService.removeCatalogFollower(currentCatalog.value.catalogId, userIdToRemove);
+
+    if (currentCatalog.value.followers) {
+      currentCatalog.value.followers = currentCatalog.value.followers.filter(
+        f => f.userId !== userIdToRemove
+      );
+    }
+
+    userIdToRemove = null;
+    isCatalogCreatorOpen.value = true;
+  };
+
   let catalogIdToRemove: number | null = null;
+  let catalogIdToAbandon: number | null = null;
+  let userIdToRemove: number | null = null;
   const isDeletePopupOpen = ref<boolean>(false);
+  const isAbandonPopupOpen = ref<boolean>(false);
+  const isRemoveFollowerPopupOpen = ref<boolean>(false);
   const isCatalogCreatorOpen = ref<boolean>(false);
   const isQuestionCreatorOpen = ref<boolean>(false);
   const isMemoriesPopupAvailable = ref<boolean>(false);
   const setOpenTab = ref<string>('addQuestion');
   const newQuestion = ref<string>('');
   const currentCatalog = ref<Catalog>(new Catalog());
-  const editCatalogMode = ref<boolean>(true);
+  const editCatalogMode = ref<boolean>(false);
   const addManyQuestonsToCatalogs = ref<boolean>(false);
+  const questionRef = ref<HTMLElement | null>(null);
   const actualQuestions = ref<ListElement[]>(
     userStore.user.questions.map(convertQuestionToListElement).sort((a, b) => b.id - a.id)
   );
@@ -209,6 +279,9 @@
   const catalogsIdsFromSelectedQuestion = ref<number[]>([]);
   const actualCatalogs = ref<ListElement[]>(
     userStore.user.catalogs.map(convertCatalogsToListElement).sort((a, b) => b.id - a.id)
+  );
+  const actualReceivedCatalogs = ref<ListElement[]>(
+    userStore.user.receivedCatalogs.map(convertCatalogsToListElement).sort((a, b) => b.id - a.id)
   );
 
   const actualSelectedCatalogs = ref<Catalog[]>([]);
@@ -235,6 +308,12 @@
       : t('beforeSelectedCatalogInfoText');
   });
 
+  const scrollToInput = () => {
+    setTimeout(() => {
+      questionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  };
+
   //TODO: jak jest jedno pytanie zaznaczone to dac mozliwosc wypisywania go z katalogu.
 </script>
 
@@ -251,6 +330,7 @@
         v-model="setOpenTab"
         :slotNames="[
           { slotName: 'yourCatalogs', isComing: false, darkBackground: false },
+          { slotName: 'receivedCatalogs', isComing: false, darkBackground: false },
           { slotName: 'addQuestion', isComing: false, darkBackground: false },
           { slotName: 'yourQuestions', isComing: false, darkBackground: true },
         ]"
@@ -266,13 +346,27 @@
             emptyDataText="psych.noDirectoryHasBeenCreatedYet"
             multiple
             showPagination
-            showElementsCountInItem
             showItemDetailsBtn
             @showDetails="showCatalogDetails"
           />
         </template>
+        <template #receivedCatalogs>
+          <WhiteSelectList
+            v-model="actualReceivedCatalogs"
+            class="yourCatalogs"
+            :height="146"
+            :itemsPerPage="3"
+            :fontSize="14"
+            emptyDataText="psych.noReceivedCatalogsYet"
+            multiple
+            showPagination
+            showItemDetailsBtn
+            :itemDetailsIcon="ICON.VIEW_DETAILS"
+            @showDetails="showCatalogDetails"
+          />
+        </template>
         <template #addQuestion>
-          <div class="selectedCatalogs">{{ selectedCatalogsInfoText }}</div>
+          <div ref="questionRef" class="selectedCatalogs">{{ selectedCatalogsInfoText }}</div>
           <HubDivider />
           <HubInputWithBtn
             v-model="newQuestion"
@@ -287,6 +381,7 @@
             :btnIsOrange="addQuestionBtn.isOrange"
             textPlaceholder="exampleQuestion"
             isTextarea
+            @focus="scrollToInput"
           >
             <div class="addQuestionTutorial">
               {{ $t('questionTutorial') }}
@@ -326,10 +421,26 @@
       <CatalogCreator
         v-model="currentCatalog"
         :editMode="editCatalogMode"
+        :readMode="isReadCatalogMode"
         @closePopup="closePopup"
         @showDeleteCatalogPopup="showDeleteCatalogPopup"
+        @showAbandonCatalogPopup="showAbandonCatalogPopup"
+        @showRemoveFollowerPopup="showRemoveFollowerPopup"
       />
     </HubPopup>
+    <HubDialogPopup
+      v-model="isRemoveFollowerPopupOpen"
+      :titlePopup="$t('confirmRemoveFollowerTitle')"
+      :textPopup="$t('confirmRemoveFollowerSubtitle')"
+      :confirmAction="() => removeFollower()"
+      :backAction="() => (isCatalogCreatorOpen = true)"
+    />
+    <HubDialogPopup
+      v-model="isAbandonPopupOpen"
+      :textPopup="$t('confirmAbandonCatalogTextPopup')"
+      :confirmAction="() => abandonCatalog()"
+    />
+    <CatalogByShareKeyPopup :refreshListAction="refreshCatalogList" />
   </div>
 </template>
 

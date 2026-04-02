@@ -5,14 +5,19 @@
   import { useI18n } from 'vue-i18n';
   import WhiteCard from '@/components/WhiteCard.vue';
   import HubInputBox from '@/components/hubComponents/HubInputBox.vue';
-  import NavigationBtns from '@/components/NavigationBtns.vue';
+  import HubSubActions from '@/components/hubComponents/HubSubActions.vue';
   import { useField, useForm } from 'vee-validate';
   import { userService } from '@/api/services/UserService';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
   import { useLoading } from '@/composables/useLoading';
+  import { generateFoxNick } from '@/utils/nicknameGenerator';
+  import { toLang } from '@/enums/languagesEnum';
+  import i18n from '@/configs/i18n';
 
   type FormFields = 'username' | 'termsaccepted';
+
+  const exampleNickname = generateFoxNick(toLang(i18n.global.locale.value));
 
   const { t } = useI18n();
   const router = useRouter();
@@ -38,7 +43,8 @@
   const onSubmit = handleSubmit(async values => {
     try {
       await withLoading(async () => {
-        await userService.registerTmpUser(values.username, values.termsaccepted);
+        const finalUsername = username.value?.trim() || exampleNickname;
+        await userService.registerTmpUser(finalUsername ?? exampleNickname, values.termsaccepted);
         router.push(ROUTE_PATH.MENU);
       });
     } catch (err: any) {
@@ -56,6 +62,10 @@
   const back = () => {
     router.push(ROUTE_PATH.HOME);
   };
+
+  const navigateToRegister = () => {
+    router.push(ROUTE_PATH.REGISTER);
+  };
 </script>
 
 <template>
@@ -72,15 +82,25 @@
         btnText="tryWithoutAccount"
         :btnAction="onSubmit"
         :btnLoading="loading"
+        :textPlaceholder="exampleNickname"
         withFoxImg
+        allowEmpty
+        dictsDisabled
         @focus="scrollToInput"
       >
         <HubCheckbox v-model="termsAccepted" :error-messages="termsAcceptedError">
           <Terms />
         </HubCheckbox>
+        <template #actions>
+          <HubSubActions
+            :actions="[
+              { text: 'back2', action: back },
+              { text: 'auth.registerNow', action: navigateToRegister },
+            ]"
+          />
+        </template>
       </HubInputBox>
     </div>
-    <NavigationBtns class="navBtns" btn="back" btn2="register" :btnCustomAction="back" />
   </div>
 </template>
 
@@ -97,6 +117,10 @@
     position: relative;
     overflow: visible;
 
+    .creamCard {
+      padding: 24px 24px 12px;
+    }
+
     &_content {
       padding: 0 24px;
       flex-grow: 1;
@@ -111,11 +135,6 @@
       font-style: italic;
       color: $lightGrayColor;
       letter-spacing: 0.5px;
-    }
-
-    .navBtns {
-      width: 100%;
-      padding: 8px 12px;
     }
   }
 </style>

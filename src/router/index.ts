@@ -11,6 +11,7 @@ import CreateGameViewVue from '@/views/CreateGameView.vue';
 import LibraryViewVue from '@/views/LibraryView.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ROLE } from '@/enums/rolesEnum';
+import { useViewStore } from '@/stores/viewStore';
 import NoAccessViewVue from '@/views/NoAccessView.vue';
 import { NO_ACCESS_REASON } from '@/enums/noAccessReasonEnum';
 import { PERMISSION_GAME } from '@/enums/permissions';
@@ -126,9 +127,9 @@ router.beforeEach(async (to, from, next) => {
   } else if (!isAuthenticated()) {
     const response = await userService.loginByToken();
     if (to.meta.requiresAuth && !response) {
+      useViewStore().setRedirectPath(to.fullPath);
       next({
-        path: ROUTE_PATH.NO_ACCESS,
-        query: { reason: NO_ACCESS_REASON.UNAUTHENTICATED },
+        path: ROUTE_PATH.LOGIN,
       });
     } else {
       next();

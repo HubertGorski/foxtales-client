@@ -11,9 +11,15 @@
   import { useLoading } from '@/composables/useLoading';
   import HubInput from './hubComponents/HubInput.vue';
   import { useI18n } from 'vue-i18n';
+  import CatalogFollowers from './CatalogFollowers.vue';
+  import CatalogShareLink from './CatalogShareLink.vue';
 
   const props = defineProps({
     editMode: {
+      type: Boolean,
+      default: false,
+    },
+    readMode: {
       type: Boolean,
       default: false,
     },
@@ -22,6 +28,8 @@
   const emit = defineEmits<{
     (e: 'closePopup', refresh: boolean): void;
     (e: 'showDeleteCatalogPopup', catalogId: number): void;
+    (e: 'showAbandonCatalogPopup', catalogId: number): void;
+    (e: 'showRemoveFollowerPopup', userId: number): void;
   }>();
 
   const catalog = defineModel({ type: Catalog, required: true });
@@ -132,6 +140,10 @@
   };
 
   const getActualQuestions = () => {
+    if (props.readMode) {
+      return catalog.value.questions.map(q => convertQuestionToListElement(q));
+    }
+
     const items = userStore.user.questions.map(convertQuestionToListElement);
     items.forEach(item => {
       if (catalog.value.questions.map(question => question.id).includes(item.id)) {
@@ -186,26 +198,49 @@
 </script>
 
 <template>
-  <div class="catalogCreator creamCard">
+  <div class="catalogCreator creamCard" :class="{ isReadMode: readMode }">
+    <img
+      v-if="readMode"
+      src="@/assets/imgs/library3fox.webp"
+      class="catalogCreator_fox"
+      alt="Lisek"
+    />
     <div class="catalogCreator_title">
       <div v-if="editMode">{{ $t('editCatalog') }}</div>
-      <div v-else>{{ $t('createCatalog') }}</div>
+      <div v-else-if="!readMode">{{ $t('createCatalog') }}</div>
+      <div v-else>{{ $t('previewCatalog') }}</div>
       <div class="catalogCreator_controlBtns">
-        <v-icon v-if="editMode" @click="showDeleteCatalogPopup(catalog.catalogId)">
-          {{ ICON.DELETE }}
+        <v-icon
+          v-if="editMode || readMode"
+          @click="
+            readMode
+              ? emit('showAbandonCatalogPopup', catalog.catalogId!)
+              : showDeleteCatalogPopup(catalog.catalogId)
+          "
+        >
+          {{ readMode ? ICON.ABANDON : ICON.DELETE }}
         </v-icon>
         <v-icon @click="closePopup(false)">{{ ICON.X }}</v-icon>
       </div>
     </div>
-    <div>
+    <div class="catalogCreator_body scrollbar">
+      <div v-if="readMode" class="catalogCreator_readHeader">
+        <h1 class="catalogCreator_readTitle">{{ catalog.title }}</h1>
+        <div v-if="catalog.author" class="catalogCreator_author">
+          <v-icon>{{ ICON.USERS }}</v-icon>
+          <span>{{ $t('catalog.author') }}:</span>
+          <strong>{{ catalog.author }}</strong>
+        </div>
+      </div>
+      <div v-if="!readMode">
+        <HubInput
+          v-model="catalog.title"
+          :label="$t('title')"
+          :errorMessages="getError('Catalog.Translations[0].Title')"
+        />
+      </div>
       <HubInput
-        v-model="catalog.title"
-        :label="$t('title')"
-        :errorMessages="getError('Catalog.Translations[0].Title')"
-      />
-    </div>
-    <div>
-      <HubInput
+        v-if="!readMode"
         v-model="catalog.description"
         :label="$t('description')"
         :textareaRows="2"
@@ -213,18 +248,35 @@
         :noResize="false"
         isTextarea
       />
+      <div v-else-if="catalog.description" class="catalogCreator_description">
+        {{ catalog.description }}
+      </div>
+      <CatalogShareLink
+        v-if="!readMode"
+        v-model:hasPublicLink="catalog.hasPublicLink"
+        v-model:shareKey="catalog.shareKey"
+        :catalogId="catalog.catalogId"
+      />
+      <CatalogFollowers
+        v-if="catalog.catalogId && !readMode"
+        :catalog="catalog"
+        @showRemoveFollowerPopup="userId => emit('showRemoveFollowerPopup', userId)"
+      />
+      <WhiteSelectList
+        v-if="actualQuestions.length"
+        v-model="actualQuestions"
+        customSelectedCountTitle="selectedQuestionsToCatalog"
+        :fontSize="14"
+        :itemsPerPage="3"
+        showSelectedCount
+        :multiple="!readMode"
+        :readOnly="readMode"
+        showPagination
+        infinityPages
+      />
     </div>
-    <!-- <div class="infoBlock">{{ $t('catalogAutomaticallyTranslated') }}</div> TODO: -->
-    <WhiteSelectList
-      v-if="actualQuestions.length"
-      v-model="actualQuestions"
-      customSelectedCountTitle="selectedQuestionsToCatalog"
-      :fontSize="14"
-      showSelectedCount
-      multiple
-      showPagination
-    />
     <HubBtn
+      v-if="!readMode"
       class="catalogCreator_btn"
       :action="formBtn.action"
       :text="formBtn.text"
@@ -239,11 +291,25 @@
   @use '@/assets/styles/variables' as *;
 
   .catalogCreator {
-    width: 324px;
+    width: 370px;
     padding: 12px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    max-height: 90vh;
+    overflow: hidden;
+
+    &.isReadMode {
+      gap: 0;
+    }
+
+    &_fox {
+      width: 226px;
+      position: absolute;
+      top: -64px;
+      left: 42px;
+      z-index: 1;
+    }
 
     &_title {
       color: $grayColor;
@@ -251,18 +317,70 @@
       font-weight: 600;
       display: flex;
       justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    &_body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
     &_controlBtns {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
-    &_subtitle {
+    &_author {
+      font-size: 13px;
+      color: $lightGrayColor;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+
+      strong {
+        color: $mainBrownColor;
+      }
+
+      .v-icon {
+        font-size: 16px;
+        color: $mainOrangeColor;
+      }
+    }
+
+    &_readHeader {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      padding: 8px 0 4px 0;
+      border-bottom: 2px solid rgba($mainBrownColor, 0.08);
+      border-top: 2px solid rgba($mainBrownColor, 0.08);
+    }
+
+    &_readTitle {
+      font-size: 26px;
+      font-weight: 900;
+      color: $mainBrownColor;
+      line-height: 1.1;
+      margin-bottom: 2px;
+      letter-spacing: -0.8px;
+    }
+
+    &_description {
       color: $grayColor;
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
+      font-size: 15px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      background: rgba($whiteColor, 0.4);
+      padding: 12px 16px;
+      border-radius: 12px;
+      border-left: 4px solid $mainOrangeColor;
+      font-style: italic;
     }
 
     &_btn {

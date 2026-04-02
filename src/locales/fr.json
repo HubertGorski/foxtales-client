@@ -20,6 +20,9 @@
   "confirmEmptySelectAnswerPopup": "Aucune réponse correcte n'a été sélectionnée. Voulez-vous continuer quand même ?",
   "confirmDeleteItemsTextPopup": "Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?",
   "confirmDeleteCatalogTextPopup": "Êtes-vous sûr de vouloir supprimer le catalogue sélectionné ?",
+  "confirmAbandonCatalogTextPopup": "Voulez-vous vraiment abandonner ce catalogue ?",
+  "confirmRemoveFollowerTitle": "Révoquer l'accès au catalogue ?",
+  "confirmRemoveFollowerSubtitle": "L'utilisateur perdra l'accès immédiatement après confirmation.",
   "delete": "Supprimer",
   "login": "Se connecter",
   "tryWithoutAccount": "Essayer sans compte",
@@ -74,6 +77,7 @@
   "questionHasBeenChanged": "La question a été modifiée ({skipTimeLeft})",
   "or": "ou",
   "add": "Ajouter",
+  "addToLibrary": "Ajouter à la bibliothèque",
   "ready": "Prêt",
   "password": "Mot de passe",
   "accept": "Accepter",
@@ -98,7 +102,10 @@
   "addCatalog": "Ajouter un catalogue",
   "editCatalog": "Modifier le catalogue",
   "createCatalog": "Créer un catalogue",
+  "previewCatalog": "Aperçu du catalogue",
+  "abandonCatalog": "Abandonner le catalogue",
   "yourCatalogs": "Vos catalogues",
+  "receivedCatalogs": "Catalogues reçus",
   "yourMemory": "Souvenirs sauvegardés",
   "yourQuestions": "Vos questions",
   "messageHasBeenSent": "Message envoyé !",
@@ -108,6 +115,8 @@
   "manageLibrary": "Gérer la bibliothèque",
   "beforeSelectedCatalogInfoText": "Aucun catalogue sélectionné. L'attribution de la question à un catalogue facilitera sa recherche ultérieure.",
   "selectedCatalogInfoText": "La question sera attribuée à :",
+  "author": "Auteur",
+  "questions": "Questions",
   "catalogAutomaticallyTranslated": "Votre catalogue sera automatiquement traduit dans toutes les langues disponibles.",
   "exampleQuestion": "Si **** était invisible pendant une journée, que ferait-il ?",
   "questionTutorial": "Tapez **** pour poser la question sur n'importe quel joueur du jeu",
@@ -157,6 +166,12 @@
     "noTeams": "Sans équipes",
     "soloOrTeam": "Solo / Équipes",
     "availableModes": "Disponible",
+    "shareViaLink": "Partager par lien",
+    "author": "Auteur",
+    "shareLinkTooltip": "Vous pouvez invalider ce lien à tout moment en en générant un nouveau ou en désactivant cette option. Toute personne disposant d'un lien actif pourra ajouter ce catalogue à ses collections.",
+    "linkCopied": "Lien copié dans le presse-papiers !",
+    "savedInCollections": "Enregistré dans les collections",
+    "noFollowers": "Personne n'a encore enregistré ce catalogue",
     "psych": {
       "playersCount": "2 – ∞",
       "bestWith": "Idéal 3+"
@@ -168,7 +183,8 @@
     "quietDays": {
       "playersCount": "2 – 12",
       "bestWith": "Idéal 2-8"
-    }
+    },
+    "ownerLibraryWarning": "C'est votre catalogue – vous y avez déjà un accès complet dans votre bibliothèque."
   },
   "description": "Description",
   "small": "Petit",
@@ -221,6 +237,7 @@
   },
   "psych": {
     "noDirectoryHasBeenCreatedYet": "Aucun catalogue n'a encore été créé.",
+    "noReceivedCatalogsYet": "Vous n'avez pas encore reçu de catalogue.",
     "noQuestionsHasBeenCreatedYet": "Aucune question n'a encore été créée.",
     "addToCatalog": "Ajouter au catalogue",
     "createdQuestion": "Question créée :",
@@ -294,7 +311,10 @@
     "subjectCannotBeEmpty": "Le sujet ne peut pas être vide",
     "subjectIsTooLong": "Le sujet est trop long",
     "messageCannotBeEmpty": "Le message ne peut pas être vide",
-    "messageIsTooLong": "Le message est trop long"
+    "messageIsTooLong": "Le message est trop long",
+    "noAccountYet": "Pas encore de compte ?",
+    "registerNow": "Inscrivez-vous maintenant",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?"
   },
   "foxGame": {
     "psych": {
