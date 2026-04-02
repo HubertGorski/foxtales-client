@@ -13,6 +13,7 @@
   import { useI18n } from 'vue-i18n';
   import CatalogFollowers from './CatalogFollowers.vue';
   import CatalogShareLink from './CatalogShareLink.vue';
+import HubDivider from './hubComponents/HubDivider.vue';
 
   const props = defineProps({
     editMode: {
@@ -199,6 +200,7 @@
 
 <template>
   <div class="catalogCreator creamCard">
+    <img v-if="readMode" src="@/assets/imgs/library3fox.webp" class="catalogCreator_fox" alt="Lisek" />
     <div class="catalogCreator_title">
       <div v-if="editMode">{{ $t('editCatalog') }}</div>
       <div v-else-if="!readMode">{{ $t('createCatalog') }}</div>
@@ -293,6 +295,14 @@
     max-height: 90vh;
     overflow: hidden;
 
+    &_fox {
+      width: 226px;
+      position: absolute;
+      top: -10px;
+      left: 42px;
+      z-index: 1;
+    }
+
     &_title {
       color: $grayColor;
       font-size: 24px;
@@ -350,9 +360,9 @@
       flex-direction: column;
       align-items: flex-start;
       text-align: left;
-      padding: 8px 0 12px 0;
+      padding: 8px 0 4px 0;
       border-bottom: 2px solid rgba($mainBrownColor, 0.08);
-      margin-bottom: 8px;
+      border-top: 2px solid rgba($mainBrownColor, 0.08);
     }
 
     &_readTitle {

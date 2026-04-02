@@ -46,6 +46,7 @@ import {
   mdiContentCopy,
   mdiRefresh,
   mdiMinusCircleOutline,
+  mdiMagnify,
 } from '@mdi/js';
 
 export const ICON = {
@@ -63,6 +64,7 @@ export const ICON = {
   USERS: mdiAccountMultiple,
   ADD_TO_COLLECTION: mdiShapeRectanglePlus,
   EDIT_COLLECTION: mdiSquareEditOutline,
+  VIEW_DETAILS: mdiMagnify,
   QUESTION: mdiHelpCircle,
   QUESTION_OUTLINE: mdiHelpCircleOutline,
   ANSWER: mdiComment,

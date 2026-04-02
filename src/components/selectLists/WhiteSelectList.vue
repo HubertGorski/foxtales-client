@@ -7,6 +7,25 @@
   import NoData from '../NoData.vue';
   import { usePagination } from '@/composables/usePagination';
 
+  const props = defineProps<{
+    showSelectedCount?: boolean;
+    customSelectedCountTitle?: string;
+    multiple?: boolean;
+    showPagination?: boolean;
+    showElementsCountInItem?: boolean;
+    height?: number;
+    itemsPerPage?: number;
+    showItemDetailsBtn?: boolean;
+    itemDetailsIcon?: string;
+    emptyDataText?: string;
+    selectVisibleItems?: boolean;
+    moveToSelectedItem?: boolean;
+    minimalView?: boolean;
+    selectItemId?: number;
+    infinityPages?: boolean;
+    readOnly?: boolean;
+  }>();
+
   const {
     showSelectedCount = false,
     customSelectedCountTitle = 'selectedItems',
@@ -16,6 +35,7 @@
     height,
     itemsPerPage = 4,
     showItemDetailsBtn = false,
+    itemDetailsIcon = ICON.EDIT_COLLECTION,
     emptyDataText = 'emptyData',
     selectVisibleItems = false,
     moveToSelectedItem = false,
@@ -23,23 +43,7 @@
     selectItemId,
     infinityPages = false,
     readOnly = false,
-  } = defineProps<{
-    showSelectedCount?: boolean;
-    customSelectedCountTitle?: string;
-    multiple?: boolean;
-    showPagination?: boolean;
-    showElementsCountInItem?: boolean;
-    height?: number;
-    itemsPerPage?: number;
-    showItemDetailsBtn?: boolean;
-    emptyDataText?: string;
-    selectVisibleItems?: boolean;
-    moveToSelectedItem?: boolean;
-    minimalView?: boolean;
-    selectItemId?: number;
-    infinityPages?: boolean;
-    readOnly?: boolean;
-  }>();
+  } = props;
 
   const emit = defineEmits<{
     (e: 'showDetails', item: ListElement): void;
@@ -151,7 +155,7 @@
             </div>
           </HubTooltip>
           <div v-if="showItemDetailsBtn" class="item_actionIcon" @click="showDetails(item)">
-            <v-icon>{{ ICON.EDIT_COLLECTION }}</v-icon>
+            <v-icon>{{ itemDetailsIcon }}</v-icon>
           </div>
           <div v-else class="item_icon" @click="selectItem(item)">
             <v-icon v-if="item.isSelected">{{ ICON.SELECT_ON }}</v-icon>

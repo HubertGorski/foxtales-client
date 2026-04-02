@@ -347,6 +347,7 @@
             multiple
             showPagination
             showItemDetailsBtn
+            :itemDetailsIcon="ICON.VIEW_DETAILS"
             @showDetails="showCatalogDetails"
           />
         </template>
@@ -361,6 +362,7 @@
             multiple
             showPagination
             showItemDetailsBtn
+            :itemDetailsIcon="ICON.VIEW_DETAILS"
             @showDetails="showCatalogDetails"
           />
         </template>
