@@ -4,7 +4,6 @@
   import WhiteSelectList from './selectLists/WhiteSelectList.vue';
   import { computed, ref, watch } from 'vue';
   import { convertCatalogsToListElement, type ListElement } from './selectLists/ListElement';
-  import { useI18n } from 'vue-i18n';
   import { useUserStore } from '@/stores/userStore';
   import type { Question } from '@/models/Question';
   import { QUESTION_SOURCE } from '@/enums/questionSource';
@@ -19,7 +18,6 @@
     (e: 'setQuestions', questions: SelectedQuestions): void;
   }>();
 
-  const { t } = useI18n();
   const userStore = useUserStore();
 
   const usePrivateQuestions = defineModel('usePrivateQuestions', {
@@ -29,8 +27,8 @@
   const catalogs = ref<ListElement[]>(userStore.user.catalogs.map(convertCatalogsToListElement));
 
   const privateQuestionsSelectedOptions: HubSwitchBtnsItem[] = [
-    { id: QUESTION_SOURCE.ALL_QUESTIONS, title: t('lobby.allQuestions') },
-    { id: QUESTION_SOURCE.SELECTED_CATALOG, title: t('lobby.selectedCatalog') },
+    { id: QUESTION_SOURCE.ALL_QUESTIONS, title: 'lobby.allQuestions' },
+    { id: QUESTION_SOURCE.SELECTED_CATALOG, title: 'lobby.selectedCatalog' },
   ];
 
   const selectedPrivateQuestionsSelectedOption = ref<HubSwitchBtnsItem>(

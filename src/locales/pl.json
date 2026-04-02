@@ -152,7 +152,7 @@
   "selectFavAnswer": "By kontynuować wybierz odpowiedź z listy",
   "isAnswerPicked": "Dokonano wyboru. Oczekiwanie na innych graczy",
   "chooseGameType": "Wybierz typ gry",
-  "emptyData": "Brak danych",
+  "emptyData": "Jeszcze nic tu nie ma...",
   "requiredAdminRole": "By przejść dalej musisz posiadać uprawnienia administratora.",
   "gameClosed": "Właściciel gry zamknął swój pokój.",
   "chooseCatalogSize": "Wybierz wielkość katalogu",
@@ -200,7 +200,8 @@
     "privateQuestionsDescription": "Korzystaj w grze z utworzonych przez siebie pytań",
     "publicQuestionsDescription": "Korzystaj w grze z publicznych pytań utworzonych przez innych użytkowników. Pytania te są zatwierdzone przez administrację",
     "roomOnListDescription": "Zezwól na pokazanie Twojego pokoju osobom z zewnątrz i daj możliwość dołączenia do gry bez podawania kodu",
-    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie"
+    "useDixitRules": "Nie pozwól by Twoją odpowiedź wybrali wszyscy gracze. Zdobywasz punkty tylko i wyłącznie wybierając odpowiedź gracza o którym jest dane pytanie",
+    "receivedQuestionsDescription": "Korzystaj w grze z katalogów udostępnionych Ci przez innych graczy"
   },
   "info": {
     "passwordRoom": "* Bez ustawienia hasła każdy będzie mógł dołączyć do Twojego pokoju.",
@@ -212,6 +213,7 @@
   "lobby": {
     "usePrivateQuestions": "Używaj prywatnych pytań",
     "usePublicQuestions": "Używaj publicznych pytań",
+    "useReceivedQuestions": "Używaj udostępnionych Tobie pytań",
     "gameVisibleOnList": "Gra widoczna na liście",
     "isQuestionsFromAnotherGamesAllowed": "Zezwól innym graczom na dodawanie własnych pytań",
     "useDixitRules": "Wybierz odpowiedź gracza",

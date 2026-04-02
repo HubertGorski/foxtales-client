@@ -152,7 +152,7 @@
   "selectFavAnswer": "Selecciona una respuesta de la lista para continuar",
   "isAnswerPicked": "La elección ha sido hecha. Esperando a otros jugadores.",
   "chooseGameType": "Elegir tipo de juego",
-  "emptyData": "Sin datos",
+  "emptyData": "¡Aquí todavía no hay nada!",
   "requiredAdminRole": "Debes tener privilegios de administrador para continuar.",
   "gameClosed": "El anfitrión del juego ha cerrado su sala.",
   "chooseCatalogSize": "Elegir tamaño del catálogo",
@@ -200,7 +200,8 @@
     "privateQuestionsDescription": "Usa tus propias preguntas creadas en el juego.",
     "publicQuestionsDescription": "Usa preguntas públicas creadas por otros usuarios. Estas preguntas están aprobadas por la administración.",
     "roomOnListDescription": "Permitir que tu sala aparezca públicamente para que otros puedan unirse sin código.",
-    "useDixitRules": "No dejes que todos los jugadores elijan tu respuesta. Ganas puntos seleccionando la respuesta del jugador sobre el cual se hace la pregunta."
+    "useDixitRules": "No dejes que todos los jugadores elijan tu respuesta. Ganas puntos seleccionando la respuesta del jugador sobre el cual se hace la pregunta.",
+    "receivedQuestionsDescription": "Usa catálogos compartidos contigo por otros jugadores en el juego."
   },
   "info": {
     "passwordRoom": "* Sin establecer una contraseña, cualquiera puede unirse a tu sala.",
@@ -212,6 +213,7 @@
   "lobby": {
     "usePrivateQuestions": "Usar preguntas privadas",
     "usePublicQuestions": "Usar preguntas públicas",
+    "useReceivedQuestions": "Usar preguntas compartidas",
     "gameVisibleOnList": "Juego visible en la lista",
     "isQuestionsFromAnotherGamesAllowed": "Permitir a otros jugadores añadir sus propias preguntas",
     "useDixitRules": "Elige la respuesta del jugador",

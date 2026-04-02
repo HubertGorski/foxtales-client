@@ -37,6 +37,9 @@
   const publicCatalogs = ref<ListElement[]>(
     userStore.publicCatalogs.map(convertCatalogsToListElement)
   );
+  const receivedCatalogs = ref<ListElement[]>(
+    userStore.user.receivedCatalogs.map(convertCatalogsToListElement)
+  );
 
   const selectedCatalogId = ref<number | null>(null);
 
@@ -74,6 +77,8 @@
     if (isCustomMode.value) {
       newGame.value.selectedPublicCatalogId =
         publicCatalogs.value.find(catalog => catalog.isSelected)?.id ?? null;
+      newGame.value.selectedReceivedCatalogId =
+        receivedCatalogs.value.find(catalog => catalog.isSelected)?.id ?? null;
       newGame.value.currentRules = gameRules.value.find(catalog => catalog.isSelected)?.id as RULES;
     } else {
       newGame.value.usePublicQuestions = true;
@@ -166,6 +171,23 @@
               v-model="publicCatalogs"
               :itemsPerPage="1"
               :selectItemId="newGame.selectedPublicCatalogId ?? undefined"
+              showPagination
+              selectVisibleItems
+              moveToSelectedItem
+              minimalView
+              infinityPages
+            />
+            <HubSwitch
+              v-model="newGame.useReceivedQuestions"
+              label="lobby.useReceivedQuestions"
+              tooltipText="tooltip.receivedQuestionsDescription"
+              withIcon
+            />
+            <WhiteSelectList
+              v-if="newGame.useReceivedQuestions"
+              v-model="receivedCatalogs"
+              :itemsPerPage="1"
+              :selectItemId="newGame.selectedReceivedCatalogId ?? undefined"
               showPagination
               selectVisibleItems
               moveToSelectedItem

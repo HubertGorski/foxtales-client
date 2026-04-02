@@ -152,7 +152,7 @@
   "selectFavAnswer": "Select an answer from the list to continue",
   "isAnswerPicked": "The choice has been made. Waiting for other players.",
   "chooseGameType": "Choose game type",
-  "emptyData": "No data",
+  "emptyData": "Nothing here yet...",
   "requiredAdminRole": "You must have administrator privileges to continue.",
   "gameClosed": "The game host has closed their room.",
   "chooseCatalogSize": "Choose catalog size",
@@ -200,7 +200,8 @@
     "privateQuestionsDescription": "Use your own created questions in the game.",
     "publicQuestionsDescription": "Use public questions created by other users. These questions are approved by the administration.",
     "roomOnListDescription": "Allow your room to appear publicly so others can join without a code.",
-    "useDixitRules": "Don't let all players choose your answer. You earn points by selecting the answer of the player about whom the question is asked."
+    "useDixitRules": "Don't let all players choose your answer. You earn points by selecting the answer of the player about whom the question is asked.",
+    "receivedQuestionsDescription": "Use catalogs shared with you by other players in the game."
   },
   "info": {
     "passwordRoom": "* Without setting a password, anyone can join your room.",
@@ -212,6 +213,7 @@
   "lobby": {
     "usePrivateQuestions": "Use private questions",
     "usePublicQuestions": "Use public questions",
+    "useReceivedQuestions": "Use shared questions",
     "gameVisibleOnList": "Game visible on the list",
     "isQuestionsFromAnotherGamesAllowed": "Allow other players to add their own questions",
     "useDixitRules": "Choose the player's answer",
