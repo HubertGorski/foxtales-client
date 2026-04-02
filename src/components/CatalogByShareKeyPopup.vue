@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import HubPopup from './hubComponents/HubPopup.vue';
   import HubBtn from './hubComponents/HubBtn.vue';
+  import HubTooltip from './hubComponents/HubTooltip.vue';
   import { useUserStore } from '@/stores/userStore';
   import { ICON } from '@/enums/iconsEnum';
   import { Catalog } from '@/models/Catalog';
@@ -20,6 +21,10 @@
   const route = useRoute();
   const router = useRouter();
   const { withLoading } = useLoading();
+
+  const isOwner = computed(() => {
+    return catalog.value?.ownerId === userStore.user.userId;
+  });
 
   const goBack = () => {
     isVisible.value = false;
@@ -109,7 +114,9 @@
         <div class="catalogByShareKeyPopup_footer">
           <HubBtn text="back" :action="goBack" ghost small />
           <span class="catalogByShareKeyPopup_footerTitle">{{ catalog.title }}</span>
-          <HubBtn text="addToLibrary" :action="confirm" isOrange small />
+          <HubTooltip tooltipText="catalog.ownerLibraryWarning" :tooltipDisabled="!isOwner">
+            <HubBtn text="addToLibrary" :action="confirm" :disabled="isOwner" isOrange small />
+          </HubTooltip>
         </div>
       </div>
     </HubPopup>

@@ -182,7 +182,8 @@
     "quietDays": {
       "playersCount": "2 – 12",
       "bestWith": "Best 2-8"
-    }
+    },
+    "ownerLibraryWarning": "This is your catalog – you already have full access to it in your library."
   },
   "description": "Description",
   "small": "Small",
