@@ -1,23 +1,23 @@
 <script setup lang="ts">
-  import { useRouter, useRoute } from 'vue-router';
+  import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useForm, useField } from 'vee-validate';
   import * as yup from 'yup';
-  import { computed, onMounted } from 'vue';
+  import { computed } from 'vue';
   import { userService } from '@/api/services/UserService';
   import { useI18n } from 'vue-i18n';
-  import { useViewStore } from '@/stores/viewStore';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import HubInput from '@/components/hubComponents/HubInput.vue';
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import HubSubActions from '@/components/hubComponents/HubSubActions.vue';
   import { useUserStore } from '@/stores/userStore';
   import { useLoading } from '@/composables/useLoading';
-  import { isMessenger } from '@/utils/userAgentUtils';
+  import { useAuthRedirect } from '@/composables/useAuthRedirect';
+  import { useViewStore } from '@/stores/viewStore';
 
   const { t } = useI18n();
   const router = useRouter();
-  const route = useRoute();
+  const { performRedirect } = useAuthRedirect();
 
   type FormFields = 'email' | 'password';
   const { loading: isLoading, withLoading } = useLoading();
@@ -52,9 +52,7 @@
     await withLoading(async () => {
       try {
         await userService.login(values.email, values.password, user.isProlongSessionEnabled);
-        const { redirectPath, setRedirectPath } = useViewStore();
-        router.push(redirectPath || ROUTE_PATH.MENU);
-        setRedirectPath(null);
+        performRedirect();
       } catch (err: any) {
         const data = err?.response?.data;
         if (data?.errors) {
@@ -74,24 +72,6 @@
 
   const isBtnDisabled = computed((): boolean => {
     return isLoading.value || !!emailError.value || !!passwordError.value;
-  });
-
-  onMounted(() => {
-    const { redirectPath: queryRedirectPath } = route.query;
-    const { redirectPath, setRedirectPath } = useViewStore();
-
-    if (queryRedirectPath) {
-      setRedirectPath(queryRedirectPath as string);
-    }
-
-    if (user.accessToken) {
-      router.push((queryRedirectPath as string) || redirectPath || ROUTE_PATH.MENU);
-      setRedirectPath(null);
-    } else if (queryRedirectPath && !isMessenger()) {
-      const query = { ...route.query };
-      delete query.redirectPath;
-      router.replace({ query });
-    }
   });
 </script>
 
