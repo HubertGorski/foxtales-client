@@ -19,6 +19,7 @@ import PsychGameView from '@/views/PsychGameView.vue';
 import WelcomeViewVue from '@/views/WelcomeView.vue';
 import TryWithoutAccountView from '@/views/TryWithoutAccountView.vue';
 import { userService } from '@/api/services/UserService';
+import { isMessenger } from '@/utils/userAgentUtils';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -130,6 +131,7 @@ router.beforeEach(async (to, from, next) => {
       useViewStore().setRedirectPath(to.fullPath);
       next({
         path: ROUTE_PATH.LOGIN,
+        query: isMessenger() ? { redirectPath: to.fullPath } : {},
       });
     } else {
       next();

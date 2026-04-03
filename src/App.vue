@@ -6,14 +6,14 @@
   import { useKeyboardScrollControl } from './libs/useKeyboardScrollControl';
   import HubErrorPanel from './components/hubComponents/HubErrorPanel.vue';
   import HubMessengerBlock from './components/hubComponents/HubMessengerBlock.vue';
+  import { isMessenger as detectIsMessenger } from './utils/userAgentUtils';
 
   useDevice();
   useKeyboardScrollControl();
 
   const { isLandscape } = useOrientation();
 
-  const ua = navigator.userAgent || '';
-  const isMessenger = ua.includes('FBAN') || ua.includes('FBAV') || ua.includes('Messenger');
+  const isMessenger = detectIsMessenger();
 </script>
 
 <template>

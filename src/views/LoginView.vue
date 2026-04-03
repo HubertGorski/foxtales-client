@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { useRouter } from 'vue-router';
+  import { useRouter, useRoute } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useForm, useField } from 'vee-validate';
   import * as yup from 'yup';
-  import { computed } from 'vue';
+  import { computed, onMounted } from 'vue';
   import { userService } from '@/api/services/UserService';
   import { useI18n } from 'vue-i18n';
   import { useViewStore } from '@/stores/viewStore';
@@ -16,6 +16,7 @@
 
   const { t } = useI18n();
   const router = useRouter();
+  const route = useRoute();
 
   type FormFields = 'email' | 'password';
   const { loading: isLoading, withLoading } = useLoading();
@@ -72,6 +73,24 @@
 
   const isBtnDisabled = computed((): boolean => {
     return isLoading.value || !!emailError.value || !!passwordError.value;
+  });
+
+  onMounted(() => {
+    const { redirectPath: queryRedirectPath } = route.query;
+    const { redirectPath, setRedirectPath } = useViewStore();
+
+    if (queryRedirectPath) {
+      setRedirectPath(queryRedirectPath as string);
+
+      const query = { ...route.query };
+      delete query.redirectPath;
+      router.replace({ query });
+    }
+
+    if (user.accessToken) {
+      router.push((queryRedirectPath as string) || redirectPath || ROUTE_PATH.MENU);
+      setRedirectPath(null);
+    }
   });
 </script>
 

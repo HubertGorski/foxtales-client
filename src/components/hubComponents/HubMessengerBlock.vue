@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  const appVersion = import.meta.env.VITE_APP_VERSION;
+</script>
 
 <template>
   <div class="messengerBlock">
@@ -8,6 +10,7 @@
       <div class="messengerBlock_text" v-html="$t('messengerSub')"></div>
       <div class="messengerBlock_steps" v-html="$t('messengerStep1')"></div>
       <div class="messengerBlock_steps" v-html="$t('messengerStep2')"></div>
+      <div class="messengerBlock_version">v.{{ appVersion }}</div>
     </div>
   </div>
 </template>
@@ -33,7 +36,7 @@
       position: relative;
       background: linear-gradient(135deg, #f1e3d3, #d3b39d);
       border-radius: 20px;
-      padding: 24px;
+      padding: 24px 24px 12px;
       max-width: 360px;
       width: 100%;
       box-shadow: 0 4px 24px rgba(84, 50, 47, 0.1);
@@ -74,6 +77,14 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+    }
+
+    &_version {
+      color: $mainBrownColor;
+      font-size: 12px;
+      font-style: italic;
+      text-align: right;
+      opacity: 0.2;
     }
   }
 </style>
