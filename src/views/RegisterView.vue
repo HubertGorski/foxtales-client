@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { computed, ref, watch } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { computed, onMounted, ref, watch } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { userService } from '@/api/services/UserService';
   import { useField, useForm } from 'vee-validate';
@@ -12,11 +12,13 @@
   import Terms from '@/components/Terms.vue';
   import { useLoading } from '@/composables/useLoading';
   import { useViewStore } from '@/stores/viewStore';
+  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'email' | 'username' | 'password' | 'confirmpassword' | 'termsaccepted';
 
   const { t } = useI18n();
   const router = useRouter();
+  const route = useRoute();
 
   const step = ref(0);
 
@@ -121,6 +123,24 @@
   watch(areErrorExist, () => {
     if (areErrorExist.value && step.value == 2) {
       step.value = 0;
+    }
+  });
+
+  onMounted(() => {
+    const { redirectPath: queryRedirectPath } = route.query;
+    const { redirectPath, setRedirectPath } = useViewStore();
+
+    if (queryRedirectPath) {
+      setRedirectPath(queryRedirectPath as string);
+
+      const query = { ...route.query };
+      delete query.redirectPath;
+      router.replace({ query });
+    }
+
+    if (useUserStore().user.accessToken) {
+      router.push((queryRedirectPath as string) || redirectPath || ROUTE_PATH.MENU);
+      setRedirectPath(null);
     }
   });
 </script>

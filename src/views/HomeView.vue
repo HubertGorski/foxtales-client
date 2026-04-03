@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ROUTE_PATH } from '@/router/routeEnums';
-  import { useRouter } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
   import { ICON } from '@/enums/iconsEnum';
   import { useI18n } from 'vue-i18n';
@@ -10,9 +10,11 @@
   import { useUserStore } from '@/stores/userStore';
   import { userService } from '@/api/services/UserService';
   import HubSwitchBtn from '@/components/hubComponents/HubSwitchBtn.vue';
+  import { onMounted } from 'vue';
 
   const viewStore = useViewStore();
   const router = useRouter();
+  const route = useRoute();
   const { locale } = useI18n();
 
   const appVersion = import.meta.env.VITE_APP_VERSION;
@@ -52,6 +54,24 @@
       action: () => router.push(ROUTE_PATH.REGISTER),
     },
   ];
+
+  onMounted(() => {
+    const { redirectPath: queryRedirectPath } = route.query;
+    const { redirectPath, setRedirectPath } = useViewStore();
+
+    if (queryRedirectPath) {
+      setRedirectPath(queryRedirectPath as string);
+
+      const query = { ...route.query };
+      delete query.redirectPath;
+      router.replace({ query });
+    }
+
+    if (useUserStore().user.accessToken) {
+      router.push((queryRedirectPath as string) || redirectPath || ROUTE_PATH.MENU);
+      setRedirectPath(null);
+    }
+  });
 </script>
 
 <template>

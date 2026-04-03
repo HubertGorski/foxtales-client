@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { onMounted, ref } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useI18n } from 'vue-i18n';
   import WhiteCard from '@/components/WhiteCard.vue';
@@ -14,6 +14,8 @@
   import { generateFoxNick } from '@/utils/nicknameGenerator';
   import { toLang } from '@/enums/languagesEnum';
   import i18n from '@/configs/i18n';
+  import { useViewStore } from '@/stores/viewStore';
+  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'username' | 'termsaccepted';
 
@@ -21,6 +23,7 @@
 
   const { t } = useI18n();
   const router = useRouter();
+  const route = useRoute();
   const { loading, withLoading } = useLoading();
 
   const { handleSubmit, setFieldError } = useForm({
@@ -66,6 +69,24 @@
   const navigateToRegister = () => {
     router.push(ROUTE_PATH.REGISTER);
   };
+
+  onMounted(() => {
+    const { redirectPath: queryRedirectPath } = route.query;
+    const { redirectPath, setRedirectPath } = useViewStore();
+
+    if (queryRedirectPath) {
+      setRedirectPath(queryRedirectPath as string);
+
+      const query = { ...route.query };
+      delete query.redirectPath;
+      router.replace({ query });
+    }
+
+    if (useUserStore().user.accessToken) {
+      router.push((queryRedirectPath as string) || redirectPath || ROUTE_PATH.MENU);
+      setRedirectPath(null);
+    }
+  });
 </script>
 
 <template>
