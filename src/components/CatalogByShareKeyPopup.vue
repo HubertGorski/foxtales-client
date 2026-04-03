@@ -105,7 +105,7 @@
               </div>
               <div class="catalogByShareKeyPopup_questions">
                 <span v-for="question in catalog.questions" :key="question.text" class="infoBlock">
-                  „{{ question.text.split('****').join('Adam') }}"
+                  „{{ question.text }}"
                 </span>
               </div>
             </div>
