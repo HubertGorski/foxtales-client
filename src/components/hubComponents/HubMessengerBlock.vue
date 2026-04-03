@@ -1,8 +1,5 @@
 <script setup lang="ts">
-  import { useViewStore } from '@/stores/viewStore';
-
   const appVersion = import.meta.env.VITE_APP_VERSION;
-  const { redirectPath } = useViewStore();
 </script>
 
 <template>
@@ -14,7 +11,6 @@
       <div class="messengerBlock_steps" v-html="$t('messengerStep1')"></div>
       <div class="messengerBlock_steps" v-html="$t('messengerStep2')"></div>
       <div class="messengerBlock_version">v.{{ appVersion }}</div>
-      {{ redirectPath }}
     </div>
   </div>
 </template>

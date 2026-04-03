@@ -50,6 +50,7 @@
           values.confirmpassword,
           values.termsaccepted
         );
+        await userService.login(values.email, values.password, true);
         router.push(ROUTE_PATH.WELCOME);
       } catch (err: any) {
         step.value = 0;

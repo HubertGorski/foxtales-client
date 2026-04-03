@@ -1,5 +1,16 @@
 <script setup lang="ts">
-  import NavigationBtns from '@/components/NavigationBtns.vue';
+  import { useRouter } from 'vue-router';
+  import { useViewStore } from '@/stores/viewStore';
+  import { ROUTE_PATH } from '@/router/routeEnums';
+  import HubBtn from '@/components/hubComponents/HubBtn.vue';
+
+  const router = useRouter();
+
+  const handleLogin = () => {
+    const { redirectPath, setRedirectPath } = useViewStore();
+    router.push(redirectPath || ROUTE_PATH.MENU);
+    setRedirectPath(null);
+  };
 </script>
 
 <template>
@@ -9,7 +20,7 @@
       <span class="title">{{ $t('foxTales') }}</span>
     </transition>
     <img src="@/assets/imgs/welcome.webp" alt="Lisek" />
-    <NavigationBtns btn="goToLogin" />
+    <HubBtn :action="handleLogin" text="goToLogin" isOrange />
   </div>
 </template>
 
@@ -48,7 +59,7 @@
       line-height: 1;
     }
 
-    .hubBtn.navigationBtns_btn {
+    .hubBtn {
       max-width: 100% !important;
       padding: 8px 16px;
       font-size: 16px;

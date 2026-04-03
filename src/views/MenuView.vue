@@ -40,8 +40,8 @@
   };
 
   const logout = async () => {
-    await userService.logout();
     router.push(ROUTE_PATH.HOME);
+    await userService.logout();
   };
 </script>
 
