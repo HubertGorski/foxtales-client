@@ -1,15 +1,11 @@
 <script setup lang="ts">
-  import { useRouter } from 'vue-router';
-  import { useViewStore } from '@/stores/viewStore';
-  import { ROUTE_PATH } from '@/router/routeEnums';
+  import { useAuthRedirect } from '@/composables/useAuthRedirect';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
 
-  const router = useRouter();
+  const { performRedirect } = useAuthRedirect();
 
   const handleLogin = () => {
-    const { redirectPath, setRedirectPath } = useViewStore();
-    router.push(redirectPath || ROUTE_PATH.MENU);
-    setRedirectPath(null);
+    performRedirect();
   };
 </script>
 

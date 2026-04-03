@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
   import { ROUTE_PATH } from '@/router/routeEnums';
   import { useI18n } from 'vue-i18n';
   import WhiteCard from '@/components/WhiteCard.vue';
@@ -11,11 +11,10 @@
   import HubCheckbox from '@/components/hubComponents/HubCheckbox.vue';
   import Terms from '@/components/Terms.vue';
   import { useLoading } from '@/composables/useLoading';
+  import { useAuthRedirect } from '@/composables/useAuthRedirect';
   import { generateFoxNick } from '@/utils/nicknameGenerator';
   import { toLang } from '@/enums/languagesEnum';
   import i18n from '@/configs/i18n';
-  import { useViewStore } from '@/stores/viewStore';
-  import { useUserStore } from '@/stores/userStore';
 
   type FormFields = 'username' | 'termsaccepted';
 
@@ -23,7 +22,6 @@
 
   const { t } = useI18n();
   const router = useRouter();
-  const route = useRoute();
   const { loading, withLoading } = useLoading();
 
   const { handleSubmit, setFieldError } = useForm({
@@ -43,12 +41,14 @@
     }, 200);
   };
 
+  const { performRedirect } = useAuthRedirect();
+
   const onSubmit = handleSubmit(async values => {
     try {
       await withLoading(async () => {
         const finalUsername = username.value?.trim() || exampleNickname;
         await userService.registerTmpUser(finalUsername ?? exampleNickname, values.termsaccepted);
-        router.push(ROUTE_PATH.MENU);
+        performRedirect();
       });
     } catch (err: any) {
       const data = err?.response?.data;
@@ -70,23 +70,7 @@
     router.push(ROUTE_PATH.REGISTER);
   };
 
-  onMounted(() => {
-    const { redirectPath: queryRedirectPath } = route.query;
-    const { redirectPath, setRedirectPath } = useViewStore();
-
-    if (queryRedirectPath) {
-      setRedirectPath(queryRedirectPath as string);
-
-      const query = { ...route.query };
-      delete query.redirectPath;
-      router.replace({ query });
-    }
-
-    if (useUserStore().user.accessToken) {
-      router.push((queryRedirectPath as string) || redirectPath || ROUTE_PATH.MENU);
-      setRedirectPath(null);
-    }
-  });
+  useAuthRedirect();
 </script>
 
 <template>
