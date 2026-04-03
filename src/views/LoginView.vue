@@ -13,6 +13,7 @@
   import HubSubActions from '@/components/hubComponents/HubSubActions.vue';
   import { useUserStore } from '@/stores/userStore';
   import { useLoading } from '@/composables/useLoading';
+  import { isMessenger } from '@/utils/userAgentUtils';
 
   const { t } = useI18n();
   const router = useRouter();
@@ -81,15 +82,15 @@
 
     if (queryRedirectPath) {
       setRedirectPath(queryRedirectPath as string);
-
-      // const query = { ...route.query };
-      // delete query.redirectPath;
-      // router.replace({ query });
     }
 
     if (user.accessToken) {
       router.push((queryRedirectPath as string) || redirectPath || ROUTE_PATH.MENU);
       setRedirectPath(null);
+    } else if (queryRedirectPath && !isMessenger()) {
+      const query = { ...route.query };
+      delete query.redirectPath;
+      router.replace({ query });
     }
   });
 </script>
@@ -99,8 +100,6 @@
     <img src="@/assets/imgs/4.webp" alt="Lisek" class="loginView_fox" />
     <form class="creamCard" @submit.prevent="onSubmit">
       <h1 class="loginView_title">{{ $t('auth.loginTitle') }}</h1>
-      {{ useViewStore().redirectPath }}
-      {{ route.query }}
       <HubInput
         v-model="email"
         :placeholder="$t('auth.email')"
