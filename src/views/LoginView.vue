@@ -82,9 +82,9 @@
     if (queryRedirectPath) {
       setRedirectPath(queryRedirectPath as string);
 
-      const query = { ...route.query };
-      delete query.redirectPath;
-      router.replace({ query });
+      // const query = { ...route.query };
+      // delete query.redirectPath;
+      // router.replace({ query });
     }
 
     if (user.accessToken) {
@@ -99,6 +99,8 @@
     <img src="@/assets/imgs/4.webp" alt="Lisek" class="loginView_fox" />
     <form class="creamCard" @submit.prevent="onSubmit">
       <h1 class="loginView_title">{{ $t('auth.loginTitle') }}</h1>
+      {{ useViewStore().redirectPath }}
+      {{ route.query }}
       <HubInput
         v-model="email"
         :placeholder="$t('auth.email')"
