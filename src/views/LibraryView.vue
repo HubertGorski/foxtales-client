@@ -162,18 +162,22 @@
     isCatalogCreatorOpen.value = false;
 
     if (refresh) {
-      refreshCatalogList();
+      const tab = isReadCatalogMode.value ? 'receivedCatalogs' : 'yourCatalogs';
+      refreshCatalogList(tab);
     }
   };
 
-  const refreshCatalogList = () => {
+  const refreshCatalogList = (tabName?: string) => {
     actualCatalogs.value = userStore.user.catalogs
       .map(convertCatalogsToListElement)
       .sort((a, b) => b.id - a.id);
     actualReceivedCatalogs.value = userStore.user.receivedCatalogs
       .map(convertCatalogsToListElement)
       .sort((a, b) => b.id - a.id);
-    setOpenTab.value = 'addQuestion';
+
+    if (tabName) {
+      setOpenTab.value = tabName;
+    }
   };
 
   const refreshQuestionsList = () => {

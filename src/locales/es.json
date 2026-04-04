@@ -184,7 +184,8 @@
       "playersCount": "2 – 12",
       "bestWith": "Mejor 2-8"
     },
-    "ownerLibraryWarning": "Este es tu catálogo – ya tienes acceso completo a él en tu biblioteca."
+    "ownerLibraryWarning": "Este es tu catálogo. Puedes encontrarlo en tu biblioteca.",
+    "alreadyInLibraryWarning": "Este catálogo ya está en tu colección. Puedes usarlo creando una partida nueva."
   },
   "description": "Descripción",
   "small": "Pequeño",
