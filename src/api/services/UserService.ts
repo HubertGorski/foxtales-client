@@ -19,8 +19,6 @@ import {
 } from '@/composables/useTokenRefresh';
 import { Memory } from '@/models/Memory';
 import { ROUTE_PATH } from '@/router/routeEnums';
-import { useRouter } from 'vue-router';
-
 export const userService = {
   async logout(): Promise<void> {
     clearTokenRefresh();
@@ -28,7 +26,8 @@ export const userService = {
       await userClient.logout();
     } catch {}
 
-    useRouter().push(ROUTE_PATH.HOME);
+    const router = (await import('@/router')).default;
+    await router.push(ROUTE_PATH.HOME);
     useUserStore().setUserSession(new User());
     await useSignalRStore().disconnect();
   },
