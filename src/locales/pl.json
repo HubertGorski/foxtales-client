@@ -184,7 +184,8 @@
       "playersCount": "2 – 12",
       "bestWith": "Najlepiej 2-8"
     },
-    "ownerLibraryWarning": "To Twój katalog – masz już do niego pełny dostęp w swojej bibliotece."
+    "ownerLibraryWarning": "To Twój katalog. Znajdziesz go w swojej bibliotece.",
+    "alreadyInLibraryWarning": "Ten katalog jest już w Twojej kolekcji. Możesz go użyć, tworząc nową grę."
   },
   "description": "Opis",
   "small": "Mały",

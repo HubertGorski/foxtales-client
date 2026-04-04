@@ -184,7 +184,8 @@
       "playersCount": "2 – 12",
       "bestWith": "Best 2-8"
     },
-    "ownerLibraryWarning": "This is your catalog – you already have full access to it in your library."
+    "ownerLibraryWarning": "This is your catalog. You can find it in your library.",
+    "alreadyInLibraryWarning": "This catalog is already in your collection. You can use it by creating a new game."
   },
   "description": "Description",
   "small": "Small",

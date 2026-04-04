@@ -11,7 +11,7 @@
   import { useLoading } from '@/composables/useLoading';
 
   const props = defineProps<{
-    refreshListAction?: () => void;
+    refreshListAction?: (tabName?: string) => void;
   }>();
 
   const isVisible = ref<boolean>(false);
@@ -24,6 +24,18 @@
 
   const isOwner = computed(() => {
     return catalog.value?.ownerId === userStore.user.userId;
+  });
+
+  const isAlreadyInCollection = computed(() => {
+    return userStore.user.receivedCatalogs.some(c => c.catalogId === catalog.value?.catalogId);
+  });
+
+  const isButtonDisabled = computed(() => isOwner.value || isAlreadyInCollection.value);
+
+  const tooltipMessage = computed(() => {
+    if (isOwner.value) return 'catalog.ownerLibraryWarning';
+    if (isAlreadyInCollection.value) return 'catalog.alreadyInLibraryWarning';
+    return '';
   });
 
   const goBack = () => {
@@ -42,7 +54,7 @@
             userStore.user.userId
           );
           userStore.addReceivedCatalog(catalog.value);
-          props.refreshListAction?.();
+          props.refreshListAction?.('receivedCatalogs');
           goBack();
         }
       } catch (error) {
@@ -114,8 +126,14 @@
         <div class="catalogByShareKeyPopup_footer">
           <HubBtn text="back" :action="goBack" ghost small />
           <span class="catalogByShareKeyPopup_footerTitle">{{ catalog.title }}</span>
-          <HubTooltip tooltipText="catalog.ownerLibraryWarning" :tooltipDisabled="!isOwner">
-            <HubBtn text="addToLibrary" :action="confirm" :disabled="isOwner" isOrange small />
+          <HubTooltip :tooltipText="tooltipMessage" :tooltipDisabled="!isButtonDisabled">
+            <HubBtn
+              text="addToLibrary"
+              :action="confirm"
+              :disabled="isButtonDisabled"
+              isOrange
+              small
+            />
           </HubTooltip>
         </div>
       </div>

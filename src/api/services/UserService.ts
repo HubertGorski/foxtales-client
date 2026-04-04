@@ -18,6 +18,8 @@ import {
   isTokenExpired,
 } from '@/composables/useTokenRefresh';
 import { Memory } from '@/models/Memory';
+import { ROUTE_PATH } from '@/router/routeEnums';
+import { useRouter } from 'vue-router';
 
 export const userService = {
   async logout(): Promise<void> {
@@ -25,6 +27,8 @@ export const userService = {
     try {
       await userClient.logout();
     } catch {}
+
+    useRouter().push(ROUTE_PATH.HOME);
     useUserStore().setUserSession(new User());
     await useSignalRStore().disconnect();
   },
