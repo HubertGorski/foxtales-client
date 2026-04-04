@@ -2,7 +2,7 @@
   import { useAuthRedirect } from '@/composables/useAuthRedirect';
   import HubBtn from '@/components/hubComponents/HubBtn.vue';
 
-  const { performRedirect } = useAuthRedirect();
+  const { performRedirect } = useAuthRedirect({ autoRedirect: false });
 
   const handleLogin = () => {
     performRedirect();

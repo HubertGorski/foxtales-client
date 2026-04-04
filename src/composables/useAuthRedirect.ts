@@ -5,7 +5,8 @@ import { useUserStore } from '@/stores/userStore';
 import { ROUTE_PATH } from '@/router/routeEnums';
 import { isMessenger } from '@/utils/userAgentUtils';
 
-export function useAuthRedirect() {
+export function useAuthRedirect(options?: { autoRedirect?: boolean }) {
+  const autoRedirect = options?.autoRedirect ?? true;
   const route = useRoute();
   const router = useRouter();
   const viewStore = useViewStore();
@@ -22,7 +23,7 @@ export function useAuthRedirect() {
       viewStore.setRedirectPath(queryRedirectPath as string);
     }
 
-    if (userStore.user.accessToken) {
+    if (userStore.user.accessToken && autoRedirect) {
       performRedirect();
     } else if (queryRedirectPath && !isMessenger()) {
       const query = { ...route.query };
